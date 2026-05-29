@@ -9,9 +9,13 @@ The figures in this section are produced from small source tables in `data/proce
 
 The K-selection figure is used as a teaching exercise. Learners should notice that the most stable model is not automatically the model that best answers the biological question.
 
+This expands the sweep panel from the opening roadmap. The blue stability curve shows whether patterns can be recovered consistently across successful sweep runs. The red goal-aligned score adds biological resolution to that stability information, asking whether the model also resolves time-varying activity relevant to the dengue question. `K = 5` remains an important comparator because it is stable, but it is too compact to separate the late acute interferon-associated program clearly.
+
 ## **Pattern Usage Across Time**
 
 ![](data/processed/figures/figure_03_pattern_usage_by_time_heatmap.png){fig-alt="Heatmap of mean CoGAPS pattern usage across experimental timepoints for the selected K=10 model." width=850 .lightbox}
+
+This expands the temporal-pattern heatmap from the opening roadmap. Rows are CoGAPS patterns, columns are infection days, and color shows the mean cell score for each pattern at each timepoint. Pattern numbers are run-specific labels; they become biologically meaningful only after you compare trajectories, cell-type summaries, top genes, and directionality evidence.
 
 ::: {.panel-tabset}
 
@@ -74,13 +78,13 @@ plt.show()
 
 ![](data/processed/figures/figure_04_pattern_usage_by_broad_cell_type_heatmap.png){fig-alt="Heatmap of mean CoGAPS pattern usage by broad immune-cell type." width=850 .lightbox}
 
-This view reveals that most patterns are dominated by broad cell type. The IFN-associated pattern is different: it is used most strongly in monocytes but changes much more over time than the identity-like patterns.
+This expands the broad-cell-type heatmap from the opening roadmap. PBMC identity is expected to explain a large part of single-cell variation because T cells, B cells, natural killer cells, monocytes, neutrophils, and plasmablasts have distinct baseline transcriptional programs. Comparing this heatmap with the time heatmap helps separate identity-like patterns from activity-like patterns. The IFN-associated pattern is used most strongly in monocytes but changes much more over time than the identity-like patterns.
 
 ## **IFN Pattern Trajectory**
 
 ![](data/processed/figures/figure_05_ifn_pattern_trajectory.png){fig-alt="Subject-level trajectory for the IFN-associated CoGAPS pattern, showing a rise at day 10 and day 14 or 15." width=850 .lightbox}
 
-Subject-level trajectories make the central finding visible without treating each cell as an independent person.
+This expands the Pattern 3 trajectory from the opening roadmap. Gray lines show subject-level means, the red line shows the subject mean with standard error, and the shaded region marks the late acute window. Subject-level trajectories make the central finding visible without treating each cell as an independent person.
 
 ## **Directionality and R/Python Agreement**
 

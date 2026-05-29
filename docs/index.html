@@ -271,15 +271,16 @@ gtag('config', 'G-XXXXXXXXXX', { 'anonymize_ip': true});
 <p><strong>Temporal immune programs in experimental dengue infection</strong></p>
 <p>PBMC samples contain many immune-cell identities in the same expression matrix. During dengue infection, those stable identities can be layered with changing infection-response programs. In this case study, you will use CoGAPS to separate these two sources of variation: which patterns mostly describe immune-cell identity, and which patterns describe dynamic activity over time?</p>
 <p>The source data come from Waickman et al.&nbsp;2021 and GEO accession <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE154386" target="_blank">GSE154386</a>. The experimental discovery subset follows three subjects across eight sampling days, where <code>D</code> means day: <code>D0</code> (day 0), <code>D2</code>, <code>D4</code>, <code>D6</code>, <code>D8</code>, <code>D10</code>, <code>D14/15</code>, and <code>D28</code>. The late acute window is <code>D10</code> to <code>D14/15</code>, or approximately day 10 to day 15.</p>
-<p>The opening figure previews the selected <code>K = 10</code> CoGAPS model. In CoGAPS, <code>K</code> is the number of latent patterns the model is asked to learn; here, <code>K = 10</code> means the model represents the data using 10 patterns. You should not treat this opening figure as proof yet. Instead, use it as a map for the analysis path ahead. Later, you will examine the sweep results and diagnostics that motivated using <code>K = 10</code> for the main analysis.</p>
-<p>You will work backward from this preview to ask how the data were prepared, why <code>K = 10</code> was selected, whether the model diagnostics support the run, which genes support the interferon interpretation, and whether those genes increase during the late acute window.</p>
-<p><a href="data/processed/figures/figure_00_opening_summary.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="data/processed/figures/figure_00_opening_summary.png" class="img-fluid" alt="Two-panel opening figure. Panel A shows a heatmap of mean CoGAPS pattern usage across experimental timepoints for the selected K equals 10 model, with Pattern 3 labeled IFN and elevated at days 10 and 14 or 15. Panel B shows Pattern 3 subject-level and mean trajectories, with the mean peaking during the late acute window and returning toward baseline by day 28." width="950"></a></p>
-<p>How to read the figure:</p>
+<p>The opening figure previews the full analysis path. In CoGAPS, <code>K</code> is the number of latent patterns the model is asked to learn; here, <code>K = 10</code> means the model represents the data using 10 patterns. You should not treat this opening figure as proof yet. Instead, use it as a map for the evidence you will assemble across the case study.</p>
+<p>You will work backward from this preview to ask how the data were prepared, why <code>K = 10</code> was selected, whether the model diagnostics support the run, which patterns change over time, which patterns mainly reflect PBMC identity, which genes support the interferon interpretation, and whether those genes increase during the late acute window.</p>
+<p><a href="data/processed/figures/figure_00_opening_summary.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="data/processed/figures/figure_00_opening_summary.png" class="img-fluid" alt="Five-panel opening roadmap figure. Panel A shows the experimental PBMC discovery time course from D0 through D28 with the late acute D10 to D14 or D15 window highlighted. Panel B shows K sweep evidence, including stability and goal-aligned scores, with K equals 10 selected. Panel C shows the Pattern 3 subject-level trajectory and mean late acute peak. Panel D shows a heatmap of selected K equals 10 pattern usage across infection days. Panel E shows a heatmap of the same patterns across broad PBMC cell identities." width="950"></a></p>
+<p>Use the figure as an orientation point:</p>
 <ul>
-<li><strong>Panel A</strong> summarizes the selected <code>K = 10</code> model. Rows are CoGAPS patterns, columns are timepoints, and color shows the mean cell score for each pattern at each timepoint. Pattern labels are run-specific; they become meaningful only after inspecting trajectories and top genes.</li>
-<li><strong>Panel B</strong> focuses on the candidate interferon-associated pattern. Gray lines show subject-level means, the red line shows the subject mean and standard error, and the shaded region marks the late acute window.</li>
+<li><strong>Panel A</strong> anchors the experimental discovery subset and the infection days used in the main analysis.</li>
+<li><strong>Panel B</strong> previews the rank-selection question: why use <code>K = 10</code> instead of the more compact <code>K = 5</code> model?</li>
+<li><strong>Panels C, D, and E</strong> preview the pattern interpretation: one candidate interferon-associated pattern changes strongly during the late acute window, while other patterns capture temporal or broad PBMC-identity structure.</li>
 </ul>
-<p>As you move through the case study, return to this preview and ask three questions: which patterns vary over time, which patterns mostly reflect PBMC identity, and what evidence supports an interferon-associated infection-response program?</p>
+<p>The detailed reading of each panel appears later in the visualization and analysis sections, after the data-preparation and model-selection steps have been documented.</p>
 <p>By the end, you will connect this figure to the main learning objectives: documenting the teaching subset, reading a model-selection summary, checking model diagnostics, and interpreting latent patterns biologically.</p>
 <div class="definition_box">
 <div class="definition_box_header">
@@ -2496,10 +2497,12 @@ Complete R preparation script
 <h2 class="anchored" data-anchor-id="k-selection"><strong>K Selection</strong></h2>
 <p><a href="data/processed/figures/figure_01_k_selection.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="data/processed/figures/figure_01_k_selection.png" class="img-fluid" alt="K-selection figure summarizing stability, temporal effect size, and biological signals across tested K values." width="850"></a></p>
 <p>The K-selection figure is used as a teaching exercise. Learners should notice that the most stable model is not automatically the model that best answers the biological question.</p>
+<p>This expands the sweep panel from the opening roadmap. The blue stability curve shows whether patterns can be recovered consistently across successful sweep runs. The red goal-aligned score adds biological resolution to that stability information, asking whether the model also resolves time-varying activity relevant to the dengue question. <code>K = 5</code> remains an important comparator because it is stable, but it is too compact to separate the late acute interferon-associated program clearly.</p>
 </section>
 <section id="pattern-usage-across-time" class="level2">
 <h2 class="anchored" data-anchor-id="pattern-usage-across-time"><strong>Pattern Usage Across Time</strong></h2>
 <p><a href="data/processed/figures/figure_03_pattern_usage_by_time_heatmap.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="data/processed/figures/figure_03_pattern_usage_by_time_heatmap.png" class="img-fluid" alt="Heatmap of mean CoGAPS pattern usage across experimental timepoints for the selected K=10 model." width="850"></a></p>
+<p>This expands the temporal-pattern heatmap from the opening roadmap. Rows are CoGAPS patterns, columns are infection days, and color shows the mean cell score for each pattern at each timepoint. Pattern numbers are run-specific labels; they become biologically meaningful only after you compare trajectories, cell-type summaries, top genes, and directionality evidence.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-11-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-11-1" role="tab" aria-controls="tabset-11-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-11-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-11-2" role="tab" aria-controls="tabset-11-2" aria-selected="false">Python</a></li></ul>
 <div class="tab-content">
@@ -2575,12 +2578,12 @@ Complete R preparation script
 <section id="identity-and-activity-views" class="level2">
 <h2 class="anchored" data-anchor-id="identity-and-activity-views"><strong>Identity and Activity Views</strong></h2>
 <p><a href="data/processed/figures/figure_04_pattern_usage_by_broad_cell_type_heatmap.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="data/processed/figures/figure_04_pattern_usage_by_broad_cell_type_heatmap.png" class="img-fluid" alt="Heatmap of mean CoGAPS pattern usage by broad immune-cell type." width="850"></a></p>
-<p>This view reveals that most patterns are dominated by broad cell type. The IFN-associated pattern is different: it is used most strongly in monocytes but changes much more over time than the identity-like patterns.</p>
+<p>This expands the broad-cell-type heatmap from the opening roadmap. PBMC identity is expected to explain a large part of single-cell variation because T cells, B cells, natural killer cells, monocytes, neutrophils, and plasmablasts have distinct baseline transcriptional programs. Comparing this heatmap with the time heatmap helps separate identity-like patterns from activity-like patterns. The IFN-associated pattern is used most strongly in monocytes but changes much more over time than the identity-like patterns.</p>
 </section>
 <section id="ifn-pattern-trajectory" class="level2">
 <h2 class="anchored" data-anchor-id="ifn-pattern-trajectory"><strong>IFN Pattern Trajectory</strong></h2>
 <p><a href="data/processed/figures/figure_05_ifn_pattern_trajectory.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img src="data/processed/figures/figure_05_ifn_pattern_trajectory.png" class="img-fluid" alt="Subject-level trajectory for the IFN-associated CoGAPS pattern, showing a rise at day 10 and day 14 or 15." width="850"></a></p>
-<p>Subject-level trajectories make the central finding visible without treating each cell as an independent person.</p>
+<p>This expands the Pattern 3 trajectory from the opening roadmap. Gray lines show subject-level means, the red line shows the subject mean with standard error, and the shaded region marks the late acute window. Subject-level trajectories make the central finding visible without treating each cell as an independent person.</p>
 </section>
 <section id="directionality-and-rpython-agreement" class="level2">
 <h2 class="anchored" data-anchor-id="directionality-and-rpython-agreement"><strong>Directionality and R/Python Agreement</strong></h2>
@@ -4361,7 +4364,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"loop":false,"selector":".lightbox","closeEffect":"zoom","descPosition":"bottom","openEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"loop":false,"openEffect":"zoom","closeEffect":"zoom","selector":".lightbox","descPosition":"bottom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {
