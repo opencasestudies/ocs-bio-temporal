@@ -1,10 +1,31 @@
-#### {.outline }
+**Temporal immune programs in experimental dengue infection**
 
-<!--
-Replace the `img/mainplot.png` image with the appropriate case study image or consider using ottrpal::include_slide() with a publicly viewable slide deck as needed.
-See image here for example: https://www.opencasestudies.org/ocs-bp-school-shootings-dashboard/
--->
+PBMC samples contain many immune-cell identities in the same expression matrix. During dengue infection, those stable identities can be layered with changing infection-response programs. In this case study, you will use CoGAPS to separate these two sources of variation: which patterns mostly describe immune-cell identity, and which patterns describe dynamic activity over time?
 
-![](img/mainplot.png){fig-alt="Map showing amount of pollution across the US localized to monitors." width=800 .lightbox}
+The source data come from Waickman et al. 2021 and GEO accession [GSE154386](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE154386){target="_blank"}. The experimental discovery subset follows three subjects across eight sampling days, where `D` means day: `D0` (day 0), `D2`, `D4`, `D6`, `D8`, `D10`, `D14/15`, and `D28`. The late acute window is `D10` to `D14/15`, or approximately day 10 to day 15.
 
-####
+The opening figure previews the selected `K = 10` CoGAPS model. In CoGAPS, `K` is the number of latent patterns the model is asked to learn; here, `K = 10` means the model represents the data using 10 patterns. You should not treat this opening figure as proof yet. Instead, use it as a map for the analysis path ahead. Later, you will examine the sweep results and diagnostics that motivated using `K = 10` for the main analysis.
+
+You will work backward from this preview to ask how the data were prepared, why `K = 10` was selected, whether the model diagnostics support the run, which genes support the interferon interpretation, and whether those genes increase during the late acute window.
+
+![](data/processed/figures/figure_00_opening_summary.png){fig-alt="Two-panel opening figure. Panel A shows a heatmap of mean CoGAPS pattern usage across experimental timepoints for the selected K equals 10 model, with Pattern 3 labeled IFN and elevated at days 10 and 14 or 15. Panel B shows Pattern 3 subject-level and mean trajectories, with the mean peaking during the late acute window and returning toward baseline by day 28." width=950 .lightbox}
+
+How to read the figure:
+
+- **Panel A** summarizes the selected `K = 10` model. Rows are CoGAPS patterns, columns are timepoints, and color shows the mean cell score for each pattern at each timepoint. Pattern labels are run-specific; they become meaningful only after inspecting trajectories and top genes.
+- **Panel B** focuses on the candidate interferon-associated pattern. Gray lines show subject-level means, the red line shows the subject mean and standard error, and the shaded region marks the late acute window.
+
+As you move through the case study, return to this preview and ask three questions: which patterns vary over time, which patterns mostly reflect PBMC identity, and what evidence supports an interferon-associated infection-response program?
+
+By the end, you will connect this figure to the main learning objectives: documenting the teaching subset, reading a model-selection summary, checking model diagnostics, and interpreting latent patterns biologically.
+
+:::{.definition_box}
+::::{.definition_box_header}
+Key terms
+::::
+::::{.inner_block}
+- **PBMCs:** Peripheral blood mononuclear cells, a mixed population of immune cells isolated from blood. PBMCs include lymphocytes such as T cells, B cells, and natural killer cells, as well as monocytes and related antigen-presenting cells.
+- **PBMC identity:** The relatively stable immune-cell identity of a cell, such as T cell, B cell, natural killer cell, or monocyte. A T cell remains a T cell across the infection time course, even though its gene-expression activity can change.
+- **IFN:** Interferon, an antiviral signaling system that helps coordinate host responses to viral infection.
+::::
+:::

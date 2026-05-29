@@ -27,5 +27,6 @@ url-check-periodically: true
 render-website: quarto_web
 
 # What docker image should be used for rendering?
-# The default is jhudsl/base_ottr:main
-rendering-docker-image: 'jhudsl/base_ottr:main'
+# Case Study 5 rendering runtime with R CoGAPS, PyCoGAPS, Quarto, and Jupyter.
+# Use a versioned tag for reproducible GitHub/OTTR renders.
+rendering-docker-image: 'othomas2/cs5-cogaps-runtime:0.1.0'

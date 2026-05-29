@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="258" viewBox="0 0 760 258">
+<style>text{font-family:Helvetica,Arial,sans-serif;font-size:11px;fill:#111827}.title{font-size:16px;font-weight:700}.small{font-size:10px;fill:#4b5563}</style>
+<rect width="100%" height="100%" fill="white"/>
+<text class="title" x="20" y="28">Pattern3 median top-gene log2FC by cell type</text>
+<text class="small" x="20" y="48">Color scale: blue=down, white=near 0, red=up; capped at +/-1.5 log2FC</text>
+<text text-anchor="middle" x="265.0" y="58">D2</text>
+<text text-anchor="middle" x="335.0" y="58">D4</text>
+<text text-anchor="middle" x="405.0" y="58">D6</text>
+<text text-anchor="middle" x="475.0" y="58">D8</text>
+<text text-anchor="middle" x="545.0" y="58">D10</text>
+<text text-anchor="middle" x="615.0" y="58">D14/15</text>
+<text text-anchor="middle" x="685.0" y="58">D28</text>
+<text text-anchor="end" x="222" y="83">B_cell</text>
+<rect x="230" y="70" width="70" height="18" fill="#fafbff" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="83">-0.04</text>
+<rect x="300" y="70" width="70" height="18" fill="#e7eefd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="83">-0.16</text>
+<rect x="370" y="70" width="70" height="18" fill="#f0f4fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="83">-0.10</text>
+<rect x="440" y="70" width="70" height="18" fill="#fdfafa" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="83">0.04</text>
+<rect x="510" y="70" width="70" height="18" fill="#ba1e1e" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="83">1.48</text>
+<rect x="580" y="70" width="70" height="18" fill="#c23a3a" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="83">1.30</text>
+<rect x="650" y="70" width="70" height="18" fill="#fcf4f4" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="83">0.07</text>
+<text text-anchor="end" x="222" y="101">Monocyte</text>
+<rect x="230" y="88" width="70" height="18" fill="#fefafa" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="101">0.03</text>
+<rect x="300" y="88" width="70" height="18" fill="#f4f7fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="101">-0.08</text>
+<rect x="370" y="88" width="70" height="18" fill="#fbfcff" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="101">-0.02</text>
+<rect x="440" y="88" width="70" height="18" fill="#f1d3d3" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="101">0.29</text>
+<rect x="510" y="88" width="70" height="18" fill="#b91c1c" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="101">2.07</text>
+<rect x="580" y="88" width="70" height="18" fill="#b91c1c" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="101">1.94</text>
+<rect x="650" y="88" width="70" height="18" fill="#e5acac" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="101">0.55</text>
+<text text-anchor="end" x="222" y="119">NK_cell</text>
+<rect x="230" y="106" width="70" height="18" fill="#fcfdff" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="119">-0.02</text>
+<rect x="300" y="106" width="70" height="18" fill="#f2f6fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="119">-0.09</text>
+<rect x="370" y="106" width="70" height="18" fill="#f9fbfe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="119">-0.04</text>
+<rect x="440" y="106" width="70" height="18" fill="#fdf7f7" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="119">0.05</text>
+<rect x="510" y="106" width="70" height="18" fill="#b91c1c" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="119">1.53</text>
+<rect x="580" y="106" width="70" height="18" fill="#bb2121" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="119">1.46</text>
+<rect x="650" y="106" width="70" height="18" fill="#f6e2e2" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="119">0.19</text>
+<text text-anchor="end" x="222" y="137">Neutrophil</text>
+<rect x="230" y="124" width="70" height="18" fill="#ffffff" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="137">0.00</text>
+<rect x="300" y="124" width="70" height="18" fill="#ebbebe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="137">0.43</text>
+<rect x="370" y="124" width="70" height="18" fill="#eec7c7" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="137">0.37</text>
+<rect x="440" y="124" width="70" height="18" fill="#e09999" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="137">0.67</text>
+<rect x="510" y="124" width="70" height="18" fill="#b91c1c" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="137">2.70</text>
+<rect x="580" y="124" width="70" height="18" fill="#ffffff" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="137">0.00</text>
+<rect x="650" y="124" width="70" height="18" fill="#c64646" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="137">1.22</text>
+<text text-anchor="end" x="222" y="155">Plasmablast</text>
+<rect x="230" y="142" width="70" height="18" fill="#fffefe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="155">0.01</text>
+<rect x="300" y="142" width="70" height="18" fill="#f2f6fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="155">-0.09</text>
+<rect x="370" y="142" width="70" height="18" fill="#dbe5fc" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="155">-0.25</text>
+<rect x="440" y="142" width="70" height="18" fill="#fdfafa" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="155">0.03</text>
+<rect x="510" y="142" width="70" height="18" fill="#c13636" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="155">1.33</text>
+<rect x="580" y="142" width="70" height="18" fill="#e5abab" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="155">0.56</text>
+<rect x="650" y="142" width="70" height="18" fill="#f8e7e7" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="155">0.16</text>
+<text text-anchor="end" x="222" y="173">T_cell</text>
+<rect x="230" y="160" width="70" height="18" fill="#fafbff" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="173">-0.03</text>
+<rect x="300" y="160" width="70" height="18" fill="#dfe8fc" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="173">-0.22</text>
+<rect x="370" y="160" width="70" height="18" fill="#f1f5fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="173">-0.09</text>
+<rect x="440" y="160" width="70" height="18" fill="#fdf9f9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="173">0.04</text>
+<rect x="510" y="160" width="70" height="18" fill="#c64646" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="173">1.23</text>
+<rect x="580" y="160" width="70" height="18" fill="#c94f4f" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="173">1.16</text>
+<rect x="650" y="160" width="70" height="18" fill="#fdf7f7" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="173">0.05</text>
+</svg>

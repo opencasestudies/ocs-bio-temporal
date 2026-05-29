@@ -1,21 +1,15 @@
-<!--
-List any important bioethics considerations when performing an analysis like this or working with data like this.
-
-See doi: 10.1007/s41649-019-00099-x and https://depts.washington.edu/bhdept/ethics-medicine/bioethics-topics/articles/principles-bioethics for principles and considerations.
-Examples may include: how identifiable (or re-identifiable) is your data? cell lines or consent? specific considerations for a specific population?
--->
-
-
-# **Ethical Considerations**
+# **Bioethics, Data Use, and Interpretation Cautions**
 ***
 
-There are some important ethical considerations when working with data relating to this case study's main questions.
+This case study uses publicly available human single-cell RNA-seq data from GEO. Learners should still treat the data as human-subjects-derived research data and interpret results with care.
 
-1. {FILL IN}
-1. {FILL IN}
+Important cautions:
+
+1. The case study should not be used to make clinical decisions or policy claims.
+1. The discovery set is a teaching subset and does not capture all possible variation in the full study.
+1. Patterns are latent statistical summaries, not direct measurements of immune pathways.
+1. A pattern annotated as interferon-associated is supported by top genes, correlation with an IFN score, timing, and directionality, but it is still an interpretation.
+1. Subject-level variation should be shown whenever possible so that learners do not confuse large numbers of cells with large numbers of independent people.
+1. Public data reuse should cite the original study, the GEO accession, and any software used in the analysis.
 
 ***
-
-<!--
-Consider incorporating a checklist of statements that learners should answer/discuss for every case study for bioethics principles.
--->

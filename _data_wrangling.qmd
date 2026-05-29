@@ -1,58 +1,193 @@
-<!--
-Update the file paths as needed throughout
--->
-
-<!--
-Some case studies may wish to merge Data Exploration with this Wrangling subsection
--->
-
-<!--
-At the end of this section, save incremental data so that users can pause and come back later
--->
-
-# **Data Wrangling**
+# **Data Wrangling and Preprocessing**
 ***
 
-If you have been following along but stopped, we could load our imported data like so:
+The full preprocessing workflow starts from GEO 10x files, constructs an AnnData object, performs QC, normalizes counts, selects highly variable genes, annotates broad cell types, and builds a balanced experimental discovery set. That workflow is intentionally treated as full reproduction material rather than a required rendered-case-study step.
+
+The required wrangling task is to convert model artifacts into tidy tables for interpretation.
+
+## **Optional Full Preprocessing Workflow: From GEO to Discovery Subset**
+
+The code in this subsection is shown for transparency and reproducibility. It is **not run during the rendered case study** because it downloads and processes large files. Instead, the standard case-study path starts from the small precomputed artifacts imported earlier.
+
+This full preparation workflow starts from the GEO raw 10x files and ends with the large local objects used for CoGAPS:
+
+1. download and extract the GSE154386 raw archive
+1. discover per-sample 10x matrix/barcode/feature files
+1. parse sample metadata from GEO file names
+1. build a combined single-cell object
+1. perform QC, normalization, gene filtering, and HVG selection
+1. score broad immune-cell marker sets and biology programs
+1. annotate broad immune-cell types for teaching summaries
+1. build the balanced experimental discovery subset
+1. create a natural-cohort projection target for the optional extension
+
+This script intentionally stops before running CoGAPS. The selected CoGAPS model is covered in the analysis section.
+
+Learners do not need to run this code to complete the case study. Instead, use it as an audit trail for the teaching dataset.
 
 ```{r}
-load(here::here("data", "imported", "pm25_data_imported.rda"))
+#| label: preprocessing-inspection-prompts
+data.frame(
+  thing_to_inspect = c(
+    "QC thresholds",
+    "Timepoint handling",
+    "Gene selection",
+    "Marker and program scoring",
+    "Discovery-set balancing",
+    "Experimental versus natural cohorts",
+    "Large-file outputs"
+  ),
+  guiding_question = c(
+    "Which cells and genes are removed before modeling?",
+    "Why are experimental D14 and D15 merged into D14/15?",
+    "Why does the workflow select 5,000 highly variable genes?",
+    "Which marker sets support broad cell-type and IFN-program interpretation?",
+    "Why are experimental samples capped at 600 cells per sample?",
+    "Which cohort is used for discovery, and which is reserved for optional projection?",
+    "Which outputs are too large for GitHub and need an external host?"
+  )
+) |>
+  knitr::kable()
 ```
-***
 
-<details> <summary> If you skipped the data import section click here. </summary>
+::: {.panel-tabset}
 
-An RDA version (stands for R data) of the data can be found [here](https://github.com//opencasestudies/ocs-bp-co2-emissions/tree/master/data/imported) or slightly more directly [here](https://raw.githubusercontent.com/opencasestudies/ocs-bp-co2-emissions/master/data/imported/co2_data_imported.rda). Download this file and then place it in your current working directory within a subdirectory called "imported" within a directory called "data" to use the following code. We used an RStudio project and the [`here` package](https://github.com/jennybc/here_here) to navigate to the file more easily.
+## Python
 
-```{r, eval=FALSE}
-load(here::here("data", "imported", "co2_data_imported.rda"))
+Run this from the repository root inside the case-study Docker image after the large data host is finalized, or locally in an equivalent Python environment:
+
+```{bash}
+#| eval: false
+python scripts/prepare_gse154386_subset_python.py \
+  --workdir data/external/GSE154386 \
+  --max-cells-per-sample 600 \
+  --n-hvgs 5000 \
+  --seed 42
 ```
-
-</details>
-***
-
-<!--
-Use this section to explain step-by-step the data wrangling process used to prepare the data for analysis.
-This includes an example of code annotation with Quarto. See the documentation for more information: https://quarto.org/docs/authoring/code-annotation.html
--->
-
-To allow users to skip import and wrangling we will save the data as an RDA file as well as a CSV file as this is often useful to send our data to collaborators. We will save this in a “wrangled” subdirectory of our “data” directory of our working directory.
 
 ```{r}
-save(pm, file = here::here("data", "wrangled", "wrangled_data.rda")) # <1>
-readr::write_csv(pm, file = here::here("data","wrangled",            # <2>
-                                       "wrangled_data.csv"))         # <2>
+#| label: show-python-prep-script
+#| echo: false
+#| results: asis
+cat("<details><summary>Complete Python preparation script</summary>\n\n")
+cat("```python\n")
+cat(readLines(here::here("scripts", "prepare_gse154386_subset_python.py")), sep = "\n")
+cat("\n```\n\n</details>\n")
 ```
 
-1. saving the data as an RDA file within the wrangled data subdirectory
-2. saving the data as a CSV file within the wrangled data subdirectory
+## R
 
-<!--
-Note that with this code annotation example, we've used a new line to space the code so that the annotation doesn't overlay the code
--->
+Run this from the repository root inside the case-study Docker image after the large data host is finalized, or locally in an equivalent R/Bioconductor environment:
 
-<!--
-Replace `pm` above with the name of the data object created at the end of data wrangling.
--->
+```{bash}
+#| eval: false
+Rscript scripts/prepare_gse154386_subset_r.R \
+  --workdir data/external/GSE154386 \
+  --max-cells-per-sample 600 \
+  --n-hvgs 5000 \
+  --seed 42
+```
+
+```{r}
+#| label: show-r-prep-script
+#| echo: false
+#| results: asis
+cat("<details><summary>Complete R preparation script</summary>\n\n")
+cat("```r\n")
+cat(readLines(here::here("scripts", "prepare_gse154386_subset_r.R")), sep = "\n")
+cat("\n```\n\n</details>\n")
+```
+
+:::
+
+The Python version is closest to the original preprocessing script used during analysis development. The R version mirrors the same preparation logic with `SingleCellExperiment` objects so R-first learners can see how the subset can be prepared without switching languages.
+
+## **From Cell Scores to Subject-Level Summaries**
+
+Cell-level scores are useful, but cells from the same subject and timepoint are not independent people. We therefore summarize pattern usage at the subject-timepoint level.
+
+::: {.panel-tabset}
+
+## R
+
+```{r}
+#| label: subject-summary-r
+subject_time <- readr::read_csv(
+  here::here("data", "processed", "interpretation", "subject_level",
+             "subject_time_pattern_means_long.csv"),
+  show_col_types = FALSE
+)
+
+subject_time |>
+  filter(pattern == "Pattern3") |>
+  select(subject, timepoint_merged, day_merged_numeric,
+         n_cells, mean_pattern_score) |>
+  arrange(subject, day_merged_numeric) |>
+  head(12) |>
+  knitr::kable(digits = 3)
+```
+
+## Python
+
+```{python}
+#| label: subject-summary-python
+subject_time = pd.read_csv(
+    "data/processed/interpretation/subject_level/"
+    "subject_time_pattern_means_long.csv"
+)
+
+subject_time.loc[
+    subject_time["pattern"].eq("Pattern3"),
+    ["subject", "timepoint_merged", "day_merged_numeric",
+     "n_cells", "mean_pattern_score"]
+].sort_values(["subject", "day_merged_numeric"]).head(12)
+```
+
+:::
+
+This subject-level view is the main evidence layer for temporal claims. It avoids treating thousands of cells as thousands of independent subjects.
+
+## **Classifying Patterns as Identity-Like or Activity-Like**
+
+The case study uses a simple comparison:
+
+- if variation by broad cell type dominates, the pattern is interpreted as identity-like
+- if variation by timepoint dominates, the pattern is interpreted as activity-like
+- if neither dominates, the pattern is mixed
+
+::: {.panel-tabset}
+
+## R
+
+```{r}
+#| label: identity-activity-table-r
+rq2 <- readr::read_csv(
+  here::here("data", "processed", "interpretation", "rq_tables",
+             "RQ2_identity_vs_activity.csv"),
+  show_col_types = FALSE
+)
+
+rq2 |>
+  count(pattern_class) |>
+  knitr::kable()
+```
+
+## Python
+
+```{python}
+#| label: identity-activity-table-python
+rq2_py = pd.read_csv(
+    "data/processed/interpretation/rq_tables/"
+    "RQ2_identity_vs_activity.csv"
+)
+
+rq2_py["pattern_class"].value_counts().rename_axis(
+    "pattern_class"
+).reset_index(name="n")
+```
+
+:::
+
+In the selected `K = 10` run, nine patterns are classified as identity-like and one pattern is classified as activity-like. That activity-like pattern is the IFN-associated temporal program.
 
 ***

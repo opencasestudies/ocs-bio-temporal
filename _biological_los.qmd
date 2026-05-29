@@ -1,11 +1,9 @@
 <u>**Biological/Topical Learning Objectives:**</u>
 
-<!--
-Enumerate the topical Biological specific learning objectives here.
-(Can have less or more than 3).
-Previous Open Case Studies do not have an example of this.
--->
-
-1. {FILL IN}
-1. {FILL IN}
-1. {FILL IN}
+1. Describe the experimental and natural DENV-1 PBMC cohorts in Waickman et al. 2021 and explain why the experimental cohort is the primary discovery set.
+1. Recognize the difference between immune-cell identity programs and infection-response activity programs in single-cell PBMC data.
+1. Interpret temporal immune programs using top genes, time-course behavior, broad cell-type context, and subject-level summaries.
+1. Identify evidence for an interferon-stimulated antiviral transcriptional program using top genes, pathway knowledge, time-course behavior, and directionality evidence.
+1. Evaluate whether later time-course patterns may be consistent with adaptive, cytotoxic, or plasmablast-related immune activity without treating those labels as guaranteed findings.
+1. Explain why this analysis is a host-response analysis rather than a direct infected-cell atlas.
+1. Discuss limitations created by small subject numbers, changing cell composition, teaching-subset construction, and model-rank sensitivity.

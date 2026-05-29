@@ -1,0 +1,31 @@
+{
+  "created_utc": "2026-05-27T04:59:00+00:00",
+  "model_outdir": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/cogaps_r_revised_model_K10_seed2_iter2000",
+  "interpretation_dir": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/k10_interpretation_layer",
+  "directionality_dir": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000",
+  "comparison_dir": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/cogaps_revised_model_comparison_K10_seed2_iter2000",
+  "k_selection_dir": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/revised_k_selection_K10",
+  "run_stem": "cogaps_K10_seed2_iter2000",
+  "ifn_pattern": "Pattern3",
+  "selected_k": 10,
+  "opening_figure_script": "/Users/othomas/Desktop/ocs-bio-temporal/scripts/generate_opening_figure.py",
+  "figures": {
+    "figure_00_opening_summary_png": "/Users/othomas/Desktop/ocs-bio-temporal/data/processed/figures/figure_00_opening_summary.png",
+    "figure_00_opening_summary_svg": "/Users/othomas/Desktop/ocs-bio-temporal/data/processed/figures/figure_00_opening_summary.svg",
+    "figure_01_k_selection_png": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/k10_case_study_figures/figure_01_k_selection.png",
+    "figure_01_k_selection_svg": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/k10_case_study_figures/figure_01_k_selection.svg",
+    "figure_02_discovery_set_composition_png": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/k10_case_study_figures/figure_02_discovery_set_composition.png",
+    "figure_02_discovery_set_composition_svg": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/k10_case_study_figures/figure_02_discovery_set_composition.svg",
+    "figure_03_pattern_usage_by_time_heatmap_png": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/k10_case_study_figures/figure_03_pattern_usage_by_time_heatmap.png",
+    "figure_03_pattern_usage_by_time_heatmap_svg": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/k10_case_study_figures/figure_03_pattern_usage_by_time_heatmap.svg",
+    "figure_04_pattern_usage_by_broad_cell_type_heatmap_png": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/k10_case_study_figures/figure_04_pattern_usage_by_broad_cell_type_heatmap.png",
+    "figure_04_pattern_usage_by_broad_cell_type_heatmap_svg": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/k10_case_study_figures/figure_04_pattern_usage_by_broad_cell_type_heatmap.svg",
+    "figure_05_ifn_pattern_trajectory_png": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/k10_case_study_figures/figure_05_ifn_pattern_trajectory.png",
+    "figure_05_ifn_pattern_trajectory_svg": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/k10_case_study_figures/figure_05_ifn_pattern_trajectory.svg",
+    "figure_06_ifn_top_gene_directionality_heatmap_png": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/k10_case_study_figures/figure_06_ifn_top_gene_directionality_heatmap.png",
+    "figure_06_ifn_top_gene_directionality_heatmap_svg": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/k10_case_study_figures/figure_06_ifn_top_gene_directionality_heatmap.svg",
+    "figure_07_r_python_agreement_summary_png": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/k10_case_study_figures/figure_07_r_python_agreement_summary.png",
+    "figure_07_r_python_agreement_summary_svg": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/k10_case_study_figures/figure_07_r_python_agreement_summary.svg"
+  },
+  "source_tables_dir": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/k10_case_study_figures/source_tables"
+}

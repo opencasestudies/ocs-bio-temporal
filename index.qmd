@@ -1,21 +1,15 @@
 ---
-title: "**Biomedical Open Case Studies: {Title}**"
+title: "**Biomedical Open Case Studies: Discovering Temporal Immune Programs with CoGAPS in Single-Cell Dengue Infection Data**"
 include-sections:
-  stat-los: false
+  stat-los: true
   data-import: true
-  data-exploration: false
+  data-exploration: true
   data-wrangling: true
   data-viz: true
   data-analysis: true
+execute:
+  warning: false
 ---
-
-<!--
-  Update the various qmd documents below with each component of a Bio-OCS case study.
-  Besides filling in the title in the header of this document, no other changes should be necessary within this file.
-  Use the `include-sections` within the header to toggle section inclusion/exclusion as needed.
-  For documentation on quarto syntax possibilities, use https://quarto.org/docs/authoring/markdown-basics.html.
-  Examples in the documentation range from including images and videos to including margin notes, annotating code, and linking within a document.
--->
 
 {{< include _main_image.qmd >}}
 
@@ -79,7 +73,11 @@ include-sections:
 ***
 
 ```{r}
-devtools::session_info()
+if (requireNamespace("sessioninfo", quietly = TRUE)) {
+  sessioninfo::session_info()
+} else {
+  sessionInfo()
+}
 ```
 
 {{< include _acknowledgements.qmd >}}

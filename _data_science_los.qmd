@@ -1,11 +1,7 @@
 <u>**Data Science/Bioinformatics Learning Objectives:**</u>
 
-<!--
-Enumerate the Data Science or Bioinformatic specific learning objectives here.
-(Can have more than 3).
-For an example, see this previous Open Case Study: https://www.opencasestudies.org/ocs-bp-co2-emissions/#Learning_Objectives
--->
-
-1. {FILL IN}
-1. {FILL IN}
-1. {FILL IN}
+1. Import selected-model CoGAPS artifacts, metadata tables, diagnostics, and manifest files in R or Python.
+1. Summarize cell-level pattern scores, gene-level loadings, and run diagnostics as tidy analysis tables.
+1. Join CoGAPS cell scores to subject, timepoint, and broad immune-cell-type annotations.
+1. Create reproducible summaries and visualizations from lightweight teaching artifacts that can be rendered from GitHub.
+1. Explain which artifacts belong in the GitHub repository and which large reproduction files belong in an external data archive.

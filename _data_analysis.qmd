@@ -1,44 +1,478 @@
 # **Data Analysis**
 ***
 
-If you have been following along but stopped, we could load our wrangled data like so:
+This section answers the research questions using the selected `K = 10`, `seed = 2`, `nIterations = 2000` model. R is the default implementation, and Python is shown as an alternate implementation in tabs throughout the analysis.
+
+## **Why `K = 10`?**
+
+The initial sweep selected `K = 5` under a conservative rule: choose the smallest K on the stability plateau. That rule found a stable compact model, but it compressed the infection-response biology too much for this case-study goal.
+
+The revised rule is:
+
+> Select the smallest stability-plateau K that resolves at least one IFN-candidate, activity-like temporal program.
+
+::: {.panel-tabset}
+
+## R
 
 ```{r}
-load(here::here("data", "wrangled", "wrangled_data.rda"))
+#| label: k-selection-table-r
+k_manifest <- jsonlite::fromJSON(
+  here::here("data", "processed", "k_selection",
+             "revised_k_selection_manifest.json")
+)
+
+k_plateau <- readr::read_csv(
+  here::here("data", "processed", "k_selection",
+             "stability_plateau_candidates.csv"),
+  show_col_types = FALSE
+)
+
+k_plateau |>
+  transmute(
+    K,
+    selected_n_iter,
+    stability_core = round(stability_core, 3),
+    max_eta_timepoint = round(max_eta_timepoint, 3),
+    candidate_ifn_patterns = candidate_ifn_pattern_count_mean,
+    activity_like_patterns = activity_like_pattern_count_mean,
+    revised_selection = if_else(
+      K == k_manifest$revised_chosen_k,
+      "selected for main analysis",
+      ""
+    )
+  ) |>
+  knitr::kable()
 ```
 
-***
-<details> <summary> If you skipped the data import section click here. </summary>
+## Python
 
-An RDA file (stands for R data) of the data can be found [here](https://github.com//opencasestudies/ocs-bp-co2-emissions/tree/master/data/wrangled) or slightly more directly [here](https://raw.githubusercontent.com/opencasestudies/ocs-bp-co2-emissions/master/data/wrangled/wrangled_data.rda). Download this file and then place it in your current working directory within a subdirectory called "wrangled" within a subdirectory called "data" to use the following code. We used an RStudio project and the [`here` package](https://github.com/jennybc/here_here) to navigate to the file more easily.
+```{python}
+#| label: k-selection-table-python
+import json
+import pandas as pd
 
+with open(
+    "data/processed/k_selection/revised_k_selection_manifest.json"
+) as f:
+    k_manifest_py = json.load(f)
+
+k_plateau_py = pd.read_csv(
+    "data/processed/k_selection/stability_plateau_candidates.csv"
+)
+
+(
+    k_plateau_py
+    .assign(
+        stability_core=lambda x: x["stability_core"].round(3),
+        max_eta_timepoint=lambda x: x["max_eta_timepoint"].round(3),
+        revised_selection=lambda x: x["K"].eq(
+            k_manifest_py["revised_chosen_k"]
+        ).map({True: "selected for main analysis", False: ""})
+    )
+    .rename(columns={
+        "candidate_ifn_pattern_count_mean": "candidate_ifn_patterns",
+        "activity_like_pattern_count_mean": "activity_like_patterns",
+    })
+    .loc[:, [
+        "K", "selected_n_iter", "stability_core", "max_eta_timepoint",
+        "candidate_ifn_patterns", "activity_like_patterns",
+        "revised_selection"
+    ]]
+)
+```
+
+:::
+
+`K = 10` remains on the stability plateau and is the smallest plateau model that resolves the target kind of program: an IFN-candidate, activity-like temporal factor. `K = 5` remains useful as a comparator because it shows what is lost when the rank is too compact for the biological goal.
+
+## **Optional Full CoGAPS Run**
+
+The full model run is not required for the standard case-study path. It takes about 24 minutes for each selected R or Python run on the tested four-core OpenMP Docker setup, and it requires large H5AD inputs that are not stored in GitHub.
+
+::: {.panel-tabset}
+
+## R
 
 ```{r}
-load(here::here("data", "wrangled", "wrangled_data.rda"))
+#| label: r-run-metrics
+r_metrics <- jsonlite::fromJSON(
+  here::here("data", "processed", "selected_model_k10", "r",
+             "cogaps_K10_seed2_iter2000.metrics.json")
+)
+
+data.frame(
+  language = r_metrics$language,
+  K = r_metrics$K,
+  seed = r_metrics$seed,
+  nIterations = r_metrics$n_iter,
+  nThreads = r_metrics$nThreads,
+  sparseOptimization = r_metrics$sparseOptimization,
+  runtime_minutes = round(r_metrics$runtime_sec / 60, 1),
+  meanChiSq = r_metrics$meanChiSq,
+  trace_length = r_metrics$chisqHistory_length
+) |>
+  knitr::kable()
 ```
 
-</details>
-***
+The R run used OpenMP with four CoGAPS threads, sparse optimization, checkpointing every 500 iterations, trace output every 100 iterations, 10 snapshots, and pump sampling.
 
-:::{.think_question}
-::::{.think_question_header}
-Question opportunity
-::::
-::::{.inner_block}
-Pose a question about the data analysis.
-<details><summary>Answer</summary>
-You can use a collapsible details section to provide an answer
-</details>
-::::
+## Python
+
+```{python}
+#| label: python-run-metrics
+with open(
+    "data/processed/selected_model_k10/python/"
+    "cogaps_K10_seed2_iter2000.metrics.json"
+) as f:
+    py_metrics = json.load(f)
+
+pd.DataFrame([{
+    "language": py_metrics["language"],
+    "K": py_metrics["K"],
+    "seed": 2,
+    "nIterations": py_metrics["n_iter"],
+    "nThreads": py_metrics["cogaps_threads"],
+    "sparseOptimization": py_metrics["use_sparse_optimization"],
+    "runtime_minutes": round(py_metrics["runtime_sec"] / 60, 1),
+    "meanChiSq": py_metrics["meanChiSq"],
+    "trace_length": py_metrics["chisqHistory_length"],
+}])
+```
+
+The Python run used the same selected model settings and diagnostic targets as the R run.
+
 :::
 
-::: {.column-margin}
-We might use a column margin note to add an equation or some other annotation for learners or educators.
+## **Stability and Convergence Diagnostics**
+
+::: {.panel-tabset}
+
+## R
+
+```{r}
+#| label: diagnostic-trace-r
+r_trace <- readr::read_csv(
+  here::here("data", "processed", "selected_model_k10", "r",
+             "cogaps_K10_seed2_iter2000.trace.csv"),
+  show_col_types = FALSE
+)
+
+ggplot(r_trace, aes(x = trace_index, y = chisq)) +
+  geom_line(linewidth = 0.8) +
+  geom_point(size = 1.5) +
+  labs(
+    x = "Trace point",
+    y = "Chi-square",
+    title = "Selected R CoGAPS run diagnostic trace"
+  ) +
+  theme_minimal(base_size = 11)
+```
+
+## Python
+
+```{python}
+#| label: diagnostic-trace-python
+import matplotlib.pyplot as plt
+
+py_trace = pd.read_csv(
+    "data/processed/selected_model_k10/python/"
+    "cogaps_K10_seed2_iter2000.trace.csv"
+)
+
+fig, ax = plt.subplots(figsize=(7, 4))
+ax.plot(py_trace["trace_index"], py_trace["chisq"], marker="o")
+ax.set_xlabel("Trace point")
+ax.set_ylabel("Chi-square")
+ax.set_title("Selected Python CoGAPS run diagnostic trace")
+fig.tight_layout()
+plt.show()
+```
+
 :::
 
-<!--
-Use this section to walk through the methods and code used in the data analysis step-by-step.
-Explain how this analysis helps answer the main questions posed earlier in the case study.
--->
+The chi-square trace decreases rapidly early in the run and then changes more gradually, consistent with the selected run reaching a stable fitted state for the teaching analysis. The run also wrote A-atom and P-atom traces, snapshots, pump statistics, and machine-readable diagnostics.
+
+## **RQ1: Which Latent Programs Vary Over Time?**
+
+::: {.panel-tabset}
+
+## R
+
+```{r}
+#| label: rq1-temporal-programs-r
+rq1 <- readr::read_csv(
+  here::here("data", "processed", "interpretation", "rq_tables",
+             "RQ1_temporal_programs.csv"),
+  show_col_types = FALSE
+)
+
+rq1 |>
+  select(pattern, observed_label, pattern_class, eta_timepoint,
+         subject_peak_timepoint, subject_mean_D0, subject_mean_D10,
+         subject_mean_D14_15, subject_mean_D28, top_10_genes) |>
+  arrange(desc(eta_timepoint)) |>
+  head(6) |>
+  knitr::kable(digits = 3)
+```
+
+## Python
+
+```{python}
+#| label: rq1-temporal-programs-python
+rq1_py = pd.read_csv(
+    "data/processed/interpretation/rq_tables/RQ1_temporal_programs.csv"
+)
+
+(
+    rq1_py
+    .loc[:, [
+        "pattern", "observed_label", "pattern_class", "eta_timepoint",
+        "subject_peak_timepoint", "subject_mean_D0", "subject_mean_D10",
+        "subject_mean_D14_15", "subject_mean_D28", "top_10_genes"
+    ]]
+    .sort_values("eta_timepoint", ascending=False)
+    .head(6)
+)
+```
+
+:::
+
+The dominant temporal program is `Pattern3`, annotated as an IFN-associated temporal activity program. Its subject-level mean score rises from 0.026 at `D0` to 0.211 at `D10`, remains high at 0.193 at `D14/15`, and returns near baseline by `D28`.
+
+## **RQ2: Identity Programs Versus Activity Programs**
+
+::: {.panel-tabset}
+
+## R
+
+```{r}
+#| label: rq2-identity-activity-r
+rq2 |>
+  select(pattern, observed_label, pattern_class,
+         eta_timepoint, eta_broad_cell_type,
+         eta_time_to_cell_ratio, dominant_broad_cell_type) |>
+  arrange(pattern) |>
+  knitr::kable(digits = 3)
+```
+
+## Python
+
+```{python}
+#| label: rq2-identity-activity-python
+(
+    rq2_py
+    .loc[:, [
+        "pattern", "observed_label", "pattern_class",
+        "eta_timepoint", "eta_broad_cell_type",
+        "eta_time_to_cell_ratio", "dominant_broad_cell_type"
+    ]]
+    .sort_values("pattern")
+)
+```
+
+:::
+
+The selected model mostly recovers stable immune-cell identity structure: T cell, monocyte, NK cell, B cell, and plasmablast-associated programs. The key exception is `Pattern3`, where the timepoint effect is about 2.76 times the broad-cell-type effect. That is the clearest activity-like program.
+
+## **RQ3: Which Program Is IFN-Associated and When Does It Peak?**
+
+::: {.panel-tabset}
+
+## R
+
+```{r}
+#| label: rq3-ifn-program-r
+rq3 <- readr::read_csv(
+  here::here("data", "processed", "interpretation", "rq_tables",
+             "RQ3_ifn_associated_program.csv"),
+  show_col_types = FALSE
+)
+
+rq3 |>
+  select(pattern, observed_label, spearman_ifn_score_rho,
+         ifn_top_gene_overlap_top15, subject_peak_timepoint,
+         D10_median_top_gene_log2fc, D10_frac_top_genes_up,
+         D14_15_median_top_gene_log2fc, D14_15_frac_top_genes_up,
+         top_15_genes) |>
+  knitr::kable(digits = 3)
+```
+
+## Python
+
+```{python}
+#| label: rq3-ifn-program-python
+rq3_py = pd.read_csv(
+    "data/processed/interpretation/rq_tables/"
+    "RQ3_ifn_associated_program.csv"
+)
+
+rq3_py.loc[:, [
+    "pattern", "observed_label", "spearman_ifn_score_rho",
+    "ifn_top_gene_overlap_top15", "subject_peak_timepoint",
+    "D10_median_top_gene_log2fc", "D10_frac_top_genes_up",
+    "D14_15_median_top_gene_log2fc", "D14_15_frac_top_genes_up",
+    "top_15_genes"
+]]
+```
+
+:::
+
+`Pattern3` is the IFN-associated program. It has a Spearman correlation of 0.756 with the IFN program score, six IFN genes among its top 15 genes, and a subject-level peak at `D10`. Directionality analysis shows that the top genes are mostly higher than baseline at the peak timepoints: 88% are up at `D10`, and 96% are up at `D14/15`.
+
+## **Why Directionality Is Separate**
+
+CoGAPS tells us which genes and cells participate in the same non-negative pattern. It does not tell us whether those genes are higher or lower than baseline. To answer that, the case study uses subject-level pseudobulk log2 fold changes for the top genes of each pattern.
+
+::: {.panel-tabset}
+
+## R
+
+```{r}
+#| label: directionality-summary-r
+directionality <- readr::read_csv(
+  here::here("data", "processed", "directionality", "tables",
+             "pattern_directionality_summary.csv"),
+  show_col_types = FALSE
+)
+
+directionality |>
+  filter(pattern == "Pattern3",
+         scope == "all_cells",
+         timepoint_merged %in% c("D10", "D14/15")) |>
+  select(pattern, timepoint_merged, n_genes_tested,
+         median_gene_log2fc, frac_genes_up,
+         pattern_direction_consensus) |>
+  knitr::kable(digits = 3)
+```
+
+## Python
+
+```{python}
+#| label: directionality-summary-python
+directionality_py = pd.read_csv(
+    "data/processed/directionality/tables/"
+    "pattern_directionality_summary.csv"
+)
+
+directionality_py.loc[
+    directionality_py["pattern"].eq("Pattern3")
+    & directionality_py["scope"].eq("all_cells")
+    & directionality_py["timepoint_merged"].isin(["D10", "D14/15"]),
+    [
+        "pattern", "timepoint_merged", "n_genes_tested",
+        "median_gene_log2fc", "frac_genes_up",
+        "pattern_direction_consensus"
+    ]
+]
+```
+
+:::
+
+## **R and Python Agreement**
+
+::: {.panel-tabset}
+
+## R
+
+```{r}
+#| label: r-python-agreement-r
+comparison <- jsonlite::fromJSON(
+  here::here("data", "processed", "r_python_comparison",
+             "comparison_metrics.json")
+)
+
+data.frame(
+  metric = c("Cell score Spearman", "Gene loading Spearman",
+             "Top 50 gene Jaccard"),
+  mean_matched_agreement = c(
+    comparison$mean_matched_cell_score_spearman,
+    comparison$mean_matched_gene_loading_spearman,
+    comparison$mean_matched_top_50_gene_jaccard
+  )
+) |>
+  knitr::kable(digits = 3)
+```
+
+## Python
+
+```{python}
+#| label: r-python-agreement-python
+with open("data/processed/r_python_comparison/comparison_metrics.json") as f:
+    comparison_py = json.load(f)
+
+pd.DataFrame({
+    "metric": [
+        "Cell score Spearman",
+        "Gene loading Spearman",
+        "Top 50 gene Jaccard",
+    ],
+    "mean_matched_agreement": [
+        comparison_py["mean_matched_cell_score_spearman"],
+        comparison_py["mean_matched_gene_loading_spearman"],
+        comparison_py["mean_matched_top_50_gene_jaccard"],
+    ],
+})
+```
+
+:::
+
+The selected R and Python runs match exactly in the exported comparison summaries. This lets the case study teach R as the default route while still showing Python as a first-class alternate implementation.
+
+## **K=5 Comparator**
+
+`K = 5` is included as a precomputed comparator, not as a required rerun. Its role is instructional: it shows that a lower-rank model can be stable and still too compressed for the main biological question.
+
+::: {.panel-tabset}
+
+## R
+
+```{r}
+#| label: k5-comparator-r
+k5_rq1 <- readr::read_csv(
+  here::here("data", "processed", "comparator_model_k5", "r",
+             "RQ1_time_varying_patterns.csv"),
+  show_col_types = FALSE
+)
+
+k5_rq1 |>
+  arrange(desc(eta_timepoint)) |>
+  select(pattern, eta_timepoint, peak_timepoint,
+         spearman_ifn_score_rho, candidate_ifn_pattern) |>
+  knitr::kable(digits = 3)
+```
+
+## Python
+
+```{python}
+#| label: k5-comparator-python
+k5_rq1_py = pd.read_csv(
+    "data/processed/comparator_model_k5/python/"
+    "RQ1_time_varying_patterns.csv"
+)
+
+(
+    k5_rq1_py
+    .sort_values("eta_timepoint", ascending=False)
+    .loc[:, [
+        "pattern", "eta_timepoint", "peak_timepoint",
+        "spearman_ifn_score_rho", "candidate_ifn_pattern"
+    ]]
+)
+```
+
+:::
+
+Learners should compare this table with the `K = 10` results and ask: what biological resolution do we gain by moving from a compact stable model to the selected goal-aligned model?
+
+## **RQ4 Optional Extension: Natural Infection Projection**
+
+Projection into the natural infection cohort is biologically motivated because the original study compared experimental and natural primary infection. It is not part of the required analysis path yet. The official extension should:
+
+1. use the `K = 10` gene loading matrix learned from the experimental discovery cohort
+1. project those programs into natural infection samples with a validated projectR-style or NNLS workflow
+1. compare acute natural samples with convalescent reference samples
+1. report subject-level and cell-type-level summaries
+1. clearly label projection results as transfer-learning evidence rather than primary discovery
 
 ***

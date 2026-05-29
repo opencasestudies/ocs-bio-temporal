@@ -1,0 +1,11 @@
+r_pattern,python_pattern,gene_loading_spearman,cell_score_spearman,top_50_gene_jaccard,combined_score
+Pattern1,Pattern1,0.9999999999999999,1.0,1.0,3.0
+Pattern2,Pattern2,1.0,0.9999999999999999,1.0,3.0
+Pattern3,Pattern3,1.0,1.0,1.0,3.0
+Pattern4,Pattern4,1.0,1.0,1.0,3.0
+Pattern5,Pattern5,1.0,1.0,1.0,3.0
+Pattern6,Pattern6,1.0,0.9999999999999999,1.0,3.0
+Pattern7,Pattern7,1.0,1.0,1.0,3.0
+Pattern8,Pattern8,1.0,0.9999999999999999,1.0,3.0
+Pattern9,Pattern9,1.0,1.0,1.0,3.0
+Pattern10,Pattern10,0.9999999999999999,1.0,1.0,3.0

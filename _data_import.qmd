@@ -1,40 +1,72 @@
-<!--
-Update the file paths as needed throughout
--->
-
-<!--
-At the end of this section, save incremental data so that users can pause and come back later
--->
-
 # **Data Import**
 ***
 
-<!--
-Describe how to import the case study data files into R or Python
--->
+The rendered case study imports small CSV and JSON artifacts that are already stored in the repository. This keeps the standard case-study path fast and reproducible.
 
-<!--
-Within your case study project folder,
-put the data files as they came from the source into a 'data/raw/' subfolder
-and use the `here` package. See the following example and update with your data:
--->
+The large inputs needed to rerun CoGAPS from scratch are intentionally external:
+
+- raw GEO download: `GSE154386_RAW.tar`
+- preprocessed H5AD cache
+- experimental discovery H5ADs
+- RDS model objects
+- checkpoint files
+
+These files are documented in `data/artifact_manifest.json` and will be linked through an external host when the publication data-hosting decision is finalized.
+
+## **Import the Selected-Model Results**
+
+::: {.panel-tabset}
+
+## R
 
 ```{r}
-pm <-readr::read_csv(here("data", "raw", "pm25_data.csv"))
+#| label: import-selected-r
+r_selected_dir <- here::here(
+  "data", "processed", "selected_model_k10", "r"
+)
+
+r_rq1 <- readr::read_csv(
+  file.path(r_selected_dir, "RQ1_time_varying_patterns.csv"),
+  show_col_types = FALSE
+)
+
+r_top_genes <- readr::read_csv(
+  file.path(r_selected_dir, "cogaps_K10_seed2_iter2000.top_genes.csv"),
+  show_col_types = FALSE
+)
+
+r_rq1 |>
+  select(pattern, eta_timepoint, peak_timepoint,
+         spearman_ifn_score_rho, candidate_ifn_pattern) |>
+  arrange(desc(eta_timepoint)) |>
+  head(5) |>
+  knitr::kable(digits = 3)
 ```
 
-<!--
-At the end of the data import section, save the imported data as .rda files
-to allow users to stop and pick up where they left off:
--->
+## Python
 
-```{r}
-save(pm, file = here::here("data", "imported", "pm25_data_imported.rda"))
+```{python}
+#| label: import-selected-python
+from pathlib import Path
+import pandas as pd
+
+py_selected_dir = Path("data/processed/selected_model_k10/python")
+
+py_rq1 = pd.read_csv(py_selected_dir / "RQ1_time_varying_patterns.csv")
+py_top_genes = pd.read_csv(
+    py_selected_dir / "cogaps_K10_seed2_iter2000.top_genes.csv"
+)
+
+py_rq1.loc[
+    :, ["pattern", "eta_timepoint", "peak_timepoint",
+        "spearman_ifn_score_rho", "candidate_ifn_pattern"]
+].sort_values("eta_timepoint", ascending=False).head(5)
 ```
 
-<!--
-NOTE that depending on the size of the data for Bio-OCS, the data may not be in the case study project folder directly
-and may need to be imported from an external source
--->
+:::
+
+The R and Python selected-model artifacts match exactly for the final `K = 10`, `seed = 2`, `nIterations = 2000` run. We still show both pathways because learners may work in either language.
+
+The raw GEO download and full study-subset preparation workflow are covered in the **Data Wrangling and Preprocessing** section. That placement is intentional: the full workflow is provenance and preprocessing code, not ordinary data import code for the standard case-study path.
 
 ***

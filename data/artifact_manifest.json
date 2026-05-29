@@ -1,0 +1,1239 @@
+{
+  "generated_at_utc": "2026-05-27T20:50:48.964849+00:00",
+  "output_root": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/case_study_artifacts/data",
+  "github_size_threshold_bytes": 104857600,
+  "primary_model": {
+    "k": 10,
+    "seed": 2,
+    "n_iterations": 2000,
+    "stem": "cogaps_K10_seed2_iter2000",
+    "role": "primary selected model"
+  },
+  "comparator_model": {
+    "k": 5,
+    "seed": 2,
+    "n_iterations": 8000,
+    "stem": "cogaps_K5_seed2_iter8000",
+    "role": "precomputed comparison artifact; not rerun by learners"
+  },
+  "external_placeholders": [
+    {
+      "artifact": "GSE154386_RAW.tar",
+      "status": "external_host_tbd",
+      "expected_local_source": "GSE154386/GSE154386_RAW.tar or GEO download",
+      "notes": "Full GEO raw download. Not committed to GitHub."
+    },
+    {
+      "artifact": "gse154386_preprocessed_hvg.h5ad",
+      "status": "external_host_tbd",
+      "expected_local_source": "/Users/othomas/Desktop/CS5_sweep_results/cache/gse154386_preprocessed_hvg.h5ad",
+      "notes": "Large optional preprocessing cache. Not required for GitHub render."
+    },
+    {
+      "artifact": "gse154386_experimental_discovery_cells_x_genes.h5ad",
+      "status": "external_host_tbd",
+      "expected_local_source": "/Users/othomas/Desktop/CS5_sweep_results/cache/gse154386_experimental_discovery_cells_x_genes.h5ad",
+      "notes": "Primary R selected-model input for optional local rerun."
+    },
+    {
+      "artifact": "gse154386_experimental_discovery_genes_x_cells.h5ad",
+      "status": "external_host_tbd",
+      "expected_local_source": "/Users/othomas/Desktop/CS5_sweep_results/cache/gse154386_experimental_discovery_genes_x_cells.h5ad",
+      "notes": "Primary Python selected-model input for optional local rerun."
+    },
+    {
+      "artifact": "gse154386_natural_projection_target_cells_x_genes.h5ad",
+      "status": "external_host_tbd",
+      "expected_local_source": "/Users/othomas/Desktop/CS5_sweep_results/cache/gse154386_natural_projection_target_cells_x_genes.h5ad",
+      "notes": "Optional natural projection target; placeholder until projection is regenerated and validated."
+    }
+  ],
+  "copied": [
+    {
+      "source_group": "primary_r",
+      "role": "Primary K=10 R selected-model outputs for the main learner path.",
+      "source": "GSE154386/cogaps_r_revised_model_K10_seed2_iter2000/RQ1_time_varying_patterns.csv",
+      "dest": "processed/selected_model_k10/r/RQ1_time_varying_patterns.csv",
+      "size_bytes": 2158,
+      "sha256": "138ed544ff4356fe0cc01ab6e7a61bddf729b7bc818ea07bdcd6c0dad8f75d3a"
+    },
+    {
+      "source_group": "primary_r",
+      "role": "Primary K=10 R selected-model outputs for the main learner path.",
+      "source": "GSE154386/cogaps_r_revised_model_K10_seed2_iter2000/RQ2_identity_vs_activity_patterns.csv",
+      "dest": "processed/selected_model_k10/r/RQ2_identity_vs_activity_patterns.csv",
+      "size_bytes": 798,
+      "sha256": "5f74e5accc4aefa325fd4ca201ec76e5b497e5900244a099b855c0e896fce724"
+    },
+    {
+      "source_group": "primary_r",
+      "role": "Primary K=10 R selected-model outputs for the main learner path.",
+      "source": "GSE154386/cogaps_r_revised_model_K10_seed2_iter2000/RQ3_interferon_candidate_patterns.csv",
+      "dest": "processed/selected_model_k10/r/RQ3_interferon_candidate_patterns.csv",
+      "size_bytes": 376,
+      "sha256": "9db2196afe8bf5bf3e2fafefe9c4e42506b545d306f5990905222c147bd6141d"
+    },
+    {
+      "source_group": "primary_r",
+      "role": "Primary K=10 R selected-model outputs for the main learner path.",
+      "source": "GSE154386/cogaps_r_revised_model_K10_seed2_iter2000/cogaps_K10_seed2_iter2000.cell_scores.csv",
+      "dest": "processed/selected_model_k10/r/cogaps_K10_seed2_iter2000.cell_scores.csv",
+      "size_bytes": 995157,
+      "sha256": "f903841fbb7996895ff6d9069bb81e117778f1456aea7a0c0f217d56431cc01e"
+    },
+    {
+      "source_group": "primary_r",
+      "role": "Primary K=10 R selected-model outputs for the main learner path.",
+      "source": "GSE154386/cogaps_r_revised_model_K10_seed2_iter2000/cogaps_K10_seed2_iter2000.diagnostics.json",
+      "dest": "processed/selected_model_k10/r/cogaps_K10_seed2_iter2000.diagnostics.json",
+      "size_bytes": 426,
+      "sha256": "7a628892fc909827a71ed65ed0667fc9e8b6274695fa039d58d9ea3a511b56e5"
+    },
+    {
+      "source_group": "primary_r",
+      "role": "Primary K=10 R selected-model outputs for the main learner path.",
+      "source": "GSE154386/cogaps_r_revised_model_K10_seed2_iter2000/cogaps_K10_seed2_iter2000.discovery_cells_with_patterns.csv",
+      "dest": "processed/selected_model_k10/r/cogaps_K10_seed2_iter2000.discovery_cells_with_patterns.csv",
+      "size_bytes": 3223254,
+      "sha256": "750300d14bc3e8d0d08ce457e11c86965a5d7cfb3d6eb399470eef8cdfc7bed8"
+    },
+    {
+      "source_group": "primary_r",
+      "role": "Primary K=10 R selected-model outputs for the main learner path.",
+      "source": "GSE154386/cogaps_r_revised_model_K10_seed2_iter2000/cogaps_K10_seed2_iter2000.gene_loadings.csv",
+      "dest": "processed/selected_model_k10/r/cogaps_K10_seed2_iter2000.gene_loadings.csv",
+      "size_bytes": 977921,
+      "sha256": "1d9c2460e75c708935b8d616e3a5e1dc3b16a90aa2ea22391d178e813a38a4c4"
+    },
+    {
+      "source_group": "primary_r",
+      "role": "Primary K=10 R selected-model outputs for the main learner path.",
+      "source": "GSE154386/cogaps_r_revised_model_K10_seed2_iter2000/cogaps_K10_seed2_iter2000.log",
+      "dest": "processed/selected_model_k10/r/cogaps_K10_seed2_iter2000.log",
+      "size_bytes": 942,
+      "sha256": "9c65e220870e3112540a5bc758ca8128f2763f768a19117f874666ac64c4b277"
+    },
+    {
+      "source_group": "primary_r",
+      "role": "Primary K=10 R selected-model outputs for the main learner path.",
+      "source": "GSE154386/cogaps_r_revised_model_K10_seed2_iter2000/cogaps_K10_seed2_iter2000.metrics.json",
+      "dest": "processed/selected_model_k10/r/cogaps_K10_seed2_iter2000.metrics.json",
+      "size_bytes": 10995,
+      "sha256": "ed5589f350b512b665c0b4c979da23babdc2451e9e76ba5e3e7ea0ecde990120"
+    },
+    {
+      "source_group": "primary_r",
+      "role": "Primary K=10 R selected-model outputs for the main learner path.",
+      "source": "GSE154386/cogaps_r_revised_model_K10_seed2_iter2000/cogaps_K10_seed2_iter2000.pattern_summary.csv",
+      "dest": "processed/selected_model_k10/r/cogaps_K10_seed2_iter2000.pattern_summary.csv",
+      "size_bytes": 2158,
+      "sha256": "138ed544ff4356fe0cc01ab6e7a61bddf729b7bc818ea07bdcd6c0dad8f75d3a"
+    },
+    {
+      "source_group": "primary_r",
+      "role": "Primary K=10 R selected-model outputs for the main learner path.",
+      "source": "GSE154386/cogaps_r_revised_model_K10_seed2_iter2000/cogaps_K10_seed2_iter2000.top_genes.csv",
+      "dest": "processed/selected_model_k10/r/cogaps_K10_seed2_iter2000.top_genes.csv",
+      "size_bytes": 19543,
+      "sha256": "365295df23f7dcdd44b0c968e636a111fd483ce43433a2717e0d0fcde8a77a0e"
+    },
+    {
+      "source_group": "primary_r",
+      "role": "Primary K=10 R selected-model outputs for the main learner path.",
+      "source": "GSE154386/cogaps_r_revised_model_K10_seed2_iter2000/cogaps_K10_seed2_iter2000.trace.csv",
+      "dest": "processed/selected_model_k10/r/cogaps_K10_seed2_iter2000.trace.csv",
+      "size_bytes": 1031,
+      "sha256": "9193a629e401709f2a2cd438b314a1aec81073836f5cb795bf1b5ee118edbe01"
+    },
+    {
+      "source_group": "primary_r",
+      "role": "Primary K=10 R selected-model outputs for the main learner path.",
+      "source": "GSE154386/cogaps_r_revised_model_K10_seed2_iter2000/docker_run_timer.txt",
+      "dest": "processed/selected_model_k10/r/docker_run_timer.txt",
+      "size_bytes": 100,
+      "sha256": "c6ede8354ad06ea76a720c5a0753cfb8783e156c6bcae8fb066bb96a7d637c8e"
+    },
+    {
+      "source_group": "primary_r",
+      "role": "Primary K=10 R selected-model outputs for the main learner path.",
+      "source": "GSE154386/cogaps_r_revised_model_K10_seed2_iter2000/experimental_pattern_means_by_time.csv",
+      "dest": "processed/selected_model_k10/r/experimental_pattern_means_by_time.csv",
+      "size_bytes": 1686,
+      "sha256": "0075c524984af770b96c8beebc7da807ef0e6a6e67edb01b3792669f72cf451c"
+    },
+    {
+      "source_group": "primary_r",
+      "role": "Primary K=10 R selected-model outputs for the main learner path.",
+      "source": "GSE154386/cogaps_r_revised_model_K10_seed2_iter2000/experimental_pattern_means_by_time_and_celltype.csv",
+      "dest": "processed/selected_model_k10/r/experimental_pattern_means_by_time_and_celltype.csv",
+      "size_bytes": 10126,
+      "sha256": "c3bc035d0f812905079817158b724f9c835f4ee9adedc71675e9f57aa09562df"
+    },
+    {
+      "source_group": "primary_python",
+      "role": "Primary K=10 Python alternate-tab outputs.",
+      "source": "GSE154386/cogaps_python_revised_model_K10_seed2_iter2000/RQ1_time_varying_patterns.csv",
+      "dest": "processed/selected_model_k10/python/RQ1_time_varying_patterns.csv",
+      "size_bytes": 2195,
+      "sha256": "837f68bc7ef5a0940e5addba4a375864daa09095232e7eafa3369b8e2ee59a05"
+    },
+    {
+      "source_group": "primary_python",
+      "role": "Primary K=10 Python alternate-tab outputs.",
+      "source": "GSE154386/cogaps_python_revised_model_K10_seed2_iter2000/RQ2_identity_vs_activity_patterns.csv",
+      "dest": "processed/selected_model_k10/python/RQ2_identity_vs_activity_patterns.csv",
+      "size_bytes": 757,
+      "sha256": "1028e40fdc4d21784d2bd1bdca144241a398b60651738ab2ab79f440e874433d"
+    },
+    {
+      "source_group": "primary_python",
+      "role": "Primary K=10 Python alternate-tab outputs.",
+      "source": "GSE154386/cogaps_python_revised_model_K10_seed2_iter2000/RQ3_interferon_candidate_patterns.csv",
+      "dest": "processed/selected_model_k10/python/RQ3_interferon_candidate_patterns.csv",
+      "size_bytes": 358,
+      "sha256": "4ac1d53fcb4ad900bb3d333fa15738eae9e557bd5df9d0ee787fbe6557c1a9d3"
+    },
+    {
+      "source_group": "primary_python",
+      "role": "Primary K=10 Python alternate-tab outputs.",
+      "source": "GSE154386/cogaps_python_revised_model_K10_seed2_iter2000/cogaps_K10_seed2_iter2000.cell_scores.csv",
+      "dest": "processed/selected_model_k10/python/cogaps_K10_seed2_iter2000.cell_scores.csv",
+      "size_bytes": 1057686,
+      "sha256": "9973a3401288d17f93259060ed04459c9c9179b7ef0f72fe1cbf6f84dd7e7528"
+    },
+    {
+      "source_group": "primary_python",
+      "role": "Primary K=10 Python alternate-tab outputs.",
+      "source": "GSE154386/cogaps_python_revised_model_K10_seed2_iter2000/cogaps_K10_seed2_iter2000.diagnostics.json",
+      "dest": "processed/selected_model_k10/python/cogaps_K10_seed2_iter2000.diagnostics.json",
+      "size_bytes": 855,
+      "sha256": "375580a6499ab757d567ebedd1b100247d06ee959a28d26a35e317f622e6d99f"
+    },
+    {
+      "source_group": "primary_python",
+      "role": "Primary K=10 Python alternate-tab outputs.",
+      "source": "GSE154386/cogaps_python_revised_model_K10_seed2_iter2000/cogaps_K10_seed2_iter2000.discovery_cells_with_patterns.csv",
+      "dest": "processed/selected_model_k10/python/cogaps_K10_seed2_iter2000.discovery_cells_with_patterns.csv",
+      "size_bytes": 3278713,
+      "sha256": "b877fc61c540b62dc31ab9a79efdef7c3fea7edbeb09af178e751e58ff210b3f"
+    },
+    {
+      "source_group": "primary_python",
+      "role": "Primary K=10 Python alternate-tab outputs.",
+      "source": "GSE154386/cogaps_python_revised_model_K10_seed2_iter2000/cogaps_K10_seed2_iter2000.gene_loadings.csv",
+      "dest": "processed/selected_model_k10/python/cogaps_K10_seed2_iter2000.gene_loadings.csv",
+      "size_bytes": 1043897,
+      "sha256": "2796e785da7121dc49c0605f6911524f2bb65cacbe9fa72b821cfa30d6ae896f"
+    },
+    {
+      "source_group": "primary_python",
+      "role": "Primary K=10 Python alternate-tab outputs.",
+      "source": "GSE154386/cogaps_python_revised_model_K10_seed2_iter2000/cogaps_K10_seed2_iter2000.log",
+      "dest": "processed/selected_model_k10/python/cogaps_K10_seed2_iter2000.log",
+      "size_bytes": 678,
+      "sha256": "474a63b9fa6c135dd7675ed1e4b059f637a8d47494575fd696d124ff3ad9b063"
+    },
+    {
+      "source_group": "primary_python",
+      "role": "Primary K=10 Python alternate-tab outputs.",
+      "source": "GSE154386/cogaps_python_revised_model_K10_seed2_iter2000/cogaps_K10_seed2_iter2000.metrics.json",
+      "dest": "processed/selected_model_k10/python/cogaps_K10_seed2_iter2000.metrics.json",
+      "size_bytes": 15225,
+      "sha256": "a6e466791549ba666c4f6ae3199a77099795dd153d10435694614eff9d0c983e"
+    },
+    {
+      "source_group": "primary_python",
+      "role": "Primary K=10 Python alternate-tab outputs.",
+      "source": "GSE154386/cogaps_python_revised_model_K10_seed2_iter2000/cogaps_K10_seed2_iter2000.pattern_summary.csv",
+      "dest": "processed/selected_model_k10/python/cogaps_K10_seed2_iter2000.pattern_summary.csv",
+      "size_bytes": 2195,
+      "sha256": "837f68bc7ef5a0940e5addba4a375864daa09095232e7eafa3369b8e2ee59a05"
+    },
+    {
+      "source_group": "primary_python",
+      "role": "Primary K=10 Python alternate-tab outputs.",
+      "source": "GSE154386/cogaps_python_revised_model_K10_seed2_iter2000/cogaps_K10_seed2_iter2000.top_genes.csv",
+      "dest": "processed/selected_model_k10/python/cogaps_K10_seed2_iter2000.top_genes.csv",
+      "size_bytes": 18314,
+      "sha256": "4079854bd12200010edb259179d161a12da0ec118125cfc52af2099d7085bd30"
+    },
+    {
+      "source_group": "primary_python",
+      "role": "Primary K=10 Python alternate-tab outputs.",
+      "source": "GSE154386/cogaps_python_revised_model_K10_seed2_iter2000/cogaps_K10_seed2_iter2000.trace.csv",
+      "dest": "processed/selected_model_k10/python/cogaps_K10_seed2_iter2000.trace.csv",
+      "size_bytes": 1103,
+      "sha256": "f3de37b1a7022e797c37f2895753111e05a4a6b8f42bbd137e2be408aab65e36"
+    },
+    {
+      "source_group": "primary_python",
+      "role": "Primary K=10 Python alternate-tab outputs.",
+      "source": "GSE154386/cogaps_python_revised_model_K10_seed2_iter2000/docker_run_timer.txt",
+      "dest": "processed/selected_model_k10/python/docker_run_timer.txt",
+      "size_bytes": 100,
+      "sha256": "e0cd2566690bfdec9dde4bb0180b61b04ea86c40b78fa9383b725c1a121e4236"
+    },
+    {
+      "source_group": "primary_python",
+      "role": "Primary K=10 Python alternate-tab outputs.",
+      "source": "GSE154386/cogaps_python_revised_model_K10_seed2_iter2000/experimental_pattern_means_by_time.csv",
+      "dest": "processed/selected_model_k10/python/experimental_pattern_means_by_time.csv",
+      "size_bytes": 1788,
+      "sha256": "d76f09ff7cead013d2e5f3fefa393d0ac4d863f5c496de0e71c753d86598b367"
+    },
+    {
+      "source_group": "primary_python",
+      "role": "Primary K=10 Python alternate-tab outputs.",
+      "source": "GSE154386/cogaps_python_revised_model_K10_seed2_iter2000/experimental_pattern_means_by_time_and_celltype.csv",
+      "dest": "processed/selected_model_k10/python/experimental_pattern_means_by_time_and_celltype.csv",
+      "size_bytes": 10709,
+      "sha256": "04936a9b63a31e7133f55ef96e98318ddbbf9eec2b7a736c477964420add4a99"
+    },
+    {
+      "source_group": "comparator_r",
+      "role": "Precomputed K=5 R comparator artifacts; learners do not rerun this model.",
+      "source": "GSE154386/cogaps_r_selected_model_K5_iter8000_seed2/RQ1_time_varying_patterns.csv",
+      "dest": "processed/comparator_model_k5/r/RQ1_time_varying_patterns.csv",
+      "size_bytes": 1239,
+      "sha256": "935b31c95db193ab8529833574b1c8ca5236d967b38918d54d33e543ea4fbfe3"
+    },
+    {
+      "source_group": "comparator_r",
+      "role": "Precomputed K=5 R comparator artifacts; learners do not rerun this model.",
+      "source": "GSE154386/cogaps_r_selected_model_K5_iter8000_seed2/RQ2_identity_vs_activity_patterns.csv",
+      "dest": "processed/comparator_model_k5/r/RQ2_identity_vs_activity_patterns.csv",
+      "size_bytes": 437,
+      "sha256": "69c548496c4c0b8cb98b66338b0549f2afd520ad1c455523d1c47590a4521c1a"
+    },
+    {
+      "source_group": "comparator_r",
+      "role": "Precomputed K=5 R comparator artifacts; learners do not rerun this model.",
+      "source": "GSE154386/cogaps_r_selected_model_K5_iter8000_seed2/RQ3_interferon_candidate_patterns.csv",
+      "dest": "processed/comparator_model_k5/r/RQ3_interferon_candidate_patterns.csv",
+      "size_bytes": 258,
+      "sha256": "2c2ff395e1ba7597440afe073af383ab1d687ff1232ca53ecb9693aa4f4e6a23"
+    },
+    {
+      "source_group": "comparator_r",
+      "role": "Precomputed K=5 R comparator artifacts; learners do not rerun this model.",
+      "source": "GSE154386/cogaps_r_selected_model_K5_iter8000_seed2/cogaps_K5_seed2_iter8000.cell_scores.csv",
+      "dest": "processed/comparator_model_k5/r/cogaps_K5_seed2_iter8000.cell_scores.csv",
+      "size_bytes": 583641,
+      "sha256": "c36fd7b84089697872492ee42b8181ec77ee9365f89893197811b3c0d015e4d4"
+    },
+    {
+      "source_group": "comparator_r",
+      "role": "Precomputed K=5 R comparator artifacts; learners do not rerun this model.",
+      "source": "GSE154386/cogaps_r_selected_model_K5_iter8000_seed2/cogaps_K5_seed2_iter8000.diagnostics.json",
+      "dest": "processed/comparator_model_k5/r/cogaps_K5_seed2_iter8000.diagnostics.json",
+      "size_bytes": 427,
+      "sha256": "6c6553617d31b05c522871891b338e1b9578f708afe6b5d13b340c2f05601d29"
+    },
+    {
+      "source_group": "comparator_r",
+      "role": "Precomputed K=5 R comparator artifacts; learners do not rerun this model.",
+      "source": "GSE154386/cogaps_r_selected_model_K5_iter8000_seed2/cogaps_K5_seed2_iter8000.discovery_cells_with_patterns.csv",
+      "dest": "processed/comparator_model_k5/r/cogaps_K5_seed2_iter8000.discovery_cells_with_patterns.csv",
+      "size_bytes": 2811738,
+      "sha256": "369f9b65d8916364659a1878215aa954425139115bf11098cd3fac580f4cce96"
+    },
+    {
+      "source_group": "comparator_r",
+      "role": "Precomputed K=5 R comparator artifacts; learners do not rerun this model.",
+      "source": "GSE154386/cogaps_r_selected_model_K5_iter8000_seed2/cogaps_K5_seed2_iter8000.gene_loadings.csv",
+      "dest": "processed/comparator_model_k5/r/cogaps_K5_seed2_iter8000.gene_loadings.csv",
+      "size_bytes": 520594,
+      "sha256": "1ad7bcc7ab962efc424347b71a979b7fa10897572907f4db947ff91767c71672"
+    },
+    {
+      "source_group": "comparator_r",
+      "role": "Precomputed K=5 R comparator artifacts; learners do not rerun this model.",
+      "source": "GSE154386/cogaps_r_selected_model_K5_iter8000_seed2/cogaps_K5_seed2_iter8000.log",
+      "dest": "processed/comparator_model_k5/r/cogaps_K5_seed2_iter8000.log",
+      "size_bytes": 938,
+      "sha256": "cd1d4b8f7ed425d578c7bdf42207b94eeae213cf32aaf817dfeb7b94e53e45d9"
+    },
+    {
+      "source_group": "comparator_r",
+      "role": "Precomputed K=5 R comparator artifacts; learners do not rerun this model.",
+      "source": "GSE154386/cogaps_r_selected_model_K5_iter8000_seed2/cogaps_K5_seed2_iter8000.metrics.json",
+      "dest": "processed/comparator_model_k5/r/cogaps_K5_seed2_iter8000.metrics.json",
+      "size_bytes": 7759,
+      "sha256": "22323cf5f94fb535a188ecdbdc9365c63099cdf95a6863b79d17dc725c44bca4"
+    },
+    {
+      "source_group": "comparator_r",
+      "role": "Precomputed K=5 R comparator artifacts; learners do not rerun this model.",
+      "source": "GSE154386/cogaps_r_selected_model_K5_iter8000_seed2/cogaps_K5_seed2_iter8000.pattern_summary.csv",
+      "dest": "processed/comparator_model_k5/r/cogaps_K5_seed2_iter8000.pattern_summary.csv",
+      "size_bytes": 1239,
+      "sha256": "935b31c95db193ab8529833574b1c8ca5236d967b38918d54d33e543ea4fbfe3"
+    },
+    {
+      "source_group": "comparator_r",
+      "role": "Precomputed K=5 R comparator artifacts; learners do not rerun this model.",
+      "source": "GSE154386/cogaps_r_selected_model_K5_iter8000_seed2/cogaps_K5_seed2_iter8000.top_genes.csv",
+      "dest": "processed/comparator_model_k5/r/cogaps_K5_seed2_iter8000.top_genes.csv",
+      "size_bytes": 9747,
+      "sha256": "0576330c07c960b892b2ab8978a0a581c014f50a90eb06311bb81007554df87b"
+    },
+    {
+      "source_group": "comparator_r",
+      "role": "Precomputed K=5 R comparator artifacts; learners do not rerun this model.",
+      "source": "GSE154386/cogaps_r_selected_model_K5_iter8000_seed2/cogaps_K5_seed2_iter8000.trace.csv",
+      "dest": "processed/comparator_model_k5/r/cogaps_K5_seed2_iter8000.trace.csv",
+      "size_bytes": 4088,
+      "sha256": "cf1a85d52ec57bfed8a7ea2805d1d61a0cfae5cf65d90b9d5c0468403eb916b3"
+    },
+    {
+      "source_group": "comparator_r",
+      "role": "Precomputed K=5 R comparator artifacts; learners do not rerun this model.",
+      "source": "GSE154386/cogaps_r_selected_model_K5_iter8000_seed2/docker_run_timer.txt",
+      "dest": "processed/comparator_model_k5/r/docker_run_timer.txt",
+      "size_bytes": 100,
+      "sha256": "f775774ea66857cc9181b1a5a2a253235f1958269a552263cf46935c28445d53"
+    },
+    {
+      "source_group": "comparator_r",
+      "role": "Precomputed K=5 R comparator artifacts; learners do not rerun this model.",
+      "source": "GSE154386/cogaps_r_selected_model_K5_iter8000_seed2/experimental_pattern_means_by_time.csv",
+      "dest": "processed/comparator_model_k5/r/experimental_pattern_means_by_time.csv",
+      "size_bytes": 885,
+      "sha256": "27d1121b08f106423e5ef792fa0e99a4557529da21e362c006ac43125f1e1d4e"
+    },
+    {
+      "source_group": "comparator_r",
+      "role": "Precomputed K=5 R comparator artifacts; learners do not rerun this model.",
+      "source": "GSE154386/cogaps_r_selected_model_K5_iter8000_seed2/experimental_pattern_means_by_time_and_celltype.csv",
+      "dest": "processed/comparator_model_k5/r/experimental_pattern_means_by_time_and_celltype.csv",
+      "size_bytes": 5502,
+      "sha256": "e99254573f5c83aee9cf090cd476654c61c1b01fd988d8acf11d22bb223ddbea"
+    },
+    {
+      "source_group": "comparator_python",
+      "role": "Precomputed K=5 Python comparator artifacts; learners do not rerun this model.",
+      "source": "GSE154386/cogaps_python_selected_model_K5_iter8000_seed2/RQ1_time_varying_patterns.csv",
+      "dest": "processed/comparator_model_k5/python/RQ1_time_varying_patterns.csv",
+      "size_bytes": 1236,
+      "sha256": "c88cb23a1ac89dd2bc29b3c2ed9921951941faaff630921c49d51e110330e127"
+    },
+    {
+      "source_group": "comparator_python",
+      "role": "Precomputed K=5 Python comparator artifacts; learners do not rerun this model.",
+      "source": "GSE154386/cogaps_python_selected_model_K5_iter8000_seed2/RQ2_identity_vs_activity_patterns.csv",
+      "dest": "processed/comparator_model_k5/python/RQ2_identity_vs_activity_patterns.csv",
+      "size_bytes": 410,
+      "sha256": "d6ec7713c3a12f3f3a73bda9bbdc6f5ac1c049219e069bb44972913381779143"
+    },
+    {
+      "source_group": "comparator_python",
+      "role": "Precomputed K=5 Python comparator artifacts; learners do not rerun this model.",
+      "source": "GSE154386/cogaps_python_selected_model_K5_iter8000_seed2/RQ3_interferon_candidate_patterns.csv",
+      "dest": "processed/comparator_model_k5/python/RQ3_interferon_candidate_patterns.csv",
+      "size_bytes": 232,
+      "sha256": "4b77dd732a2d10be32a0f621782ab3635eb66900ef4805125182a56b5f90054b"
+    },
+    {
+      "source_group": "comparator_python",
+      "role": "Precomputed K=5 Python comparator artifacts; learners do not rerun this model.",
+      "source": "GSE154386/cogaps_python_selected_model_K5_iter8000_seed2/cogaps_K5_seed2_iter8000.cell_scores.csv",
+      "dest": "processed/comparator_model_k5/python/cogaps_K5_seed2_iter8000.cell_scores.csv",
+      "size_bytes": 608680,
+      "sha256": "7ef52c45f39fbd71cf8e7aa79246c5bc5cdd4cd8de0d8cb266829d299cb3b6e5"
+    },
+    {
+      "source_group": "comparator_python",
+      "role": "Precomputed K=5 Python comparator artifacts; learners do not rerun this model.",
+      "source": "GSE154386/cogaps_python_selected_model_K5_iter8000_seed2/cogaps_K5_seed2_iter8000.diagnostics.json",
+      "dest": "processed/comparator_model_k5/python/cogaps_K5_seed2_iter8000.diagnostics.json",
+      "size_bytes": 852,
+      "sha256": "711c11a0193418f453c223b394d4eff59a17aadf6e1d8f16eff19dc03870f47c"
+    },
+    {
+      "source_group": "comparator_python",
+      "role": "Precomputed K=5 Python comparator artifacts; learners do not rerun this model.",
+      "source": "GSE154386/cogaps_python_selected_model_K5_iter8000_seed2/cogaps_K5_seed2_iter8000.discovery_cells_with_patterns.csv",
+      "dest": "processed/comparator_model_k5/python/cogaps_K5_seed2_iter8000.discovery_cells_with_patterns.csv",
+      "size_bytes": 2829707,
+      "sha256": "3e8ac30c610f94c70e5f61fd1eb83d8ad5d2a7b00945c0be667803559d6eaaf0"
+    },
+    {
+      "source_group": "comparator_python",
+      "role": "Precomputed K=5 Python comparator artifacts; learners do not rerun this model.",
+      "source": "GSE154386/cogaps_python_selected_model_K5_iter8000_seed2/cogaps_K5_seed2_iter8000.gene_loadings.csv",
+      "dest": "processed/comparator_model_k5/python/cogaps_K5_seed2_iter8000.gene_loadings.csv",
+      "size_bytes": 547817,
+      "sha256": "519b533bfa691c787ed676d6b1114cf59b65a41954c0ec2083d913208daf464c"
+    },
+    {
+      "source_group": "comparator_python",
+      "role": "Precomputed K=5 Python comparator artifacts; learners do not rerun this model.",
+      "source": "GSE154386/cogaps_python_selected_model_K5_iter8000_seed2/cogaps_K5_seed2_iter8000.log",
+      "dest": "processed/comparator_model_k5/python/cogaps_K5_seed2_iter8000.log",
+      "size_bytes": 675,
+      "sha256": "fb0276050042ea90166e58662aa81f14e20c37e470b682a4868f8314d090b730"
+    },
+    {
+      "source_group": "comparator_python",
+      "role": "Precomputed K=5 Python comparator artifacts; learners do not rerun this model.",
+      "source": "GSE154386/cogaps_python_selected_model_K5_iter8000_seed2/cogaps_K5_seed2_iter8000.metrics.json",
+      "dest": "processed/comparator_model_k5/python/cogaps_K5_seed2_iter8000.metrics.json",
+      "size_bytes": 10337,
+      "sha256": "c58a01b96f0af0cbbae6212c25e9684af6af37fa405d025143420b5bfa98037b"
+    },
+    {
+      "source_group": "comparator_python",
+      "role": "Precomputed K=5 Python comparator artifacts; learners do not rerun this model.",
+      "source": "GSE154386/cogaps_python_selected_model_K5_iter8000_seed2/cogaps_K5_seed2_iter8000.pattern_summary.csv",
+      "dest": "processed/comparator_model_k5/python/cogaps_K5_seed2_iter8000.pattern_summary.csv",
+      "size_bytes": 1236,
+      "sha256": "c88cb23a1ac89dd2bc29b3c2ed9921951941faaff630921c49d51e110330e127"
+    },
+    {
+      "source_group": "comparator_python",
+      "role": "Precomputed K=5 Python comparator artifacts; learners do not rerun this model.",
+      "source": "GSE154386/cogaps_python_selected_model_K5_iter8000_seed2/cogaps_K5_seed2_iter8000.top_genes.csv",
+      "dest": "processed/comparator_model_k5/python/cogaps_K5_seed2_iter8000.top_genes.csv",
+      "size_bytes": 9127,
+      "sha256": "2c6d7f66808a8fbd4d367c2b6914772af0188cda06fed01cb66d411d529e5f3a"
+    },
+    {
+      "source_group": "comparator_python",
+      "role": "Precomputed K=5 Python comparator artifacts; learners do not rerun this model.",
+      "source": "GSE154386/cogaps_python_selected_model_K5_iter8000_seed2/cogaps_K5_seed2_iter8000.trace.csv",
+      "dest": "processed/comparator_model_k5/python/cogaps_K5_seed2_iter8000.trace.csv",
+      "size_bytes": 4400,
+      "sha256": "4d57ca5341c63490d6196996bbdec0f984c3f9e9c3c2de7c58d189b896ed09dd"
+    },
+    {
+      "source_group": "comparator_python",
+      "role": "Precomputed K=5 Python comparator artifacts; learners do not rerun this model.",
+      "source": "GSE154386/cogaps_python_selected_model_K5_iter8000_seed2/docker_run_timer.txt",
+      "dest": "processed/comparator_model_k5/python/docker_run_timer.txt",
+      "size_bytes": 100,
+      "sha256": "32652f757b5cef9ab6fbf19c8f1e01b9e98448dbdcf55a4d6c7a3feaf29fbb6c"
+    },
+    {
+      "source_group": "comparator_python",
+      "role": "Precomputed K=5 Python comparator artifacts; learners do not rerun this model.",
+      "source": "GSE154386/cogaps_python_selected_model_K5_iter8000_seed2/experimental_pattern_means_by_time.csv",
+      "dest": "processed/comparator_model_k5/python/experimental_pattern_means_by_time.csv",
+      "size_bytes": 927,
+      "sha256": "aac3ab6492848b394b2eafc10d60b91dde4801494d5b33ced3f139b4982a0a3b"
+    },
+    {
+      "source_group": "comparator_python",
+      "role": "Precomputed K=5 Python comparator artifacts; learners do not rerun this model.",
+      "source": "GSE154386/cogaps_python_selected_model_K5_iter8000_seed2/experimental_pattern_means_by_time_and_celltype.csv",
+      "dest": "processed/comparator_model_k5/python/experimental_pattern_means_by_time_and_celltype.csv",
+      "size_bytes": 5738,
+      "sha256": "2ad006d45806cf2611950ae6f1ca19437cd57249e9bdf5f1368f7efda901959e"
+    },
+    {
+      "source_group": "k_selection",
+      "role": "Revised K-selection report, tables, and figures.",
+      "source": "GSE154386/revised_k_selection_K10/figures/plateau_biology_signals.png",
+      "dest": "processed/k_selection/figures/plateau_biology_signals.png",
+      "size_bytes": 51491,
+      "sha256": "7513fe2774bf30a1de3cd095a248abeeb9bf96a35c7ae6003e90d1e85166615e"
+    },
+    {
+      "source_group": "k_selection",
+      "role": "Revised K-selection report, tables, and figures.",
+      "source": "GSE154386/revised_k_selection_K10/figures/revised_k_goal_aligned_score.png",
+      "dest": "processed/k_selection/figures/revised_k_goal_aligned_score.png",
+      "size_bytes": 35286,
+      "sha256": "77c0dee52fa44556cdde81924eef6d05ecd7efed5c36037c3ef24bf1a648fff2"
+    },
+    {
+      "source_group": "k_selection",
+      "role": "Revised K-selection report, tables, and figures.",
+      "source": "GSE154386/revised_k_selection_K10/figures/stability_vs_temporal_effect.png",
+      "dest": "processed/k_selection/figures/stability_vs_temporal_effect.png",
+      "size_bytes": 64430,
+      "sha256": "225643971b218c8eafebc9a60903d14c7706f780fdfafdcf6ed90ce9b21901e6"
+    },
+    {
+      "source_group": "k_selection",
+      "role": "Revised K-selection report, tables, and figures.",
+      "source": "GSE154386/revised_k_selection_K10/representative_K10_seed2_iter2000_patterns.csv",
+      "dest": "processed/k_selection/representative_K10_seed2_iter2000_patterns.csv",
+      "size_bytes": 1080,
+      "sha256": "b3390a2efe5b7c99e2de319d324804ed1aa7fc61f32a1c89fd87e4fafe6df5e5"
+    },
+    {
+      "source_group": "k_selection",
+      "role": "Revised K-selection report, tables, and figures.",
+      "source": "GSE154386/revised_k_selection_K10/revised_k_selection_manifest.json",
+      "dest": "processed/k_selection/revised_k_selection_manifest.json",
+      "size_bytes": 2553,
+      "sha256": "674e973bbfc902869be8ce8a93abbf5ea2a97f2af26c81473de042bfb5181be6"
+    },
+    {
+      "source_group": "k_selection",
+      "role": "Revised K-selection report, tables, and figures.",
+      "source": "GSE154386/revised_k_selection_K10/revised_k_selection_report.md",
+      "dest": "processed/k_selection/revised_k_selection_report.md",
+      "size_bytes": 7203,
+      "sha256": "607b5fe274940a8804a856195a2a56f43ce2a6271d730238c0cc316549879011"
+    },
+    {
+      "source_group": "k_selection",
+      "role": "Revised K-selection report, tables, and figures.",
+      "source": "GSE154386/revised_k_selection_K10/revised_k_selection_summary_by_k.csv",
+      "dest": "processed/k_selection/revised_k_selection_summary_by_k.csv",
+      "size_bytes": 6655,
+      "sha256": "aba1d48304fd7e86b67fa088d2192622d28ce1e232e394ab6ab5c0007e3a90b5"
+    },
+    {
+      "source_group": "k_selection",
+      "role": "Revised K-selection report, tables, and figures.",
+      "source": "GSE154386/revised_k_selection_K10/selected_pairwise_reproducibility.csv",
+      "dest": "processed/k_selection/selected_pairwise_reproducibility.csv",
+      "size_bytes": 1092,
+      "sha256": "3d105c46ceb9d7e6edf2ed1e0dcf316beeee452ab8eaa2a9d9e4d6105d0b326c"
+    },
+    {
+      "source_group": "k_selection",
+      "role": "Revised K-selection report, tables, and figures.",
+      "source": "GSE154386/revised_k_selection_K10/stability_plateau_candidates.csv",
+      "dest": "processed/k_selection/stability_plateau_candidates.csv",
+      "size_bytes": 3000,
+      "sha256": "97b66c26de404f72d2c8d7551197fd044b6086200928f8a5dbb1a5e010925c0d"
+    },
+    {
+      "source_group": "directionality",
+      "role": "K=10 D0-matched directionality tables and figures.",
+      "source": "GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000/README_directionality.md",
+      "dest": "processed/directionality/README_directionality.md",
+      "size_bytes": 2648,
+      "sha256": "20fcc6176f8219f7de61b062ac3d573cc680b79d320e69ff8e3b229e1a892a37"
+    },
+    {
+      "source_group": "directionality",
+      "role": "K=10 D0-matched directionality tables and figures.",
+      "source": "GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000/directionality_manifest.json",
+      "dest": "processed/directionality/directionality_manifest.json",
+      "size_bytes": 1786,
+      "sha256": "5f4ce4c038ccdde50ec37761f50ac0533631fcb39e7a0484debb0bc1e7ef0166"
+    },
+    {
+      "source_group": "directionality",
+      "role": "K=10 D0-matched directionality tables and figures.",
+      "source": "GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000/figures/Pattern10_pattern_level_log2fc_by_cell_type.svg",
+      "dest": "processed/directionality/figures/Pattern10_pattern_level_log2fc_by_cell_type.svg",
+      "size_bytes": 8237,
+      "sha256": "780a2dbfe96d6d52f495f26b08aa164f5e3a8d33e7e3478744ebf23316c12ccb"
+    },
+    {
+      "source_group": "directionality",
+      "role": "K=10 D0-matched directionality tables and figures.",
+      "source": "GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000/figures/Pattern10_top_gene_log2fc_all_cells.svg",
+      "dest": "processed/directionality/figures/Pattern10_top_gene_log2fc_all_cells.svg",
+      "size_bytes": 31890,
+      "sha256": "f413da6392fd2188d756a81812830e9fedfe2bc182fcc62cb10e9f5d1e5bed61"
+    },
+    {
+      "source_group": "directionality",
+      "role": "K=10 D0-matched directionality tables and figures.",
+      "source": "GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000/figures/Pattern1_pattern_level_log2fc_by_cell_type.svg",
+      "dest": "processed/directionality/figures/Pattern1_pattern_level_log2fc_by_cell_type.svg",
+      "size_bytes": 8242,
+      "sha256": "063d10a4f697c7edad4c0a9175788b6f282b4efe9445900dd187ac31ddb11ece"
+    },
+    {
+      "source_group": "directionality",
+      "role": "K=10 D0-matched directionality tables and figures.",
+      "source": "GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000/figures/Pattern1_top_gene_log2fc_all_cells.svg",
+      "dest": "processed/directionality/figures/Pattern1_top_gene_log2fc_all_cells.svg",
+      "size_bytes": 31855,
+      "sha256": "368205af0c8106abf8a58ca50bafc2ef35643be11d717dbd982f32addc0b60cf"
+    },
+    {
+      "source_group": "directionality",
+      "role": "K=10 D0-matched directionality tables and figures.",
+      "source": "GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000/figures/Pattern2_pattern_level_log2fc_by_cell_type.svg",
+      "dest": "processed/directionality/figures/Pattern2_pattern_level_log2fc_by_cell_type.svg",
+      "size_bytes": 8242,
+      "sha256": "18d8e7fb682869ae550a5ea8247d9da23969d078f43532fb9bd77817eac96a34"
+    },
+    {
+      "source_group": "directionality",
+      "role": "K=10 D0-matched directionality tables and figures.",
+      "source": "GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000/figures/Pattern2_top_gene_log2fc_all_cells.svg",
+      "dest": "processed/directionality/figures/Pattern2_top_gene_log2fc_all_cells.svg",
+      "size_bytes": 31863,
+      "sha256": "bd08a98b035b614104cde36a86d232bbf5b2f4b627c7fc78dd05e13360b0b1fb"
+    },
+    {
+      "source_group": "directionality",
+      "role": "K=10 D0-matched directionality tables and figures.",
+      "source": "GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000/figures/Pattern3_pattern_level_log2fc_by_cell_type.svg",
+      "dest": "processed/directionality/figures/Pattern3_pattern_level_log2fc_by_cell_type.svg",
+      "size_bytes": 8225,
+      "sha256": "afe48aff487d2e86044bae6d0fc0d1322ab07b3c51e3ca0d977c14f747022474"
+    },
+    {
+      "source_group": "directionality",
+      "role": "K=10 D0-matched directionality tables and figures.",
+      "source": "GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000/figures/Pattern3_top_gene_log2fc_all_cells.svg",
+      "dest": "processed/directionality/figures/Pattern3_top_gene_log2fc_all_cells.svg",
+      "size_bytes": 31799,
+      "sha256": "31757496ede0978ac9db5be440c090b27b4c0ba30266f0236e4933e7dd1e682b"
+    },
+    {
+      "source_group": "directionality",
+      "role": "K=10 D0-matched directionality tables and figures.",
+      "source": "GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000/figures/Pattern4_pattern_level_log2fc_by_cell_type.svg",
+      "dest": "processed/directionality/figures/Pattern4_pattern_level_log2fc_by_cell_type.svg",
+      "size_bytes": 8231,
+      "sha256": "4247eb1477102569d18134fb0bb6477886d82f8be2c10f6947592172497c0356"
+    },
+    {
+      "source_group": "directionality",
+      "role": "K=10 D0-matched directionality tables and figures.",
+      "source": "GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000/figures/Pattern4_top_gene_log2fc_all_cells.svg",
+      "dest": "processed/directionality/figures/Pattern4_top_gene_log2fc_all_cells.svg",
+      "size_bytes": 31819,
+      "sha256": "0e68d927bf7adc6814d1f276a5edf7e2215741ccc23cbd89d014c73c4ebc7d32"
+    },
+    {
+      "source_group": "directionality",
+      "role": "K=10 D0-matched directionality tables and figures.",
+      "source": "GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000/figures/Pattern5_pattern_level_log2fc_by_cell_type.svg",
+      "dest": "processed/directionality/figures/Pattern5_pattern_level_log2fc_by_cell_type.svg",
+      "size_bytes": 8235,
+      "sha256": "3fc4d9b37db9e26c176e10838711cb08f5ad162d33aee635e633eaf960c3bf7a"
+    },
+    {
+      "source_group": "directionality",
+      "role": "K=10 D0-matched directionality tables and figures.",
+      "source": "GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000/figures/Pattern5_top_gene_log2fc_all_cells.svg",
+      "dest": "processed/directionality/figures/Pattern5_top_gene_log2fc_all_cells.svg",
+      "size_bytes": 31827,
+      "sha256": "b1eca1643c0f08246ca0b6d4915df81d841bb7cec00baf2aa8a2e350e23e272b"
+    },
+    {
+      "source_group": "directionality",
+      "role": "K=10 D0-matched directionality tables and figures.",
+      "source": "GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000/figures/Pattern6_pattern_level_log2fc_by_cell_type.svg",
+      "dest": "processed/directionality/figures/Pattern6_pattern_level_log2fc_by_cell_type.svg",
+      "size_bytes": 8238,
+      "sha256": "22dc46b626456bc2d868fc11392d6c28b150312d22080ab6a12ba7a7f0b68281"
+    },
+    {
+      "source_group": "directionality",
+      "role": "K=10 D0-matched directionality tables and figures.",
+      "source": "GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000/figures/Pattern6_top_gene_log2fc_all_cells.svg",
+      "dest": "processed/directionality/figures/Pattern6_top_gene_log2fc_all_cells.svg",
+      "size_bytes": 31817,
+      "sha256": "fe43067db7dba0b634ca3eba44ae9bc588aa1f7f256ca8063569f1dae742d9b1"
+    },
+    {
+      "source_group": "directionality",
+      "role": "K=10 D0-matched directionality tables and figures.",
+      "source": "GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000/figures/Pattern7_pattern_level_log2fc_by_cell_type.svg",
+      "dest": "processed/directionality/figures/Pattern7_pattern_level_log2fc_by_cell_type.svg",
+      "size_bytes": 8242,
+      "sha256": "7a6759652c48fb1bcdd745633ffed66058472203edb85e0fdcf55b72157d8949"
+    },
+    {
+      "source_group": "directionality",
+      "role": "K=10 D0-matched directionality tables and figures.",
+      "source": "GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000/figures/Pattern7_top_gene_log2fc_all_cells.svg",
+      "dest": "processed/directionality/figures/Pattern7_top_gene_log2fc_all_cells.svg",
+      "size_bytes": 31846,
+      "sha256": "994a8ffeeca490d22ac38523938cc70a0539ef07689dfeeaa6874f706a0ad107"
+    },
+    {
+      "source_group": "directionality",
+      "role": "K=10 D0-matched directionality tables and figures.",
+      "source": "GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000/figures/Pattern8_pattern_level_log2fc_by_cell_type.svg",
+      "dest": "processed/directionality/figures/Pattern8_pattern_level_log2fc_by_cell_type.svg",
+      "size_bytes": 8236,
+      "sha256": "4575f97de2250fc47bc2d92cd869e3da655a7556e50f09e1af940b6bd95de727"
+    },
+    {
+      "source_group": "directionality",
+      "role": "K=10 D0-matched directionality tables and figures.",
+      "source": "GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000/figures/Pattern8_top_gene_log2fc_all_cells.svg",
+      "dest": "processed/directionality/figures/Pattern8_top_gene_log2fc_all_cells.svg",
+      "size_bytes": 31853,
+      "sha256": "517f791173406326fc50ca5e1cae95536a7c24baf892f92afcfb4ef623a89fb1"
+    },
+    {
+      "source_group": "directionality",
+      "role": "K=10 D0-matched directionality tables and figures.",
+      "source": "GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000/figures/Pattern9_pattern_level_log2fc_by_cell_type.svg",
+      "dest": "processed/directionality/figures/Pattern9_pattern_level_log2fc_by_cell_type.svg",
+      "size_bytes": 8230,
+      "sha256": "b42df3d3348e3fa3175df7e0a5b63eeef2d0271004365cf8eb37f58883ce4c31"
+    },
+    {
+      "source_group": "directionality",
+      "role": "K=10 D0-matched directionality tables and figures.",
+      "source": "GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000/figures/Pattern9_top_gene_log2fc_all_cells.svg",
+      "dest": "processed/directionality/figures/Pattern9_top_gene_log2fc_all_cells.svg",
+      "size_bytes": 31812,
+      "sha256": "fcc695adcc35ebb8d5b20043bd098fe9dddc5b6890014792b1dde5300528e3d7"
+    },
+    {
+      "source_group": "directionality",
+      "role": "K=10 D0-matched directionality tables and figures.",
+      "source": "GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000/figures/all_patterns_top_gene_log2fc_all_cells.svg",
+      "dest": "processed/directionality/figures/all_patterns_top_gene_log2fc_all_cells.svg",
+      "size_bytes": 313462,
+      "sha256": "69c5d1b903e3b257ec4fa062c671fa87cdbce5a80f6d0266a7af1d1321893b92"
+    },
+    {
+      "source_group": "directionality",
+      "role": "K=10 D0-matched directionality tables and figures.",
+      "source": "GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000/figures/pattern_level_median_log2fc_all_cells.svg",
+      "dest": "processed/directionality/figures/pattern_level_median_log2fc_all_cells.svg",
+      "size_bytes": 13171,
+      "sha256": "2ca2a05be8db48dd02970e050f777ccd3125e7d6545bbbdef99da4b7db216ec9"
+    },
+    {
+      "source_group": "directionality",
+      "role": "K=10 D0-matched directionality tables and figures.",
+      "source": "GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000/tables/gene_directionality_by_subject.csv",
+      "dest": "processed/directionality/tables/gene_directionality_by_subject.csv",
+      "size_bytes": 5757666,
+      "sha256": "2aab691bc909c03b218f5db1a1a897f1328766670efb6826beeab075f6f67f98"
+    },
+    {
+      "source_group": "directionality",
+      "role": "K=10 D0-matched directionality tables and figures.",
+      "source": "GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000/tables/gene_directionality_summary.csv",
+      "dest": "processed/directionality/tables/gene_directionality_summary.csv",
+      "size_bytes": 1732645,
+      "sha256": "a8461caa40b3cdba13bbc7013502d0849a9528b0ed0e9b9bc4740edc7b37a63e"
+    },
+    {
+      "source_group": "directionality",
+      "role": "K=10 D0-matched directionality tables and figures.",
+      "source": "GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000/tables/group_expression_log2cpm.csv",
+      "dest": "processed/directionality/tables/group_expression_log2cpm.csv",
+      "size_bytes": 1985464,
+      "sha256": "6ff2b9ab8686cfa366a34f0cb3f4cae69fa8f071bd7e391b48104ba4ccdcfcc0"
+    },
+    {
+      "source_group": "directionality",
+      "role": "K=10 D0-matched directionality tables and figures.",
+      "source": "GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000/tables/pattern_directionality_summary.csv",
+      "dest": "processed/directionality/tables/pattern_directionality_summary.csv",
+      "size_bytes": 92876,
+      "sha256": "7b0d4ab0ab82c1563885c0f167f1cdf0424f150b2c201e1b09a81d79f734e963"
+    },
+    {
+      "source_group": "interpretation",
+      "role": "K=10 subject-level, cell-type, and research-question interpretation tables.",
+      "source": "GSE154386/k10_interpretation_layer/README_interpretation_layer.md",
+      "dest": "processed/interpretation/README_interpretation_layer.md",
+      "size_bytes": 1856,
+      "sha256": "85c627a08e763ba41bfb0979200e40f8f5ed7e1fa4c2f6410dc4d9720c52dd22"
+    },
+    {
+      "source_group": "interpretation",
+      "role": "K=10 subject-level, cell-type, and research-question interpretation tables.",
+      "source": "GSE154386/k10_interpretation_layer/interpretation_manifest.json",
+      "dest": "processed/interpretation/interpretation_manifest.json",
+      "size_bytes": 1575,
+      "sha256": "325df7fe8072948fe28969de8b26d8d3b996698dd6aa20becf49dba831a17e44"
+    },
+    {
+      "source_group": "interpretation",
+      "role": "K=10 subject-level, cell-type, and research-question interpretation tables.",
+      "source": "GSE154386/k10_interpretation_layer/pattern_annotation_table.csv",
+      "dest": "processed/interpretation/pattern_annotation_table.csv",
+      "size_bytes": 9986,
+      "sha256": "87a9aae579596d456aec484223b511ac89a0497147c4dac3938a5f7b247c908e"
+    },
+    {
+      "source_group": "interpretation",
+      "role": "K=10 subject-level, cell-type, and research-question interpretation tables.",
+      "source": "GSE154386/k10_interpretation_layer/pattern_summaries/pattern_by_cell_type_subject_summary.csv",
+      "dest": "processed/interpretation/pattern_summaries/pattern_by_cell_type_subject_summary.csv",
+      "size_bytes": 11742,
+      "sha256": "60da2050c803912a773d3d0d87dc30b3c459793b68710e02ce5640c089bea326"
+    },
+    {
+      "source_group": "interpretation",
+      "role": "K=10 subject-level, cell-type, and research-question interpretation tables.",
+      "source": "GSE154386/k10_interpretation_layer/pattern_summaries/pattern_by_time_cell_type_subject_summary.csv",
+      "dest": "processed/interpretation/pattern_summaries/pattern_by_time_cell_type_subject_summary.csv",
+      "size_bytes": 94780,
+      "sha256": "8745b68fcff727b2517755d98e02b4317aa8ec92ff834bdea995231448f72e68"
+    },
+    {
+      "source_group": "interpretation",
+      "role": "K=10 subject-level, cell-type, and research-question interpretation tables.",
+      "source": "GSE154386/k10_interpretation_layer/pattern_summaries/pattern_by_time_subject_summary.csv",
+      "dest": "processed/interpretation/pattern_summaries/pattern_by_time_subject_summary.csv",
+      "size_bytes": 15424,
+      "sha256": "a92ddefc7002efdffe857d5292944709cd01df2ed44f6b46f39463e6cf482a45"
+    },
+    {
+      "source_group": "interpretation",
+      "role": "K=10 subject-level, cell-type, and research-question interpretation tables.",
+      "source": "GSE154386/k10_interpretation_layer/rq_tables/RQ1_temporal_programs.csv",
+      "dest": "processed/interpretation/rq_tables/RQ1_temporal_programs.csv",
+      "size_bytes": 5252,
+      "sha256": "8840dc710c1f7dadb8da573f9b36d24d320b1c1362fe04b1760aad09d1e5efc5"
+    },
+    {
+      "source_group": "interpretation",
+      "role": "K=10 subject-level, cell-type, and research-question interpretation tables.",
+      "source": "GSE154386/k10_interpretation_layer/rq_tables/RQ2_identity_vs_activity.csv",
+      "dest": "processed/interpretation/rq_tables/RQ2_identity_vs_activity.csv",
+      "size_bytes": 3617,
+      "sha256": "894886b9644fd10bf8b0009ab210a7ca3fca212c435fa1dbfd2e5e8e46dd7d05"
+    },
+    {
+      "source_group": "interpretation",
+      "role": "K=10 subject-level, cell-type, and research-question interpretation tables.",
+      "source": "GSE154386/k10_interpretation_layer/rq_tables/RQ3_ifn_associated_program.csv",
+      "dest": "processed/interpretation/rq_tables/RQ3_ifn_associated_program.csv",
+      "size_bytes": 1299,
+      "sha256": "e02ec227d59fdede55b7e782fafdd90f256f570e6809b12172299c8c0e1d3a62"
+    },
+    {
+      "source_group": "interpretation",
+      "role": "K=10 subject-level, cell-type, and research-question interpretation tables.",
+      "source": "GSE154386/k10_interpretation_layer/subject_level/subject_celltype_pattern_means.csv",
+      "dest": "processed/interpretation/subject_level/subject_celltype_pattern_means.csv",
+      "size_bytes": 5669,
+      "sha256": "eefa8625b2dddd8b6825ce4c3fa8406e60f63a13a2d1bc4b3ddfac757133a9ec"
+    },
+    {
+      "source_group": "interpretation",
+      "role": "K=10 subject-level, cell-type, and research-question interpretation tables.",
+      "source": "GSE154386/k10_interpretation_layer/subject_level/subject_celltype_pattern_means_long.csv",
+      "dest": "processed/interpretation/subject_level/subject_celltype_pattern_means_long.csv",
+      "size_bytes": 9233,
+      "sha256": "3e875b89e5baf8dea8ce974a988e466e0f655c44f8fe24430940c055ec85152e"
+    },
+    {
+      "source_group": "interpretation",
+      "role": "K=10 subject-level, cell-type, and research-question interpretation tables.",
+      "source": "GSE154386/k10_interpretation_layer/subject_level/subject_pattern_means.csv",
+      "dest": "processed/interpretation/subject_level/subject_pattern_means.csv",
+      "size_bytes": 1068,
+      "sha256": "6263f67aa7059e3eccf6add4c054bf14de8f4fe591b281c80bf8941c13329d53"
+    },
+    {
+      "source_group": "interpretation",
+      "role": "K=10 subject-level, cell-type, and research-question interpretation tables.",
+      "source": "GSE154386/k10_interpretation_layer/subject_level/subject_time_celltype_pattern_means.csv",
+      "dest": "processed/interpretation/subject_level/subject_time_celltype_pattern_means.csv",
+      "size_bytes": 41970,
+      "sha256": "42b40ce7a5dc1c5038c55b9cd7baff7915e3fb91987f29acdf8ec1771b31d9d1"
+    },
+    {
+      "source_group": "interpretation",
+      "role": "K=10 subject-level, cell-type, and research-question interpretation tables.",
+      "source": "GSE154386/k10_interpretation_layer/subject_level/subject_time_celltype_pattern_means_long.csv",
+      "dest": "processed/interpretation/subject_level/subject_time_celltype_pattern_means_long.csv",
+      "size_bytes": 78820,
+      "sha256": "e6850507084246bc9bd7ec2bbbd76f2b05f1357b215fb15b5e7ccd101a2ece95"
+    },
+    {
+      "source_group": "interpretation",
+      "role": "K=10 subject-level, cell-type, and research-question interpretation tables.",
+      "source": "GSE154386/k10_interpretation_layer/subject_level/subject_time_pattern_means.csv",
+      "dest": "processed/interpretation/subject_level/subject_time_pattern_means.csv",
+      "size_bytes": 7434,
+      "sha256": "b1532497f43909cf2acebaacb0cfefe45aaeea22a0072b7a043beed928e5a996"
+    },
+    {
+      "source_group": "interpretation",
+      "role": "K=10 subject-level, cell-type, and research-question interpretation tables.",
+      "source": "GSE154386/k10_interpretation_layer/subject_level/subject_time_pattern_means_long.csv",
+      "dest": "processed/interpretation/subject_level/subject_time_pattern_means_long.csv",
+      "size_bytes": 12142,
+      "sha256": "593cb753fac8f9c2b33cdea059d970b484a1a963fcab0650f89d4c739c6edd9e"
+    },
+    {
+      "source_group": "r_python_comparison",
+      "role": "Internal K=10 R/Python validation artifacts.",
+      "source": "GSE154386/cogaps_revised_model_comparison_K10_seed2_iter2000/comparison_metrics.json",
+      "dest": "processed/r_python_comparison/comparison_metrics.json",
+      "size_bytes": 1593,
+      "sha256": "35e4bdb23b7084a2124516932109d81810d8c832a3240b892fd59666f38ffbd5"
+    },
+    {
+      "source_group": "r_python_comparison",
+      "role": "Internal K=10 R/Python validation artifacts.",
+      "source": "GSE154386/cogaps_revised_model_comparison_K10_seed2_iter2000/pattern_match_summary.csv",
+      "dest": "processed/r_python_comparison/pattern_match_summary.csv",
+      "size_bytes": 519,
+      "sha256": "7a9a53e4162666fd5bb27266f19b27133a83a765a087d1629e763771179f596b"
+    },
+    {
+      "source_group": "r_python_comparison",
+      "role": "Internal K=10 R/Python validation artifacts.",
+      "source": "GSE154386/cogaps_revised_model_comparison_K10_seed2_iter2000/r_vs_python_cell_score_spearman.csv",
+      "dest": "processed/r_python_comparison/r_vs_python_cell_score_spearman.csv",
+      "size_bytes": 2122,
+      "sha256": "fffb159e4fd72f9b5e6a6db84a9ba9bc2071ac4905ce5fbe85d3ab886f7b3ee2"
+    },
+    {
+      "source_group": "r_python_comparison",
+      "role": "Internal K=10 R/Python validation artifacts.",
+      "source": "GSE154386/cogaps_revised_model_comparison_K10_seed2_iter2000/r_vs_python_gene_loading_spearman.csv",
+      "dest": "processed/r_python_comparison/r_vs_python_gene_loading_spearman.csv",
+      "size_bytes": 2014,
+      "sha256": "04d9812490bcfef2da3393e1f98c70c2cd6e168eee701e87f8920fc2c25d21b8"
+    },
+    {
+      "source_group": "r_python_comparison",
+      "role": "Internal K=10 R/Python validation artifacts.",
+      "source": "GSE154386/cogaps_revised_model_comparison_K10_seed2_iter2000/r_vs_python_top_50_gene_jaccard.csv",
+      "dest": "processed/r_python_comparison/r_vs_python_top_50_gene_jaccard.csv",
+      "size_bytes": 1935,
+      "sha256": "73ffb38bfac97b6e13d074acb6ffa77c700bcb045ed0cd393b338f3b535787b0"
+    },
+    {
+      "source_group": "figures",
+      "role": "Case-study-ready figures generated from K=10 outputs.",
+      "source": "GSE154386/k10_case_study_figures/figure_01_k_selection.png",
+      "dest": "processed/figures/figure_01_k_selection.png",
+      "size_bytes": 129735,
+      "sha256": "c46ef9af513826d94691938d8abf720cbf785f28747dd7fca91becca8727bf09"
+    },
+    {
+      "source_group": "figures",
+      "role": "Case-study-ready figures generated from K=10 outputs.",
+      "source": "GSE154386/k10_case_study_figures/figure_01_k_selection.svg",
+      "dest": "processed/figures/figure_01_k_selection.svg",
+      "size_bytes": 73642,
+      "sha256": "0774c551a975a21bdc0930a184d0b93d6be49312bf244033b94659df408f9d35"
+    },
+    {
+      "source_group": "figures",
+      "role": "Case-study-ready figures generated from K=10 outputs.",
+      "source": "GSE154386/k10_case_study_figures/figure_02_discovery_set_composition.png",
+      "dest": "processed/figures/figure_02_discovery_set_composition.png",
+      "size_bytes": 60268,
+      "sha256": "9ecc72391a88498af2f69e039a7a72b6774495d2261d043bc6ea017771f5d62d"
+    },
+    {
+      "source_group": "figures",
+      "role": "Case-study-ready figures generated from K=10 outputs.",
+      "source": "GSE154386/k10_case_study_figures/figure_02_discovery_set_composition.svg",
+      "dest": "processed/figures/figure_02_discovery_set_composition.svg",
+      "size_bytes": 48453,
+      "sha256": "4514e4fb32e3f865ff6fd2a9c86ec9d85daf93840caf646320a77afbe4367f66"
+    },
+    {
+      "source_group": "figures",
+      "role": "Case-study-ready figures generated from K=10 outputs.",
+      "source": "GSE154386/k10_case_study_figures/figure_03_pattern_usage_by_time_heatmap.png",
+      "dest": "processed/figures/figure_03_pattern_usage_by_time_heatmap.png",
+      "size_bytes": 74950,
+      "sha256": "1752fedbaa70c32dbb7edb2a80597c0e8315f718abd930c44be6bbfcf791ca84"
+    },
+    {
+      "source_group": "figures",
+      "role": "Case-study-ready figures generated from K=10 outputs.",
+      "source": "GSE154386/k10_case_study_figures/figure_03_pattern_usage_by_time_heatmap.svg",
+      "dest": "processed/figures/figure_03_pattern_usage_by_time_heatmap.svg",
+      "size_bytes": 62524,
+      "sha256": "e482b77bcf326f6c0a9883a613f857215910970e9f187d26e2cdb34ffe2e7ef1"
+    },
+    {
+      "source_group": "figures",
+      "role": "Case-study-ready figures generated from K=10 outputs.",
+      "source": "GSE154386/k10_case_study_figures/figure_04_pattern_usage_by_broad_cell_type_heatmap.png",
+      "dest": "processed/figures/figure_04_pattern_usage_by_broad_cell_type_heatmap.png",
+      "size_bytes": 93544,
+      "sha256": "230995a16328e2c1b08cf8ddab12f6dfb548ce7ff38c09518aa6a34735950aa4"
+    },
+    {
+      "source_group": "figures",
+      "role": "Case-study-ready figures generated from K=10 outputs.",
+      "source": "GSE154386/k10_case_study_figures/figure_04_pattern_usage_by_broad_cell_type_heatmap.svg",
+      "dest": "processed/figures/figure_04_pattern_usage_by_broad_cell_type_heatmap.svg",
+      "size_bytes": 61029,
+      "sha256": "cf1d621996580705921ed53ad3e524e23084ee4e980946bcbc9caf55e8dd2ce6"
+    },
+    {
+      "source_group": "figures",
+      "role": "Case-study-ready figures generated from K=10 outputs.",
+      "source": "GSE154386/k10_case_study_figures/figure_05_ifn_pattern_trajectory.png",
+      "dest": "processed/figures/figure_05_ifn_pattern_trajectory.png",
+      "size_bytes": 166561,
+      "sha256": "95cf981b27b42e46a811677447545f99a48180471687fe45a287d5b2c7144572"
+    },
+    {
+      "source_group": "figures",
+      "role": "Case-study-ready figures generated from K=10 outputs.",
+      "source": "GSE154386/k10_case_study_figures/figure_05_ifn_pattern_trajectory.svg",
+      "dest": "processed/figures/figure_05_ifn_pattern_trajectory.svg",
+      "size_bytes": 46592,
+      "sha256": "4a10fc218f1b2eafb917d388828a2af1c4258e5008f2f4e0d97a0906b0db9408"
+    },
+    {
+      "source_group": "figures",
+      "role": "Case-study-ready figures generated from K=10 outputs.",
+      "source": "GSE154386/k10_case_study_figures/figure_06_ifn_top_gene_directionality_heatmap.png",
+      "dest": "processed/figures/figure_06_ifn_top_gene_directionality_heatmap.png",
+      "size_bytes": 117795,
+      "sha256": "51101c22072894bd7dc4eaf16a18155b7e17a4ca75d34d7d9885dcb2d399ee48"
+    },
+    {
+      "source_group": "figures",
+      "role": "Case-study-ready figures generated from K=10 outputs.",
+      "source": "GSE154386/k10_case_study_figures/figure_06_ifn_top_gene_directionality_heatmap.svg",
+      "dest": "processed/figures/figure_06_ifn_top_gene_directionality_heatmap.svg",
+      "size_bytes": 110192,
+      "sha256": "a2fdb8776b2d23b1f4b6ae8d7a398a01e2fb5ea05b21baf18c861b33d409adcf"
+    },
+    {
+      "source_group": "figures",
+      "role": "Case-study-ready figures generated from K=10 outputs.",
+      "source": "GSE154386/k10_case_study_figures/figure_07_r_python_agreement_summary.png",
+      "dest": "processed/figures/figure_07_r_python_agreement_summary.png",
+      "size_bytes": 58214,
+      "sha256": "0e5eb27fea9eafc42a726524a5c9a7c4fff7286fca7b737dde560009e9801ff5"
+    },
+    {
+      "source_group": "figures",
+      "role": "Case-study-ready figures generated from K=10 outputs.",
+      "source": "GSE154386/k10_case_study_figures/figure_07_r_python_agreement_summary.svg",
+      "dest": "processed/figures/figure_07_r_python_agreement_summary.svg",
+      "size_bytes": 59530,
+      "sha256": "ccecfe49b75dab1e9b09a11107fd7a0ca4e49f4da43aad2e46dc08b79ca35eaa"
+    },
+    {
+      "source_group": "figures",
+      "role": "Case-study-ready figures generated from K=10 outputs.",
+      "source": "GSE154386/k10_case_study_figures/figure_manifest.json",
+      "dest": "processed/figures/figure_manifest.json",
+      "size_bytes": 3217,
+      "sha256": "9b1439c9b70197d655a38346ea4bd6b14f68d2d6b618b686c4658456e3f458cc"
+    },
+    {
+      "source_group": "figures",
+      "role": "Case-study-ready figures generated from K=10 outputs.",
+      "source": "GSE154386/k10_case_study_figures/source_tables/figure_01_k_selection_source.csv",
+      "dest": "processed/figures/source_tables/figure_01_k_selection_source.csv",
+      "size_bytes": 6757,
+      "sha256": "e78c53b2fb24896efdc5d999c6c9700826437ebe89702c479b8d2a603791a86e"
+    },
+    {
+      "source_group": "figures",
+      "role": "Case-study-ready figures generated from K=10 outputs.",
+      "source": "GSE154386/k10_case_study_figures/source_tables/figure_02_discovery_set_composition_source.csv",
+      "dest": "processed/figures/source_tables/figure_02_discovery_set_composition_source.csv",
+      "size_bytes": 1803,
+      "sha256": "ebe5447c7c2b6e7dd539cda6bfb9d2ea0091d362c10b2fb1898ad2deba4f0858"
+    },
+    {
+      "source_group": "figures",
+      "role": "Case-study-ready figures generated from K=10 outputs.",
+      "source": "GSE154386/k10_case_study_figures/source_tables/figure_03_pattern_usage_by_time_matrix.csv",
+      "dest": "processed/figures/source_tables/figure_03_pattern_usage_by_time_matrix.csv",
+      "size_bytes": 1642,
+      "sha256": "6fc09709cad95f95b59eaed800fb3aafa58623cb86381039af6a3d9cf5ef5f68"
+    },
+    {
+      "source_group": "figures",
+      "role": "Case-study-ready figures generated from K=10 outputs.",
+      "source": "GSE154386/k10_case_study_figures/source_tables/figure_04_pattern_usage_by_cell_type_matrix.csv",
+      "dest": "processed/figures/source_tables/figure_04_pattern_usage_by_cell_type_matrix.csv",
+      "size_bytes": 1281,
+      "sha256": "2dc83c770e523dd2d04877bb9603e3ca3f05c5021543a6e044a8db640c3971b1"
+    },
+    {
+      "source_group": "figures",
+      "role": "Case-study-ready figures generated from K=10 outputs.",
+      "source": "GSE154386/k10_case_study_figures/source_tables/figure_05_ifn_pattern_subject_trajectory_source.csv",
+      "dest": "processed/figures/source_tables/figure_05_ifn_pattern_subject_trajectory_source.csv",
+      "size_bytes": 1255,
+      "sha256": "fff07c631ace5a160816ecde8c9e9abedbfc15985af3f05474216af1965d4a55"
+    },
+    {
+      "source_group": "figures",
+      "role": "Case-study-ready figures generated from K=10 outputs.",
+      "source": "GSE154386/k10_case_study_figures/source_tables/figure_05_ifn_pattern_summary_trajectory_source.csv",
+      "dest": "processed/figures/source_tables/figure_05_ifn_pattern_summary_trajectory_source.csv",
+      "size_bytes": 1690,
+      "sha256": "9d578e17192b43eeed070085a5807d6d7fd7b5ceefe4f69c1be8ca1ccea84f69"
+    },
+    {
+      "source_group": "figures",
+      "role": "Case-study-ready figures generated from K=10 outputs.",
+      "source": "GSE154386/k10_case_study_figures/source_tables/figure_06_ifn_top_gene_directionality_matrix.csv",
+      "dest": "processed/figures/source_tables/figure_06_ifn_top_gene_directionality_matrix.csv",
+      "size_bytes": 3641,
+      "sha256": "7c55eb4e773abeaef70d665858556e6d1cc61253ec83fe16724c79ca875e3566"
+    },
+    {
+      "source_group": "figures",
+      "role": "Case-study-ready figures generated from K=10 outputs.",
+      "source": "GSE154386/k10_case_study_figures/source_tables/figure_07_r_python_agreement_source.csv",
+      "dest": "processed/figures/source_tables/figure_07_r_python_agreement_source.csv",
+      "size_bytes": 2012,
+      "sha256": "151057ac731c062caffaa1ba16c664acc0834671b30650db7e8c6333368b2327"
+    }
+  ],
+  "skipped": [
+    {
+      "source_group": "primary_r",
+      "source": "GSE154386/cogaps_r_revised_model_K10_seed2_iter2000/cogaps_K10_seed2_iter2000.checkpoint.out",
+      "relative_path": "cogaps_K10_seed2_iter2000.checkpoint.out",
+      "size_bytes": 2388467,
+      "reason": "local-only suffix .out"
+    },
+    {
+      "source_group": "primary_r",
+      "source": "GSE154386/cogaps_r_revised_model_K10_seed2_iter2000/cogaps_K10_seed2_iter2000.rds",
+      "relative_path": "cogaps_K10_seed2_iter2000.rds",
+      "size_bytes": 7624848,
+      "reason": "local-only suffix .rds"
+    },
+    {
+      "source_group": "primary_python",
+      "source": "GSE154386/cogaps_python_revised_model_K10_seed2_iter2000/cogaps_K10_seed2_iter2000.checkpoint.out",
+      "relative_path": "cogaps_K10_seed2_iter2000.checkpoint.out",
+      "size_bytes": 2388467,
+      "reason": "local-only suffix .out"
+    },
+    {
+      "source_group": "primary_python",
+      "source": "GSE154386/cogaps_python_revised_model_K10_seed2_iter2000/cogaps_K10_seed2_iter2000.h5ad",
+      "relative_path": "cogaps_K10_seed2_iter2000.h5ad",
+      "size_bytes": 160287824,
+      "reason": "local-only suffix .h5ad"
+    },
+    {
+      "source_group": "comparator_r",
+      "source": "GSE154386/cogaps_r_selected_model_K5_iter8000_seed2/cogaps_K5_seed2_iter8000.checkpoint.out",
+      "relative_path": "cogaps_K5_seed2_iter8000.checkpoint.out",
+      "size_bytes": 1339787,
+      "reason": "local-only suffix .out"
+    },
+    {
+      "source_group": "comparator_r",
+      "source": "GSE154386/cogaps_r_selected_model_K5_iter8000_seed2/cogaps_K5_seed2_iter8000.rds",
+      "relative_path": "cogaps_K5_seed2_iter8000.rds",
+      "size_bytes": 5055175,
+      "reason": "local-only suffix .rds"
+    },
+    {
+      "source_group": "comparator_python",
+      "source": "GSE154386/cogaps_python_selected_model_K5_iter8000_seed2/cogaps_K5_seed2_iter8000.checkpoint.out",
+      "relative_path": "cogaps_K5_seed2_iter8000.checkpoint.out",
+      "size_bytes": 1339787,
+      "reason": "local-only suffix .out"
+    },
+    {
+      "source_group": "comparator_python",
+      "source": "GSE154386/cogaps_python_selected_model_K5_iter8000_seed2/cogaps_K5_seed2_iter8000.h5ad",
+      "relative_path": "cogaps_K5_seed2_iter8000.h5ad",
+      "size_bytes": 151258528,
+      "reason": "local-only suffix .h5ad"
+    }
+  ]
+}

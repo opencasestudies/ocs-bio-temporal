@@ -1,13 +1,23 @@
-<!--
-More details on the background on the case study topic as well its relation to biomedical science.
-Videos or images may be helpful so this includes an example of embedding a video.
--->
-
-# **Context**
+# **Context and Background**
 ***
 
-{FILL IN}
+## **Dengue Infection and PBMC Host Response**
 
-{{< video https://www.youtube.com/watch?v=j-I0Zgicjsk >}}
+Dengue virus infection induces a systemic immune response that can involve interferon-stimulated genes, inflammatory monocyte programs, activated lymphocytes, and later antibody-producing cell states. In PBMC single-cell data, those responses appear on top of cell identity. A monocyte remains a monocyte while also becoming antiviral or inflammatory; a lymphocyte can retain lineage markers while gaining an activation state.
+
+The Waickman et al. study is useful for teaching because it includes both a controlled experimental infection cohort and a natural infection comparison cohort. The experimental cohort provides an aligned time axis, making it the primary discovery dataset for temporal analysis. The natural cohort is biologically valuable, but the timepoints are less directly aligned, so it is better treated as a transfer-learning extension.
+
+## **Why CoGAPS?**
+
+CoGAPS is a Bayesian non-negative matrix factorization method. Given an expression matrix, CoGAPS estimates:
+
+- a gene-by-pattern matrix, often called `A`, that shows which genes load strongly on each pattern
+- a pattern-by-cell matrix, often called `P`, that shows how strongly each pattern is used in each cell
+
+Because the factors are non-negative, a cell can combine several programs at once. This is exactly what we want for a PBMC time course: immune identity and infection activity are not mutually exclusive.
+
+## **A Note About Pattern Numbers**
+
+Pattern numbers are labels assigned by a model run. The biological interpretation is not the number itself. In the selected R and Python `K = 10` runs used here, the strongest interferon-associated activity program is `Pattern3`. In the broader K-selection sweep, an equivalent representative IFN-like program appeared with a different label in one sweep table. This is normal for matrix factorization. The case study therefore emphasizes pattern annotations, top genes, and trajectories rather than treating pattern numbers as universal names.
 
 ***

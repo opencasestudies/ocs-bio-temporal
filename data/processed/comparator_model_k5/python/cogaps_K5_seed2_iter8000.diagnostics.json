@@ -1,0 +1,45 @@
+{
+  "atomhistoryA_length": 160,
+  "atomhistoryP_length": 160,
+  "averageQueueLengthA": 56.91886901855469,
+  "averageQueueLengthP": 66.81089782714844,
+  "chisqHistory_length": 160,
+  "equilibrationSnapshotsA_length": 10,
+  "equilibrationSnapshotsA_shape": [
+    10,
+    5000,
+    5
+  ],
+  "equilibrationSnapshotsP_length": 10,
+  "equilibrationSnapshotsP_shape": [
+    10,
+    4800,
+    5
+  ],
+  "meanChiSq": 121198680.0,
+  "meanPatternAssignment_length": 5000,
+  "meanPatternAssignment_shape": [
+    5000,
+    5
+  ],
+  "pumpMatrix_length": 5000,
+  "pumpMatrix_shape": [
+    5000,
+    5
+  ],
+  "samplingSnapshotsA_length": 10,
+  "samplingSnapshotsA_shape": [
+    10,
+    5000,
+    5
+  ],
+  "samplingSnapshotsP_length": 10,
+  "samplingSnapshotsP_shape": [
+    10,
+    4800,
+    5
+  ],
+  "seed": 0,
+  "totalRunningTime": 4131,
+  "totalUpdates": 652604084
+}

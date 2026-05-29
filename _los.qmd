@@ -1,19 +1,11 @@
 # **Learning Objectives**
 ***
 
-<!--
-Replace the shell content and enumerate the learning objectives in the referenced qmd files.
-For an example of this section, see this previous Open Case Study: https://www.opencasestudies.org/ocs-bp-co2-emissions/#Learning_Objectives
+By the end of this case study, you will be able to analyze longitudinal single-cell RNA-seq data from experimental dengue virus infection using CoGAPS, a Bayesian non-negative matrix factorization method.
 
-Statistical LOs were provided in the original open case studies but they may be omitted here depending on the case study.
-Biological LOS were not provided in the original open case studies and should be included in all Bio-OCS case studies.
--->
+You may work through the analysis in R or Python. The case study uses precomputed teaching artifacts for the required path, so the focus is on importing, summarizing, visualizing, and interpreting the selected model rather than waiting for a full CoGAPS run. If you want to reproduce the full model run, you can download the large reproduction files from the Zenodo record and run the provided scripts inside the case-study Docker image.
 
-In this case study, we will explore {}.
-
-This case study will particularly focus on {}.
-
-The skills, methods, and concepts that students will be familiar with by the end of this case study are:
+The objectives are organized into data science/bioinformatics, statistical/modeling, and biological/topical goals.
 
 {{< include _data_science_los.qmd >}}
 
@@ -24,5 +16,17 @@ The skills, methods, and concepts that students will be familiar with by the end
 :::
 
 {{< include _biological_los.qmd >}}
+
+## **Objectives Map**
+
+| Objective area | You will practice this by... | Main section |
+|---|---|---|
+| Data import and artifacts | Importing selected-model tables, diagnostics, and manifest files in R or Python | Data Import |
+| Pattern summaries | Joining cell scores to metadata and summarizing patterns by timepoint, subject, and broad cell type | Data Wrangling and Preprocessing |
+| Rank selection | Evaluating why `K = 10` is used for the main model while `K = 5` remains a sensitivity comparison | Data Visualization; Data Analysis |
+| Diagnostics | Reading convergence, stability, runtime, and trace summaries before interpreting model output | Data Analysis |
+| Temporal biology | Interpreting which programs vary over the dengue time course and which appear identity-like, activity-like, or mixed | Data Analysis |
+| IFN evidence | Combining top genes, IFN-score correlation, trajectory, and directionality evidence for the late acute response | Data Analysis |
+| Limitations and extensions | Distinguishing confirmed results, sensitivity comparisons, and optional natural-cohort projection plans | Summary; Suggested Homework or Further Exploration |
 
 ***

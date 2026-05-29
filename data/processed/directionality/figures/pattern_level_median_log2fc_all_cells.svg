@@ -1,0 +1,163 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="330" viewBox="0 0 760 330">
+<style>text{font-family:Helvetica,Arial,sans-serif;font-size:11px;fill:#111827}.title{font-size:16px;font-weight:700}.small{font-size:10px;fill:#4b5563}</style>
+<rect width="100%" height="100%" fill="white"/>
+<text class="title" x="20" y="28">Pattern-level median top-gene log2FC, all experimental cells</text>
+<text class="small" x="20" y="48">Color scale: blue=down, white=near 0, red=up; capped at +/-1.5 log2FC</text>
+<text text-anchor="middle" x="265.0" y="58">D2</text>
+<text text-anchor="middle" x="335.0" y="58">D4</text>
+<text text-anchor="middle" x="405.0" y="58">D6</text>
+<text text-anchor="middle" x="475.0" y="58">D8</text>
+<text text-anchor="middle" x="545.0" y="58">D10</text>
+<text text-anchor="middle" x="615.0" y="58">D14/15</text>
+<text text-anchor="middle" x="685.0" y="58">D28</text>
+<text text-anchor="end" x="222" y="83">Pattern1</text>
+<rect x="230" y="70" width="70" height="18" fill="#fefbfb" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="83">0.03</text>
+<rect x="300" y="70" width="70" height="18" fill="#fafbff" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="83">-0.03</text>
+<rect x="370" y="70" width="70" height="18" fill="#fcf7f7" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="83">0.06</text>
+<rect x="440" y="70" width="70" height="18" fill="#fafcff" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="83">-0.03</text>
+<rect x="510" y="70" width="70" height="18" fill="#c5d6fa" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="83">-0.40</text>
+<rect x="580" y="70" width="70" height="18" fill="#cedcfa" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="83">-0.34</text>
+<rect x="650" y="70" width="70" height="18" fill="#f2f5fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="83">-0.09</text>
+<text text-anchor="end" x="222" y="101">Pattern10</text>
+<rect x="230" y="88" width="70" height="18" fill="#fdf9f9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="101">0.04</text>
+<rect x="300" y="88" width="70" height="18" fill="#fffefe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="101">0.01</text>
+<rect x="370" y="88" width="70" height="18" fill="#fdf8f8" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="101">0.05</text>
+<rect x="440" y="88" width="70" height="18" fill="#f8fafe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="101">-0.05</text>
+<rect x="510" y="88" width="70" height="18" fill="#bfd1f9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="101">-0.44</text>
+<rect x="580" y="88" width="70" height="18" fill="#adc4f7" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="101">-0.57</text>
+<rect x="650" y="88" width="70" height="18" fill="#f6f9fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="101">-0.06</text>
+<text text-anchor="end" x="222" y="119">Pattern2</text>
+<rect x="230" y="106" width="70" height="18" fill="#f6f8fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="119">-0.06</text>
+<rect x="300" y="106" width="70" height="18" fill="#ebf1fd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="119">-0.14</text>
+<rect x="370" y="106" width="70" height="18" fill="#f1f5fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="119">-0.10</text>
+<rect x="440" y="106" width="70" height="18" fill="#edf2fd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="119">-0.12</text>
+<rect x="510" y="106" width="70" height="18" fill="#eaf0fd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="119">-0.14</text>
+<rect x="580" y="106" width="70" height="18" fill="#cedcfa" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="119">-0.34</text>
+<rect x="650" y="106" width="70" height="18" fill="#f0f5fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="119">-0.10</text>
+<text text-anchor="end" x="222" y="137">Pattern3</text>
+<rect x="230" y="124" width="70" height="18" fill="#fcfdff" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="137">-0.02</text>
+<rect x="300" y="124" width="70" height="18" fill="#e3ebfc" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="137">-0.20</text>
+<rect x="370" y="124" width="70" height="18" fill="#ebf1fd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="137">-0.14</text>
+<rect x="440" y="124" width="70" height="18" fill="#fcf6f6" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="137">0.06</text>
+<rect x="510" y="124" width="70" height="18" fill="#bb2222" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="137">1.46</text>
+<rect x="580" y="124" width="70" height="18" fill="#b91c1c" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="137">1.56</text>
+<rect x="650" y="124" width="70" height="18" fill="#f7e6e6" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="137">0.17</text>
+<text text-anchor="end" x="222" y="155">Pattern4</text>
+<rect x="230" y="142" width="70" height="18" fill="#fdf7f7" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="155">0.05</text>
+<rect x="300" y="142" width="70" height="18" fill="#fcfdff" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="155">-0.02</text>
+<rect x="370" y="142" width="70" height="18" fill="#fcf7f7" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="155">0.06</text>
+<rect x="440" y="142" width="70" height="18" fill="#fefafa" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="155">0.03</text>
+<rect x="510" y="142" width="70" height="18" fill="#d4e0fb" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="155">-0.30</text>
+<rect x="580" y="142" width="70" height="18" fill="#f9ecec" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="155">0.12</text>
+<rect x="650" y="142" width="70" height="18" fill="#feffff" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="155">-0.00</text>
+<text text-anchor="end" x="222" y="173">Pattern5</text>
+<rect x="230" y="160" width="70" height="18" fill="#fbfcff" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="173">-0.03</text>
+<rect x="300" y="160" width="70" height="18" fill="#f9fbfe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="173">-0.04</text>
+<rect x="370" y="160" width="70" height="18" fill="#fdfeff" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="173">-0.01</text>
+<rect x="440" y="160" width="70" height="18" fill="#ffffff" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="173">-0.00</text>
+<rect x="510" y="160" width="70" height="18" fill="#f0f4fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="173">-0.10</text>
+<rect x="580" y="160" width="70" height="18" fill="#f2d6d6" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="173">0.27</text>
+<rect x="650" y="160" width="70" height="18" fill="#fdf7f7" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="173">0.05</text>
+<text text-anchor="end" x="222" y="191">Pattern6</text>
+<rect x="230" y="178" width="70" height="18" fill="#fdf9f9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="191">0.04</text>
+<rect x="300" y="178" width="70" height="18" fill="#fdf9f9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="191">0.04</text>
+<rect x="370" y="178" width="70" height="18" fill="#fcf6f6" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="191">0.06</text>
+<rect x="440" y="178" width="70" height="18" fill="#fefbfb" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="191">0.03</text>
+<rect x="510" y="178" width="70" height="18" fill="#c5d6fa" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="191">-0.40</text>
+<rect x="580" y="178" width="70" height="18" fill="#d8e3fb" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="191">-0.27</text>
+<rect x="650" y="178" width="70" height="18" fill="#f6f9fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="191">-0.06</text>
+<text text-anchor="end" x="222" y="209">Pattern7</text>
+<rect x="230" y="196" width="70" height="18" fill="#fdf9f9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="209">0.04</text>
+<rect x="300" y="196" width="70" height="18" fill="#fffefe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="209">0.01</text>
+<rect x="370" y="196" width="70" height="18" fill="#fcf7f7" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="209">0.06</text>
+<rect x="440" y="196" width="70" height="18" fill="#fbfcff" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="209">-0.03</text>
+<rect x="510" y="196" width="70" height="18" fill="#bacef9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="209">-0.47</text>
+<rect x="580" y="196" width="70" height="18" fill="#c1d2f9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="209">-0.43</text>
+<rect x="650" y="196" width="70" height="18" fill="#f2f5fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="209">-0.09</text>
+<text text-anchor="end" x="222" y="227">Pattern8</text>
+<rect x="230" y="214" width="70" height="18" fill="#fefeff" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="227">-0.01</text>
+<rect x="300" y="214" width="70" height="18" fill="#f3f7fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="227">-0.08</text>
+<rect x="370" y="214" width="70" height="18" fill="#f8fafe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="227">-0.05</text>
+<rect x="440" y="214" width="70" height="18" fill="#f6f8fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="227">-0.07</text>
+<rect x="510" y="214" width="70" height="18" fill="#f5f8fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="227">-0.07</text>
+<rect x="580" y="214" width="70" height="18" fill="#dbe5fc" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="227">-0.25</text>
+<rect x="650" y="214" width="70" height="18" fill="#f8fafe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="227">-0.05</text>
+<text text-anchor="end" x="222" y="245">Pattern9</text>
+<rect x="230" y="232" width="70" height="18" fill="#fcf6f6" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="245">0.06</text>
+<rect x="300" y="232" width="70" height="18" fill="#fcfdff" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="245">-0.02</text>
+<rect x="370" y="232" width="70" height="18" fill="#fcf6f6" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="245">0.06</text>
+<rect x="440" y="232" width="70" height="18" fill="#fefdfd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="245">0.01</text>
+<rect x="510" y="232" width="70" height="18" fill="#fdfafa" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="245">0.04</text>
+<rect x="580" y="232" width="70" height="18" fill="#e9b9b9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="245">0.46</text>
+<rect x="650" y="232" width="70" height="18" fill="#fbf1f1" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="245">0.09</text>
+</svg>

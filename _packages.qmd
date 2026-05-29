@@ -1,20 +1,52 @@
-<!--
-load all the packages used in the case study analysis in the code chunk below
-(try to use tidyverse over base R).
-Fill out the table and add rows as necessary providing a link to the source and briefly explaining its use for each package
--->
+We will begin by loading the packages used for the rendered analysis. The full runtime image also contains R CoGAPS, PyCoGAPS, Scanpy, AnnData, and supporting single-cell packages for optional reproduction runs.
 
-We will begin by loading the packages that we will need:
+::: {.panel-tabset}
+
+## R
 
 ```{r}
-#add library() calls
+#| label: setup-r-packages
+#| message: false
 library(here)
+library(readr)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(knitr)
+library(jsonlite)
+
+if (requireNamespace("reticulate", quietly = TRUE) &&
+    file.exists("/opt/cogaps-venv/bin/python")) {
+  reticulate::use_python("/opt/cogaps-venv/bin/python", required = FALSE)
+}
 ```
 
-Package    | Use
----------- |-------------
-[{Package Name}]({Documentation URL}){target="_blank"}      | {Package use}
-[{Package Name}]({Documentation URL}){target="_blank"}      | {Package use}
+## Python
 
+```{python}
+#| label: setup-python-packages
+from pathlib import Path
+import json
 
-The first time we use a function, we will use the `::` to indicate which package we are using. Unless we have overlapping function names, this is not necessary, but we will include it here to be informative about where the functions we will use come from.
+import pandas as pd
+import matplotlib.pyplot as plt
+```
+
+:::
+
+Package | Use
+--- | ---
+[`here`](https://here.r-lib.org/){target="_blank"} | Build project-relative paths in R.
+[`readr`](https://readr.tidyverse.org/){target="_blank"} | Read CSV tables used in the rendered R code.
+[`dplyr`](https://dplyr.tidyverse.org/){target="_blank"} | Select, filter, summarize, and arrange R analysis tables.
+[`tidyr`](https://tidyr.tidyverse.org/){target="_blank"} | Reshape pattern summaries into long and wide forms in R.
+[`ggplot2`](https://ggplot2.tidyverse.org/){target="_blank"} | Build and customize R visualizations from tidy tables.
+[`knitr`](https://yihui.org/knitr/){target="_blank"} | Render R tables in the case-study document.
+[`jsonlite`](https://jeroen.r-universe.dev/jsonlite){target="_blank"} | Read run manifests and diagnostic JSON files in R.
+[`pandas`](https://pandas.pydata.org/){target="_blank"} | Read, filter, and summarize CSV tables in Python.
+[`matplotlib`](https://matplotlib.org/){target="_blank"} | Build Python visualizations.
+[`CoGAPS`](https://bioconductor.org/packages/CoGAPS){target="_blank"} | Optional R implementation of CoGAPS for full model reproduction.
+[`PyCoGAPS`](https://github.com/FertigLab/pycogaps){target="_blank"} | Optional Python implementation of CoGAPS for the alternate workflow.
+[`scanpy`](https://scanpy.readthedocs.io/){target="_blank"} and [`anndata`](https://anndata.readthedocs.io/){target="_blank"} | Optional Python single-cell preprocessing and H5AD handling.
+
+The first time we use a function in prose-heavy sections, we use the `package::function()` form to show where important functions come from.

@@ -1,0 +1,15 @@
+{
+  "meanChiSq": 121198680,
+  "totalRunningTime": 4447,
+  "totalUpdates": 652604084,
+  "chisqHistory_length": 160,
+  "atomhistoryA_length": 160,
+  "atomhistoryP_length": 160,
+  "equilibrationSnapshotsA_length": 10,
+  "equilibrationSnapshotsP_length": 10,
+  "samplingSnapshotsA_length": 10,
+  "samplingSnapshotsP_length": 10,
+  "pumpStat_shape": [5000, 5],
+  "pumpMatrix_shape": {},
+  "meanPatternAssignment_shape": [5000, 5]
+}

@@ -4,3 +4,22 @@
 .Ruserdata
 
 /.quarto/
+
+# Case Study 5 local-only large artifacts.
+# Lightweight teaching tables/figures under data/processed are intentionally
+# tracked, but large raw/preprocessed/model objects should remain external.
+data/**/*.h5ad
+data/**/*.h5
+data/**/*.rds
+data/**/*.RDS
+data/**/*.checkpoint.out
+data/raw/GSE154386_RAW.tar
+data/external/GSE154386/
+data/external/cs5_sweep_results/
+
+# Local packaging area for manual Zenodo uploads. Do not commit staged
+# archives or large reproduction artifacts.
+zenodo_upload/
+
+# Local review/planning deliverables for discussion, not case-study content.
+review/

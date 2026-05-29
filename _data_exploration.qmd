@@ -1,36 +1,80 @@
-<!--
-Update the file paths as needed throughout
--->
-
-<!--
-Not all case studies will need a Data Exploration subsection
--->
-
-<!--
-At the end of this section, save incremental data (if changes were made) so that users can pause and come back later
--->
-
 # **Data Exploration**
 ***
 
-If you have been following along but stopped, we could load our imported data like so:
+Before fitting or interpreting CoGAPS, we need to understand what is in the teaching discovery set.
+
+## **Experimental Discovery Set Composition**
+
+The discovery set is balanced by experimental sample and then summarized by broad immune-cell type.
+
+![](data/processed/figures/figure_02_discovery_set_composition.png){fig-alt="Stacked bar chart showing broad immune-cell composition across experimental dengue infection timepoints." width=850 .lightbox}
+
+::: {.panel-tabset}
+
+## R
 
 ```{r}
-load(here::here("data", "imported", "pm25_data_imported.rda"))
+#| label: composition-summary-r
+composition |>
+  group_by(broad_cell_type) |>
+  summarize(
+    n_cells = sum(n_cells),
+    mean_fraction = mean(fraction),
+    .groups = "drop"
+  ) |>
+  arrange(desc(n_cells)) |>
+  knitr::kable(digits = 3)
 ```
 
-***
-<details> <summary> If you skipped the data import section click here. </summary>
+## Python
 
-An RDA version (stands for R data) of the data can be found [here](https://github.com//opencasestudies/ocs-bp-co2-emissions/tree/master/data/imported) or slightly more directly [here](https://raw.githubusercontent.com/opencasestudies/ocs-bp-co2-emissions/master/data/imported/co2_data_imported.rda). Download this file and then place it in your current working directory within a subdirectory called "imported" within a directory called "data" to use the following code. We used an RStudio project and the [`here` package](https://github.com/jennybc/here_here) to navigate to the file more easily.
-
-```{r, eval=FALSE}
-load(here::here("data", "imported", "co2_data_imported.rda"))
+```{python}
+#| label: composition-summary-python
+(
+    composition_py
+    .groupby("broad_cell_type", as_index=False)
+    .agg(n_cells=("n_cells", "sum"), mean_fraction=("fraction", "mean"))
+    .sort_values("n_cells", ascending=False)
+)
 ```
 
-</details>
-***
+:::
 
-<!--
-Use this section to walk through any exploration of the dataset conducted pre-analysis.
--->
+This table helps learners see why pattern interpretation must consider cell type. A temporal pattern can reflect changing cell composition, changing expression within a cell type, or both.
+
+## **What Does a CoGAPS Pattern Contain?**
+
+Each pattern has two linked views:
+
+- **Gene loadings:** which genes define the pattern.
+- **Cell scores:** which cells use the pattern.
+
+::: {.panel-tabset}
+
+## R
+
+```{r}
+#| label: inspect-ifn-top-genes-r
+r_top_genes |>
+  filter(pattern == "Pattern3") |>
+  arrange(rank) |>
+  select(pattern, rank, gene, weight) |>
+  head(15) |>
+  knitr::kable(digits = 3)
+```
+
+## Python
+
+```{python}
+#| label: inspect-ifn-top-genes-python
+py_top_genes.loc[
+    py_top_genes["pattern"].eq("Pattern3"),
+    ["pattern", "rank", "gene", "weight"]
+].sort_values("rank").head(15)
+```
+
+:::
+
+The top genes for `Pattern3` include `LY6E`, `ISG15`, `IFITM1`, `IFI6`, `MX1`, `IRF7`, `IFI44L`, `IFIT3`, and `OAS1`, which supports the interferon-associated interpretation.
+
+***

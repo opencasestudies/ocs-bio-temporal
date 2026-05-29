@@ -1,14 +1,98 @@
-<!--
-Describe the data to be analyzed and where it came from.
-You may want to include a table about file or variable info.
--->
-
-# **What are the data?**
+# **What Are the Data?**
 ***
 
-Variable   | Details
----------- |-------------
-**variable1**  | Variable info  <br> -- more details <br> -- more details <br>  **Example**: Content content
-**variable2**  | Variable info  <br> -- more details <br> -- more details <br>  **Example**: Content content
+The source data come from GEO accession GSE154386, associated with Waickman et al. 2021. The study profiled unfractionated PBMCs using a 10x Genomics 5-prime single-cell RNA-seq workflow.
+
+For this case study, the important design distinction is:
+
+- **Experimental infection cohort:** three dengue-naive adults sampled at aligned study days `D0`, `D2`, `D4`, `D6`, `D8`, `D10`, `D14/15`, and `D28`. This is the primary discovery cohort.
+- **Natural infection cohort:** two subjects sampled during natural primary infection plus a convalescent reference. This cohort is reserved for optional projection material.
+
+The full raw and preprocessed files are too large for a lightweight GitHub-rendered case study. The repository therefore includes only small teaching artifacts derived from the analysis.
+
+::: {.panel-tabset}
+
+## R
+
+```{r}
+#| label: artifact-manifest-summary-r
+manifest <- jsonlite::fromJSON(here::here("data", "artifact_manifest.json"))
+
+data.frame(
+  artifact_group = c("GitHub-tracked teaching files", "External or local-only files"),
+  file_count = c(nrow(manifest$copied), nrow(manifest$skipped)),
+  size_mb = c(
+    round(sum(manifest$copied$size_bytes) / 1024^2, 2),
+    round(sum(manifest$skipped$size_bytes) / 1024^2, 2)
+  )
+) |>
+  knitr::kable()
+```
+
+## Python
+
+```{python}
+#| label: artifact-manifest-summary-python
+import json
+import pandas as pd
+
+with open("data/artifact_manifest.json") as f:
+    manifest_py = json.load(f)
+
+pd.DataFrame({
+    "artifact_group": [
+        "GitHub-tracked teaching files",
+        "External or local-only files",
+    ],
+    "file_count": [
+        len(manifest_py["copied"]),
+        len(manifest_py["skipped"]),
+    ],
+    "size_mb": [
+        round(sum(x["size_bytes"] for x in manifest_py["copied"]) / 1024**2, 2),
+        round(sum(x["size_bytes"] for x in manifest_py["skipped"]) / 1024**2, 2),
+    ],
+})
+```
+
+:::
+
+The tracked teaching files include R and Python selected-model outputs, K-selection tables, directionality summaries, R/Python agreement summaries, and case-study figures. The skipped files include large H5ADs, RDS model objects, and checkpoint files. Those are documented in `data/artifact_manifest.json`.
+
+## **Discovery Set**
+
+The core CoGAPS analysis uses a balanced experimental discovery set rather than the entire published single-cell atlas. The discovery set has 4,800 cells and 5,000 highly variable genes. Cells are balanced across experimental samples so that the model is not dominated by a single high-yield sample.
+
+::: {.panel-tabset}
+
+## R
+
+```{r}
+#| label: discovery-composition-table-r
+composition <- readr::read_csv(
+  here::here("data", "processed", "figures", "source_tables",
+             "figure_02_discovery_set_composition_source.csv"),
+  show_col_types = FALSE
+)
+
+composition |>
+  group_by(timepoint_merged) |>
+  summarize(n_cells = sum(n_cells), .groups = "drop") |>
+  knitr::kable()
+```
+
+## Python
+
+```{python}
+#| label: discovery-composition-table-python
+composition_py = pd.read_csv(
+    "data/processed/figures/source_tables/"
+    "figure_02_discovery_set_composition_source.csv"
+)
+
+composition_py.groupby("timepoint_merged", as_index=False)["n_cells"].sum()
+```
+
+:::
 
 ***

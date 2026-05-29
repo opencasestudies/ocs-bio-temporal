@@ -1,11 +1,8 @@
-<u>**Statistical Learning Objectives:**</u>
+<u>**Statistical and Modeling Learning Objectives:**</u>
 
-<!--
-Enumerate the Statistical specific learning objectives here. (
-Can have more or less than 3 or be omitted completely dependent on the open case study overal topic).
-For an example, see this previous Open Case Study: https://www.opencasestudies.org/ocs-bp-co2-emissions/#Learning_Objectives
--->
-
-1. {Fill In}
-1. {Fill In}
-1. {Fill In}
+1. Interpret CoGAPS as two linked non-negative matrices: gene weights and cell pattern scores.
+1. Evaluate rank selection using stability, redundancy, temporal signal, interpretability, and biological plausibility rather than a single metric.
+1. Justify why the selected `K = 10` model is used for the main analysis while `K = 5` is retained as a sensitivity comparison.
+1. Read convergence and stability diagnostics such as chi-square traces, atom traces, snapshot counts, runtime, and total-update summaries.
+1. Distinguish a high non-negative pattern score from gene-expression direction.
+1. Use pseudobulk directionality analysis to evaluate whether top pattern genes increase or decrease relative to baseline.

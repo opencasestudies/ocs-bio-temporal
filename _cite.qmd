@@ -1,12 +1,8 @@
-<!--
-The reference block (specifically the inner_block) should be updated to reflect how this case study should be cited
--->
-
 :::{.reference_box}
 ::::{.reference_box_header}
 To cite this case study, please use:
 ::::
 ::::{.inner_block}
-{Fill In Authors}. {(YEAR)}. {github source url}. {Title} {(Version)}.
+Thomas, Oshane O. and Wright, Carrie and Isaacs, Kate. (2026). [https://github.com/opencasestudies/ocs-bio-temporal](https://github.com/opencasestudies/ocs-bio-temporal){target="_blank"}. Discovering Temporal Immune Programs with CoGAPS in Single-Cell Dengue Infection Data (Version 0.1.0).
 ::::
 :::

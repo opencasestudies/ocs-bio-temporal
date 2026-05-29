@@ -1,0 +1,388 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="600" viewBox="0 0 760 600">
+<style>text{font-family:Helvetica,Arial,sans-serif;font-size:11px;fill:#111827}.title{font-size:16px;font-weight:700}.small{font-size:10px;fill:#4b5563}</style>
+<rect width="100%" height="100%" fill="white"/>
+<text class="title" x="20" y="28">Pattern10 top gene directionality, all experimental cells</text>
+<text class="small" x="20" y="48">Color scale: blue=down, white=near 0, red=up; capped at +/-1.5 log2FC</text>
+<text text-anchor="middle" x="265.0" y="58">D2</text>
+<text text-anchor="middle" x="335.0" y="58">D4</text>
+<text text-anchor="middle" x="405.0" y="58">D6</text>
+<text text-anchor="middle" x="475.0" y="58">D8</text>
+<text text-anchor="middle" x="545.0" y="58">D10</text>
+<text text-anchor="middle" x="615.0" y="58">D14/15</text>
+<text text-anchor="middle" x="685.0" y="58">D28</text>
+<text text-anchor="end" x="222" y="83">Pattern10 1. CD74</text>
+<rect x="230" y="70" width="70" height="18" fill="#e6edfd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="83">-0.17</text>
+<rect x="300" y="70" width="70" height="18" fill="#ebf1fd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="83">-0.14</text>
+<rect x="370" y="70" width="70" height="18" fill="#f1f5fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="83">-0.10</text>
+<rect x="440" y="70" width="70" height="18" fill="#f6f8fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="83">-0.06</text>
+<rect x="510" y="70" width="70" height="18" fill="#eff4fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="83">-0.11</text>
+<rect x="580" y="70" width="70" height="18" fill="#c7d7fa" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="83">-0.38</text>
+<rect x="650" y="70" width="70" height="18" fill="#fcf6f6" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="83">0.06</text>
+<text text-anchor="end" x="222" y="101">Pattern10 2. EEF1A1</text>
+<rect x="230" y="88" width="70" height="18" fill="#fcf7f7" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="101">0.05</text>
+<rect x="300" y="88" width="70" height="18" fill="#fcf6f6" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="101">0.06</text>
+<rect x="370" y="88" width="70" height="18" fill="#faefef" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="101">0.11</text>
+<rect x="440" y="88" width="70" height="18" fill="#fefafa" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="101">0.03</text>
+<rect x="510" y="88" width="70" height="18" fill="#90b0f5" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="101">-0.76</text>
+<rect x="580" y="88" width="70" height="18" fill="#a5bef7" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="101">-0.62</text>
+<rect x="650" y="88" width="70" height="18" fill="#f2f5fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="101">-0.09</text>
+<text text-anchor="end" x="222" y="119">Pattern10 3. MALAT1</text>
+<rect x="230" y="106" width="70" height="18" fill="#fcf5f5" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="119">0.07</text>
+<rect x="300" y="106" width="70" height="18" fill="#fcf4f4" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="119">0.07</text>
+<rect x="370" y="106" width="70" height="18" fill="#fcf7f7" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="119">0.06</text>
+<rect x="440" y="106" width="70" height="18" fill="#edf2fd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="119">-0.13</text>
+<rect x="510" y="106" width="70" height="18" fill="#d4e0fb" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="119">-0.30</text>
+<rect x="580" y="106" width="70" height="18" fill="#e2eafc" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="119">-0.20</text>
+<rect x="650" y="106" width="70" height="18" fill="#f6f9fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="119">-0.06</text>
+<text text-anchor="end" x="222" y="137">Pattern10 4. HLA-DRA</text>
+<rect x="230" y="124" width="70" height="18" fill="#dae4fc" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="137">-0.26</text>
+<rect x="300" y="124" width="70" height="18" fill="#dfe8fc" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="137">-0.22</text>
+<rect x="370" y="124" width="70" height="18" fill="#e2eafc" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="137">-0.20</text>
+<rect x="440" y="124" width="70" height="18" fill="#f2f6fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="137">-0.09</text>
+<rect x="510" y="124" width="70" height="18" fill="#d4e0fb" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="137">-0.30</text>
+<rect x="580" y="124" width="70" height="18" fill="#85a8f4" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="137">-0.84</text>
+<rect x="650" y="124" width="70" height="18" fill="#fcf7f7" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="137">0.05</text>
+<text text-anchor="end" x="222" y="155">Pattern10 5. MT-CO2</text>
+<rect x="230" y="142" width="70" height="18" fill="#fcf7f7" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="155">0.06</text>
+<rect x="300" y="142" width="70" height="18" fill="#fffefe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="155">0.01</text>
+<rect x="370" y="142" width="70" height="18" fill="#fdf8f8" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="155">0.05</text>
+<rect x="440" y="142" width="70" height="18" fill="#f8fafe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="155">-0.05</text>
+<rect x="510" y="142" width="70" height="18" fill="#bed1f9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="155">-0.44</text>
+<rect x="580" y="142" width="70" height="18" fill="#cedcfa" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="155">-0.34</text>
+<rect x="650" y="142" width="70" height="18" fill="#f0f4fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="155">-0.11</text>
+<text text-anchor="end" x="222" y="173">Pattern10 6. MT-CO1</text>
+<rect x="230" y="160" width="70" height="18" fill="#fefbfb" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="173">0.03</text>
+<rect x="300" y="160" width="70" height="18" fill="#fbfcff" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="173">-0.03</text>
+<rect x="370" y="160" width="70" height="18" fill="#fdf9f9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="173">0.04</text>
+<rect x="440" y="160" width="70" height="18" fill="#f6f8fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="173">-0.07</text>
+<rect x="510" y="160" width="70" height="18" fill="#c5d6fa" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="173">-0.40</text>
+<rect x="580" y="160" width="70" height="18" fill="#9ab6f6" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="173">-0.70</text>
+<rect x="650" y="160" width="70" height="18" fill="#eaf0fd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="173">-0.15</text>
+<text text-anchor="end" x="222" y="191">Pattern10 7. HLA-DRB1</text>
+<rect x="230" y="178" width="70" height="18" fill="#d8e3fb" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="191">-0.27</text>
+<rect x="300" y="178" width="70" height="18" fill="#dce6fc" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="191">-0.24</text>
+<rect x="370" y="178" width="70" height="18" fill="#e0e9fc" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="191">-0.21</text>
+<rect x="440" y="178" width="70" height="18" fill="#f3f6fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="191">-0.08</text>
+<rect x="510" y="178" width="70" height="18" fill="#e8effd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="191">-0.16</text>
+<rect x="580" y="178" width="70" height="18" fill="#adc4f7" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="191">-0.57</text>
+<rect x="650" y="178" width="70" height="18" fill="#fefcfc" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="191">0.02</text>
+<text text-anchor="end" x="222" y="209">Pattern10 8. RPS8</text>
+<rect x="230" y="196" width="70" height="18" fill="#fefdfd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="209">0.01</text>
+<rect x="300" y="196" width="70" height="18" fill="#fcf6f6" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="209">0.06</text>
+<rect x="370" y="196" width="70" height="18" fill="#fcf5f5" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="209">0.07</text>
+<rect x="440" y="196" width="70" height="18" fill="#fefafa" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="209">0.03</text>
+<rect x="510" y="196" width="70" height="18" fill="#93b2f5" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="209">-0.74</text>
+<rect x="580" y="196" width="70" height="18" fill="#a5bef7" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="209">-0.62</text>
+<rect x="650" y="196" width="70" height="18" fill="#f2f5fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="209">-0.09</text>
+<text text-anchor="end" x="222" y="227">Pattern10 9. RPS12</text>
+<rect x="230" y="214" width="70" height="18" fill="#fdf7f7" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="227">0.05</text>
+<rect x="300" y="214" width="70" height="18" fill="#faeeee" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="227">0.11</text>
+<rect x="370" y="214" width="70" height="18" fill="#f9ecec" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="227">0.12</text>
+<rect x="440" y="214" width="70" height="18" fill="#fbf1f1" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="227">0.10</text>
+<rect x="510" y="214" width="70" height="18" fill="#bfd1f9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="227">-0.44</text>
+<rect x="580" y="214" width="70" height="18" fill="#d2dffb" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="227">-0.31</text>
+<rect x="650" y="214" width="70" height="18" fill="#fdf9f9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="227">0.04</text>
+<text text-anchor="end" x="222" y="245">Pattern10 10. MT-ATP6</text>
+<rect x="230" y="232" width="70" height="18" fill="#fbf3f3" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="245">0.08</text>
+<rect x="300" y="232" width="70" height="18" fill="#fcf6f6" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="245">0.06</text>
+<rect x="370" y="232" width="70" height="18" fill="#fcf4f4" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="245">0.07</text>
+<rect x="440" y="232" width="70" height="18" fill="#f6f9fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="245">-0.06</text>
+<rect x="510" y="232" width="70" height="18" fill="#9bb7f6" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="245">-0.69</text>
+<rect x="580" y="232" width="70" height="18" fill="#a3bdf7" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="245">-0.63</text>
+<rect x="650" y="232" width="70" height="18" fill="#d0ddfb" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="245">-0.32</text>
+<text text-anchor="end" x="222" y="263">Pattern10 11. MT-CO3</text>
+<rect x="230" y="250" width="70" height="18" fill="#fcf6f6" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="263">0.06</text>
+<rect x="300" y="250" width="70" height="18" fill="#fefdfd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="263">0.01</text>
+<rect x="370" y="250" width="70" height="18" fill="#fcf6f6" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="263">0.06</text>
+<rect x="440" y="250" width="70" height="18" fill="#f6f8fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="263">-0.06</text>
+<rect x="510" y="250" width="70" height="18" fill="#a8c0f7" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="263">-0.60</text>
+<rect x="580" y="250" width="70" height="18" fill="#9fbbf6" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="263">-0.66</text>
+<rect x="650" y="250" width="70" height="18" fill="#dfe8fc" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="263">-0.22</text>
+<text text-anchor="end" x="222" y="281">Pattern10 12. MT-ND3</text>
+<rect x="230" y="268" width="70" height="18" fill="#fefeff" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="281">-0.01</text>
+<rect x="300" y="268" width="70" height="18" fill="#f8fafe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="281">-0.05</text>
+<rect x="370" y="268" width="70" height="18" fill="#f3f6fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="281">-0.09</text>
+<rect x="440" y="268" width="70" height="18" fill="#e6edfd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="281">-0.17</text>
+<rect x="510" y="268" width="70" height="18" fill="#95b3f5" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="281">-0.73</text>
+<rect x="580" y="268" width="70" height="18" fill="#8bacf4" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="281">-0.80</text>
+<rect x="650" y="268" width="70" height="18" fill="#c1d2f9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="281">-0.43</text>
+<text text-anchor="end" x="222" y="299">Pattern10 13. MT-ND4L</text>
+<rect x="230" y="286" width="70" height="18" fill="#fbf2f2" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="299">0.08</text>
+<rect x="300" y="286" width="70" height="18" fill="#fbf2f2" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="299">0.08</text>
+<rect x="370" y="286" width="70" height="18" fill="#fbf2f2" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="299">0.08</text>
+<rect x="440" y="286" width="70" height="18" fill="#fbfcff" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="299">-0.03</text>
+<rect x="510" y="286" width="70" height="18" fill="#9db9f6" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="299">-0.67</text>
+<rect x="580" y="286" width="70" height="18" fill="#b1c7f8" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="299">-0.54</text>
+<rect x="650" y="286" width="70" height="18" fill="#e7eefd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="299">-0.17</text>
+<text text-anchor="end" x="222" y="317">Pattern10 14. B2M</text>
+<rect x="230" y="304" width="70" height="18" fill="#fcf6f6" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="317">0.06</text>
+<rect x="300" y="304" width="70" height="18" fill="#fcfdff" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="317">-0.02</text>
+<rect x="370" y="304" width="70" height="18" fill="#fcf6f6" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="317">0.06</text>
+<rect x="440" y="304" width="70" height="18" fill="#faefef" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="317">0.10</text>
+<rect x="510" y="304" width="70" height="18" fill="#eec7c7" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="317">0.37</text>
+<rect x="580" y="304" width="70" height="18" fill="#e7b0b0" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="317">0.52</text>
+<rect x="650" y="304" width="70" height="18" fill="#f7e6e6" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="317">0.17</text>
+<text text-anchor="end" x="222" y="335">Pattern10 15. MT-CYB</text>
+<rect x="230" y="322" width="70" height="18" fill="#fcf5f5" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="335">0.07</text>
+<rect x="300" y="322" width="70" height="18" fill="#fdf8f8" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="335">0.05</text>
+<rect x="370" y="322" width="70" height="18" fill="#fcf5f5" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="335">0.06</text>
+<rect x="440" y="322" width="70" height="18" fill="#fbfcff" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="335">-0.03</text>
+<rect x="510" y="322" width="70" height="18" fill="#83a6f4" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="335">-0.85</text>
+<rect x="580" y="322" width="70" height="18" fill="#87a9f4" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="335">-0.82</text>
+<rect x="650" y="322" width="70" height="18" fill="#d8e3fb" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="335">-0.27</text>
+<text text-anchor="end" x="222" y="353">Pattern10 16. HLA-DPB1</text>
+<rect x="230" y="340" width="70" height="18" fill="#dce6fc" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="353">-0.24</text>
+<rect x="300" y="340" width="70" height="18" fill="#e5edfd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="353">-0.18</text>
+<rect x="370" y="340" width="70" height="18" fill="#e6edfd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="353">-0.17</text>
+<rect x="440" y="340" width="70" height="18" fill="#eff4fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="353">-0.11</text>
+<rect x="510" y="340" width="70" height="18" fill="#bfd1f9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="353">-0.44</text>
+<rect x="580" y="340" width="70" height="18" fill="#8eaef5" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="353">-0.78</text>
+<rect x="650" y="340" width="70" height="18" fill="#fffefe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="353">0.01</text>
+<text text-anchor="end" x="222" y="371">Pattern10 17. HLA-DPA1</text>
+<rect x="230" y="358" width="70" height="18" fill="#e6edfd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="371">-0.17</text>
+<rect x="300" y="358" width="70" height="18" fill="#e2ebfc" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="371">-0.20</text>
+<rect x="370" y="358" width="70" height="18" fill="#e8effd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="371">-0.16</text>
+<rect x="440" y="358" width="70" height="18" fill="#f9fbfe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="371">-0.04</text>
+<rect x="510" y="358" width="70" height="18" fill="#e8effd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="371">-0.16</text>
+<rect x="580" y="358" width="70" height="18" fill="#a6bff7" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="371">-0.61</text>
+<rect x="650" y="358" width="70" height="18" fill="#f8e7e7" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="371">0.16</text>
+<text text-anchor="end" x="222" y="389">Pattern10 18. HLA-B</text>
+<rect x="230" y="376" width="70" height="18" fill="#fdf9f9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="389">0.04</text>
+<rect x="300" y="376" width="70" height="18" fill="#f3f7fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="389">-0.08</text>
+<rect x="370" y="376" width="70" height="18" fill="#fefcfc" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="389">0.02</text>
+<rect x="440" y="376" width="70" height="18" fill="#fdf9f9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="389">0.04</text>
+<rect x="510" y="376" width="70" height="18" fill="#f3d9d9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="389">0.25</text>
+<rect x="580" y="376" width="70" height="18" fill="#e8b6b6" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="389">0.48</text>
+<rect x="650" y="376" width="70" height="18" fill="#fcf4f4" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="389">0.07</text>
+<text text-anchor="end" x="222" y="407">Pattern10 19. PTMA</text>
+<rect x="230" y="394" width="70" height="18" fill="#fdf8f8" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="407">0.05</text>
+<rect x="300" y="394" width="70" height="18" fill="#fefafa" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="407">0.03</text>
+<rect x="370" y="394" width="70" height="18" fill="#fbf3f3" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="407">0.08</text>
+<rect x="440" y="394" width="70" height="18" fill="#fbf2f2" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="407">0.09</text>
+<rect x="510" y="394" width="70" height="18" fill="#fcfcff" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="407">-0.02</text>
+<rect x="580" y="394" width="70" height="18" fill="#f2d6d6" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="407">0.27</text>
+<rect x="650" y="394" width="70" height="18" fill="#f5dfdf" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="407">0.21</text>
+<text text-anchor="end" x="222" y="425">Pattern10 20. RPS2</text>
+<rect x="230" y="412" width="70" height="18" fill="#f7f9fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="425">-0.06</text>
+<rect x="300" y="412" width="70" height="18" fill="#fbf1f1" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="425">0.09</text>
+<rect x="370" y="412" width="70" height="18" fill="#fefbfb" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="425">0.02</text>
+<rect x="440" y="412" width="70" height="18" fill="#f6e2e2" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="425">0.19</text>
+<rect x="510" y="412" width="70" height="18" fill="#aec5f8" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="425">-0.56</text>
+<rect x="580" y="412" width="70" height="18" fill="#c1d2f9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="425">-0.43</text>
+<rect x="650" y="412" width="70" height="18" fill="#f4f7fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="425">-0.08</text>
+<text text-anchor="end" x="222" y="443">Pattern10 21. RPLP0</text>
+<rect x="230" y="430" width="70" height="18" fill="#fdf9f9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="443">0.04</text>
+<rect x="300" y="430" width="70" height="18" fill="#fcf5f5" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="443">0.07</text>
+<rect x="370" y="430" width="70" height="18" fill="#faeeee" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="443">0.11</text>
+<rect x="440" y="430" width="70" height="18" fill="#faefef" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="443">0.11</text>
+<rect x="510" y="430" width="70" height="18" fill="#bacef9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="443">-0.47</text>
+<rect x="580" y="430" width="70" height="18" fill="#e9f0fd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="443">-0.15</text>
+<rect x="650" y="430" width="70" height="18" fill="#fdf9f9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="443">0.04</text>
+<text text-anchor="end" x="222" y="461">Pattern10 22. MT-ND1</text>
+<rect x="230" y="448" width="70" height="18" fill="#fdfeff" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="461">-0.01</text>
+<rect x="300" y="448" width="70" height="18" fill="#eff4fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="461">-0.11</text>
+<rect x="370" y="448" width="70" height="18" fill="#f8fafe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="461">-0.05</text>
+<rect x="440" y="448" width="70" height="18" fill="#e7eefd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="461">-0.16</text>
+<rect x="510" y="448" width="70" height="18" fill="#b6cbf8" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="461">-0.50</text>
+<rect x="580" y="448" width="70" height="18" fill="#abc3f7" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="461">-0.58</text>
+<rect x="650" y="448" width="70" height="18" fill="#dee7fc" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="461">-0.23</text>
+<text text-anchor="end" x="222" y="479">Pattern10 23. TMSB10</text>
+<rect x="230" y="466" width="70" height="18" fill="#fdf9f9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="479">0.04</text>
+<rect x="300" y="466" width="70" height="18" fill="#fefeff" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="479">-0.01</text>
+<rect x="370" y="466" width="70" height="18" fill="#fcfdff" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="479">-0.02</text>
+<rect x="440" y="466" width="70" height="18" fill="#fefdfd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="479">0.01</text>
+<rect x="510" y="466" width="70" height="18" fill="#efcaca" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="479">0.35</text>
+<rect x="580" y="466" width="70" height="18" fill="#e9b9b9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="479">0.46</text>
+<rect x="650" y="466" width="70" height="18" fill="#f8e8e8" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="479">0.15</text>
+<text text-anchor="end" x="222" y="497">Pattern10 24. HLA-DRB5</text>
+<rect x="230" y="484" width="70" height="18" fill="#e1eafc" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="497">-0.21</text>
+<rect x="300" y="484" width="70" height="18" fill="#dce6fc" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="497">-0.24</text>
+<rect x="370" y="484" width="70" height="18" fill="#e1eafc" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="497">-0.20</text>
+<rect x="440" y="484" width="70" height="18" fill="#f5f8fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="497">-0.07</text>
+<rect x="510" y="484" width="70" height="18" fill="#f3f7fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="497">-0.08</text>
+<rect x="580" y="484" width="70" height="18" fill="#adc5f8" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="497">-0.56</text>
+<rect x="650" y="484" width="70" height="18" fill="#fcf6f6" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="497">0.06</text>
+<text text-anchor="end" x="222" y="515">Pattern10 25. MT-ND4</text>
+<rect x="230" y="502" width="70" height="18" fill="#fcf6f6" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="515">0.06</text>
+<rect x="300" y="502" width="70" height="18" fill="#fefdfd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="515">0.02</text>
+<rect x="370" y="502" width="70" height="18" fill="#fbf4f4" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="515">0.08</text>
+<rect x="440" y="502" width="70" height="18" fill="#f2f6fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="515">-0.09</text>
+<rect x="510" y="502" width="70" height="18" fill="#97b5f5" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="515">-0.71</text>
+<rect x="580" y="502" width="70" height="18" fill="#7fa3f3" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="515">-0.88</text>
+<rect x="650" y="502" width="70" height="18" fill="#cfddfb" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="515">-0.33</text>
+</svg>

@@ -1,0 +1,22 @@
+[RUN] Starting selected R CoGAPS model K10_seed2_iter2000
+[RUN] discovery_h5ad=/home/rstudio/project/data/cs5_sweep_results/cache/gse154386_experimental_discovery_cells_x_genes.h5ad
+[RUN] outdir=/home/rstudio/project/cs5_analysis_workspace/GSE154386/cogaps_r_revised_model_K10_seed2_iter2000
+
+This is CoGAPS version 3.22.0 
+Running Standard CoGAPS on data_matrix (5000 genes and 4800 samples) with parameters:
+
+-- Standard Parameters --
+nPatterns            10 
+nIterations          2000 
+seed                 2 
+sparseOptimization   TRUE 
+
+-- Sparsity Parameters --
+alpha          0.01 
+maxGibbsMass   100 
+
+[DONE] K10_seed2_iter2000 finished in 24.28 min
+[DONE] metrics=/home/rstudio/project/cs5_analysis_workspace/GSE154386/cogaps_r_revised_model_K10_seed2_iter2000/cogaps_K10_seed2_iter2000.metrics.json
+Warning message:
+In checkInputs(data, uncertainty, allParams) :
+  Snapshots slow down computation and should only be used for testing

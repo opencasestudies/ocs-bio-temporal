@@ -1,20 +1,48 @@
-<!--
-Describe the main biological questions for this case study.
-What will our analysis aim to answer? There can be more than 2.
-Fill them in within the inner_block section, but leave the custom box syntax
-See this previous case study as an example: https://www.opencasestudies.org/ocs-bp-co2-emissions/#Main_Questions
--->
-
-# **Main Question**
+# **Main Questions**
 ***
 
-:::{.main_question}
-::::{.main_question_header}
-Our main question(s)
-::::
-::::{.inner_block}
-1. Question 1
-1. Question 2
-::::
-:::
+You will use the selected `K = 10` CoGAPS model to answer three connected research questions about the experimental dengue infection time course. Each question is paired with the evidence you will inspect later in the case study.
+
+<table>
+  <colgroup>
+    <col style="width: 150px;">
+    <col>
+    <col>
+  </colgroup>
+  <thead>
+    <tr>
+      <th></th>
+      <th>Research question</th>
+      <th>Evidence you will inspect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img src="assets/question_icons/rq1_temporal_programs.png" alt="Icon showing immune cells, a pattern heatmap, and temporal trajectories." width="140"></td>
+      <td><strong>Question 1</strong><br>Which temporal immune programs appear across the experimental dengue time course?</td>
+      <td>You will answer this by ranking CoGAPS patterns by temporal variation, then checking pattern-by-day summaries and subject-level trajectories.</td>
+    </tr>
+    <tr>
+      <td><img src="assets/question_icons/rq2_identity_activity.png" alt="Icon showing multiple immune-cell identities and dynamic response trajectories." width="140"></td>
+      <td><strong>Question 2</strong><br>Which programs reflect PBMC identity, dynamic infection activity, or both?</td>
+      <td>You will compare variation explained by broad immune-cell type with variation explained by infection day, then inspect top genes and pattern-use heatmaps.</td>
+    </tr>
+    <tr>
+      <td><img src="assets/question_icons/rq3_interferon_response.png" alt="Icon showing antiviral signaling, immune cells, and a peak in a temporal trajectory." width="140"></td>
+      <td><strong>Question 3</strong><br>Which program is most consistent with an interferon-associated late acute response?</td>
+      <td>You will combine IFN-score correlation, interferon-stimulated top genes, day 10 and day 14/15 trajectories, and pseudobulk directionality relative to baseline.</td>
+    </tr>
+  </tbody>
+</table>
+
+The selected `K = 10` model is used for the main answers. The `K = 5` model is kept as a sensitivity comparison because it shows how a lower-rank model can compress biologically distinct signals.
+
+Use this evidence map as a guide as you move through the analysis:
+
+| Question | Main evidence | Where it appears |
+|---|---|---|
+| Question 1: temporal programs | Pattern-by-day summaries, subject-level summaries, temporal effect sizes, and pattern trajectories | Data Analysis |
+| Question 2: identity versus activity | Broad-cell-type effect sizes, timepoint effect sizes, top genes, and pattern heatmaps | Data Analysis |
+| Question 3: IFN-associated response | IFN-score correlation, IFN-stimulated top genes, late acute trajectory, and pseudobulk directionality | Data Analysis |
+
 ***

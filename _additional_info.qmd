@@ -1,19 +1,39 @@
 # **Additional Information**
 ***
 
-<!--
-Use this section to provide any additional information or resources on the topic and methods covered in the case study
--->
-
 ## **Helpful Links**
-***
 
-<u>Terms and concepts covered:</u>
+- [GEO accession GSE154386](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE154386){target="_blank"}
+- [Open Case Studies Guide](https://www.opencasestudies.org/OCS_Guide/){target="_blank"}
+- [CoGAPS Bioconductor package](https://bioconductor.org/packages/CoGAPS){target="_blank"}
+- [PyCoGAPS GitHub repository](https://github.com/FertigLab/pycogaps){target="_blank"}
+- [AnnData documentation](https://anndata.readthedocs.io/){target="_blank"}
+- [Scanpy documentation](https://scanpy.readthedocs.io/){target="_blank"}
 
-<u>Packages used in this case study: </u>
+## **Concepts Covered**
 
-<!--
-Automatically include the packages table from _packages.qmd?
--->
+- longitudinal single-cell RNA-seq
+- PBMC immune-cell composition
+- non-negative matrix factorization
+- Bayesian matrix factorization
+- latent transcriptional programs
+- identity-like and activity-like programs
+- rank selection
+- stability plateau
+- interferon-stimulated genes
+- pseudobulk directionality
+- R and Python reproducibility
+- GitHub-safe teaching artifacts
+
+## **Key Scientific and Methodological References**
+
+- Waickman et al. 2021, source dengue PBMC study and GEO data.
+- Fertig et al. 2014, temporal CoGAPS precedent for time-course transcriptomics.
+- Kotliar et al. 2019, identity and activity program framing.
+- Stein-O'Brien et al. 2019, scCoGAPS and transfer learning.
+- Sharma et al. 2020, projectR transfer-learning framework.
+- Johnson et al. 2023, practical CoGAPS protocol guidance.
+
+Full citation formatting should be finalized before publication.
 
 ***

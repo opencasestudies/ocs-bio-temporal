@@ -1,0 +1,38 @@
+{
+  "created_utc": "2026-05-27T04:55:52+00:00",
+  "model_outdir": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/cogaps_r_revised_model_K10_seed2_iter2000",
+  "comparison_outdir": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/cogaps_revised_model_comparison_K10_seed2_iter2000",
+  "k_selection_outdir": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/revised_k_selection_K10",
+  "directionality_dir": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000",
+  "run_stem": "cogaps_K10_seed2_iter2000",
+  "n_cells": 4800,
+  "n_subjects": 3,
+  "n_timepoints": 8,
+  "n_broad_cell_types": 6,
+  "patterns": [
+    "Pattern1",
+    "Pattern2",
+    "Pattern3",
+    "Pattern4",
+    "Pattern5",
+    "Pattern6",
+    "Pattern7",
+    "Pattern8",
+    "Pattern9",
+    "Pattern10"
+  ],
+  "ifn_candidate_patterns": [
+    "Pattern3"
+  ],
+  "r_python_agreement": {
+    "mean_matched_gene_loading_spearman": 1.0,
+    "mean_matched_cell_score_spearman": 1.0,
+    "mean_matched_top_50_gene_jaccard": 1.0
+  },
+  "outputs": {
+    "subject_level_dir": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/k10_interpretation_layer/subject_level",
+    "pattern_summaries_dir": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/k10_interpretation_layer/pattern_summaries",
+    "rq_tables_dir": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/k10_interpretation_layer/rq_tables",
+    "pattern_annotation_table": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/k10_interpretation_layer/pattern_annotation_table.csv"
+  }
+}

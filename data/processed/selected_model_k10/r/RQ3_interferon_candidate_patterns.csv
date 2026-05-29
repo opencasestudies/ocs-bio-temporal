@@ -1,0 +1,2 @@
+"pattern","kruskal_time_stat","kruskal_time_p","eta_timepoint","eta_broad_cell_type","pattern_class","spearman_ifn_score_rho","spearman_ifn_score_p","peak_timepoint","ifn_top_gene_overlap_top15","candidate_ifn_pattern","kruskal_time_p_adj","ifn_score_p_adj"
+"Pattern3",2121.29496807925,0,0.454036194393983,0.164629605915765,"activity-like",0.75600666168997,0,"D10",6,TRUE,0,0

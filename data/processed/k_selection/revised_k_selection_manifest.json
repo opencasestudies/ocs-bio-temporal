@@ -1,0 +1,53 @@
+{
+  "created_at_utc": "2026-05-27T04:10:56+00:00",
+  "outputs": {
+    "plateau_biology_signals": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/revised_k_selection_K10/figures/plateau_biology_signals.png",
+    "plateau_candidates": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/revised_k_selection_K10/stability_plateau_candidates.csv",
+    "representative_patterns": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/revised_k_selection_K10/representative_K10_seed2_iter2000_patterns.csv",
+    "revised_k_goal_aligned_score": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/revised_k_selection_K10/figures/revised_k_goal_aligned_score.png",
+    "selected_pairwise_reproducibility": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/revised_k_selection_K10/selected_pairwise_reproducibility.csv",
+    "stability_vs_temporal_effect": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/revised_k_selection_K10/figures/stability_vs_temporal_effect.png",
+    "summary_by_k": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/revised_k_selection_K10/revised_k_selection_summary_by_k.csv"
+  },
+  "plateau_threshold": 0.966169719254858,
+  "previous_chosen_k": 5,
+  "previous_selected_n_iter": 8000,
+  "revised_chosen_k": 10,
+  "revised_seed": 2,
+  "revised_selected_n_iter": 2000,
+  "selection_rule": "smallest stability-plateau K with at least one IFN-candidate activity-like temporal program",
+  "source_files": {
+    "pairwise_reproducibility": "/Users/othomas/Desktop/CS5_sweep_results/pairwise_reproducibility.csv",
+    "per_run_metrics": "/Users/othomas/Desktop/CS5_sweep_results/per_run_metrics.csv",
+    "representative_pattern_summary": "/Users/othomas/Desktop/CS5_sweep_results/runs/cogaps_K10_seed2_iter2000.pattern_summary.csv",
+    "summary_by_K": "/Users/othomas/Desktop/CS5_sweep_results/summary_by_K.csv",
+    "summary_by_k_n_iter": "/Users/othomas/Desktop/CS5_sweep_results/summary_by_k_n_iter.csv"
+  },
+  "sweep_dir": "/Users/othomas/Desktop/CS5_sweep_results",
+  "top_candidate_pattern": {
+    "eta_broad_cell_type": 0.1605361871957666,
+    "eta_timepoint": 0.4613101103253337,
+    "ifn_top_gene_overlap_top15": 6,
+    "pattern": "Pattern5",
+    "pattern_class": "activity-like",
+    "peak_timepoint": "D10",
+    "spearman_ifn_score_rho": 0.7567624276598833,
+    "top_15_genes": [
+      "LY6E",
+      "IFITM1",
+      "ISG15",
+      "IFITM2",
+      "IFI6",
+      "IFITM3",
+      "MX1",
+      "PSME2",
+      "IRF7",
+      "XAF1",
+      "HLA-A",
+      "B2M",
+      "MT2A",
+      "MYL12A",
+      "IFI44L"
+    ]
+  }
+}

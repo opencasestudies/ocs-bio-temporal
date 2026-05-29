@@ -1,0 +1,5 @@
+2026-05-27 04:11:10,979 | INFO | [RUN] Starting selected PyCoGAPS model K10_seed2_iter2000
+2026-05-27 04:11:10,979 | INFO | [RUN] cogaps_input_h5ad=/home/rstudio/project/data/cs5_sweep_results/cache/gse154386_experimental_discovery_genes_x_cells.h5ad
+2026-05-27 04:11:10,979 | INFO | [RUN] discovery_h5ad=/home/rstudio/project/data/cs5_sweep_results/cache/gse154386_experimental_discovery_cells_x_genes.h5ad
+2026-05-27 04:35:15,045 | INFO | [DONE] K10_seed2_iter2000 finished in 24.07 min
+2026-05-27 04:35:15,046 | INFO | [DONE] metrics=/home/rstudio/project/cs5_analysis_workspace/GSE154386/cogaps_python_revised_model_K10_seed2_iter2000/cogaps_K10_seed2_iter2000.metrics.json

@@ -1,0 +1,388 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="600" viewBox="0 0 760 600">
+<style>text{font-family:Helvetica,Arial,sans-serif;font-size:11px;fill:#111827}.title{font-size:16px;font-weight:700}.small{font-size:10px;fill:#4b5563}</style>
+<rect width="100%" height="100%" fill="white"/>
+<text class="title" x="20" y="28">Pattern3 top gene directionality, all experimental cells</text>
+<text class="small" x="20" y="48">Color scale: blue=down, white=near 0, red=up; capped at +/-1.5 log2FC</text>
+<text text-anchor="middle" x="265.0" y="58">D2</text>
+<text text-anchor="middle" x="335.0" y="58">D4</text>
+<text text-anchor="middle" x="405.0" y="58">D6</text>
+<text text-anchor="middle" x="475.0" y="58">D8</text>
+<text text-anchor="middle" x="545.0" y="58">D10</text>
+<text text-anchor="middle" x="615.0" y="58">D14/15</text>
+<text text-anchor="middle" x="685.0" y="58">D28</text>
+<text text-anchor="end" x="222" y="83">Pattern3 1. LY6E</text>
+<rect x="230" y="70" width="70" height="18" fill="#fdf7f7" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="83">0.05</text>
+<rect x="300" y="70" width="70" height="18" fill="#e3ebfc" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="83">-0.20</text>
+<rect x="370" y="70" width="70" height="18" fill="#eaf0fd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="83">-0.14</text>
+<rect x="440" y="70" width="70" height="18" fill="#f3d9d9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="83">0.25</text>
+<rect x="510" y="70" width="70" height="18" fill="#b91c1c" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="83">2.50</text>
+<rect x="580" y="70" width="70" height="18" fill="#b91c1c" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="83">2.30</text>
+<rect x="650" y="70" width="70" height="18" fill="#e9b6b6" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="83">0.48</text>
+<text text-anchor="end" x="222" y="101">Pattern3 2. ISG15</text>
+<rect x="230" y="88" width="70" height="18" fill="#dbe5fc" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="101">-0.25</text>
+<rect x="300" y="88" width="70" height="18" fill="#c2d4f9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="101">-0.42</text>
+<rect x="370" y="88" width="70" height="18" fill="#e1e9fc" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="101">-0.21</text>
+<rect x="440" y="88" width="70" height="18" fill="#f8e8e8" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="101">0.16</text>
+<rect x="510" y="88" width="70" height="18" fill="#b91c1c" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="101">3.13</text>
+<rect x="580" y="88" width="70" height="18" fill="#b91c1c" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="101">2.97</text>
+<rect x="650" y="88" width="70" height="18" fill="#edc4c4" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="101">0.39</text>
+<text text-anchor="end" x="222" y="119">Pattern3 3. IFITM1</text>
+<rect x="230" y="106" width="70" height="18" fill="#f6e3e3" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="119">0.18</text>
+<rect x="300" y="106" width="70" height="18" fill="#fdf7f7" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="119">0.05</text>
+<rect x="370" y="106" width="70" height="18" fill="#fbf2f2" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="119">0.09</text>
+<rect x="440" y="106" width="70" height="18" fill="#f2d5d5" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="119">0.28</text>
+<rect x="510" y="106" width="70" height="18" fill="#b91c1c" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="119">1.97</text>
+<rect x="580" y="106" width="70" height="18" fill="#b91c1c" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="119">2.04</text>
+<rect x="650" y="106" width="70" height="18" fill="#eec8c8" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="119">0.37</text>
+<text text-anchor="end" x="222" y="137">Pattern3 4. IFITM2</text>
+<rect x="230" y="124" width="70" height="18" fill="#f7e6e6" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="137">0.16</text>
+<rect x="300" y="124" width="70" height="18" fill="#e5ecfd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="137">-0.18</text>
+<rect x="370" y="124" width="70" height="18" fill="#fafbff" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="137">-0.04</text>
+<rect x="440" y="124" width="70" height="18" fill="#fcf6f6" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="137">0.06</text>
+<rect x="510" y="124" width="70" height="18" fill="#c74a4a" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="137">1.20</text>
+<rect x="580" y="124" width="70" height="18" fill="#bd2929" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="137">1.41</text>
+<rect x="650" y="124" width="70" height="18" fill="#f0cfcf" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="137">0.32</text>
+<text text-anchor="end" x="222" y="155">Pattern3 5. IFI6</text>
+<rect x="230" y="142" width="70" height="18" fill="#fbfcff" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="155">-0.03</text>
+<rect x="300" y="142" width="70" height="18" fill="#ccdafa" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="155">-0.35</text>
+<rect x="370" y="142" width="70" height="18" fill="#e1eafc" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="155">-0.20</text>
+<rect x="440" y="142" width="70" height="18" fill="#efcdcd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="155">0.33</text>
+<rect x="510" y="142" width="70" height="18" fill="#b91c1c" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="155">3.81</text>
+<rect x="580" y="142" width="70" height="18" fill="#b91c1c" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="155">2.80</text>
+<rect x="650" y="142" width="70" height="18" fill="#eababa" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="155">0.46</text>
+<text text-anchor="end" x="222" y="173">Pattern3 6. IFITM3</text>
+<rect x="230" y="160" width="70" height="18" fill="#fbf3f3" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="173">0.08</text>
+<rect x="300" y="160" width="70" height="18" fill="#cfddfb" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="173">-0.33</text>
+<rect x="370" y="160" width="70" height="18" fill="#e1eafc" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="173">-0.21</text>
+<rect x="440" y="160" width="70" height="18" fill="#f9ebeb" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="173">0.13</text>
+<rect x="510" y="160" width="70" height="18" fill="#b91c1c" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="173">2.39</text>
+<rect x="580" y="160" width="70" height="18" fill="#b91c1c" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="173">2.16</text>
+<rect x="650" y="160" width="70" height="18" fill="#efcccc" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="173">0.33</text>
+<text text-anchor="end" x="222" y="191">Pattern3 7. MX1</text>
+<rect x="230" y="178" width="70" height="18" fill="#d7e3fb" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="191">-0.27</text>
+<rect x="300" y="178" width="70" height="18" fill="#a7c0f7" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="191">-0.60</text>
+<rect x="370" y="178" width="70" height="18" fill="#c8d8fa" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="191">-0.38</text>
+<rect x="440" y="178" width="70" height="18" fill="#fdf9f9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="191">0.04</text>
+<rect x="510" y="178" width="70" height="18" fill="#b91c1c" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="191">2.32</text>
+<rect x="580" y="178" width="70" height="18" fill="#b91c1c" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="191">2.13</text>
+<rect x="650" y="178" width="70" height="18" fill="#b8ccf8" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="191">-0.49</text>
+<text text-anchor="end" x="222" y="209">Pattern3 8. PSME2</text>
+<rect x="230" y="196" width="70" height="18" fill="#fdf9f9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="209">0.04</text>
+<rect x="300" y="196" width="70" height="18" fill="#e9f0fd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="209">-0.15</text>
+<rect x="370" y="196" width="70" height="18" fill="#f4f7fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="209">-0.08</text>
+<rect x="440" y="196" width="70" height="18" fill="#f8e9e9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="209">0.14</text>
+<rect x="510" y="196" width="70" height="18" fill="#c64545" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="209">1.23</text>
+<rect x="580" y="196" width="70" height="18" fill="#b91c1c" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="209">1.56</text>
+<rect x="650" y="196" width="70" height="18" fill="#f2d5d5" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="209">0.28</text>
+<text text-anchor="end" x="222" y="227">Pattern3 9. IRF7</text>
+<rect x="230" y="214" width="70" height="18" fill="#e9effd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="227">-0.15</text>
+<rect x="300" y="214" width="70" height="18" fill="#bacdf9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="227">-0.48</text>
+<rect x="370" y="214" width="70" height="18" fill="#ebf1fd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="227">-0.14</text>
+<rect x="440" y="214" width="70" height="18" fill="#fafbff" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="227">-0.03</text>
+<rect x="510" y="214" width="70" height="18" fill="#b91c1c" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="227">1.80</text>
+<rect x="580" y="214" width="70" height="18" fill="#b91c1c" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="227">1.61</text>
+<rect x="650" y="214" width="70" height="18" fill="#fefdfd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="227">0.01</text>
+<text text-anchor="end" x="222" y="245">Pattern3 10. XAF1</text>
+<rect x="230" y="232" width="70" height="18" fill="#e7eefd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="245">-0.16</text>
+<rect x="300" y="232" width="70" height="18" fill="#abc3f7" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="245">-0.58</text>
+<rect x="370" y="232" width="70" height="18" fill="#c3d4f9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="245">-0.42</text>
+<rect x="440" y="232" width="70" height="18" fill="#f3f6fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="245">-0.08</text>
+<rect x="510" y="232" width="70" height="18" fill="#b91c1c" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="245">2.94</text>
+<rect x="580" y="232" width="70" height="18" fill="#b91c1c" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="245">2.84</text>
+<rect x="650" y="232" width="70" height="18" fill="#f3d7d7" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="245">0.27</text>
+<text text-anchor="end" x="222" y="263">Pattern3 11. HLA-A</text>
+<rect x="230" y="250" width="70" height="18" fill="#fdf7f7" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="263">0.05</text>
+<rect x="300" y="250" width="70" height="18" fill="#f8fafe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="263">-0.04</text>
+<rect x="370" y="250" width="70" height="18" fill="#fbf3f3" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="263">0.08</text>
+<rect x="440" y="250" width="70" height="18" fill="#faeeee" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="263">0.11</text>
+<rect x="510" y="250" width="70" height="18" fill="#f1d1d1" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="263">0.31</text>
+<rect x="580" y="250" width="70" height="18" fill="#e2a2a2" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="263">0.61</text>
+<rect x="650" y="250" width="70" height="18" fill="#faefef" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="263">0.11</text>
+<text text-anchor="end" x="222" y="281">Pattern3 12. MT2A</text>
+<rect x="230" y="268" width="70" height="18" fill="#fbf2f2" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="281">0.08</text>
+<rect x="300" y="268" width="70" height="18" fill="#eef3fd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="281">-0.12</text>
+<rect x="370" y="268" width="70" height="18" fill="#fcf4f4" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="281">0.07</text>
+<rect x="440" y="268" width="70" height="18" fill="#f9ebeb" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="281">0.13</text>
+<rect x="510" y="268" width="70" height="18" fill="#be2c2c" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="281">1.39</text>
+<rect x="580" y="268" width="70" height="18" fill="#b91c1c" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="281">1.52</text>
+<rect x="650" y="268" width="70" height="18" fill="#f6e3e3" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="281">0.19</text>
+<text text-anchor="end" x="222" y="299">Pattern3 13. B2M</text>
+<rect x="230" y="286" width="70" height="18" fill="#fcf6f6" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="299">0.06</text>
+<rect x="300" y="286" width="70" height="18" fill="#fcfdff" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="299">-0.02</text>
+<rect x="370" y="286" width="70" height="18" fill="#fcf6f6" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="299">0.06</text>
+<rect x="440" y="286" width="70" height="18" fill="#faefef" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="299">0.10</text>
+<rect x="510" y="286" width="70" height="18" fill="#eec7c7" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="299">0.37</text>
+<rect x="580" y="286" width="70" height="18" fill="#e7b0b0" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="299">0.52</text>
+<rect x="650" y="286" width="70" height="18" fill="#f7e6e6" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="299">0.17</text>
+<text text-anchor="end" x="222" y="317">Pattern3 14. MYL12A</text>
+<rect x="230" y="304" width="70" height="18" fill="#fffefe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="317">0.01</text>
+<rect x="300" y="304" width="70" height="18" fill="#fefeff" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="317">-0.01</text>
+<rect x="370" y="304" width="70" height="18" fill="#f6f9fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="317">-0.06</text>
+<rect x="440" y="304" width="70" height="18" fill="#fcf6f6" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="317">0.06</text>
+<rect x="510" y="304" width="70" height="18" fill="#e8b5b5" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="317">0.49</text>
+<rect x="580" y="304" width="70" height="18" fill="#d47575" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="317">0.92</text>
+<rect x="650" y="304" width="70" height="18" fill="#f3d8d8" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="317">0.26</text>
+<text text-anchor="end" x="222" y="335">Pattern3 15. IFI44L</text>
+<rect x="230" y="322" width="70" height="18" fill="#f1f5fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="335">-0.10</text>
+<rect x="300" y="322" width="70" height="18" fill="#89abf4" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="335">-0.81</text>
+<rect x="370" y="322" width="70" height="18" fill="#aec5f8" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="335">-0.56</text>
+<rect x="440" y="322" width="70" height="18" fill="#f2d4d4" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="335">0.28</text>
+<rect x="510" y="322" width="70" height="18" fill="#b91c1c" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="335">4.32</text>
+<rect x="580" y="322" width="70" height="18" fill="#b91c1c" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="335">3.79</text>
+<rect x="650" y="322" width="70" height="18" fill="#dc8d8d" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="335">0.75</text>
+<text text-anchor="end" x="222" y="353">Pattern3 16. CD74</text>
+<rect x="230" y="340" width="70" height="18" fill="#e6edfd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="353">-0.17</text>
+<rect x="300" y="340" width="70" height="18" fill="#ebf1fd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="353">-0.14</text>
+<rect x="370" y="340" width="70" height="18" fill="#f1f5fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="353">-0.10</text>
+<rect x="440" y="340" width="70" height="18" fill="#f6f8fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="353">-0.06</text>
+<rect x="510" y="340" width="70" height="18" fill="#eff4fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="353">-0.11</text>
+<rect x="580" y="340" width="70" height="18" fill="#c7d7fa" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="353">-0.38</text>
+<rect x="650" y="340" width="70" height="18" fill="#fcf6f6" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="353">0.06</text>
+<text text-anchor="end" x="222" y="371">Pattern3 17. PFN1</text>
+<rect x="230" y="358" width="70" height="18" fill="#fcfdff" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="371">-0.02</text>
+<rect x="300" y="358" width="70" height="18" fill="#eef3fd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="371">-0.12</text>
+<rect x="370" y="358" width="70" height="18" fill="#f3f7fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="371">-0.08</text>
+<rect x="440" y="358" width="70" height="18" fill="#fdfeff" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="371">-0.01</text>
+<rect x="510" y="358" width="70" height="18" fill="#fbf3f3" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="371">0.08</text>
+<rect x="580" y="358" width="70" height="18" fill="#e4a7a7" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="371">0.58</text>
+<rect x="650" y="358" width="70" height="18" fill="#fbf1f1" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="371">0.09</text>
+<text text-anchor="end" x="222" y="389">Pattern3 18. TMSB10</text>
+<rect x="230" y="376" width="70" height="18" fill="#fdf9f9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="389">0.04</text>
+<rect x="300" y="376" width="70" height="18" fill="#fefeff" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="389">-0.01</text>
+<rect x="370" y="376" width="70" height="18" fill="#fcfdff" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="389">-0.02</text>
+<rect x="440" y="376" width="70" height="18" fill="#fefdfd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="389">0.01</text>
+<rect x="510" y="376" width="70" height="18" fill="#efcaca" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="389">0.35</text>
+<rect x="580" y="376" width="70" height="18" fill="#e9b9b9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="389">0.46</text>
+<rect x="650" y="376" width="70" height="18" fill="#f8e8e8" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="389">0.15</text>
+<text text-anchor="end" x="222" y="407">Pattern3 19. UBC</text>
+<rect x="230" y="394" width="70" height="18" fill="#fcf4f4" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="407">0.07</text>
+<rect x="300" y="394" width="70" height="18" fill="#f6f9fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="407">-0.06</text>
+<rect x="370" y="394" width="70" height="18" fill="#faefef" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="407">0.11</text>
+<rect x="440" y="394" width="70" height="18" fill="#f5dede" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="407">0.22</text>
+<rect x="510" y="394" width="70" height="18" fill="#f3d8d8" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="407">0.26</text>
+<rect x="580" y="394" width="70" height="18" fill="#e9b6b6" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="407">0.48</text>
+<rect x="650" y="394" width="70" height="18" fill="#f4dbdb" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="407">0.23</text>
+<text text-anchor="end" x="222" y="425">Pattern3 20. HLA-B</text>
+<rect x="230" y="412" width="70" height="18" fill="#fdf9f9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="425">0.04</text>
+<rect x="300" y="412" width="70" height="18" fill="#f3f7fe" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="425">-0.08</text>
+<rect x="370" y="412" width="70" height="18" fill="#fefcfc" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="425">0.02</text>
+<rect x="440" y="412" width="70" height="18" fill="#fdf9f9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="425">0.04</text>
+<rect x="510" y="412" width="70" height="18" fill="#f3d9d9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="425">0.25</text>
+<rect x="580" y="412" width="70" height="18" fill="#e8b6b6" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="425">0.48</text>
+<rect x="650" y="412" width="70" height="18" fill="#fcf4f4" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="425">0.07</text>
+<text text-anchor="end" x="222" y="443">Pattern3 21. IFIT3</text>
+<rect x="230" y="430" width="70" height="18" fill="#c2d3f9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="443">-0.42</text>
+<rect x="300" y="430" width="70" height="18" fill="#5e8cf0" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="443">-1.11</text>
+<rect x="370" y="430" width="70" height="18" fill="#8eaef5" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="443">-0.77</text>
+<rect x="440" y="430" width="70" height="18" fill="#f7e5e5" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="443">0.17</text>
+<rect x="510" y="430" width="70" height="18" fill="#b91c1c" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="443">3.19</text>
+<rect x="580" y="430" width="70" height="18" fill="#b91c1c" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="443">3.50</text>
+<rect x="650" y="430" width="70" height="18" fill="#85a8f4" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="443">-0.84</text>
+<text text-anchor="end" x="222" y="461">Pattern3 22. OAS1</text>
+<rect x="230" y="448" width="70" height="18" fill="#c9d8fa" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="461">-0.37</text>
+<rect x="300" y="448" width="70" height="18" fill="#7098f2" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="461">-0.99</text>
+<rect x="370" y="448" width="70" height="18" fill="#a5bff7" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="461">-0.62</text>
+<rect x="440" y="448" width="70" height="18" fill="#c2d4f9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="461">-0.42</text>
+<rect x="510" y="448" width="70" height="18" fill="#b91c1c" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="461">2.16</text>
+<rect x="580" y="448" width="70" height="18" fill="#b91c1c" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="461">2.04</text>
+<rect x="650" y="448" width="70" height="18" fill="#b9cdf9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="461">-0.49</text>
+<text text-anchor="end" x="222" y="479">Pattern3 23. TYMP</text>
+<rect x="230" y="466" width="70" height="18" fill="#e5ecfd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="479">-0.18</text>
+<rect x="300" y="466" width="70" height="18" fill="#b0c7f8" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="479">-0.54</text>
+<rect x="370" y="466" width="70" height="18" fill="#c1d3f9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="479">-0.42</text>
+<rect x="440" y="466" width="70" height="18" fill="#cbd9fa" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="479">-0.36</text>
+<rect x="510" y="466" width="70" height="18" fill="#bb2222" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="479">1.46</text>
+<rect x="580" y="466" width="70" height="18" fill="#ce6060" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="479">1.05</text>
+<rect x="650" y="466" width="70" height="18" fill="#fefafa" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="479">0.03</text>
+<text text-anchor="end" x="222" y="497">Pattern3 24. EPSTI1</text>
+<rect x="230" y="484" width="70" height="18" fill="#dde7fc" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="497">-0.23</text>
+<rect x="300" y="484" width="70" height="18" fill="#bacef9" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="497">-0.47</text>
+<rect x="370" y="484" width="70" height="18" fill="#c4d5fa" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="497">-0.40</text>
+<rect x="440" y="484" width="70" height="18" fill="#fdf7f7" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="497">0.05</text>
+<rect x="510" y="484" width="70" height="18" fill="#b91c1c" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="497">2.41</text>
+<rect x="580" y="484" width="70" height="18" fill="#b91c1c" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="497">2.39</text>
+<rect x="650" y="484" width="70" height="18" fill="#fefcfc" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="497">0.02</text>
+<text text-anchor="end" x="222" y="515">Pattern3 25. SAT1</text>
+<rect x="230" y="502" width="70" height="18" fill="#ecf2fd" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="265.0" y="515">-0.13</text>
+<rect x="300" y="502" width="70" height="18" fill="#b5caf8" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="335.0" y="515">-0.51</text>
+<rect x="370" y="502" width="70" height="18" fill="#cddbfa" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="405.0" y="515">-0.34</text>
+<rect x="440" y="502" width="70" height="18" fill="#cddbfa" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="475.0" y="515">-0.35</text>
+<rect x="510" y="502" width="70" height="18" fill="#e8b6b6" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="545.0" y="515">0.48</text>
+<rect x="580" y="502" width="70" height="18" fill="#f1d1d1" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="615.0" y="515">0.31</text>
+<rect x="650" y="502" width="70" height="18" fill="#f8eaea" stroke="#ffffff" stroke-width="1"/>
+<text class="small" text-anchor="middle" x="685.0" y="515">0.14</text>
+</svg>

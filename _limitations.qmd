@@ -1,15 +1,14 @@
-<!--
-Describe any limitations that exist in this analysis whether it be due to the data itself, methods used, nature of the topic, etc.
-You can list more than 2
-See the following example from a previous case study: https://www.opencasestudies.org/ocs-bp-opioid-rural-urban/#Limitations
--->
-
 # **Limitations**
 ***
 
-There are some important considerations regarding this data analysis to keep in mind:
+This case study is designed for teaching. The results are useful for learning how to reason about latent factors in single-cell data, but several limitations matter.
 
-1. {FILL IN}
-1. {FILL IN}
+1. **Small experimental cohort:** the primary time course has three experimental subjects. Subject-level summaries are essential, but they do not replace a larger cohort.
+1. **Teaching subset:** the CoGAPS discovery set is balanced and tractable for learner-facing analysis. It is not the full published atlas.
+1. **Model-rank sensitivity:** `K = 5` is highly stable and compact, but it compresses temporal activity into broader patterns. `K = 10` better matches the case-study goal by resolving an IFN-associated activity program while remaining on the stability plateau.
+1. **Pattern labels are run-specific:** learners should interpret pattern biology from genes, time course, cell type usage, and diagnostics rather than from pattern numbers alone.
+1. **CoGAPS is non-negative:** a high pattern score does not tell us whether genes are upregulated or downregulated relative to baseline. Directionality requires a separate comparison.
+1. **Natural projection is optional:** projection into the natural infection cohort is biologically motivated, but it should remain an optional extension until the final `K = 10` projection workflow is regenerated and validated.
+1. **Host response, not viral tropism:** the source study reported no cell-associated DENV-1 RNA in PBMCs. This analysis concerns host immune programs, not direct identification of infected cells.
 
 ***

@@ -1,0 +1,29 @@
+{
+  "sweep_outdir": "/Users/othomas/Desktop/CS5_sweep_results",
+  "run_stem": "cogaps_K10_seed2_iter2000",
+  "expression_h5ad": "/Users/othomas/Desktop/CS5_sweep_results/cache/gse154386_preprocessed_hvg.h5ad",
+  "top_genes_csv": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/cogaps_r_revised_model_K10_seed2_iter2000/cogaps_K10_seed2_iter2000.top_genes.csv",
+  "pattern_summary_csv": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/cogaps_r_revised_model_K10_seed2_iter2000/cogaps_K10_seed2_iter2000.pattern_summary.csv",
+  "outdir": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000",
+  "top_n": 25,
+  "baseline_timepoint": "D0",
+  "cohort": "experimental",
+  "layer": "counts",
+  "min_cells": 10,
+  "log2fc_threshold": 0.25,
+  "cpm_pseudocount": 1.0,
+  "expression_shape": [
+    180859,
+    5000
+  ],
+  "n_selected_gene_pattern_rows": 250,
+  "n_unique_selected_genes": 119,
+  "n_present_selected_genes": 119,
+  "missing_selected_genes": [],
+  "output_tables": {
+    "group_expression_log2cpm": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000/tables/group_expression_log2cpm.csv",
+    "gene_directionality_by_subject": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000/tables/gene_directionality_by_subject.csv",
+    "gene_directionality_summary": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000/tables/gene_directionality_summary.csv",
+    "pattern_directionality_summary": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000/tables/pattern_directionality_summary.csv"
+  }
+}

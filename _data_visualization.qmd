@@ -1,41 +1,93 @@
-<!--
-Update the file paths as needed throughout
--->
-
-<!--
-At the end of this section, save incremental data so that users can pause and come back later
--->
-
 # **Data Visualization**
 ***
 
-If you have been following along but stopped, we could load our wrangled data like so:
+The figures in this section are produced from small source tables in `data/processed/figures/source_tables/`. They are included as pre-rendered images for speed, but the underlying tables are available for learners to modify.
+
+## **K Selection**
+
+![](data/processed/figures/figure_01_k_selection.png){fig-alt="K-selection figure summarizing stability, temporal effect size, and biological signals across tested K values." width=850 .lightbox}
+
+The K-selection figure is used as a teaching exercise. Learners should notice that the most stable model is not automatically the model that best answers the biological question.
+
+## **Pattern Usage Across Time**
+
+![](data/processed/figures/figure_03_pattern_usage_by_time_heatmap.png){fig-alt="Heatmap of mean CoGAPS pattern usage across experimental timepoints for the selected K=10 model." width=850 .lightbox}
+
+::: {.panel-tabset}
+
+## R
 
 ```{r}
-load(here::here("data", "wrangled", "wrangled_data.rda"))
+#| label: plot-pattern-time-r
+pattern_time_matrix <- readr::read_csv(
+  here::here("data", "processed", "figures", "source_tables",
+             "figure_03_pattern_usage_by_time_matrix.csv"),
+  show_col_types = FALSE
+)
+
+pattern_time_long <- pattern_time_matrix |>
+  tidyr::pivot_longer(
+    cols = -pattern,
+    names_to = "timepoint",
+    values_to = "mean_usage"
+  )
+
+ggplot(pattern_time_long, aes(x = timepoint, y = pattern, fill = mean_usage)) +
+  geom_tile() +
+  scale_fill_viridis_c(option = "C") +
+  labs(x = "Experimental timepoint", y = "CoGAPS pattern", fill = "Mean usage") +
+  theme_minimal(base_size = 11) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
-***
-<details> <summary> If you skipped the data import section click here. </summary>
+## Python
 
-An RDA file (stands for R data) of the data can be found [here](https://github.com//opencasestudies/ocs-bp-co2-emissions/tree/master/data/wrangled) or slightly more directly [here](https://raw.githubusercontent.com/opencasestudies/ocs-bp-co2-emissions/master/data/wrangled/wrangled_data.rda). Download this file and then place it in your current working directory within a subdirectory called "wrangled" within a subdirectory called "data" to use the following code. We used an RStudio project and the [`here` package](https://github.com/jennybc/here_here) to navigate to the file more easily.
+```{python}
+#| label: plot-pattern-time-python
+import matplotlib.pyplot as plt
 
+pattern_time_matrix = pd.read_csv(
+    "data/processed/figures/source_tables/"
+    "figure_03_pattern_usage_by_time_matrix.csv"
+)
+pattern_time_long = pattern_time_matrix.melt(
+    id_vars="pattern", var_name="timepoint", value_name="mean_usage"
+)
 
-```{r}
-load(here::here("data", "wrangled", "wrangled_data.rda"))
+pivot = pattern_time_long.pivot(
+    index="pattern", columns="timepoint", values="mean_usage"
+)
+fig, ax = plt.subplots(figsize=(8, 4.5))
+image = ax.imshow(pivot.values, aspect="auto")
+ax.set_xticks(range(pivot.shape[1]), pivot.columns, rotation=45, ha="right")
+ax.set_yticks(range(pivot.shape[0]), pivot.index)
+ax.set_xlabel("Experimental timepoint")
+ax.set_ylabel("CoGAPS pattern")
+fig.colorbar(image, ax=ax, label="Mean usage")
+fig.tight_layout()
+plt.show()
 ```
 
-</details>
-***
+:::
 
-<!--
-Use this section to walk through step by step how the wrangled data was visualized.
-Explain how these visualizations improve understanding and help extract insights.
--->
+## **Identity and Activity Views**
 
-<!--
-If any further wrangling was conducted in this section,
-please save the most recent version of the data similar to previous sections.
--->
+![](data/processed/figures/figure_04_pattern_usage_by_broad_cell_type_heatmap.png){fig-alt="Heatmap of mean CoGAPS pattern usage by broad immune-cell type." width=850 .lightbox}
+
+This view reveals that most patterns are dominated by broad cell type. The IFN-associated pattern is different: it is used most strongly in monocytes but changes much more over time than the identity-like patterns.
+
+## **IFN Pattern Trajectory**
+
+![](data/processed/figures/figure_05_ifn_pattern_trajectory.png){fig-alt="Subject-level trajectory for the IFN-associated CoGAPS pattern, showing a rise at day 10 and day 14 or 15." width=850 .lightbox}
+
+Subject-level trajectories make the central finding visible without treating each cell as an independent person.
+
+## **Directionality and R/Python Agreement**
+
+![](data/processed/figures/figure_06_ifn_top_gene_directionality_heatmap.png){fig-alt="Heatmap showing log2 fold-change directionality for top IFN-associated pattern genes across timepoints." width=850 .lightbox}
+
+![](data/processed/figures/figure_07_r_python_agreement_summary.png){fig-alt="Agreement summary comparing matched R and Python CoGAPS patterns." width=850 .lightbox}
+
+The directionality figure answers a question CoGAPS cannot answer alone: are the top genes in the IFN-associated pattern higher than baseline at the peak timepoints? The R/Python agreement figure confirms that the selected R and Python workflows produce matching artifacts.
 
 ***

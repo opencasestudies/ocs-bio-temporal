@@ -1,10 +1,14 @@
 ## **Acknowledgments**
 ***
 
-<!--
-Fill in any Acknowledgments using an example from a previous case study if needed: https://www.opencasestudies.org/ocs-bp-co2-emissions/#Acknowledgments
--->
+We acknowledge Waickman et al. for generating and sharing the dengue single-cell RNA-seq data used in this case study through GEO accession GSE154386.
 
-We would also like to acknowledge the National Institute of General Medical Sciences for funding this work (1R25GM160622).
+We thank Elana Fertig, Genevieve Stein-O'Brien, Dmitrijs Lvovs, Michael Ochs, and Jessica Brinkworth for their expert review of the proposed case study scope, methods, and domain framing.
 
-Icons are from [iconpacks](https://www.iconsets.com/).
+We also acknowledge the CoGAPS, PyCoGAPS, Bioconductor, Scanpy, AnnData, Quarto, and Open Case Studies communities whose tools and templates make this teaching workflow possible.
+
+This work is supported by the National Institute of General Medical Sciences through grant number 1R25GM160622.
+
+Case-study materials, generated figures, and lightweight teaching artifacts are shared under the Creative Commons Attribution-NonCommercial 4.0 license unless otherwise noted.
+
+Icons are from [iconpacks](https://www.iconsets.com/){target="_blank"}.

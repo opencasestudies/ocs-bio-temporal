@@ -1,25 +1,17 @@
 # **Summary**
 ***
-## **Synopsis**
-***
 
-<!--
-briefly recap everything that was covered in the case study from the motivation to the data analysis.
-Highlight conclusions made as well as limitations or future work to be done.
--->
+This case study used CoGAPS to analyze a balanced experimental dengue PBMC discovery set from GSE154386.
 
-<!--
-Connect back to the main questions and what answers the analysis might have
--->
+The main answers are:
 
-***
+1. **Temporal programs:** the selected `K = 10` model identifies a dominant temporal activity program that rises sharply at `D10`, remains elevated at `D14/15`, and returns near baseline by `D28`.
+1. **Identity versus activity:** most patterns are identity-like and align with broad immune-cell compartments. One pattern is activity-like and captures the major infection-response signal.
+1. **IFN-associated response:** the activity-like pattern is interferon-associated based on top genes, IFN-score correlation, timing, and directionality. Its top genes include `LY6E`, `ISG15`, `IFITM1`, `IFI6`, `MX1`, `IRF7`, `IFI44L`, `IFIT3`, and `OAS1`.
+1. **Directionality:** CoGAPS weights alone do not encode upregulation or downregulation. Pseudobulk directionality shows that the top IFN-associated genes are mostly up relative to baseline at `D10` and `D14/15`.
+1. **Rank selection:** `K = 5` is a useful stable comparator, but `K = 10` better answers the case-study goal because it resolves an IFN-candidate temporal activity program while remaining on the stability plateau.
+1. **Implementation:** R and Python selected-model outputs agree exactly in the exported comparison summaries, so learners can inspect both implementations while following a single biological interpretation.
 
-## **Summary Plot**
-***
-
-<!--
-construct a plot here that summarizes the conclusions found in the data, if applicable
-(connecting to a main question if possible)
--->
+The broader lesson is that the best model is not always the smallest stable model. The best model is the one that is stable enough and has enough biological resolution to answer the question being asked.
 
 ***

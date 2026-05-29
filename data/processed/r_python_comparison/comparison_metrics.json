@@ -1,0 +1,32 @@
+{
+  "comparison_files": {
+    "cell_score_spearman": "/home/rstudio/project/cs5_analysis_workspace/GSE154386/cogaps_revised_model_comparison_K10_seed2_iter2000/r_vs_python_cell_score_spearman.csv",
+    "gene_loading_spearman": "/home/rstudio/project/cs5_analysis_workspace/GSE154386/cogaps_revised_model_comparison_K10_seed2_iter2000/r_vs_python_gene_loading_spearman.csv",
+    "pattern_match_summary": "/home/rstudio/project/cs5_analysis_workspace/GSE154386/cogaps_revised_model_comparison_K10_seed2_iter2000/pattern_match_summary.csv",
+    "top_gene_jaccard": "/home/rstudio/project/cs5_analysis_workspace/GSE154386/cogaps_revised_model_comparison_K10_seed2_iter2000/r_vs_python_top_50_gene_jaccard.csv"
+  },
+  "mean_matched_cell_score_spearman": 1.0,
+  "mean_matched_gene_loading_spearman": 1.0,
+  "mean_matched_top_50_gene_jaccard": 1.0,
+  "outdir": "/home/rstudio/project/cs5_analysis_workspace/GSE154386/cogaps_revised_model_comparison_K10_seed2_iter2000",
+  "python_meanChiSq": 117373456.0,
+  "python_outdir": "/home/rstudio/project/cs5_analysis_workspace/GSE154386/cogaps_python_revised_model_K10_seed2_iter2000",
+  "python_runtime_sec": 1444.064024925232,
+  "python_status": "ok",
+  "python_trace_lengths": {
+    "atomsA": 40,
+    "atomsP": 40,
+    "chisq": 40
+  },
+  "r_meanChiSq": 117373456,
+  "r_outdir": "/home/rstudio/project/cs5_analysis_workspace/GSE154386/cogaps_r_revised_model_K10_seed2_iter2000",
+  "r_runtime_sec": 1456.9174,
+  "r_status": "ok",
+  "r_trace_lengths": {
+    "atomsA": 40,
+    "atomsP": 40,
+    "chisq": 40
+  },
+  "tag": "K10_seed2_iter2000",
+  "top_n": 50
+}
