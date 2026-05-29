@@ -1,4 +1,6 @@
-We will begin by loading the packages used for the rendered analysis. The full runtime image also contains R CoGAPS, PyCoGAPS, Scanpy, AnnData, and supporting single-cell packages for optional reproduction runs.
+Most sections use small CSV, JSON, and figure artifacts that are already included in this repository. You can work through the required analysis in either R or Python. The case-study Docker image provides the same RStudio Server environment used to render this site and also includes the heavier packages needed for optional full reproduction.
+
+If you are using Docker, launch the runtime using the command in the **Data, Runtime, and Reproducibility** block near the top of the page. Then open RStudio Server and run either the R or Python setup tab below.
 
 ::: {.panel-tabset}
 
@@ -34,19 +36,69 @@ import matplotlib.pyplot as plt
 
 :::
 
-Package | Use
---- | ---
-[`here`](https://here.r-lib.org/){target="_blank"} | Build project-relative paths in R.
-[`readr`](https://readr.tidyverse.org/){target="_blank"} | Read CSV tables used in the rendered R code.
-[`dplyr`](https://dplyr.tidyverse.org/){target="_blank"} | Select, filter, summarize, and arrange R analysis tables.
-[`tidyr`](https://tidyr.tidyverse.org/){target="_blank"} | Reshape pattern summaries into long and wide forms in R.
-[`ggplot2`](https://ggplot2.tidyverse.org/){target="_blank"} | Build and customize R visualizations from tidy tables.
-[`knitr`](https://yihui.org/knitr/){target="_blank"} | Render R tables in the case-study document.
-[`jsonlite`](https://jeroen.r-universe.dev/jsonlite){target="_blank"} | Read run manifests and diagnostic JSON files in R.
-[`pandas`](https://pandas.pydata.org/){target="_blank"} | Read, filter, and summarize CSV tables in Python.
-[`matplotlib`](https://matplotlib.org/){target="_blank"} | Build Python visualizations.
-[`CoGAPS`](https://bioconductor.org/packages/CoGAPS){target="_blank"} | Optional R implementation of CoGAPS for full model reproduction.
-[`PyCoGAPS`](https://github.com/FertigLab/pycogaps){target="_blank"} | Optional Python implementation of CoGAPS for the alternate workflow.
-[`scanpy`](https://scanpy.readthedocs.io/){target="_blank"} and [`anndata`](https://anndata.readthedocs.io/){target="_blank"} | Optional Python single-cell preprocessing and H5AD handling.
+The R and Python tabs are alternate ways to complete the same required analysis. You do not need to run both languages unless you want to inspect both examples.
 
-The first time we use a function in prose-heavy sections, we use the `package::function()` form to show where important functions come from.
+Package | Language | Required for required path? | Use
+--- | --- | --- | ---
+[`here`](https://here.r-lib.org/){target="_blank"} | R | Yes | Build project-relative paths.
+[`readr`](https://readr.tidyverse.org/){target="_blank"} | R | Yes | Read CSV tables used in the rendered R code.
+[`dplyr`](https://dplyr.tidyverse.org/){target="_blank"} | R | Yes | Select, filter, summarize, and arrange R analysis tables.
+[`tidyr`](https://tidyr.tidyverse.org/){target="_blank"} | R | Yes | Reshape pattern summaries into long and wide forms.
+[`ggplot2`](https://ggplot2.tidyverse.org/){target="_blank"} | R | Yes | Build and customize visualizations from tidy tables.
+[`knitr`](https://yihui.org/knitr/){target="_blank"} | R | Yes | Render tables in the case-study document.
+[`jsonlite`](https://jeroen.r-universe.dev/jsonlite){target="_blank"} | R | Yes | Read run manifests and diagnostic JSON files.
+[`reticulate`](https://rstudio.github.io/reticulate/){target="_blank"} | R | Optional | Connect R to the Python environment inside the Docker image.
+[`pandas`](https://pandas.pydata.org/){target="_blank"} | Python | Yes | Read, filter, and summarize CSV tables.
+[`matplotlib`](https://matplotlib.org/){target="_blank"} | Python | Yes | Build Python visualizations.
+[`CoGAPS`](https://bioconductor.org/packages/CoGAPS){target="_blank"} | R | Optional full reproduction | Run the R implementation of CoGAPS.
+[`PyCoGAPS`](https://github.com/FertigLab/pycogaps){target="_blank"} | Python | Optional full reproduction | Run the Python implementation of CoGAPS.
+[`scanpy`](https://scanpy.readthedocs.io/){target="_blank"} | Python | Optional full reproduction | Preprocess and inspect single-cell objects.
+[`anndata`](https://anndata.readthedocs.io/){target="_blank"} | Python | Optional full reproduction | Read and write H5AD single-cell objects.
+
+You can verify the rendered runtime with these lightweight checks:
+
+::: {.panel-tabset}
+
+## R
+
+```{r}
+#| label: runtime-check-r
+#| message: false
+#| warning: false
+data.frame(
+  item = c("R", "dplyr", "ggplot2", "CoGAPS_available"),
+  value = c(
+    R.version.string,
+    as.character(packageVersion("dplyr")),
+    as.character(packageVersion("ggplot2")),
+    as.character(requireNamespace("CoGAPS", quietly = TRUE))
+  )
+) |>
+  knitr::kable()
+```
+
+## Python
+
+```{python}
+#| label: runtime-check-python
+import importlib.util
+import sys
+
+pd.DataFrame(
+    {
+        "item": ["Python", "pandas", "matplotlib", "PyCoGAPS_available", "scanpy_available", "anndata_available"],
+        "value": [
+            sys.version.split()[0],
+            pd.__version__,
+            __import__("matplotlib").__version__,
+            str(importlib.util.find_spec("PyCoGAPS") is not None),
+            str(importlib.util.find_spec("scanpy") is not None),
+            str(importlib.util.find_spec("anndata") is not None),
+        ],
+    }
+)
+```
+
+:::
+
+When a function is introduced for the first time, the prose uses the `package::function()` form so you can see which package provides it. The **Additional Information** section records more detailed session information for the rendered environment.
