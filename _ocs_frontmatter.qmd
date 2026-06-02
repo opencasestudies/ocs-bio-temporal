@@ -22,7 +22,7 @@ This work is funded through the National Institutes of Health, specifically the 
 
 **Data, Runtime, and Reproducibility**
 
-The GitHub repository contains the Quarto source, rendered site, scripts, and lightweight teaching artifacts needed to run the ordinary case-study path. Large raw, preprocessed, model-object, and checkpoint files are intentionally excluded from GitHub.
+The GitHub repository contains the case study source files, rendered site, scripts, and teaching artifacts needed to reproduce the analyses in this case study. Large raw, preprocessed, model-object, and checkpoint files are uploaded to Zenodo, DOI pending publication.
 
 | Resource | Location | Purpose |
 |---|---|---|

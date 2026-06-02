@@ -27,13 +27,16 @@
 
 ## **Key Scientific and Methodological References**
 
-- Waickman et al. 2021, source dengue PBMC study and GEO data.
-- Fertig et al. 2014, temporal CoGAPS precedent for time-course transcriptomics.
-- Kotliar et al. 2019, identity and activity program framing.
-- Stein-O'Brien et al. 2019, scCoGAPS and transfer learning.
-- Sharma et al. 2020, projectR transfer-learning framework.
-- Johnson et al. 2023, practical CoGAPS protocol guidance.
-
-Full citation formatting should be finalized before publication.
+- Waickman, A. T., Friberg, H., Gromowski, G. D., Rutvisuttinunt, W., Li, T., Siegfried, H., Victor, K., McCracken, M. K., Fernandez, S., Srikiatkhachorn, A., Ellison, D., Jarman, R. G., Thomas, S. J., Rothman, A. L., Endy, T., & Currier, J. R. (2021). Temporally integrated single cell RNA sequencing analysis of PBMC from experimental and natural primary human DENV-1 infections. *PLOS Pathogens*, 17(1), e1009240. [https://doi.org/10.1371/journal.ppat.1009240](https://doi.org/10.1371/journal.ppat.1009240){target="_blank"}
+- Lee, D. D., & Seung, H. S. (1999). Learning the parts of objects by non-negative matrix factorization. *Nature*, 401, 788-791. [https://doi.org/10.1038/44565](https://doi.org/10.1038/44565){target="_blank"}
+- Brunet, J. P., Tamayo, P., Golub, T. R., & Mesirov, J. P. (2004). Metagenes and molecular pattern discovery using matrix factorization. *Proceedings of the National Academy of Sciences*, 101(12), 4164-4169. [https://doi.org/10.1073/pnas.0308531101](https://doi.org/10.1073/pnas.0308531101){target="_blank"}
+- Fertig, E. J., Ding, J., Favorov, A. V., Parmigiani, G., & Ochs, M. F. (2010). CoGAPS: an R/C++ package to identify patterns and biological process activity in transcriptomic data. *Bioinformatics*, 26(21), 2792-2793. [https://doi.org/10.1093/bioinformatics/btq503](https://doi.org/10.1093/bioinformatics/btq503){target="_blank"}
+- Fertig, E. J., Stein-O'Brien, G., Jaffe, A., & Colantuoni, C. (2014). Pattern identification in time-course gene expression data with the CoGAPS matrix factorization. In M. F. Ochs (Ed.), *Gene Function Analysis* (Methods in Molecular Biology, Vol. 1101, pp. 87-112). Humana Press. [https://doi.org/10.1007/978-1-62703-721-1_6](https://doi.org/10.1007/978-1-62703-721-1_6){target="_blank"}
+- Stein-O'Brien, G. L., Arora, R., et al. (2018). Enter the matrix: factorization uncovers knowledge from omics. *Trends in Genetics*, 34(10), 790-805. [https://doi.org/10.1016/j.tig.2018.07.003](https://doi.org/10.1016/j.tig.2018.07.003){target="_blank"}
+- Stein-O'Brien, G. L., Clark, B. S., Sherman, T., Zibetti, C., Hu, Q., Sealfon, R., Liu, S., Qian, J., Colantuoni, C., Blackshaw, S., Goff, L. A., & Fertig, E. J. (2019). Decomposing cell identity for transfer learning across cellular measurements, platforms, tissues, and species. *Cell Systems*, 8(5), 395-411.e8. [https://doi.org/10.1016/j.cels.2019.04.004](https://doi.org/10.1016/j.cels.2019.04.004){target="_blank"}
+- Kotliar, D., Veres, A., Nagy, M. A., Tabrizi, S., Hodis, E., Melton, D. A., & Sabeti, P. C. (2019). Identifying gene expression programs of cell-type identity and cellular activity with single-cell RNA-Seq. *eLife*, 8, e43803. [https://doi.org/10.7554/eLife.43803](https://doi.org/10.7554/eLife.43803){target="_blank"}
+- Sharma, G., Colantuoni, C., Goff, L. A., Fertig, E. J., & Stein-O'Brien, G. L. (2020). projectR: an R/Bioconductor package for transfer learning via PCA, NMF, correlation and clustering. *Bioinformatics*, 36(11), 3592-3593. [https://doi.org/10.1093/bioinformatics/btaa183](https://doi.org/10.1093/bioinformatics/btaa183){target="_blank"}
+- Johnson, J. A. I., Tsang, A. P., Mitchel, J. T., Zhou, D. L., Bowden, J., Davis-Marcisak, E., Sherman, T., Liefeld, T., Loth, M., Goff, L. A., Zimmerman, J. W., Kinny-Koster, B., Jaffee, E. M., Tamayo, P., Mesirov, J. P., Reich, M., Fertig, E. J., & Stein-O'Brien, G. L. (2023). Inferring cellular and molecular processes in single-cell data with non-negative matrix factorization using Python, R and GenePattern Notebook implementations of CoGAPS. *Nature Protocols*, 18, 3690-3731. [https://doi.org/10.1038/s41596-023-00892-x](https://doi.org/10.1038/s41596-023-00892-x){target="_blank"}
+- Wright, C., Meng, Q., Breshock, M. R., Atta, L., Taub, M. A., Jager, L. R., Muschelli, J., & Hicks, S. C. (2023). Open Case Studies: statistics and data science education through real-world applications. *arXiv*. [https://arxiv.org/abs/2301.05298](https://arxiv.org/abs/2301.05298){target="_blank"}
 
 ***
