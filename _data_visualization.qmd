@@ -9,7 +9,7 @@ The figures in this section are produced from small source tables in `data/proce
 
 The K-selection figure is used as a teaching exercise. Learners should notice that the most stable model is not automatically the model that best answers the biological question.
 
-This expands the sweep panel from the opening roadmap. The blue stability curve shows whether patterns can be recovered consistently across successful sweep runs. The red goal-aligned score adds biological resolution to that stability information, asking whether the model also resolves time-varying activity relevant to the dengue question. `K = 5` remains an important comparator because it is stable, but it is too compact to separate the late acute interferon-associated program clearly.
+This expands the sweep panel from the opening roadmap. The left plot asks whether a model is both stable across seeds and able to resolve temporal structure. The right plot ranks candidate K values using a goal-aligned score that combines stability, low redundancy, temporal signal, and IFN-candidate evidence. `K = 5` remains an important comparator because it is stable, but it is too compact to separate the late acute interferon-associated program clearly.
 
 ## **Pattern Usage Across Time**
 
@@ -78,7 +78,7 @@ plt.show()
 
 ![](data/processed/figures/figure_04_pattern_usage_by_broad_cell_type_heatmap.png){fig-alt="Heatmap of mean CoGAPS pattern usage by broad immune-cell type." width=850 .lightbox}
 
-This expands the broad-cell-type heatmap from the opening roadmap. PBMC identity is expected to explain a large part of single-cell variation because T cells, B cells, natural killer cells, monocytes, neutrophils, and plasmablasts have distinct baseline transcriptional programs. Comparing this heatmap with the time heatmap helps separate identity-like patterns from activity-like patterns. The IFN-associated pattern is used most strongly in monocytes but changes much more over time than the identity-like patterns.
+This later view adds the broad-cell-type pattern summary that is intentionally not crowded into the opening roadmap. PBMC identity is expected to explain a large part of single-cell variation because T cells, B cells, natural killer cells, monocytes, neutrophils, and plasmablasts have distinct baseline transcriptional programs. Comparing this heatmap with the time heatmap helps separate identity-like patterns from activity-like patterns. The IFN-associated pattern is used most strongly in monocytes but changes much more over time than the identity-like patterns.
 
 ## **IFN Pattern Trajectory**
 

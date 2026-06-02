@@ -1,4 +1,4 @@
-Most sections use small CSV, JSON, and figure artifacts that are already included in this repository. You can work through the required analysis in either R or Python. The case-study Docker image provides the same RStudio Server environment used to render this site and also includes the heavier packages needed for optional full reproduction.
+In this section, you will load the packages used for the required analysis path. This path uses precomputed teaching artifacts included in the repository, so you can focus on importing, summarizing, visualizing, and interpreting the selected model. If you want to reproduce the full CoGAPS runs, the same Docker image also contains the larger R and Python packages needed for that optional workflow.
 
 If you are using Docker, launch the runtime using the command in the **Data, Runtime, and Reproducibility** block near the top of the page. Then open RStudio Server and run either the R or Python setup tab below.
 
@@ -38,18 +38,18 @@ import matplotlib.pyplot as plt
 
 The R and Python tabs are alternate ways to complete the same required analysis. You do not need to run both languages unless you want to inspect both examples.
 
-Package | Language | Required for required path? | Use
+Package | Language | Role | Use
 --- | --- | --- | ---
-[`here`](https://here.r-lib.org/){target="_blank"} | R | Yes | Build project-relative paths.
-[`readr`](https://readr.tidyverse.org/){target="_blank"} | R | Yes | Read CSV tables used in the rendered R code.
-[`dplyr`](https://dplyr.tidyverse.org/){target="_blank"} | R | Yes | Select, filter, summarize, and arrange R analysis tables.
-[`tidyr`](https://tidyr.tidyverse.org/){target="_blank"} | R | Yes | Reshape pattern summaries into long and wide forms.
-[`ggplot2`](https://ggplot2.tidyverse.org/){target="_blank"} | R | Yes | Build and customize visualizations from tidy tables.
-[`knitr`](https://yihui.org/knitr/){target="_blank"} | R | Yes | Render tables in the case-study document.
-[`jsonlite`](https://jeroen.r-universe.dev/jsonlite){target="_blank"} | R | Yes | Read run manifests and diagnostic JSON files.
-[`reticulate`](https://rstudio.github.io/reticulate/){target="_blank"} | R | Optional | Connect R to the Python environment inside the Docker image.
-[`pandas`](https://pandas.pydata.org/){target="_blank"} | Python | Yes | Read, filter, and summarize CSV tables.
-[`matplotlib`](https://matplotlib.org/){target="_blank"} | Python | Yes | Build Python visualizations.
+[`here`](https://here.r-lib.org/){target="_blank"} | R | Required analysis | Build project-relative paths.
+[`readr`](https://readr.tidyverse.org/){target="_blank"} | R | Required analysis | Read CSV tables used by the R code.
+[`dplyr`](https://dplyr.tidyverse.org/){target="_blank"} | R | Required analysis | Select, filter, summarize, and arrange analysis tables.
+[`tidyr`](https://tidyr.tidyverse.org/){target="_blank"} | R | Required analysis | Reshape pattern summaries into long and wide forms.
+[`ggplot2`](https://ggplot2.tidyverse.org/){target="_blank"} | R | Required analysis | Build visualizations from tidy tables.
+[`knitr`](https://yihui.org/knitr/){target="_blank"} | R | Required analysis | Render tables in the case-study document.
+[`jsonlite`](https://jeroen.r-universe.dev/jsonlite){target="_blank"} | R | Required analysis | Read run manifests and diagnostic JSON files.
+[`reticulate`](https://rstudio.github.io/reticulate/){target="_blank"} | R | Optional bridge | Connect R to the Python environment inside the Docker image.
+[`pandas`](https://pandas.pydata.org/){target="_blank"} | Python | Required analysis | Read, filter, and summarize CSV tables.
+[`matplotlib`](https://matplotlib.org/){target="_blank"} | Python | Required analysis | Build Python visualizations.
 [`CoGAPS`](https://bioconductor.org/packages/CoGAPS){target="_blank"} | R | Optional full reproduction | Run the R implementation of CoGAPS.
 [`PyCoGAPS`](https://github.com/FertigLab/pycogaps){target="_blank"} | Python | Optional full reproduction | Run the Python implementation of CoGAPS.
 [`scanpy`](https://scanpy.readthedocs.io/){target="_blank"} | Python | Optional full reproduction | Preprocess and inspect single-cell objects.
@@ -65,12 +65,20 @@ You can verify the rendered runtime with these lightweight checks:
 #| label: runtime-check-r
 #| message: false
 #| warning: false
+r_required <- c("here", "readr", "dplyr", "tidyr", "ggplot2", "knitr", "jsonlite")
+
+r_versions <- vapply(
+  r_required,
+  function(pkg) as.character(utils::packageVersion(pkg)),
+  character(1)
+)
+
 data.frame(
-  item = c("R", "dplyr", "ggplot2", "CoGAPS_available"),
+  item = c("R", r_required, "reticulate_available", "CoGAPS_available"),
   value = c(
     R.version.string,
-    as.character(packageVersion("dplyr")),
-    as.character(packageVersion("ggplot2")),
+    unname(r_versions),
+    as.character(requireNamespace("reticulate", quietly = TRUE)),
     as.character(requireNamespace("CoGAPS", quietly = TRUE))
   )
 ) |>
@@ -84,13 +92,22 @@ data.frame(
 import importlib.util
 import sys
 
+import matplotlib
+
 pd.DataFrame(
     {
-        "item": ["Python", "pandas", "matplotlib", "PyCoGAPS_available", "scanpy_available", "anndata_available"],
+        "item": [
+            "Python",
+            "pandas",
+            "matplotlib",
+            "PyCoGAPS_available",
+            "scanpy_available",
+            "anndata_available",
+        ],
         "value": [
             sys.version.split()[0],
             pd.__version__,
-            __import__("matplotlib").__version__,
+            matplotlib.__version__,
             str(importlib.util.find_spec("PyCoGAPS") is not None),
             str(importlib.util.find_spec("scanpy") is not None),
             str(importlib.util.find_spec("anndata") is not None),
@@ -101,4 +118,6 @@ pd.DataFrame(
 
 :::
 
-When a function is introduced for the first time, the prose uses the `package::function()` form so you can see which package provides it. The **Additional Information** section records more detailed session information for the rendered environment.
+The required-analysis packages should be available in whichever language you choose. The optional reproduction packages are checked here so you can confirm that the Docker image is also ready for full model reruns.
+
+When a function is introduced for the first time, the prose uses the `package::function()` form so you can see which package provides it. Next, you will import the precomputed teaching artifacts and inspect the files that carry the selected `K = 10` model results through the rest of the case study.
