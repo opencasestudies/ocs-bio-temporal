@@ -23,7 +23,7 @@
 - interferon-stimulated genes
 - pseudobulk directionality
 - R and Python reproducibility
-- GitHub-safe teaching artifacts
+- Small teaching artifacts included with the case study
 
 ## **Key Scientific and Methodological References**
 

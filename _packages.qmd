@@ -55,7 +55,7 @@ Package | Language | Role | Use
 [`scanpy`](https://scanpy.readthedocs.io/){target="_blank"} | Python | Optional full reproduction | Preprocess and inspect single-cell objects.
 [`anndata`](https://anndata.readthedocs.io/){target="_blank"} | Python | Optional full reproduction | Read and write H5AD single-cell objects.
 
-You can verify the rendered runtime with these lightweight checks:
+You can verify the runtime with these lightweight checks:
 
 ::: {.panel-tabset}
 

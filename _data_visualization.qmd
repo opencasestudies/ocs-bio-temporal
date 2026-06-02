@@ -1,7 +1,7 @@
 # **Data Visualization**
 ***
 
-The figures in this section are produced from small source tables in `data/processed/figures/source_tables/`. They are included as pre-rendered images for speed, but the underlying tables are available for learners to modify.
+The figures in this section are produced from small source tables in `data/processed/figures/source_tables/`. They are included as saved images for speed, but the underlying tables are available for learners to modify.
 
 ## **K Selection**
 

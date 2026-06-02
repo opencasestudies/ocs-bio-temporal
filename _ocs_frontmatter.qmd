@@ -22,14 +22,14 @@ This work is funded through the National Institutes of Health, specifically the 
 
 **Data, Runtime, and Reproducibility**
 
-The GitHub repository contains the case study source files, rendered site, scripts, and teaching artifacts needed to reproduce the analyses in this case study. Large raw, preprocessed, model-object, and checkpoint files are uploaded to Zenodo, DOI pending publication.
+The case-study repository contains the source files, website files, scripts, and teaching artifacts needed to reproduce the analyses in this case study. Large raw, preprocessed, model-object, and checkpoint files are uploaded to Zenodo, DOI pending publication.
 
 | Resource | Location | Purpose |
 |---|---|---|
 | Source single-cell data | GEO accession [GSE154386](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE154386){target="_blank"} | Original public data source from Waickman et al. 2021. |
-| Case-study source | [opencasestudies/ocs-bio-temporal](https://github.com/opencasestudies/ocs-bio-temporal){target="_blank"} | Quarto source, lightweight teaching artifacts, scripts, and rendered GitHub Pages output. |
+| Case-study source | [opencasestudies/ocs-bio-temporal](https://github.com/opencasestudies/ocs-bio-temporal){target="_blank"} | Source files, included teaching artifacts, scripts, and website output. |
 | Large reproduction artifacts | Zenodo draft; DOI pending publication | Optional full-reproduction files, including large H5AD inputs, model objects, checkpoints, and sweep summaries. |
-| Runtime image | `othomas2/cs5-cogaps-runtime:0.1.0` | Docker image used for GitHub rendering, RStudio Server sessions, and optional local reproduction. |
+| Runtime image | `othomas2/cs5-cogaps-runtime:0.1.0` | Docker image used for RStudio Server sessions and optional local reproduction. |
 
 To launch the runtime locally, clone the repository, open a terminal in the repository root, and run:
 

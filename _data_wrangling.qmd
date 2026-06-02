@@ -1,15 +1,15 @@
 # **Data Wrangling and Preprocessing**
 ***
 
-The full preprocessing workflow starts from GEO 10x files, constructs an AnnData object, performs QC, normalizes counts, selects highly variable genes, annotates broad cell types, and builds a balanced experimental discovery set. That workflow is intentionally treated as full reproduction material rather than a required rendered-case-study step.
+This section explains how the source `GSE154386` files were turned into the teaching artifacts you imported earlier. The full preprocessing workflow starts from GEO 10x files, constructs a single-cell object, performs QC, normalizes counts, selects highly variable genes, annotates broad cell types, and builds a balanced experimental discovery set. That workflow is intentionally treated as full reproduction material rather than a required analysis step.
 
 The required wrangling task is to convert model artifacts into tidy tables for interpretation.
 
 ## **Optional Full Preprocessing Workflow: From GEO to Discovery Subset**
 
-The code in this subsection is shown for transparency and reproducibility. It is **not run during the rendered case study** because it downloads and processes large files. Instead, the standard case-study path starts from the small precomputed artifacts imported earlier.
+The code in this subsection is shown for transparency and reproducibility. It is **not run in the required path** because it downloads and processes large files. Instead, the standard case-study path starts from the small precomputed artifacts imported earlier.
 
-This full preparation workflow starts from the GEO raw 10x files and ends with the large local objects used for CoGAPS:
+The full preparation scripts below give the complete audit trail. Read them as a map of the decisions that produced the teaching dataset: which files were downloaded, which cells and genes were retained, how broad immune-cell labels were attached, and how the balanced discovery subset was constructed. The workflow starts from the GEO raw 10x files and ends with the large local objects used for CoGAPS:
 
 1. download and extract the GSE154386 raw archive
 1. discover per-sample 10x matrix/barcode/feature files
@@ -44,7 +44,7 @@ data.frame(
     "Which marker sets support broad cell-type and IFN-program interpretation?",
     "Why are experimental samples capped at 600 cells per sample?",
     "Which cohort is used for discovery, and which is reserved for optional projection?",
-    "Which outputs are too large for GitHub and need an external host?"
+    "Which outputs are too large to include here and belong in the Zenodo archive?"
   )
 ) |>
   knitr::kable()
@@ -54,7 +54,7 @@ data.frame(
 
 ## Python
 
-Run this from the repository root inside the case-study Docker image after the large data host is finalized, or locally in an equivalent Python environment:
+Run this from the repository root inside the case-study Docker image after downloading the large reproduction files from Zenodo, or locally in an equivalent Python environment:
 
 ```{bash}
 #| eval: false
@@ -77,7 +77,7 @@ cat("\n```\n\n</details>\n")
 
 ## R
 
-Run this from the repository root inside the case-study Docker image after the large data host is finalized, or locally in an equivalent R/Bioconductor environment:
+Run this from the repository root inside the case-study Docker image after downloading the large reproduction files from Zenodo, or locally in an equivalent R/Bioconductor environment:
 
 ```{bash}
 #| eval: false

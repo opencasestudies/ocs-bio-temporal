@@ -34,7 +34,7 @@ These are individual exercises. Each can be completed by one learner without a g
   <tbody>
     <tr>
       <td><img src="assets/question_icons/rq4_natural_projection.png" alt="Icon showing CoGAPS programs learned from an experimental time course projected into a second cell dataset." width="140"></td>
-      <td><strong>Can programs learned from the experimental infection cohort be projected into natural primary dengue infection samples?</strong><br>This extension is framed as a planning and reproduction exercise. The current rendered case study does not claim final natural-cohort projection results because those samples are not aligned to the same experimental clock.</td>
+      <td><strong>Can programs learned from the experimental infection cohort be projected into natural primary dengue infection samples?</strong><br>This extension is framed as a planning and reproduction exercise. The required analysis does not claim final natural-cohort projection results because those samples are not aligned to the same experimental clock.</td>
     </tr>
   </tbody>
 </table>
