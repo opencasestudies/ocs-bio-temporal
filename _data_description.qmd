@@ -1,7 +1,7 @@
 # **What Are the Data?**
 ***
 
-In this section, you will separate the original public study from the smaller teaching artifacts used in this case study. The source study profiled unfractionated peripheral blood mononuclear cells, or `PBMCs`, meaning that the immune-cell mixture was measured together rather than first being sorted into one purified cell subtype. That distinction matters because the source study contains the full single-cell experiment, while the required analysis path uses precomputed files that let you focus on interpretation.
+In this section, you will separate the original public study from the smaller teaching artifacts used in this case study. The source study profiled unfractionated peripheral blood mononuclear cells, or `PBMCs`, meaning that the immune-cell mixture was measured together rather than first being sorted into one purified immune-cell type. That distinction matters because the source study contains the full single-cell experiment, while the required analysis path uses precomputed files that let you focus on interpretation.
 
 The source data come from GEO accession `GSE154386`, associated with Waickman et al. 2021. The study used a 10x Genomics 5-prime single-cell RNA-seq workflow. In practice, the unfractionated PBMC design means T cells, B cells, natural killer cells, monocytes, and related antigen-presenting cells enter the analysis together. The original study also includes natural infection samples; those are biologically important, but they are reserved here for optional projection material rather than the required case-study path.
 

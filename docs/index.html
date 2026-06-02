@@ -997,7 +997,7 @@ D_{g,c} \approx \sum_{k=1}^{K} A_{g,k} P_{k,c}
 <section id="what-are-the-data" class="level1">
 <h1><strong>What Are the Data?</strong></h1>
 <hr>
-<p>In this section, you will separate the original public study from the smaller teaching artifacts used in this case study. The source study profiled unfractionated peripheral blood mononuclear cells, or <code>PBMCs</code>, meaning that the immune-cell mixture was measured together rather than first being sorted into one purified cell subtype. That distinction matters because the source study contains the full single-cell experiment, while the required analysis path uses precomputed files that let you focus on interpretation.</p>
+<p>In this section, you will separate the original public study from the smaller teaching artifacts used in this case study. The source study profiled unfractionated peripheral blood mononuclear cells, or <code>PBMCs</code>, meaning that the immune-cell mixture was measured together rather than first being sorted into one purified immune-cell type. That distinction matters because the source study contains the full single-cell experiment, while the required analysis path uses precomputed files that let you focus on interpretation.</p>
 <p>The source data come from GEO accession <code>GSE154386</code>, associated with Waickman et al.&nbsp;2021. The study used a 10x Genomics 5-prime single-cell RNA-seq workflow. In practice, the unfractionated PBMC design means T cells, B cells, natural killer cells, monocytes, and related antigen-presenting cells enter the analysis together. The original study also includes natural infection samples; those are biologically important, but they are reserved here for optional projection material rather than the required case-study path.</p>
 <table class="caption-top table">
 <colgroup>
@@ -4713,7 +4713,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","selector":".lightbox","closeEffect":"zoom","loop":false,"descPosition":"bottom"});
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","openEffect":"zoom","selector":".lightbox","loop":false});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {
