@@ -88,7 +88,7 @@ k_plateau_py = pd.read_csv(
 
 ## **Optional Full CoGAPS Run**
 
-The full model run is not required for the standard case-study path. It takes about 24 minutes for each selected R or Python run on the tested four-core OpenMP Docker setup, and it requires large H5AD inputs that are not stored in GitHub.
+The full model run is not required for the standard case-study path. It takes about 24 minutes for each selected R or Python run on the tested four-core OpenMP Docker setup, and it requires large H5AD inputs distributed through Zenodo rather than included with the small teaching artifacts.
 
 ::: {.panel-tabset}
 

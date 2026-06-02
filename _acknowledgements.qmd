@@ -9,6 +9,6 @@ We also acknowledge the CoGAPS, PyCoGAPS, Bioconductor, Scanpy, AnnData, Quarto,
 
 This work is supported by the National Institute of General Medical Sciences through grant number 1R25GM160622.
 
-Case-study materials, generated figures, and lightweight teaching artifacts are shared under the Creative Commons Attribution-NonCommercial 4.0 license unless otherwise noted.
+Case-study materials, generated figures, and small teaching artifacts are shared under the Creative Commons Attribution-NonCommercial 4.0 license unless otherwise noted.
 
 Icons are from [iconpacks](https://www.iconsets.com/){target="_blank"}.

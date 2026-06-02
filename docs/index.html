@@ -217,7 +217,9 @@ window.Quarto = {
   </ul></li>
   <li><a href="#what-are-the-data" id="toc-what-are-the-data" class="nav-link" data-scroll-target="#what-are-the-data"><strong>What Are the Data?</strong></a>
   <ul class="collapse">
-  <li><a href="#discovery-set" id="toc-discovery-set" class="nav-link" data-scroll-target="#discovery-set"><strong>Discovery Set</strong></a></li>
+  <li><a href="#from-source-data-to-teaching-artifacts" id="toc-from-source-data-to-teaching-artifacts" class="nav-link" data-scroll-target="#from-source-data-to-teaching-artifacts"><strong>From Source Data to Teaching Artifacts</strong></a></li>
+  <li><a href="#teaching-discovery-set" id="toc-teaching-discovery-set" class="nav-link" data-scroll-target="#teaching-discovery-set"><strong>Teaching Discovery Set</strong></a></li>
+  <li><a href="#data-dictionary" id="toc-data-dictionary" class="nav-link" data-scroll-target="#data-dictionary"><strong>Data Dictionary</strong></a></li>
   </ul></li>
   <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations"><strong>Limitations</strong></a></li>
   <li><a href="#bioethics-data-use-and-interpretation-cautions" id="toc-bioethics-data-use-and-interpretation-cautions" class="nav-link" data-scroll-target="#bioethics-data-use-and-interpretation-cautions"><strong>Bioethics, Data Use, and Interpretation Cautions</strong></a></li>
@@ -334,7 +336,7 @@ window.Quarto = {
 <p>This work is funded through the National Institutes of Health, specifically the National Institute of General Medical Sciences: Grant Number 1R25GM160622.</p>
 <hr>
 <p><strong>Data, Runtime, and Reproducibility</strong></p>
-<p>The GitHub repository contains the case study source files, rendered site, scripts, and teaching artifacts needed to reproduce the analyses in this case study. Large raw, preprocessed, model-object, and checkpoint files are uploaded to Zenodo, DOI pending publication.</p>
+<p>The case-study repository contains the source files, website files, scripts, and teaching artifacts needed to reproduce the analyses in this case study. Large raw, preprocessed, model-object, and checkpoint files are uploaded to Zenodo, DOI pending publication.</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -352,7 +354,7 @@ window.Quarto = {
 <tr class="even">
 <td>Case-study source</td>
 <td><a href="https://github.com/opencasestudies/ocs-bio-temporal" target="_blank">opencasestudies/ocs-bio-temporal</a></td>
-<td>Quarto source, lightweight teaching artifacts, scripts, and rendered GitHub Pages output.</td>
+<td>Source files, included teaching artifacts, scripts, and website output.</td>
 </tr>
 <tr class="odd">
 <td>Large reproduction artifacts</td>
@@ -362,7 +364,7 @@ window.Quarto = {
 <tr class="even">
 <td>Runtime image</td>
 <td><code>othomas2/cs5-cogaps-runtime:0.1.0</code></td>
-<td>Docker image used for GitHub rendering, RStudio Server sessions, and optional local reproduction.</td>
+<td>Docker image used for RStudio Server sessions and optional local reproduction.</td>
 </tr>
 </tbody>
 </table>
@@ -508,8 +510,8 @@ You will combine IFN-score correlation, interferon-stimulated top genes, day 10 
 <li>Import selected-model CoGAPS artifacts, metadata tables, diagnostics, and manifest files in R or Python.</li>
 <li>Summarize cell-level pattern scores, gene-level loadings, and run diagnostics as tidy analysis tables.</li>
 <li>Join CoGAPS cell scores to subject, timepoint, and broad immune-cell-type annotations.</li>
-<li>Create reproducible summaries and visualizations from lightweight teaching artifacts that can be rendered from GitHub.</li>
-<li>Explain which artifacts belong in the GitHub repository and which large reproduction files belong in an external data archive.</li>
+<li>Create reproducible summaries and visualizations from small teaching artifacts included with the case study.</li>
+<li>Explain which artifacts are included with the case study and which large reproduction files belong in the Zenodo archive.</li>
 </ol>
 <p><u><strong>Statistical and Modeling Learning Objectives:</strong></u></p>
 <ol type="1">
@@ -713,7 +715,7 @@ You will combine IFN-score correlation, interferon-stimulated top genes, day 10 
 </tr>
 </tbody>
 </table>
-<p>You can verify the rendered runtime with these lightweight checks:</p>
+<p>You can verify the runtime with these lightweight checks:</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Python</a></li></ul>
 <div class="tab-content">
@@ -995,13 +997,63 @@ D_{g,c} \approx \sum_{k=1}^{K} A_{g,k} P_{k,c}
 <section id="what-are-the-data" class="level1">
 <h1><strong>What Are the Data?</strong></h1>
 <hr>
-<p>The source data come from GEO accession GSE154386, associated with Waickman et al.&nbsp;2021. The study profiled unfractionated PBMCs using a 10x Genomics 5-prime single-cell RNA-seq workflow.</p>
-<p>For this case study, the important design distinction is:</p>
-<ul>
-<li><strong>Experimental infection cohort:</strong> three dengue-naive adults sampled at aligned study days <code>D0</code>, <code>D2</code>, <code>D4</code>, <code>D6</code>, <code>D8</code>, <code>D10</code>, <code>D14/15</code>, and <code>D28</code>. This is the primary discovery cohort.</li>
-<li><strong>Natural infection cohort:</strong> two subjects sampled during natural primary infection plus a convalescent reference. This cohort is reserved for optional projection material.</li>
-</ul>
-<p>The full raw and preprocessed files are too large for a lightweight GitHub-rendered case study. The repository therefore includes only small teaching artifacts derived from the analysis.</p>
+<p>In this section, you will separate the original public study from the smaller teaching artifacts used in this case study. The source study profiled unfractionated peripheral blood mononuclear cells, or <code>PBMCs</code>, meaning that the immune-cell mixture was measured together rather than first being sorted into one purified immune-cell type. That distinction matters because the source study contains the full single-cell experiment, while the required analysis path uses precomputed files that let you focus on interpretation.</p>
+<p>The source data come from GEO accession <code>GSE154386</code>, associated with Waickman et al.&nbsp;2021. The study used a 10x Genomics 5-prime single-cell RNA-seq workflow. In practice, the unfractionated PBMC design means T cells, B cells, natural killer cells, monocytes, and related antigen-presenting cells enter the analysis together. The original study also includes natural infection samples; those are biologically important, but they are reserved here for optional projection material rather than the required case-study path.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Data layer</th>
+<th>What it contains</th>
+<th>Role in this case study</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Original public source data</td>
+<td>Raw 10x single-cell files from GEO accession <code>GSE154386</code>.</td>
+<td>Public provenance for the full Waickman et al.&nbsp;2021 study.</td>
+</tr>
+<tr class="even">
+<td>Experimental infection cohort</td>
+<td>Three dengue-naive adults sampled at aligned study days <code>D0</code>, <code>D2</code>, <code>D4</code>, <code>D6</code>, <code>D8</code>, <code>D10</code>, <code>D14/15</code>, and <code>D28</code>.</td>
+<td>Primary temporal discovery cohort for the required analysis.</td>
+</tr>
+<tr class="odd">
+<td>Teaching discovery set</td>
+<td>A balanced subset of the experimental cohort with 4,800 cells and 5,000 highly variable genes.</td>
+<td>CoGAPS input summarized by the teaching artifacts in this repository.</td>
+</tr>
+<tr class="even">
+<td>Precomputed model artifacts</td>
+<td>Selected <code>K = 10</code> R and Python outputs, K-selection summaries, directionality tables, and figures.</td>
+<td>Required case-study path for importing, visualizing, diagnosing, and interpreting the selected model.</td>
+</tr>
+<tr class="odd">
+<td>Zenodo reproduction files</td>
+<td>Large raw, preprocessed, model-object, and checkpoint files.</td>
+<td>Optional full reproduction path for learners who want to rerun preprocessing or CoGAPS locally.</td>
+</tr>
+</tbody>
+</table>
+<p>The timeline labels use <code>D</code> for experimental study day. For example, <code>D0</code> is day 0, <code>D10</code> is day 10, and <code>D14/15</code> combines samples collected around days 14 and 15.</p>
+<section id="from-source-data-to-teaching-artifacts" class="level2">
+<h2 class="anchored" data-anchor-id="from-source-data-to-teaching-artifacts"><strong>From Source Data to Teaching Artifacts</strong></h2>
+<p>The teaching artifacts are not a separate biological study. They are a smaller, traceable representation of the source data and selected CoGAPS model. The transformation is:</p>
+<ol type="1">
+<li>Download the public <code>GSE154386</code> raw 10x files from GEO.</li>
+<li>Build single-cell objects and attach sample metadata.</li>
+<li>Apply quality control, normalization, and highly variable gene selection.</li>
+<li>Annotate broad immune-cell identities for interpretation.</li>
+<li>Construct a balanced experimental discovery subset.</li>
+<li>Run and diagnose the selected <code>K = 10</code> CoGAPS model.</li>
+<li>Export small tables and figures used in the case study.</li>
+</ol>
+<p>The full raw and preprocessed files are too large for our purposes here, so the main analysis starts from smaller teaching artifacts already included in this repository. The <strong>Data Wrangling and Preprocessing</strong> section returns to these steps in more detail, introduces the full preprocessing scripts, and explains the choices behind quality control, normalization, feature selection, annotation, and subsetting. You do not need to run that full workflow to complete the required case study, but you should understand how the teaching artifacts were produced.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">Python</a></li></ul>
 <div class="tab-content">
@@ -1010,7 +1062,7 @@ D_{g,c} \approx \sum_{k=1}^{K} A_{g,k} P_{k,c}
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>manifest <span class="ot">&lt;-</span> jsonlite<span class="sc">::</span><span class="fu">fromJSON</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"artifact_manifest.json"</span>))</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">artifact_group =</span> <span class="fu">c</span>(<span class="st">"GitHub-tracked teaching files"</span>, <span class="st">"External or local-only files"</span>),</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">artifact_group =</span> <span class="fu">c</span>(<span class="st">"Included teaching artifacts"</span>, <span class="st">"Zenodo reproduction files"</span>),</span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">file_count =</span> <span class="fu">c</span>(<span class="fu">nrow</span>(manifest<span class="sc">$</span>copied), <span class="fu">nrow</span>(manifest<span class="sc">$</span>skipped)),</span>
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">size_mb =</span> <span class="fu">c</span>(</span>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">round</span>(<span class="fu">sum</span>(manifest<span class="sc">$</span>copied<span class="sc">$</span>size_bytes) <span class="sc">/</span> <span class="dv">1024</span><span class="sc">^</span><span class="dv">2</span>, <span class="dv">2</span>),</span>
@@ -1029,12 +1081,12 @@ D_{g,c} \approx \sum_{k=1}^{K} A_{g,k} P_{k,c}
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">GitHub-tracked teaching files</td>
+<td style="text-align: left;">Included teaching artifacts</td>
 <td style="text-align: right;">141</td>
 <td style="text-align: right;">29.20</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">External or local-only files</td>
+<td style="text-align: left;">Zenodo reproduction files</td>
 <td style="text-align: right;">8</td>
 <td style="text-align: right;">316.32</td>
 </tr>
@@ -1053,8 +1105,8 @@ D_{g,c} \approx \sum_{k=1}^{K} A_{g,k} P_{k,c}
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>pd.DataFrame({</span>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"artifact_group"</span>: [</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"GitHub-tracked teaching files"</span>,</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"External or local-only files"</span>,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Included teaching artifacts"</span>,</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Zenodo reproduction files"</span>,</span>
 <span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    ],</span>
 <span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"file_count"</span>: [</span>
 <span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>        <span class="bu">len</span>(manifest_py[<span class="st">"copied"</span>]),</span>
@@ -1066,18 +1118,19 @@ D_{g,c} \approx \sum_{k=1}^{K} A_{g,k} P_{k,c}
 <span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    ],</span>
 <span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>                  artifact_group  file_count  size_mb
-0  GitHub-tracked teaching files         141    29.20
-1   External or local-only files           8   316.32</code></pre>
+<pre><code>                artifact_group  file_count  size_mb
+0  Included teaching artifacts         141    29.20
+1    Zenodo reproduction files           8   316.32</code></pre>
 </div>
 </div>
 </div>
 </div>
 </div>
-<p>The tracked teaching files include R and Python selected-model outputs, K-selection tables, directionality summaries, R/Python agreement summaries, and case-study figures. The skipped files include large H5ADs, RDS model objects, and checkpoint files. Those are documented in <code>data/artifact_manifest.json</code>.</p>
-<section id="discovery-set" class="level2">
-<h2 class="anchored" data-anchor-id="discovery-set"><strong>Discovery Set</strong></h2>
-<p>The core CoGAPS analysis uses a balanced experimental discovery set rather than the entire published single-cell atlas. The discovery set has 4,800 cells and 5,000 highly variable genes. Cells are balanced across experimental samples so that the model is not dominated by a single high-yield sample.</p>
+<p>The included teaching artifacts contain selected-model outputs, K-selection tables, directionality summaries, implementation diagnostics, and case-study figures. The Zenodo reproduction files include larger H5AD inputs, RDS model objects, raw/preprocessed objects, and checkpoint files. The manifest at <code>data/artifact_manifest.json</code> records which artifacts are included with the case study and which belong to the larger reproduction archive.</p>
+</section>
+<section id="teaching-discovery-set" class="level2">
+<h2 class="anchored" data-anchor-id="teaching-discovery-set"><strong>Teaching Discovery Set</strong></h2>
+<p>The core CoGAPS analysis uses a balanced experimental discovery set rather than the entire published single-cell atlas. This teaching discovery set contains 4,800 cells and 5,000 highly variable genes. Each experimental timepoint contributes 600 cells, so the selected model is not dominated by a single high-yield sample.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false">Python</a></li></ul>
 <div class="tab-content">
@@ -1162,6 +1215,101 @@ D_{g,c} \approx \sum_{k=1}^{K} A_{g,k} P_{k,c}
 </div>
 </div>
 </div>
+<p>The table above counts cells, not independent people. A cell is the row-level observation used for expression summaries and CoGAPS pattern scores. The biological design, however, is anchored by subjects and their repeated timepoints.</p>
+<div class="definition_box">
+<div class="definition_box_header">
+<p>Independence and repeated sampling</p>
+</div>
+<div class="inner_block">
+<p>Single cells are not independent biological replicates. Many cells come from the same subject at the same experimental day. You will use cell-level summaries to visualize patterns, but the biological interpretation should also consider subject-level trajectories and repeated sampling over time.</p>
+</div>
+</div>
+</section>
+<section id="data-dictionary" class="level2">
+<h2 class="anchored" data-anchor-id="data-dictionary"><strong>Data Dictionary</strong></h2>
+<p>The columns below appear repeatedly in the import, wrangling, visualization, and analysis sections.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Column or term</th>
+<th>Meaning</th>
+<th>Why it matters</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>subject</code></td>
+<td>Experimental participant identifier, such as <code>Subject2</code>.</td>
+<td>Links cells back to the biological person sampled over time.</td>
+</tr>
+<tr class="even">
+<td><code>sample_id</code></td>
+<td>GEO sample identifier for a specific sample.</td>
+<td>Tracks the source sample used to build the teaching subset.</td>
+</tr>
+<tr class="odd">
+<td><code>timepoint_merged</code></td>
+<td>Display label for the experimental day, such as <code>D0</code>, <code>D10</code>, or <code>D14/15</code>.</td>
+<td>Defines the temporal axis used in figures and summaries.</td>
+</tr>
+<tr class="even">
+<td><code>day_merged_numeric</code></td>
+<td>Numeric version of the timepoint, with <code>D14/15</code> represented as 14.5.</td>
+<td>Lets plots and summaries order the time course correctly.</td>
+</tr>
+<tr class="odd">
+<td><code>broad_cell_type</code></td>
+<td>Broad immune-cell identity, such as <code>T_cell</code>, <code>Monocyte</code>, or <code>B_cell</code>.</td>
+<td>Helps distinguish cell-identity structure from infection-response activity.</td>
+</tr>
+<tr class="even">
+<td><code>n_cells</code></td>
+<td>Number of cells in a group.</td>
+<td>Shows how much cell-level evidence contributes to a summary.</td>
+</tr>
+<tr class="odd">
+<td><code>fraction</code></td>
+<td>Proportion of cells in a timepoint or group.</td>
+<td>Helps compare cell composition across days.</td>
+</tr>
+<tr class="even">
+<td><code>Pattern1</code> to <code>Pattern10</code></td>
+<td>CoGAPS pattern scores for the selected <code>K = 10</code> model.</td>
+<td>Larger values mean stronger activity of that pattern in a cell or group.</td>
+</tr>
+<tr class="odd">
+<td><code>pattern</code></td>
+<td>Pattern label used in long-format summaries.</td>
+<td>Lets you compare results pattern by pattern.</td>
+</tr>
+<tr class="even">
+<td><code>gene</code></td>
+<td>Gene symbol in a pattern or directionality table.</td>
+<td>Connects model patterns to biological interpretation.</td>
+</tr>
+<tr class="odd">
+<td><code>weight</code></td>
+<td>CoGAPS gene loading for a pattern.</td>
+<td>Larger values indicate genes that contribute more strongly to that pattern.</td>
+</tr>
+<tr class="even">
+<td><code>log2FC</code></td>
+<td>Log2 fold change from a pseudobulk directionality comparison.</td>
+<td>Indicates whether selected genes are higher or lower relative to baseline.</td>
+</tr>
+<tr class="odd">
+<td><code>direction</code></td>
+<td>Direction label derived from <code>log2FC</code>, such as up, down, or unchanged.</td>
+<td>Adds up/down regulation context that CoGAPS weights alone do not encode.</td>
+</tr>
+</tbody>
+</table>
+<p>Now that you know the data layers, design units, and key columns, the next sections import the teaching artifacts and inspect the files that carry the selected CoGAPS model through the analysis.</p>
 <hr>
 </section>
 </section>
@@ -1198,7 +1346,7 @@ D_{g,c} \approx \sum_{k=1}^{K} A_{g,k} P_{k,c}
 <section id="data-import" class="level1">
 <h1><strong>Data Import</strong></h1>
 <hr>
-<p>The rendered case study imports small CSV and JSON artifacts that are already stored in the repository. This keeps the standard case-study path fast and reproducible.</p>
+<p>The required analysis imports small CSV and JSON artifacts that are already included with the case study. This keeps the standard case-study path fast and reproducible.</p>
 <p>The large inputs needed to rerun CoGAPS from scratch are intentionally external:</p>
 <ul>
 <li>raw GEO download: <code>GSE154386_RAW.tar</code></li>
@@ -1207,7 +1355,7 @@ D_{g,c} \approx \sum_{k=1}^{K} A_{g,k} P_{k,c}
 <li>RDS model objects</li>
 <li>checkpoint files</li>
 </ul>
-<p>These files are documented in <code>data/artifact_manifest.json</code> and will be linked through an external host when the publication data-hosting decision is finalized.</p>
+<p>These files are documented in <code>data/artifact_manifest.json</code> and are distributed through Zenodo for full reproduction.</p>
 <section id="import-the-selected-model-results" class="level2">
 <h2 class="anchored" data-anchor-id="import-the-selected-model-results"><strong>Import the Selected-Model Results</strong></h2>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
@@ -1578,12 +1726,12 @@ D_{g,c} \approx \sum_{k=1}^{K} A_{g,k} P_{k,c}
 <section id="data-wrangling-and-preprocessing" class="level1">
 <h1><strong>Data Wrangling and Preprocessing</strong></h1>
 <hr>
-<p>The full preprocessing workflow starts from GEO 10x files, constructs an AnnData object, performs QC, normalizes counts, selects highly variable genes, annotates broad cell types, and builds a balanced experimental discovery set. That workflow is intentionally treated as full reproduction material rather than a required rendered-case-study step.</p>
+<p>This section explains how the source <code>GSE154386</code> files were turned into the teaching artifacts you imported earlier. The full preprocessing workflow starts from GEO 10x files, constructs a single-cell object, performs QC, normalizes counts, selects highly variable genes, annotates broad cell types, and builds a balanced experimental discovery set. That workflow is intentionally treated as full reproduction material rather than a required analysis step.</p>
 <p>The required wrangling task is to convert model artifacts into tidy tables for interpretation.</p>
 <section id="optional-full-preprocessing-workflow-from-geo-to-discovery-subset" class="level2">
 <h2 class="anchored" data-anchor-id="optional-full-preprocessing-workflow-from-geo-to-discovery-subset"><strong>Optional Full Preprocessing Workflow: From GEO to Discovery Subset</strong></h2>
-<p>The code in this subsection is shown for transparency and reproducibility. It is <strong>not run during the rendered case study</strong> because it downloads and processes large files. Instead, the standard case-study path starts from the small precomputed artifacts imported earlier.</p>
-<p>This full preparation workflow starts from the GEO raw 10x files and ends with the large local objects used for CoGAPS:</p>
+<p>The code in this subsection is shown for transparency and reproducibility. It is <strong>not run in the required path</strong> because it downloads and processes large files. Instead, the standard case-study path starts from the small precomputed artifacts imported earlier.</p>
+<p>The full preparation scripts below give the complete audit trail. Read them as a map of the decisions that produced the teaching dataset: which files were downloaded, which cells and genes were retained, how broad immune-cell labels were attached, and how the balanced discovery subset was constructed. The workflow starts from the GEO raw 10x files and ends with the large local objects used for CoGAPS:</p>
 <ol type="1">
 <li>download and extract the GSE154386 raw archive</li>
 <li>discover per-sample 10x matrix/barcode/feature files</li>
@@ -1615,7 +1763,7 @@ D_{g,c} \approx \sum_{k=1}^{K} A_{g,k} P_{k,c}
 <span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Which marker sets support broad cell-type and IFN-program interpretation?"</span>,</span>
 <span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Why are experimental samples capped at 600 cells per sample?"</span>,</span>
 <span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Which cohort is used for discovery, and which is reserved for optional projection?"</span>,</span>
-<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Which outputs are too large for GitHub and need an external host?"</span></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Which outputs are too large to include here and belong in the Zenodo archive?"</span></span>
 <span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
 <span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1658,7 +1806,7 @@ D_{g,c} \approx \sum_{k=1}^{K} A_{g,k} P_{k,c}
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Large-file outputs</td>
-<td style="text-align: left;">Which outputs are too large for GitHub and need an external host?</td>
+<td style="text-align: left;">Which outputs are too large to include here and belong in the Zenodo archive?</td>
 </tr>
 </tbody>
 </table>
@@ -1668,7 +1816,7 @@ D_{g,c} \approx \sum_{k=1}^{K} A_{g,k} P_{k,c}
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-8-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-1" role="tab" aria-controls="tabset-8-1" aria-selected="true">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-8-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-2" role="tab" aria-controls="tabset-8-2" aria-selected="false">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-8-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-8-1-tab">
-<p>Run this from the repository root inside the case-study Docker image after the large data host is finalized, or locally in an equivalent Python environment:</p>
+<p>Run this from the repository root inside the case-study Docker image after downloading the large reproduction files from Zenodo, or locally in an equivalent Python environment:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/prepare_gse154386_subset_python.py <span class="dt">\</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">--workdir</span> data/external/GSE154386 <span class="dt">\</span></span>
@@ -2094,7 +2242,7 @@ Complete Python preparation script
 </details>
 </div>
 <div id="tabset-8-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-8-2-tab">
-<p>Run this from the repository root inside the case-study Docker image after the large data host is finalized, or locally in an equivalent R/Bioconductor environment:</p>
+<p>Run this from the repository root inside the case-study Docker image after downloading the large reproduction files from Zenodo, or locally in an equivalent R/Bioconductor environment:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> scripts/prepare_gse154386_subset_r.R <span class="dt">\</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">--workdir</span> data/external/GSE154386 <span class="dt">\</span></span>
@@ -2689,7 +2837,7 @@ Complete R preparation script
 <section id="data-visualization" class="level1">
 <h1><strong>Data Visualization</strong></h1>
 <hr>
-<p>The figures in this section are produced from small source tables in <code>data/processed/figures/source_tables/</code>. They are included as pre-rendered images for speed, but the underlying tables are available for learners to modify.</p>
+<p>The figures in this section are produced from small source tables in <code>data/processed/figures/source_tables/</code>. They are included as saved images for speed, but the underlying tables are available for learners to modify.</p>
 <section id="k-selection" class="level2">
 <h2 class="anchored" data-anchor-id="k-selection"><strong>K Selection</strong></h2>
 <p><a href="data/processed/figures/figure_01_k_selection.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="data/processed/figures/figure_01_k_selection.png" class="img-fluid" alt="K-selection figure summarizing stability, temporal effect size, and biological signals across tested K values." width="850"></a></p>
@@ -2966,7 +3114,7 @@ Complete R preparation script
 </section>
 <section id="optional-full-cogaps-run" class="level2">
 <h2 class="anchored" data-anchor-id="optional-full-cogaps-run"><strong>Optional Full CoGAPS Run</strong></h2>
-<p>The full model run is not required for the standard case-study path. It takes about 24 minutes for each selected R or Python run on the tested four-core OpenMP Docker setup, and it requires large H5AD inputs that are not stored in GitHub.</p>
+<p>The full model run is not required for the standard case-study path. It takes about 24 minutes for each selected R or Python run on the tested four-core OpenMP Docker setup, and it requires large H5AD inputs distributed through Zenodo rather than included with the small teaching artifacts.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-13-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-13-1" role="tab" aria-controls="tabset-13-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-13-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-13-2" role="tab" aria-controls="tabset-13-2" aria-selected="false">Python</a></li></ul>
 <div class="tab-content">
@@ -3891,7 +4039,7 @@ Optional extension
 <img src="assets/question_icons/rq4_natural_projection.png" alt="Icon showing CoGAPS programs learned from an experimental time course projected into a second cell dataset." width="140">
 </td>
 <td>
-<strong>Can programs learned from the experimental infection cohort be projected into natural primary dengue infection samples?</strong><br>This extension is framed as a planning and reproduction exercise. The current rendered case study does not claim final natural-cohort projection results because those samples are not aligned to the same experimental clock.
+<strong>Can programs learned from the experimental infection cohort be projected into natural primary dengue infection samples?</strong><br>This extension is framed as a planning and reproduction exercise. The required analysis does not claim final natural-cohort projection results because those samples are not aligned to the same experimental clock.
 </td>
 </tr>
 </tbody>
@@ -3936,7 +4084,7 @@ Optional extension
 <li>interferon-stimulated genes</li>
 <li>pseudobulk directionality</li>
 <li>R and Python reproducibility</li>
-<li>GitHub-safe teaching artifacts</li>
+<li>Small teaching artifacts included with the case study</li>
 </ul>
 </section>
 <section id="key-scientific-and-methodological-references" class="level2">
@@ -4116,7 +4264,7 @@ Optional extension
 <p>We thank Elana Fertig, Genevieve Stein-O’Brien, Dmitrijs Lvovs, Michael Ochs, and Jessica Brinkworth for their expert review of the proposed case study scope, methods, and domain framing.</p>
 <p>We also acknowledge the CoGAPS, PyCoGAPS, Bioconductor, Scanpy, AnnData, Quarto, and Open Case Studies communities whose tools and templates make this teaching workflow possible.</p>
 <p>This work is supported by the National Institute of General Medical Sciences through grant number 1R25GM160622.</p>
-<p>Case-study materials, generated figures, and lightweight teaching artifacts are shared under the Creative Commons Attribution-NonCommercial 4.0 license unless otherwise noted.</p>
+<p>Case-study materials, generated figures, and small teaching artifacts are shared under the Creative Commons Attribution-NonCommercial 4.0 license unless otherwise noted.</p>
 <p>Icons are from <a href="https://www.iconsets.com/" target="_blank">iconpacks</a>.</p>
 
 
@@ -4565,7 +4713,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"selector":".lightbox","closeEffect":"zoom","loop":false,"descPosition":"bottom","openEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","openEffect":"zoom","selector":".lightbox","loop":false});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {

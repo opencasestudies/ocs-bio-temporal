@@ -1,7 +1,7 @@
 # **Data Import**
 ***
 
-The rendered case study imports small CSV and JSON artifacts that are already stored in the repository. This keeps the standard case-study path fast and reproducible.
+The required analysis imports small CSV and JSON artifacts that are already included with the case study. This keeps the standard case-study path fast and reproducible.
 
 The large inputs needed to rerun CoGAPS from scratch are intentionally external:
 
@@ -11,7 +11,7 @@ The large inputs needed to rerun CoGAPS from scratch are intentionally external:
 - RDS model objects
 - checkpoint files
 
-These files are documented in `data/artifact_manifest.json` and will be linked through an external host when the publication data-hosting decision is finalized.
+These files are documented in `data/artifact_manifest.json` and are distributed through Zenodo for full reproduction.
 
 ## **Import the Selected-Model Results**
 
