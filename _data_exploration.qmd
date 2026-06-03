@@ -1,13 +1,113 @@
 # **Data Exploration**
 ***
 
-Before fitting or interpreting CoGAPS, we need to understand what is in the teaching discovery set.
+Before interpreting CoGAPS patterns, you should inspect the structure of the teaching dataset. A pattern that changes over infection day could reflect a biological response, but it could also reflect a shift in which immune-cell types are present at that day. This section asks a few checks before moving into model interpretation: are the subjects and timepoints represented, what broad cell types dominate the discovery set, and what information is stored in a CoGAPS pattern?
 
-## **Experimental Discovery Set Composition**
+## **Check Subject and Timepoint Coverage**
 
-The discovery set is balanced by experimental sample and then summarized by broad immune-cell type.
+The teaching dataset stores pattern summaries in long format. In a long table, each row holds one measurement for one group. Here, the subject-timepoint table repeats the same cell count once for each CoGAPS pattern, so the first programming step is to keep only the unique combinations of subject, timepoint, and cell count.
+
+In R, `dplyr::distinct()` removes repeated rows. In Python, `drop_duplicates()` does the same job.
+
+::: {.panel-tabset}
+
+## R
+
+```{r}
+#| label: subject-timepoint-coverage-r
+subject_pattern_scores <- readr::read_csv(
+  here::here("data", "processed", "interpretation", "subject_level",
+             "subject_time_pattern_means_long.csv"),
+  show_col_types = FALSE
+)
+
+timepoint_order <- c("D0", "D2", "D4", "D6", "D8", "D10", "D14/15", "D28")
+
+subject_time_counts <- subject_pattern_scores |>
+  distinct(subject, timepoint_merged, day_merged_numeric, n_cells) |>
+  mutate(timepoint_merged = factor(timepoint_merged, levels = timepoint_order)) |>
+  arrange(subject, day_merged_numeric)
+
+subject_time_counts |>
+  select(subject, timepoint_merged, n_cells) |>
+  tidyr::pivot_wider(
+    names_from = timepoint_merged,
+    values_from = n_cells
+  ) |>
+  knitr::kable()
+```
+
+```{r}
+#| label: timepoint-total-check-r
+subject_time_counts |>
+  group_by(timepoint_merged, day_merged_numeric) |>
+  summarize(
+    n_subjects = n_distinct(subject),
+    discovery_cells = sum(n_cells),
+    .groups = "drop"
+  ) |>
+  arrange(day_merged_numeric) |>
+  select(timepoint_merged, n_subjects, discovery_cells) |>
+  knitr::kable()
+```
+
+## Python
+
+```{python}
+#| label: subject-timepoint-coverage-python
+py_subject_pattern_scores = pd.read_csv(
+    "data/processed/interpretation/subject_level/"
+    "subject_time_pattern_means_long.csv"
+)
+
+py_timepoint_order = ["D0", "D2", "D4", "D6", "D8", "D10", "D14/15", "D28"]
+
+py_subject_time_counts = (
+    py_subject_pattern_scores
+    .loc[:, ["subject", "timepoint_merged", "day_merged_numeric", "n_cells"]]
+    .drop_duplicates()
+    .sort_values(["subject", "day_merged_numeric"])
+)
+
+(
+    py_subject_time_counts
+    .pivot(index="subject", columns="timepoint_merged", values="n_cells")
+    .loc[:, py_timepoint_order]
+    .reset_index()
+)
+```
+
+```{python}
+#| label: timepoint-total-check-python
+(
+    py_subject_time_counts
+    .groupby(["timepoint_merged", "day_merged_numeric"], as_index=False)
+    .agg(
+        n_subjects=("subject", "nunique"),
+        discovery_cells=("n_cells", "sum"),
+    )
+    .sort_values("day_merged_numeric")
+    .loc[:, ["timepoint_merged", "n_subjects", "discovery_cells"]]
+)
+```
+
+:::
+
+The coverage check shows that the teaching discovery set contains three experimental subjects at each infection timepoint. Each subject contributes 200 discovery cells per timepoint, for 600 cells per timepoint. That balance makes the later temporal summaries easier to compare, but it does not remove the need to look at cell-type composition.
+
+## **Inspect Broad Cell-Type Composition**
+
+Peripheral blood mononuclear cells include several immune-cell types. If one cell type becomes more common at a specific timepoint, a CoGAPS pattern may look temporal even when it is partly tracking cell identity. This is why composition is the first exploratory plot.
 
 ![](data/processed/figures/figure_02_discovery_set_composition.png){fig-alt="Stacked bar chart showing broad immune-cell composition across experimental dengue infection timepoints." width=850 .lightbox}
+
+The first thing to notice is that the discovery set is balanced by timepoint: each bar is close to 600 cells. This means later timepoint comparisons are not driven simply by one day having many more cells than another.
+
+The second thing to notice is that the bars are not compositionally identical. T cells are the largest broad cell-type group at every timepoint, while monocytes, natural killer cells, B cells, neutrophils, and plasmablasts vary across days. This matters for CoGAPS interpretation. A pattern can look temporal because cells are changing their gene-expression activity, because the mixture of immune-cell types changes, or because both are happening at once.
+
+For this reason, you should treat the plot as an early confounding check. If a later CoGAPS pattern is strongest in a cell type whose fraction also changes across timepoints, you will need additional evidence before calling that pattern an infection-response program. These counts describe the balanced teaching discovery set, not the original abundance of each cell type in the full source study.
+
+The next table summarizes the cell types across the whole discovery set. In both languages, the programming pattern is the same: group rows by broad cell type, add the counts, calculate an average fraction, and sort the result.
 
 ::: {.panel-tabset}
 
@@ -40,14 +140,77 @@ composition |>
 
 :::
 
-This table helps learners see why pattern interpretation must consider cell type. A temporal pattern can reflect changing cell composition, changing expression within a cell type, or both.
+The discovery set is dominated by T cells, with monocytes and natural killer cells also contributing substantial numbers of cells. That matters because a pattern with high scores in T cells might appear across many timepoints simply because T cells are common.
 
-## **What Does a CoGAPS Pattern Contain?**
+For temporal interpretation, it is also useful to reshape the composition table so each row is an infection day and each column is a broad immune-cell type. In R, `tidyr::pivot_wider()` creates this layout. In Python, `pivot_table()` does the same kind of reshape.
 
-Each pattern has two linked views:
+::: {.panel-tabset}
+
+## R
+
+```{r}
+#| label: composition-wide-r
+composition_fraction_table <- composition |>
+  mutate(
+    timepoint_merged = factor(timepoint_merged, levels = timepoint_order),
+    fraction_percent = 100 * fraction
+  ) |>
+  select(timepoint_merged, day_merged_numeric,
+         broad_cell_type, fraction_percent) |>
+  tidyr::pivot_wider(
+    names_from = broad_cell_type,
+    values_from = fraction_percent,
+    values_fill = 0
+  ) |>
+  arrange(day_merged_numeric) |>
+  select(-day_merged_numeric)
+
+composition_fraction_table |>
+  knitr::kable(digits = 1)
+```
+
+## Python
+
+```{python}
+#| label: composition-wide-python
+py_composition_fraction_table = (
+    composition_py
+    .assign(fraction_percent=lambda df: 100 * df["fraction"])
+    .pivot_table(
+        index=["day_merged_numeric", "timepoint_merged"],
+        columns="broad_cell_type",
+        values="fraction_percent",
+        fill_value=0,
+    )
+    .reset_index()
+    .sort_values("day_merged_numeric")
+    .drop(columns="day_merged_numeric")
+)
+
+py_composition_fraction_table.columns.name = None
+py_composition_fraction_table.round(1)
+```
+
+:::
+
+Use this table as a warning label for the modeling sections. For example, T cells are common at every timepoint, while monocyte, natural killer cell, and B-cell fractions vary across the time course. Later, when a pattern changes over time, you will ask whether it is tracking infection activity, broad cell identity, or both.
+
+::: {.callout-note}
+### Checkpoint
+
+Before looking at any CoGAPS pattern labels, choose one cell type from the composition table and predict how it could influence a temporal pattern. Would a pattern dominated by that cell type be more likely to look identity-like, activity-like, or mixed?
+:::
+
+## **Connect Gene Loadings and Cell Scores**
+
+A CoGAPS pattern has two linked views:
 
 - **Gene loadings:** which genes define the pattern.
-- **Cell scores:** which cells use the pattern.
+- **Cell scores:** which cells or cell groups use the pattern more strongly.
+
+You need both views for interpretation. Gene loadings can suggest a biological theme, while cell scores show where that theme appears across subjects, timepoints, and cell types.
+
+The selected `K = 10` model includes a pattern later evaluated as an interferon-associated candidate. At this stage, treat it as a clue rather than a conclusion. The code below inspects the top genes for `Pattern3`.
 
 ::: {.panel-tabset}
 
@@ -75,6 +238,50 @@ py_top_genes.loc[
 
 :::
 
-The top genes for `Pattern3` include `LY6E`, `ISG15`, `IFITM1`, `IFI6`, `MX1`, `IRF7`, `IFI44L`, `IFIT3`, and `OAS1`, which supports the interferon-associated interpretation.
+Several top genes in `Pattern3`, including `LY6E`, `ISG15`, `IFITM1`, `IFI6`, `MX1`, `IRF7`, `IFI44L`, `IFIT3`, and `OAS1`, are consistent with an interferon-stimulated response. That observation makes `Pattern3` worth following, but top genes alone are not enough. Later sections will check whether this pattern is temporally concentrated, whether it appears across subjects, whether directionality supports the interpretation, and whether it can be separated from broad cell identity.
+
+Cell scores provide the matching view: they show how strongly each subject-timepoint group uses a pattern. The next table previews `Pattern3` scores by subject and infection day.
+
+::: {.panel-tabset}
+
+## R
+
+```{r}
+#| label: pattern3-subject-scores-r
+subject_pattern_scores |>
+  filter(pattern == "Pattern3") |>
+  mutate(timepoint_merged = factor(timepoint_merged, levels = timepoint_order)) |>
+  select(subject, timepoint_merged, day_merged_numeric, mean_pattern_score) |>
+  arrange(subject, day_merged_numeric) |>
+  select(-day_merged_numeric) |>
+  tidyr::pivot_wider(
+    names_from = timepoint_merged,
+    values_from = mean_pattern_score
+  ) |>
+  knitr::kable(digits = 3)
+```
+
+## Python
+
+```{python}
+#| label: pattern3-subject-scores-python
+(
+    py_subject_pattern_scores
+    .loc[py_subject_pattern_scores["pattern"].eq("Pattern3"),
+         ["subject", "timepoint_merged", "day_merged_numeric",
+          "mean_pattern_score"]]
+    .sort_values(["subject", "day_merged_numeric"])
+    .pivot(index="subject",
+           columns="timepoint_merged",
+           values="mean_pattern_score")
+    .loc[:, py_timepoint_order]
+    .reset_index()
+    .round(3)
+)
+```
+
+:::
+
+This preview suggests a late acute increase in `Pattern3`, especially around `D10` and `D14/15`. Keep that as a working hypothesis, not a final result. The next sections will move from exploration to structured preprocessing, visualization, diagnostics, and research-question tables.
 
 ***
