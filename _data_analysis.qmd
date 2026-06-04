@@ -369,56 +369,6 @@ directionality_py.loc[
 
 :::
 
-## **R and Python Agreement**
-
-::: {.panel-tabset}
-
-## R
-
-```{r}
-#| label: r-python-agreement-r
-comparison <- jsonlite::fromJSON(
-  here::here("data", "processed", "r_python_comparison",
-             "comparison_metrics.json")
-)
-
-data.frame(
-  metric = c("Cell score Spearman", "Gene loading Spearman",
-             "Top 50 gene Jaccard"),
-  mean_matched_agreement = c(
-    comparison$mean_matched_cell_score_spearman,
-    comparison$mean_matched_gene_loading_spearman,
-    comparison$mean_matched_top_50_gene_jaccard
-  )
-) |>
-  knitr::kable(digits = 3)
-```
-
-## Python
-
-```{python}
-#| label: r-python-agreement-python
-with open("data/processed/r_python_comparison/comparison_metrics.json") as f:
-    comparison_py = json.load(f)
-
-pd.DataFrame({
-    "metric": [
-        "Cell score Spearman",
-        "Gene loading Spearman",
-        "Top 50 gene Jaccard",
-    ],
-    "mean_matched_agreement": [
-        comparison_py["mean_matched_cell_score_spearman"],
-        comparison_py["mean_matched_gene_loading_spearman"],
-        comparison_py["mean_matched_top_50_gene_jaccard"],
-    ],
-})
-```
-
-:::
-
-The selected R and Python runs match exactly in the exported comparison summaries. This lets the case study teach R as the default route while still showing Python as a first-class alternate implementation.
-
 ## **K=5 Comparator**
 
 `K = 5` is included as a precomputed comparator, not as a required rerun. Its role is instructional: it shows that a lower-rank model can be stable and still too compressed for the main biological question.

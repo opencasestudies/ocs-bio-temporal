@@ -186,6 +186,7 @@ Taub
 transcriptome
 transcriptomic
 Tsang
+UMAP
 underset
 unfractionated
 upregulated

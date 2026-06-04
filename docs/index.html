@@ -258,9 +258,10 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#k-selection" id="toc-k-selection" class="nav-link" data-scroll-target="#k-selection"><strong>K Selection</strong></a></li>
   <li><a href="#pattern-usage-across-time" id="toc-pattern-usage-across-time" class="nav-link" data-scroll-target="#pattern-usage-across-time"><strong>Pattern Usage Across Time</strong></a></li>
-  <li><a href="#identity-and-activity-views" id="toc-identity-and-activity-views" class="nav-link" data-scroll-target="#identity-and-activity-views"><strong>Identity and Activity Views</strong></a></li>
+  <li><a href="#pattern-usage-by-broad-cell-type" id="toc-pattern-usage-by-broad-cell-type" class="nav-link" data-scroll-target="#pattern-usage-by-broad-cell-type"><strong>Pattern Usage By Broad Cell Type</strong></a></li>
+  <li><a href="#pattern-scores-on-a-transcriptome-umap" id="toc-pattern-scores-on-a-transcriptome-umap" class="nav-link" data-scroll-target="#pattern-scores-on-a-transcriptome-umap"><strong>Pattern Scores On A Transcriptome UMAP</strong></a></li>
   <li><a href="#ifn-pattern-trajectory" id="toc-ifn-pattern-trajectory" class="nav-link" data-scroll-target="#ifn-pattern-trajectory"><strong>IFN Pattern Trajectory</strong></a></li>
-  <li><a href="#directionality-and-rpython-agreement" id="toc-directionality-and-rpython-agreement" class="nav-link" data-scroll-target="#directionality-and-rpython-agreement"><strong>Directionality and R/Python Agreement</strong></a></li>
+  <li><a href="#directionality" id="toc-directionality" class="nav-link" data-scroll-target="#directionality"><strong>Directionality</strong></a></li>
   </ul></li>
   <li><a href="#data-analysis" id="toc-data-analysis" class="nav-link" data-scroll-target="#data-analysis"><strong>Data Analysis</strong></a>
   <ul class="collapse">
@@ -271,7 +272,6 @@ window.Quarto = {
   <li><a href="#rq2-identity-programs-versus-activity-programs" id="toc-rq2-identity-programs-versus-activity-programs" class="nav-link" data-scroll-target="#rq2-identity-programs-versus-activity-programs"><strong>RQ2: Identity Programs Versus Activity Programs</strong></a></li>
   <li><a href="#rq3-which-program-is-ifn-associated-and-when-does-it-peak" id="toc-rq3-which-program-is-ifn-associated-and-when-does-it-peak" class="nav-link" data-scroll-target="#rq3-which-program-is-ifn-associated-and-when-does-it-peak"><strong>RQ3: Which Program Is IFN-Associated and When Does It Peak?</strong></a></li>
   <li><a href="#why-directionality-is-separate" id="toc-why-directionality-is-separate" class="nav-link" data-scroll-target="#why-directionality-is-separate"><strong>Why Directionality Is Separate</strong></a></li>
-  <li><a href="#r-and-python-agreement" id="toc-r-and-python-agreement" class="nav-link" data-scroll-target="#r-and-python-agreement"><strong>R and Python Agreement</strong></a></li>
   <li><a href="#k5-comparator" id="toc-k5-comparator" class="nav-link" data-scroll-target="#k5-comparator"><strong>K=5 Comparator</strong></a></li>
   <li><a href="#rq4-optional-extension-natural-infection-projection" id="toc-rq4-optional-extension-natural-infection-projection" class="nav-link" data-scroll-target="#rq4-optional-extension-natural-infection-projection"><strong>RQ4 Optional Extension: Natural Infection Projection</strong></a></li>
   </ul></li>
@@ -4512,17 +4512,81 @@ Complete Python preparation script
 <section id="data-visualization" class="level1">
 <h1><strong>Data Visualization</strong></h1>
 <hr>
-<p>The figures in this section are produced from small source tables in <code>data/processed/figures/source_tables/</code>. They are included as saved images for speed, but the underlying tables are available for learners to modify.</p>
+<p>The previous sections showed where the data came from, how the teaching dataset was prepared, and how CoGAPS pattern scores were summarized. In this section, you will use figures to decide what evidence is worth carrying into the formal analysis. A good visualization does not prove the result by itself. It tells you what to inspect next.</p>
+<p>The figures are built from small source tables in <code>data/processed/figures/source_tables/</code>. Saved images are shown first so the section loads quickly, and the source tables are available when you want to modify a plot.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Figure</th>
+<th>Source table</th>
+<th>What it shows</th>
+<th>Research question</th>
+<th>What it cannot prove</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>K-selection figure</td>
+<td><code>figure_01_k_selection_source.csv</code></td>
+<td>How candidate model ranks balance stability, temporal resolution, and goal-aligned evidence.</td>
+<td>Why use <code>K = 10</code> for the main model?</td>
+<td>It does not identify a biological program by itself.</td>
+</tr>
+<tr class="even">
+<td>Pattern usage across time</td>
+<td><code>figure_03_pattern_usage_by_time_matrix.csv</code></td>
+<td>Mean pattern usage for each CoGAPS pattern across infection days.</td>
+<td>Which temporal programs appear across the experimental time course?</td>
+<td>It does not tell whether a pattern is driven by cell identity, subject effects, or gene-direction changes.</td>
+</tr>
+<tr class="odd">
+<td>Pattern usage by broad cell type</td>
+<td><code>figure_04_pattern_usage_by_cell_type_matrix.csv</code></td>
+<td>Mean pattern usage across broad PBMC identities.</td>
+<td>Which patterns look identity-like versus activity-like?</td>
+<td>It does not show whether a pattern changes over time within the same cell type.</td>
+</tr>
+<tr class="even">
+<td>Pattern scores on transcriptome UMAP</td>
+<td><code>figure_08_transcriptome_umap_pattern_scores_source.csv</code></td>
+<td>Cell-level pattern scores over a transcriptome embedding.</td>
+<td>Where do selected patterns appear in cell-state space?</td>
+<td>It is a context view, not a statistical test or a replacement for subject-level summaries.</td>
+</tr>
+<tr class="odd">
+<td>IFN pattern trajectory</td>
+<td><code>figure_05_ifn_pattern_subject_trajectory_source.csv</code>; <code>figure_05_ifn_pattern_summary_trajectory_source.csv</code></td>
+<td>Subject-level trajectory for the candidate IFN-associated pattern.</td>
+<td>Does the candidate IFN program peak in the late acute window?</td>
+<td>It does not show whether top genes are upregulated relative to baseline.</td>
+</tr>
+<tr class="even">
+<td>Directionality heatmap</td>
+<td><code>figure_06_ifn_top_gene_directionality_matrix.csv</code></td>
+<td>Log2 fold-change direction for top genes in the IFN-associated pattern.</td>
+<td>Do top genes support an upregulated late acute response?</td>
+<td>It does not replace the CoGAPS model; it adds direction to the non-negative pattern interpretation.</td>
+</tr>
+</tbody>
+</table>
 <section id="k-selection" class="level2">
 <h2 class="anchored" data-anchor-id="k-selection"><strong>K Selection</strong></h2>
 <p><a href="data/processed/figures/figure_01_k_selection.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="data/processed/figures/figure_01_k_selection.png" class="img-fluid" alt="K-selection figure summarizing stability, temporal effect size, and biological signals across tested K values." width="850"></a></p>
-<p>The K-selection figure is used as a teaching exercise. Learners should notice that the most stable model is not automatically the model that best answers the biological question.</p>
-<p>This expands the sweep panel from the opening roadmap. The left plot asks whether a model is both stable across seeds and able to resolve temporal structure. The right plot ranks candidate K values using a goal-aligned score that combines stability, low redundancy, temporal signal, and IFN-candidate evidence. <code>K = 5</code> remains an important comparator because it is stable, but it is too compact to separate the late acute interferon-associated program clearly.</p>
+<p>This figure is a visualization of a modeling decision. The left panel asks whether a model rank is stable across seeds while still resolving temporal structure. The right panel summarizes a goal-aligned score that combines stability, low redundancy, temporal signal, and IFN-candidate evidence.</p>
+<p>Use this plot to compare <code>K = 5</code> and <code>K = 10</code>. <code>K = 5</code> is useful because it is stable and compact, but compact models can compress several biological signals into fewer patterns. <code>K = 10</code> stays in a stable region while separating a late acute IFN-associated program more clearly. That is why <code>K = 10</code> is used for the main model and <code>K = 5</code> remains a sensitivity comparison.</p>
 </section>
 <section id="pattern-usage-across-time" class="level2">
 <h2 class="anchored" data-anchor-id="pattern-usage-across-time"><strong>Pattern Usage Across Time</strong></h2>
 <p><a href="data/processed/figures/figure_03_pattern_usage_by_time_heatmap.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="data/processed/figures/figure_03_pattern_usage_by_time_heatmap.png" class="img-fluid" alt="Heatmap of mean CoGAPS pattern usage across experimental timepoints for the selected K=10 model." width="850"></a></p>
-<p>This expands the temporal-pattern heatmap from the opening roadmap. Rows are CoGAPS patterns, columns are infection days, and color shows the mean cell score for each pattern at each timepoint. Pattern numbers are run-specific labels; they become biologically meaningful only after you compare trajectories, cell-type summaries, top genes, and directionality evidence.</p>
+<p>This heatmap is the first visual pass at Research Question 1. Rows are CoGAPS patterns, columns are infection days, and color shows mean pattern usage. Pattern labels such as <code>Pattern3</code> are model labels, not biological names. They become meaningful only after you compare the time pattern with cell-type summaries, top genes, subject-level trajectories, and directionality.</p>
+<p>Before looking ahead, ask: which patterns change across time, and which patterns look mostly flat?</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-22-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-22-1" role="tab" aria-controls="tabset-22-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-22-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-22-2" role="tab" aria-controls="tabset-22-2" aria-selected="false">Python</a></li></ul>
 <div class="tab-content">
@@ -4579,7 +4643,7 @@ Complete Python preparation script
 <span id="cb77-19"><a href="#cb77-19" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"CoGAPS pattern"</span>)</span>
 <span id="cb77-20"><a href="#cb77-20" aria-hidden="true" tabindex="-1"></a>fig.colorbar(image, ax<span class="op">=</span>ax, label<span class="op">=</span><span class="st">"Mean usage"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>&lt;matplotlib.colorbar.Colorbar object at 0x7fffc4d03fa0&gt;</code></pre>
+<pre><code>&lt;matplotlib.colorbar.Colorbar object at 0x7fffc4cff4c0&gt;</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb79"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
 <span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -4595,21 +4659,131 @@ Complete Python preparation script
 </div>
 </div>
 </section>
-<section id="identity-and-activity-views" class="level2">
-<h2 class="anchored" data-anchor-id="identity-and-activity-views"><strong>Identity and Activity Views</strong></h2>
+<section id="pattern-usage-by-broad-cell-type" class="level2">
+<h2 class="anchored" data-anchor-id="pattern-usage-by-broad-cell-type"><strong>Pattern Usage By Broad Cell Type</strong></h2>
 <p><a href="data/processed/figures/figure_04_pattern_usage_by_broad_cell_type_heatmap.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="data/processed/figures/figure_04_pattern_usage_by_broad_cell_type_heatmap.png" class="img-fluid" alt="Heatmap of mean CoGAPS pattern usage by broad immune-cell type." width="850"></a></p>
-<p>This later view adds the broad-cell-type pattern summary that is intentionally not crowded into the opening roadmap. PBMC identity is expected to explain a large part of single-cell variation because T cells, B cells, natural killer cells, monocytes, neutrophils, and plasmablasts have distinct baseline transcriptional programs. Comparing this heatmap with the time heatmap helps separate identity-like patterns from activity-like patterns. The IFN-associated pattern is used most strongly in monocytes but changes much more over time than the identity-like patterns.</p>
+<p>This figure connects back to Data Exploration. PBMC samples contain a mixture of immune-cell identities, and that mixture can affect how a pattern looks over time. A pattern can look temporal because cells changed their gene-expression activity, because the mix of cell types changed, or because both happened.</p>
+<p>Use this heatmap to ask whether each pattern mostly tracks broad immune-cell identity. For example, a pattern that is strongest in T cells or B cells may be useful, but you should be cautious about calling it an infection-response program unless it also changes within the temporal summaries. The candidate IFN-associated pattern is different: it has a strong temporal signal and is enriched in monocytes, which makes it a better candidate for a dynamic response.</p>
+</section>
+<section id="pattern-scores-on-a-transcriptome-umap" class="level2">
+<h2 class="anchored" data-anchor-id="pattern-scores-on-a-transcriptome-umap"><strong>Pattern Scores On A Transcriptome UMAP</strong></h2>
+<p><a href="data/processed/figures/figure_08_pattern_scores_on_transcriptome_umap.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img src="data/processed/figures/figure_08_pattern_scores_on_transcriptome_umap.png" class="img-fluid" alt="Transcriptome UMAP of discovery cells colored by broad PBMC identity and selected K=10 CoGAPS pattern scores for Pattern3, Pattern7, and Pattern10." width="850"></a></p>
+<p>This cell-level context view is part of the visualization evidence path. The coordinates come from the transcriptome UMAP stored in the full preprocessed H5AD object; the small source table included here stores only the discovery-cell coordinates, metadata, and selected-model pattern scores. The first panel shows broad PBMC identity. The other panels color the same cells by selected CoGAPS pattern scores.</p>
+<p>Do not treat a UMAP as proof. Nearby points are useful for visual context, but the axes are not biological units, and the display can change with preprocessing and embedding parameters. The reason to include this view is narrower: it helps you see that identity-like patterns concentrate in broad cell-state regions, while the IFN-associated pattern appears as a pattern score over cells in those same transcriptome neighborhoods.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-23-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-23-1" role="tab" aria-controls="tabset-23-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-23-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-23-2" role="tab" aria-controls="tabset-23-2" aria-selected="false">Python</a></li></ul>
+<div class="tab-content">
+<div id="tabset-23-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-23-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>embedding_scores <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(</span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>  here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"processed"</span>, <span class="st">"figures"</span>, <span class="st">"source_tables"</span>,</span>
+<span id="cb80-3"><a href="#cb80-3" aria-hidden="true" tabindex="-1"></a>             <span class="st">"figure_08_transcriptome_umap_pattern_scores_source.csv"</span>),</span>
+<span id="cb80-4"><a href="#cb80-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">show_col_types =</span> <span class="cn">FALSE</span></span>
+<span id="cb80-5"><a href="#cb80-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb80-6"><a href="#cb80-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb80-7"><a href="#cb80-7" aria-hidden="true" tabindex="-1"></a>selected_patterns <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb80-8"><a href="#cb80-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">Pattern3 =</span> <span class="st">"Pattern3: IFN-associated activity"</span>,</span>
+<span id="cb80-9"><a href="#cb80-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">Pattern7 =</span> <span class="st">"Pattern7: T-cell identity"</span>,</span>
+<span id="cb80-10"><a href="#cb80-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">Pattern10 =</span> <span class="st">"Pattern10: B-cell identity"</span></span>
+<span id="cb80-11"><a href="#cb80-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb80-12"><a href="#cb80-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb80-13"><a href="#cb80-13" aria-hidden="true" tabindex="-1"></a>embedding_long <span class="ot">&lt;-</span> embedding_scores <span class="sc">|&gt;</span></span>
+<span id="cb80-14"><a href="#cb80-14" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(cell_id, umap_1, umap_2, dplyr<span class="sc">::</span><span class="fu">all_of</span>(<span class="fu">names</span>(selected_patterns))) <span class="sc">|&gt;</span></span>
+<span id="cb80-15"><a href="#cb80-15" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(</span>
+<span id="cb80-16"><a href="#cb80-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> dplyr<span class="sc">::</span><span class="fu">all_of</span>(<span class="fu">names</span>(selected_patterns)),</span>
+<span id="cb80-17"><a href="#cb80-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"pattern"</span>,</span>
+<span id="cb80-18"><a href="#cb80-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"cell_score"</span></span>
+<span id="cb80-19"><a href="#cb80-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb80-20"><a href="#cb80-20" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">pattern_label =</span> selected_patterns[pattern])</span>
+<span id="cb80-21"><a href="#cb80-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb80-22"><a href="#cb80-22" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(embedding_long, <span class="fu">aes</span>(<span class="at">x =</span> umap_1, <span class="at">y =</span> umap_2, <span class="at">color =</span> cell_score)) <span class="sc">+</span></span>
+<span id="cb80-23"><a href="#cb80-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">0.35</span>, <span class="at">alpha =</span> <span class="fl">0.75</span>) <span class="sc">+</span></span>
+<span id="cb80-24"><a href="#cb80-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> pattern_label, <span class="at">ncol =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb80-25"><a href="#cb80-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_c</span>(<span class="at">option =</span> <span class="st">"C"</span>) <span class="sc">+</span></span>
+<span id="cb80-26"><a href="#cb80-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"UMAP 1"</span>, <span class="at">y =</span> <span class="st">"UMAP 2"</span>, <span class="at">color =</span> <span class="st">"Cell score"</span>) <span class="sc">+</span></span>
+<span id="cb80-27"><a href="#cb80-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">10</span>) <span class="sc">+</span></span>
+<span id="cb80-28"><a href="#cb80-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/plot-pattern-umap-r-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-23-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-23-2-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>embedding_scores <span class="op">=</span> pd.read_csv(</span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/processed/figures/source_tables/"</span></span>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"figure_08_transcriptome_umap_pattern_scores_source.csv"</span></span>
+<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb81-5"><a href="#cb81-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-6"><a href="#cb81-6" aria-hidden="true" tabindex="-1"></a>selected_patterns <span class="op">=</span> {</span>
+<span id="cb81-7"><a href="#cb81-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Pattern3"</span>: <span class="st">"Pattern3: IFN-associated activity"</span>,</span>
+<span id="cb81-8"><a href="#cb81-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Pattern7"</span>: <span class="st">"Pattern7: T-cell identity"</span>,</span>
+<span id="cb81-9"><a href="#cb81-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Pattern10"</span>: <span class="st">"Pattern10: B-cell identity"</span>,</span>
+<span id="cb81-10"><a href="#cb81-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb81-11"><a href="#cb81-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-12"><a href="#cb81-12" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">3.6</span>), sharex<span class="op">=</span><span class="va">True</span>, sharey<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb81-13"><a href="#cb81-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, (pattern, title) <span class="kw">in</span> <span class="bu">zip</span>(axes, selected_patterns.items()):</span>
+<span id="cb81-14"><a href="#cb81-14" aria-hidden="true" tabindex="-1"></a>    image <span class="op">=</span> ax.scatter(</span>
+<span id="cb81-15"><a href="#cb81-15" aria-hidden="true" tabindex="-1"></a>        embedding_scores[<span class="st">"umap_1"</span>],</span>
+<span id="cb81-16"><a href="#cb81-16" aria-hidden="true" tabindex="-1"></a>        embedding_scores[<span class="st">"umap_2"</span>],</span>
+<span id="cb81-17"><a href="#cb81-17" aria-hidden="true" tabindex="-1"></a>        c<span class="op">=</span>embedding_scores[pattern],</span>
+<span id="cb81-18"><a href="#cb81-18" aria-hidden="true" tabindex="-1"></a>        s<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb81-19"><a href="#cb81-19" aria-hidden="true" tabindex="-1"></a>        alpha<span class="op">=</span><span class="fl">0.75</span>,</span>
+<span id="cb81-20"><a href="#cb81-20" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb81-21"><a href="#cb81-21" aria-hidden="true" tabindex="-1"></a>    ax.set_title(title)</span>
+<span id="cb81-22"><a href="#cb81-22" aria-hidden="true" tabindex="-1"></a>    ax.set_xlabel(<span class="st">"UMAP 1"</span>)</span>
+<span id="cb81-23"><a href="#cb81-23" aria-hidden="true" tabindex="-1"></a>    ax.set_ylabel(<span class="st">"UMAP 2"</span>)</span>
+<span id="cb81-24"><a href="#cb81-24" aria-hidden="true" tabindex="-1"></a>    ax.set_xticks([])</span>
+<span id="cb81-25"><a href="#cb81-25" aria-hidden="true" tabindex="-1"></a>    ax.set_yticks([])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Text(0.5, 1.0, 'Pattern3: IFN-associated activity')
+Text(0.5, 0, 'UMAP 1')
+Text(0, 0.5, 'UMAP 2')
+[]
+[]
+Text(0.5, 1.0, 'Pattern7: T-cell identity')
+Text(0.5, 0, 'UMAP 1')
+Text(0, 0.5, 'UMAP 2')
+[]
+[]
+Text(0.5, 1.0, 'Pattern10: B-cell identity')
+Text(0.5, 0, 'UMAP 1')
+Text(0, 0.5, 'UMAP 2')
+[]
+[]</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>fig.colorbar(image, ax<span class="op">=</span>axes.ravel().tolist(), label<span class="op">=</span><span class="st">"Cell score"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;matplotlib.colorbar.Colorbar object at 0x7fffc2aa8b20&gt;</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/plot-pattern-umap-python-1.png" class="img-fluid figure-img" width="1056"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 </section>
 <section id="ifn-pattern-trajectory" class="level2">
 <h2 class="anchored" data-anchor-id="ifn-pattern-trajectory"><strong>IFN Pattern Trajectory</strong></h2>
-<p><a href="data/processed/figures/figure_05_ifn_pattern_trajectory.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img src="data/processed/figures/figure_05_ifn_pattern_trajectory.png" class="img-fluid" alt="Subject-level trajectory for the IFN-associated CoGAPS pattern, showing a rise at day 10 and day 14 or 15." width="850"></a></p>
-<p>This expands the Pattern 3 trajectory from the opening roadmap. Gray lines show subject-level means, the red line shows the subject mean with standard error, and the shaded region marks the late acute window. Subject-level trajectories make the central finding visible without treating each cell as an independent person.</p>
+<p><a href="data/processed/figures/figure_05_ifn_pattern_trajectory.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7"><img src="data/processed/figures/figure_05_ifn_pattern_trajectory.png" class="img-fluid" alt="Subject-level trajectory for the IFN-associated CoGAPS pattern, showing a rise at day 10 and day 14 or 15." width="850"></a></p>
+<p>This trajectory is the main visual evidence for the late acute timing of the candidate IFN-associated program. Gray lines show subject-level means. The red line shows the mean across subjects with standard error. The shaded region marks the late acute window.</p>
+<p>This subject-level view is important because cells are not independent people. If you plotted every cell as a separate observation, the figure would look more precise than the study design supports. Here, each subject contributes a time-course summary before the across-subject mean is drawn.</p>
 </section>
-<section id="directionality-and-rpython-agreement" class="level2">
-<h2 class="anchored" data-anchor-id="directionality-and-rpython-agreement"><strong>Directionality and R/Python Agreement</strong></h2>
-<p><a href="data/processed/figures/figure_06_ifn_top_gene_directionality_heatmap.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7"><img src="data/processed/figures/figure_06_ifn_top_gene_directionality_heatmap.png" class="img-fluid" alt="Heatmap showing log2 fold-change directionality for top IFN-associated pattern genes across timepoints." width="850"></a></p>
-<p><a href="data/processed/figures/figure_07_r_python_agreement_summary.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8"><img src="data/processed/figures/figure_07_r_python_agreement_summary.png" class="img-fluid" alt="Agreement summary comparing matched R and Python CoGAPS patterns." width="850"></a></p>
-<p>The directionality figure answers a question CoGAPS cannot answer alone: are the top genes in the IFN-associated pattern higher than baseline at the peak timepoints? The R/Python agreement figure confirms that the selected R and Python workflows produce matching artifacts.</p>
+<section id="directionality" class="level2">
+<h2 class="anchored" data-anchor-id="directionality"><strong>Directionality</strong></h2>
+<p><a href="data/processed/figures/figure_06_ifn_top_gene_directionality_heatmap.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8"><img src="data/processed/figures/figure_06_ifn_top_gene_directionality_heatmap.png" class="img-fluid" alt="Heatmap showing log2 fold-change directionality for top IFN-associated pattern genes across timepoints." width="850"></a></p>
+<p>The directionality heatmap comes after the trajectory for a reason. CoGAPS scores are non-negative, so a high pattern score tells you that a cell or group uses a pattern more strongly, but it does not tell you whether the top genes are higher or lower than baseline. This heatmap adds that missing direction by showing pseudobulk log2 fold changes for top genes in the candidate IFN-associated pattern.</p>
+<p>Use this figure as a final visualization check before Data Analysis. If the trajectory rises at <code>D10</code> and <code>D14/15</code>, and the top genes are also mostly higher than baseline at those timepoints, the IFN-associated interpretation becomes more convincing. The next section turns these visual checks into research-question tables and model diagnostics.</p>
 <hr>
 </section>
 </section>
@@ -4625,36 +4799,36 @@ Complete Python preparation script
 <p>Select the smallest stability-plateau K that resolves at least one IFN-candidate, activity-like temporal program.</p>
 </blockquote>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-23-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-23-1" role="tab" aria-controls="tabset-23-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-23-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-23-2" role="tab" aria-controls="tabset-23-2" aria-selected="false">Python</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-24-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-24-1" role="tab" aria-controls="tabset-24-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-24-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-24-2" role="tab" aria-controls="tabset-24-2" aria-selected="false">Python</a></li></ul>
 <div class="tab-content">
-<div id="tabset-23-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-23-1-tab">
+<div id="tabset-24-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-24-1-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>k_manifest <span class="ot">&lt;-</span> jsonlite<span class="sc">::</span><span class="fu">fromJSON</span>(</span>
-<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>  here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"processed"</span>, <span class="st">"k_selection"</span>,</span>
-<span id="cb80-3"><a href="#cb80-3" aria-hidden="true" tabindex="-1"></a>             <span class="st">"revised_k_selection_manifest.json"</span>)</span>
-<span id="cb80-4"><a href="#cb80-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb80-5"><a href="#cb80-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb80-6"><a href="#cb80-6" aria-hidden="true" tabindex="-1"></a>k_plateau <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(</span>
-<span id="cb80-7"><a href="#cb80-7" aria-hidden="true" tabindex="-1"></a>  here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"processed"</span>, <span class="st">"k_selection"</span>,</span>
-<span id="cb80-8"><a href="#cb80-8" aria-hidden="true" tabindex="-1"></a>             <span class="st">"stability_plateau_candidates.csv"</span>),</span>
-<span id="cb80-9"><a href="#cb80-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">show_col_types =</span> <span class="cn">FALSE</span></span>
-<span id="cb80-10"><a href="#cb80-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb80-11"><a href="#cb80-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb80-12"><a href="#cb80-12" aria-hidden="true" tabindex="-1"></a>k_plateau <span class="sc">|&gt;</span></span>
-<span id="cb80-13"><a href="#cb80-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(</span>
-<span id="cb80-14"><a href="#cb80-14" aria-hidden="true" tabindex="-1"></a>    K,</span>
-<span id="cb80-15"><a href="#cb80-15" aria-hidden="true" tabindex="-1"></a>    selected_n_iter,</span>
-<span id="cb80-16"><a href="#cb80-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">stability_core =</span> <span class="fu">round</span>(stability_core, <span class="dv">3</span>),</span>
-<span id="cb80-17"><a href="#cb80-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_eta_timepoint =</span> <span class="fu">round</span>(max_eta_timepoint, <span class="dv">3</span>),</span>
-<span id="cb80-18"><a href="#cb80-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">candidate_ifn_patterns =</span> candidate_ifn_pattern_count_mean,</span>
-<span id="cb80-19"><a href="#cb80-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">activity_like_patterns =</span> activity_like_pattern_count_mean,</span>
-<span id="cb80-20"><a href="#cb80-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">revised_selection =</span> <span class="fu">if_else</span>(</span>
-<span id="cb80-21"><a href="#cb80-21" aria-hidden="true" tabindex="-1"></a>      K <span class="sc">==</span> k_manifest<span class="sc">$</span>revised_chosen_k,</span>
-<span id="cb80-22"><a href="#cb80-22" aria-hidden="true" tabindex="-1"></a>      <span class="st">"selected for main analysis"</span>,</span>
-<span id="cb80-23"><a href="#cb80-23" aria-hidden="true" tabindex="-1"></a>      <span class="st">""</span></span>
-<span id="cb80-24"><a href="#cb80-24" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb80-25"><a href="#cb80-25" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb80-26"><a href="#cb80-26" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>k_manifest <span class="ot">&lt;-</span> jsonlite<span class="sc">::</span><span class="fu">fromJSON</span>(</span>
+<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a>  here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"processed"</span>, <span class="st">"k_selection"</span>,</span>
+<span id="cb86-3"><a href="#cb86-3" aria-hidden="true" tabindex="-1"></a>             <span class="st">"revised_k_selection_manifest.json"</span>)</span>
+<span id="cb86-4"><a href="#cb86-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb86-5"><a href="#cb86-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-6"><a href="#cb86-6" aria-hidden="true" tabindex="-1"></a>k_plateau <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(</span>
+<span id="cb86-7"><a href="#cb86-7" aria-hidden="true" tabindex="-1"></a>  here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"processed"</span>, <span class="st">"k_selection"</span>,</span>
+<span id="cb86-8"><a href="#cb86-8" aria-hidden="true" tabindex="-1"></a>             <span class="st">"stability_plateau_candidates.csv"</span>),</span>
+<span id="cb86-9"><a href="#cb86-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">show_col_types =</span> <span class="cn">FALSE</span></span>
+<span id="cb86-10"><a href="#cb86-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb86-11"><a href="#cb86-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-12"><a href="#cb86-12" aria-hidden="true" tabindex="-1"></a>k_plateau <span class="sc">|&gt;</span></span>
+<span id="cb86-13"><a href="#cb86-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(</span>
+<span id="cb86-14"><a href="#cb86-14" aria-hidden="true" tabindex="-1"></a>    K,</span>
+<span id="cb86-15"><a href="#cb86-15" aria-hidden="true" tabindex="-1"></a>    selected_n_iter,</span>
+<span id="cb86-16"><a href="#cb86-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">stability_core =</span> <span class="fu">round</span>(stability_core, <span class="dv">3</span>),</span>
+<span id="cb86-17"><a href="#cb86-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_eta_timepoint =</span> <span class="fu">round</span>(max_eta_timepoint, <span class="dv">3</span>),</span>
+<span id="cb86-18"><a href="#cb86-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">candidate_ifn_patterns =</span> candidate_ifn_pattern_count_mean,</span>
+<span id="cb86-19"><a href="#cb86-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">activity_like_patterns =</span> activity_like_pattern_count_mean,</span>
+<span id="cb86-20"><a href="#cb86-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">revised_selection =</span> <span class="fu">if_else</span>(</span>
+<span id="cb86-21"><a href="#cb86-21" aria-hidden="true" tabindex="-1"></a>      K <span class="sc">==</span> k_manifest<span class="sc">$</span>revised_chosen_k,</span>
+<span id="cb86-22"><a href="#cb86-22" aria-hidden="true" tabindex="-1"></a>      <span class="st">"selected for main analysis"</span>,</span>
+<span id="cb86-23"><a href="#cb86-23" aria-hidden="true" tabindex="-1"></a>      <span class="st">""</span></span>
+<span id="cb86-24"><a href="#cb86-24" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb86-25"><a href="#cb86-25" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb86-26"><a href="#cb86-26" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
@@ -4737,39 +4911,39 @@ Complete Python preparation script
 </div>
 </div>
 </div>
-<div id="tabset-23-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-23-2-tab">
+<div id="tabset-24-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-24-2-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
-<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(</span>
-<span id="cb81-5"><a href="#cb81-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/processed/k_selection/revised_k_selection_manifest.json"</span></span>
-<span id="cb81-6"><a href="#cb81-6" aria-hidden="true" tabindex="-1"></a>) <span class="im">as</span> f:</span>
-<span id="cb81-7"><a href="#cb81-7" aria-hidden="true" tabindex="-1"></a>    k_manifest_py <span class="op">=</span> json.load(f)</span>
-<span id="cb81-8"><a href="#cb81-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb81-9"><a href="#cb81-9" aria-hidden="true" tabindex="-1"></a>k_plateau_py <span class="op">=</span> pd.read_csv(</span>
-<span id="cb81-10"><a href="#cb81-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/processed/k_selection/stability_plateau_candidates.csv"</span></span>
-<span id="cb81-11"><a href="#cb81-11" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb81-12"><a href="#cb81-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb81-13"><a href="#cb81-13" aria-hidden="true" tabindex="-1"></a>(</span>
-<span id="cb81-14"><a href="#cb81-14" aria-hidden="true" tabindex="-1"></a>    k_plateau_py</span>
-<span id="cb81-15"><a href="#cb81-15" aria-hidden="true" tabindex="-1"></a>    .assign(</span>
-<span id="cb81-16"><a href="#cb81-16" aria-hidden="true" tabindex="-1"></a>        stability_core<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="st">"stability_core"</span>].<span class="bu">round</span>(<span class="dv">3</span>),</span>
-<span id="cb81-17"><a href="#cb81-17" aria-hidden="true" tabindex="-1"></a>        max_eta_timepoint<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="st">"max_eta_timepoint"</span>].<span class="bu">round</span>(<span class="dv">3</span>),</span>
-<span id="cb81-18"><a href="#cb81-18" aria-hidden="true" tabindex="-1"></a>        revised_selection<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="st">"K"</span>].eq(</span>
-<span id="cb81-19"><a href="#cb81-19" aria-hidden="true" tabindex="-1"></a>            k_manifest_py[<span class="st">"revised_chosen_k"</span>]</span>
-<span id="cb81-20"><a href="#cb81-20" aria-hidden="true" tabindex="-1"></a>        ).<span class="bu">map</span>({<span class="va">True</span>: <span class="st">"selected for main analysis"</span>, <span class="va">False</span>: <span class="st">""</span>})</span>
-<span id="cb81-21"><a href="#cb81-21" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb81-22"><a href="#cb81-22" aria-hidden="true" tabindex="-1"></a>    .rename(columns<span class="op">=</span>{</span>
-<span id="cb81-23"><a href="#cb81-23" aria-hidden="true" tabindex="-1"></a>        <span class="st">"candidate_ifn_pattern_count_mean"</span>: <span class="st">"candidate_ifn_patterns"</span>,</span>
-<span id="cb81-24"><a href="#cb81-24" aria-hidden="true" tabindex="-1"></a>        <span class="st">"activity_like_pattern_count_mean"</span>: <span class="st">"activity_like_patterns"</span>,</span>
-<span id="cb81-25"><a href="#cb81-25" aria-hidden="true" tabindex="-1"></a>    })</span>
-<span id="cb81-26"><a href="#cb81-26" aria-hidden="true" tabindex="-1"></a>    .loc[:, [</span>
-<span id="cb81-27"><a href="#cb81-27" aria-hidden="true" tabindex="-1"></a>        <span class="st">"K"</span>, <span class="st">"selected_n_iter"</span>, <span class="st">"stability_core"</span>, <span class="st">"max_eta_timepoint"</span>,</span>
-<span id="cb81-28"><a href="#cb81-28" aria-hidden="true" tabindex="-1"></a>        <span class="st">"candidate_ifn_patterns"</span>, <span class="st">"activity_like_patterns"</span>,</span>
-<span id="cb81-29"><a href="#cb81-29" aria-hidden="true" tabindex="-1"></a>        <span class="st">"revised_selection"</span></span>
-<span id="cb81-30"><a href="#cb81-30" aria-hidden="true" tabindex="-1"></a>    ]]</span>
-<span id="cb81-31"><a href="#cb81-31" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(</span>
+<span id="cb87-5"><a href="#cb87-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/processed/k_selection/revised_k_selection_manifest.json"</span></span>
+<span id="cb87-6"><a href="#cb87-6" aria-hidden="true" tabindex="-1"></a>) <span class="im">as</span> f:</span>
+<span id="cb87-7"><a href="#cb87-7" aria-hidden="true" tabindex="-1"></a>    k_manifest_py <span class="op">=</span> json.load(f)</span>
+<span id="cb87-8"><a href="#cb87-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-9"><a href="#cb87-9" aria-hidden="true" tabindex="-1"></a>k_plateau_py <span class="op">=</span> pd.read_csv(</span>
+<span id="cb87-10"><a href="#cb87-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/processed/k_selection/stability_plateau_candidates.csv"</span></span>
+<span id="cb87-11"><a href="#cb87-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb87-12"><a href="#cb87-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-13"><a href="#cb87-13" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb87-14"><a href="#cb87-14" aria-hidden="true" tabindex="-1"></a>    k_plateau_py</span>
+<span id="cb87-15"><a href="#cb87-15" aria-hidden="true" tabindex="-1"></a>    .assign(</span>
+<span id="cb87-16"><a href="#cb87-16" aria-hidden="true" tabindex="-1"></a>        stability_core<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="st">"stability_core"</span>].<span class="bu">round</span>(<span class="dv">3</span>),</span>
+<span id="cb87-17"><a href="#cb87-17" aria-hidden="true" tabindex="-1"></a>        max_eta_timepoint<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="st">"max_eta_timepoint"</span>].<span class="bu">round</span>(<span class="dv">3</span>),</span>
+<span id="cb87-18"><a href="#cb87-18" aria-hidden="true" tabindex="-1"></a>        revised_selection<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="st">"K"</span>].eq(</span>
+<span id="cb87-19"><a href="#cb87-19" aria-hidden="true" tabindex="-1"></a>            k_manifest_py[<span class="st">"revised_chosen_k"</span>]</span>
+<span id="cb87-20"><a href="#cb87-20" aria-hidden="true" tabindex="-1"></a>        ).<span class="bu">map</span>({<span class="va">True</span>: <span class="st">"selected for main analysis"</span>, <span class="va">False</span>: <span class="st">""</span>})</span>
+<span id="cb87-21"><a href="#cb87-21" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb87-22"><a href="#cb87-22" aria-hidden="true" tabindex="-1"></a>    .rename(columns<span class="op">=</span>{</span>
+<span id="cb87-23"><a href="#cb87-23" aria-hidden="true" tabindex="-1"></a>        <span class="st">"candidate_ifn_pattern_count_mean"</span>: <span class="st">"candidate_ifn_patterns"</span>,</span>
+<span id="cb87-24"><a href="#cb87-24" aria-hidden="true" tabindex="-1"></a>        <span class="st">"activity_like_pattern_count_mean"</span>: <span class="st">"activity_like_patterns"</span>,</span>
+<span id="cb87-25"><a href="#cb87-25" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb87-26"><a href="#cb87-26" aria-hidden="true" tabindex="-1"></a>    .loc[:, [</span>
+<span id="cb87-27"><a href="#cb87-27" aria-hidden="true" tabindex="-1"></a>        <span class="st">"K"</span>, <span class="st">"selected_n_iter"</span>, <span class="st">"stability_core"</span>, <span class="st">"max_eta_timepoint"</span>,</span>
+<span id="cb87-28"><a href="#cb87-28" aria-hidden="true" tabindex="-1"></a>        <span class="st">"candidate_ifn_patterns"</span>, <span class="st">"activity_like_patterns"</span>,</span>
+<span id="cb87-29"><a href="#cb87-29" aria-hidden="true" tabindex="-1"></a>        <span class="st">"revised_selection"</span></span>
+<span id="cb87-30"><a href="#cb87-30" aria-hidden="true" tabindex="-1"></a>    ]]</span>
+<span id="cb87-31"><a href="#cb87-31" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    K  selected_n_iter  ...  activity_like_patterns           revised_selection
 0   5             8000  ...                     0.0                            
@@ -4791,27 +4965,27 @@ Complete Python preparation script
 <h2 class="anchored" data-anchor-id="optional-full-cogaps-run"><strong>Optional Full CoGAPS Run</strong></h2>
 <p>The full model run is not required for the standard case-study path. It takes about 24 minutes for each selected R or Python run on the tested four-core OpenMP Docker setup, and it requires large H5AD inputs distributed through Zenodo rather than included with the small teaching artifacts.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-24-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-24-1" role="tab" aria-controls="tabset-24-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-24-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-24-2" role="tab" aria-controls="tabset-24-2" aria-selected="false">Python</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-25-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-25-1" role="tab" aria-controls="tabset-25-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-25-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-25-2" role="tab" aria-controls="tabset-25-2" aria-selected="false">Python</a></li></ul>
 <div class="tab-content">
-<div id="tabset-24-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-24-1-tab">
+<div id="tabset-25-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-25-1-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>r_metrics <span class="ot">&lt;-</span> jsonlite<span class="sc">::</span><span class="fu">fromJSON</span>(</span>
-<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>  here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"processed"</span>, <span class="st">"selected_model_k10"</span>, <span class="st">"r"</span>,</span>
-<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a>             <span class="st">"cogaps_K10_seed2_iter2000.metrics.json"</span>)</span>
-<span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb83-5"><a href="#cb83-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-6"><a href="#cb83-6" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
-<span id="cb83-7"><a href="#cb83-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">language =</span> r_metrics<span class="sc">$</span>language,</span>
-<span id="cb83-8"><a href="#cb83-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">K =</span> r_metrics<span class="sc">$</span>K,</span>
-<span id="cb83-9"><a href="#cb83-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> r_metrics<span class="sc">$</span>seed,</span>
-<span id="cb83-10"><a href="#cb83-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">nIterations =</span> r_metrics<span class="sc">$</span>n_iter,</span>
-<span id="cb83-11"><a href="#cb83-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">nThreads =</span> r_metrics<span class="sc">$</span>nThreads,</span>
-<span id="cb83-12"><a href="#cb83-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">sparseOptimization =</span> r_metrics<span class="sc">$</span>sparseOptimization,</span>
-<span id="cb83-13"><a href="#cb83-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">runtime_minutes =</span> <span class="fu">round</span>(r_metrics<span class="sc">$</span>runtime_sec <span class="sc">/</span> <span class="dv">60</span>, <span class="dv">1</span>),</span>
-<span id="cb83-14"><a href="#cb83-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">meanChiSq =</span> r_metrics<span class="sc">$</span>meanChiSq,</span>
-<span id="cb83-15"><a href="#cb83-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">trace_length =</span> r_metrics<span class="sc">$</span>chisqHistory_length</span>
-<span id="cb83-16"><a href="#cb83-16" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
-<span id="cb83-17"><a href="#cb83-17" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>r_metrics <span class="ot">&lt;-</span> jsonlite<span class="sc">::</span><span class="fu">fromJSON</span>(</span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>  here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"processed"</span>, <span class="st">"selected_model_k10"</span>, <span class="st">"r"</span>,</span>
+<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a>             <span class="st">"cogaps_K10_seed2_iter2000.metrics.json"</span>)</span>
+<span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb89-5"><a href="#cb89-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb89-6"><a href="#cb89-6" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
+<span id="cb89-7"><a href="#cb89-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">language =</span> r_metrics<span class="sc">$</span>language,</span>
+<span id="cb89-8"><a href="#cb89-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">K =</span> r_metrics<span class="sc">$</span>K,</span>
+<span id="cb89-9"><a href="#cb89-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> r_metrics<span class="sc">$</span>seed,</span>
+<span id="cb89-10"><a href="#cb89-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">nIterations =</span> r_metrics<span class="sc">$</span>n_iter,</span>
+<span id="cb89-11"><a href="#cb89-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">nThreads =</span> r_metrics<span class="sc">$</span>nThreads,</span>
+<span id="cb89-12"><a href="#cb89-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">sparseOptimization =</span> r_metrics<span class="sc">$</span>sparseOptimization,</span>
+<span id="cb89-13"><a href="#cb89-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">runtime_minutes =</span> <span class="fu">round</span>(r_metrics<span class="sc">$</span>runtime_sec <span class="sc">/</span> <span class="dv">60</span>, <span class="dv">1</span>),</span>
+<span id="cb89-14"><a href="#cb89-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">meanChiSq =</span> r_metrics<span class="sc">$</span>meanChiSq,</span>
+<span id="cb89-15"><a href="#cb89-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">trace_length =</span> r_metrics<span class="sc">$</span>chisqHistory_length</span>
+<span id="cb89-16"><a href="#cb89-16" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb89-17"><a href="#cb89-17" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
@@ -4856,25 +5030,25 @@ Complete Python preparation script
 </div>
 <p>The R run used OpenMP with four CoGAPS threads, sparse optimization, checkpointing every 500 iterations, trace output every 100 iterations, 10 snapshots, and pump sampling.</p>
 </div>
-<div id="tabset-24-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-24-2-tab">
+<div id="tabset-25-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-25-2-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(</span>
-<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/processed/selected_model_k10/python/"</span></span>
-<span id="cb84-3"><a href="#cb84-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"cogaps_K10_seed2_iter2000.metrics.json"</span></span>
-<span id="cb84-4"><a href="#cb84-4" aria-hidden="true" tabindex="-1"></a>) <span class="im">as</span> f:</span>
-<span id="cb84-5"><a href="#cb84-5" aria-hidden="true" tabindex="-1"></a>    py_metrics <span class="op">=</span> json.load(f)</span>
-<span id="cb84-6"><a href="#cb84-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb84-7"><a href="#cb84-7" aria-hidden="true" tabindex="-1"></a>pd.DataFrame([{</span>
-<span id="cb84-8"><a href="#cb84-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"language"</span>: py_metrics[<span class="st">"language"</span>],</span>
-<span id="cb84-9"><a href="#cb84-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"K"</span>: py_metrics[<span class="st">"K"</span>],</span>
-<span id="cb84-10"><a href="#cb84-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"seed"</span>: <span class="dv">2</span>,</span>
-<span id="cb84-11"><a href="#cb84-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"nIterations"</span>: py_metrics[<span class="st">"n_iter"</span>],</span>
-<span id="cb84-12"><a href="#cb84-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"nThreads"</span>: py_metrics[<span class="st">"cogaps_threads"</span>],</span>
-<span id="cb84-13"><a href="#cb84-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sparseOptimization"</span>: py_metrics[<span class="st">"use_sparse_optimization"</span>],</span>
-<span id="cb84-14"><a href="#cb84-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"runtime_minutes"</span>: <span class="bu">round</span>(py_metrics[<span class="st">"runtime_sec"</span>] <span class="op">/</span> <span class="dv">60</span>, <span class="dv">1</span>),</span>
-<span id="cb84-15"><a href="#cb84-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"meanChiSq"</span>: py_metrics[<span class="st">"meanChiSq"</span>],</span>
-<span id="cb84-16"><a href="#cb84-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"trace_length"</span>: py_metrics[<span class="st">"chisqHistory_length"</span>],</span>
-<span id="cb84-17"><a href="#cb84-17" aria-hidden="true" tabindex="-1"></a>}])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(</span>
+<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/processed/selected_model_k10/python/"</span></span>
+<span id="cb90-3"><a href="#cb90-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"cogaps_K10_seed2_iter2000.metrics.json"</span></span>
+<span id="cb90-4"><a href="#cb90-4" aria-hidden="true" tabindex="-1"></a>) <span class="im">as</span> f:</span>
+<span id="cb90-5"><a href="#cb90-5" aria-hidden="true" tabindex="-1"></a>    py_metrics <span class="op">=</span> json.load(f)</span>
+<span id="cb90-6"><a href="#cb90-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-7"><a href="#cb90-7" aria-hidden="true" tabindex="-1"></a>pd.DataFrame([{</span>
+<span id="cb90-8"><a href="#cb90-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"language"</span>: py_metrics[<span class="st">"language"</span>],</span>
+<span id="cb90-9"><a href="#cb90-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"K"</span>: py_metrics[<span class="st">"K"</span>],</span>
+<span id="cb90-10"><a href="#cb90-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"seed"</span>: <span class="dv">2</span>,</span>
+<span id="cb90-11"><a href="#cb90-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"nIterations"</span>: py_metrics[<span class="st">"n_iter"</span>],</span>
+<span id="cb90-12"><a href="#cb90-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"nThreads"</span>: py_metrics[<span class="st">"cogaps_threads"</span>],</span>
+<span id="cb90-13"><a href="#cb90-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sparseOptimization"</span>: py_metrics[<span class="st">"use_sparse_optimization"</span>],</span>
+<span id="cb90-14"><a href="#cb90-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"runtime_minutes"</span>: <span class="bu">round</span>(py_metrics[<span class="st">"runtime_sec"</span>] <span class="op">/</span> <span class="dv">60</span>, <span class="dv">1</span>),</span>
+<span id="cb90-15"><a href="#cb90-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"meanChiSq"</span>: py_metrics[<span class="st">"meanChiSq"</span>],</span>
+<span id="cb90-16"><a href="#cb90-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"trace_length"</span>: py_metrics[<span class="st">"chisqHistory_length"</span>],</span>
+<span id="cb90-17"><a href="#cb90-17" aria-hidden="true" tabindex="-1"></a>}])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  language   K  seed  ...  runtime_minutes    meanChiSq  trace_length
 0   Python  10     2  ...             24.1  117373456.0            40
@@ -4890,25 +5064,25 @@ Complete Python preparation script
 <section id="stability-and-convergence-diagnostics" class="level2">
 <h2 class="anchored" data-anchor-id="stability-and-convergence-diagnostics"><strong>Stability and Convergence Diagnostics</strong></h2>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-25-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-25-1" role="tab" aria-controls="tabset-25-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-25-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-25-2" role="tab" aria-controls="tabset-25-2" aria-selected="false">Python</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-26-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-26-1" role="tab" aria-controls="tabset-26-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-26-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-26-2" role="tab" aria-controls="tabset-26-2" aria-selected="false">Python</a></li></ul>
 <div class="tab-content">
-<div id="tabset-25-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-25-1-tab">
+<div id="tabset-26-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-26-1-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>r_trace <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(</span>
-<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a>  here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"processed"</span>, <span class="st">"selected_model_k10"</span>, <span class="st">"r"</span>,</span>
-<span id="cb86-3"><a href="#cb86-3" aria-hidden="true" tabindex="-1"></a>             <span class="st">"cogaps_K10_seed2_iter2000.trace.csv"</span>),</span>
-<span id="cb86-4"><a href="#cb86-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">show_col_types =</span> <span class="cn">FALSE</span></span>
-<span id="cb86-5"><a href="#cb86-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb86-6"><a href="#cb86-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-7"><a href="#cb86-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(r_trace, <span class="fu">aes</span>(<span class="at">x =</span> trace_index, <span class="at">y =</span> chisq)) <span class="sc">+</span></span>
-<span id="cb86-8"><a href="#cb86-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
-<span id="cb86-9"><a href="#cb86-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
-<span id="cb86-10"><a href="#cb86-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb86-11"><a href="#cb86-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Trace point"</span>,</span>
-<span id="cb86-12"><a href="#cb86-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Chi-square"</span>,</span>
-<span id="cb86-13"><a href="#cb86-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Selected R CoGAPS run diagnostic trace"</span></span>
-<span id="cb86-14"><a href="#cb86-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb86-15"><a href="#cb86-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">11</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a>r_trace <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(</span>
+<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a>  here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"processed"</span>, <span class="st">"selected_model_k10"</span>, <span class="st">"r"</span>,</span>
+<span id="cb92-3"><a href="#cb92-3" aria-hidden="true" tabindex="-1"></a>             <span class="st">"cogaps_K10_seed2_iter2000.trace.csv"</span>),</span>
+<span id="cb92-4"><a href="#cb92-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">show_col_types =</span> <span class="cn">FALSE</span></span>
+<span id="cb92-5"><a href="#cb92-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb92-6"><a href="#cb92-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb92-7"><a href="#cb92-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(r_trace, <span class="fu">aes</span>(<span class="at">x =</span> trace_index, <span class="at">y =</span> chisq)) <span class="sc">+</span></span>
+<span id="cb92-8"><a href="#cb92-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb92-9"><a href="#cb92-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb92-10"><a href="#cb92-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb92-11"><a href="#cb92-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Trace point"</span>,</span>
+<span id="cb92-12"><a href="#cb92-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Chi-square"</span>,</span>
+<span id="cb92-13"><a href="#cb92-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Selected R CoGAPS run diagnostic trace"</span></span>
+<span id="cb92-14"><a href="#cb92-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb92-15"><a href="#cb92-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">11</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -4918,22 +5092,22 @@ Complete Python preparation script
 </div>
 </div>
 </div>
-<div id="tabset-25-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-25-2-tab">
+<div id="tabset-26-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-26-2-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a>py_trace <span class="op">=</span> pd.read_csv(</span>
-<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/processed/selected_model_k10/python/"</span></span>
-<span id="cb87-5"><a href="#cb87-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"cogaps_K10_seed2_iter2000.trace.csv"</span></span>
-<span id="cb87-6"><a href="#cb87-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb87-7"><a href="#cb87-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-8"><a href="#cb87-8" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">4</span>))</span>
-<span id="cb87-9"><a href="#cb87-9" aria-hidden="true" tabindex="-1"></a>ax.plot(py_trace[<span class="st">"trace_index"</span>], py_trace[<span class="st">"chisq"</span>], marker<span class="op">=</span><span class="st">"o"</span>)</span>
-<span id="cb87-10"><a href="#cb87-10" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Trace point"</span>)</span>
-<span id="cb87-11"><a href="#cb87-11" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Chi-square"</span>)</span>
-<span id="cb87-12"><a href="#cb87-12" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Selected Python CoGAPS run diagnostic trace"</span>)</span>
-<span id="cb87-13"><a href="#cb87-13" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb87-14"><a href="#cb87-14" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a>py_trace <span class="op">=</span> pd.read_csv(</span>
+<span id="cb93-4"><a href="#cb93-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/processed/selected_model_k10/python/"</span></span>
+<span id="cb93-5"><a href="#cb93-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"cogaps_K10_seed2_iter2000.trace.csv"</span></span>
+<span id="cb93-6"><a href="#cb93-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb93-7"><a href="#cb93-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb93-8"><a href="#cb93-8" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">4</span>))</span>
+<span id="cb93-9"><a href="#cb93-9" aria-hidden="true" tabindex="-1"></a>ax.plot(py_trace[<span class="st">"trace_index"</span>], py_trace[<span class="st">"chisq"</span>], marker<span class="op">=</span><span class="st">"o"</span>)</span>
+<span id="cb93-10"><a href="#cb93-10" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Trace point"</span>)</span>
+<span id="cb93-11"><a href="#cb93-11" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Chi-square"</span>)</span>
+<span id="cb93-12"><a href="#cb93-12" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Selected Python CoGAPS run diagnostic trace"</span>)</span>
+<span id="cb93-13"><a href="#cb93-13" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
+<span id="cb93-14"><a href="#cb93-14" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -4950,23 +5124,23 @@ Complete Python preparation script
 <section id="rq1-which-latent-programs-vary-over-time" class="level2">
 <h2 class="anchored" data-anchor-id="rq1-which-latent-programs-vary-over-time"><strong>RQ1: Which Latent Programs Vary Over Time?</strong></h2>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-26-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-26-1" role="tab" aria-controls="tabset-26-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-26-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-26-2" role="tab" aria-controls="tabset-26-2" aria-selected="false">Python</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-27-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-27-1" role="tab" aria-controls="tabset-27-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-27-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-27-2" role="tab" aria-controls="tabset-27-2" aria-selected="false">Python</a></li></ul>
 <div class="tab-content">
-<div id="tabset-26-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-26-1-tab">
+<div id="tabset-27-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-27-1-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>rq1 <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(</span>
-<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>  here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"processed"</span>, <span class="st">"interpretation"</span>, <span class="st">"rq_tables"</span>,</span>
-<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a>             <span class="st">"RQ1_temporal_programs.csv"</span>),</span>
-<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">show_col_types =</span> <span class="cn">FALSE</span></span>
-<span id="cb88-5"><a href="#cb88-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb88-6"><a href="#cb88-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb88-7"><a href="#cb88-7" aria-hidden="true" tabindex="-1"></a>rq1 <span class="sc">|&gt;</span></span>
-<span id="cb88-8"><a href="#cb88-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(pattern, observed_label, pattern_class, eta_timepoint,</span>
-<span id="cb88-9"><a href="#cb88-9" aria-hidden="true" tabindex="-1"></a>         subject_peak_timepoint, subject_mean_D0, subject_mean_D10,</span>
-<span id="cb88-10"><a href="#cb88-10" aria-hidden="true" tabindex="-1"></a>         subject_mean_D14_15, subject_mean_D28, top_10_genes) <span class="sc">|&gt;</span></span>
-<span id="cb88-11"><a href="#cb88-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(eta_timepoint)) <span class="sc">|&gt;</span></span>
-<span id="cb88-12"><a href="#cb88-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">6</span>) <span class="sc">|&gt;</span></span>
-<span id="cb88-13"><a href="#cb88-13" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a>rq1 <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(</span>
+<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a>  here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"processed"</span>, <span class="st">"interpretation"</span>, <span class="st">"rq_tables"</span>,</span>
+<span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a>             <span class="st">"RQ1_temporal_programs.csv"</span>),</span>
+<span id="cb94-4"><a href="#cb94-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">show_col_types =</span> <span class="cn">FALSE</span></span>
+<span id="cb94-5"><a href="#cb94-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb94-6"><a href="#cb94-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-7"><a href="#cb94-7" aria-hidden="true" tabindex="-1"></a>rq1 <span class="sc">|&gt;</span></span>
+<span id="cb94-8"><a href="#cb94-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(pattern, observed_label, pattern_class, eta_timepoint,</span>
+<span id="cb94-9"><a href="#cb94-9" aria-hidden="true" tabindex="-1"></a>         subject_peak_timepoint, subject_mean_D0, subject_mean_D10,</span>
+<span id="cb94-10"><a href="#cb94-10" aria-hidden="true" tabindex="-1"></a>         subject_mean_D14_15, subject_mean_D28, top_10_genes) <span class="sc">|&gt;</span></span>
+<span id="cb94-11"><a href="#cb94-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(eta_timepoint)) <span class="sc">|&gt;</span></span>
+<span id="cb94-12"><a href="#cb94-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">6</span>) <span class="sc">|&gt;</span></span>
+<span id="cb94-13"><a href="#cb94-13" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
@@ -5073,22 +5247,22 @@ Complete Python preparation script
 </div>
 </div>
 </div>
-<div id="tabset-26-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-26-2-tab">
+<div id="tabset-27-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-27-2-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>rq1_py <span class="op">=</span> pd.read_csv(</span>
-<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/processed/interpretation/rq_tables/RQ1_temporal_programs.csv"</span></span>
-<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb89-5"><a href="#cb89-5" aria-hidden="true" tabindex="-1"></a>(</span>
-<span id="cb89-6"><a href="#cb89-6" aria-hidden="true" tabindex="-1"></a>    rq1_py</span>
-<span id="cb89-7"><a href="#cb89-7" aria-hidden="true" tabindex="-1"></a>    .loc[:, [</span>
-<span id="cb89-8"><a href="#cb89-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"pattern"</span>, <span class="st">"observed_label"</span>, <span class="st">"pattern_class"</span>, <span class="st">"eta_timepoint"</span>,</span>
-<span id="cb89-9"><a href="#cb89-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"subject_peak_timepoint"</span>, <span class="st">"subject_mean_D0"</span>, <span class="st">"subject_mean_D10"</span>,</span>
-<span id="cb89-10"><a href="#cb89-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"subject_mean_D14_15"</span>, <span class="st">"subject_mean_D28"</span>, <span class="st">"top_10_genes"</span></span>
-<span id="cb89-11"><a href="#cb89-11" aria-hidden="true" tabindex="-1"></a>    ]]</span>
-<span id="cb89-12"><a href="#cb89-12" aria-hidden="true" tabindex="-1"></a>    .sort_values(<span class="st">"eta_timepoint"</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb89-13"><a href="#cb89-13" aria-hidden="true" tabindex="-1"></a>    .head(<span class="dv">6</span>)</span>
-<span id="cb89-14"><a href="#cb89-14" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a>rq1_py <span class="op">=</span> pd.read_csv(</span>
+<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/processed/interpretation/rq_tables/RQ1_temporal_programs.csv"</span></span>
+<span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb95-4"><a href="#cb95-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-5"><a href="#cb95-5" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb95-6"><a href="#cb95-6" aria-hidden="true" tabindex="-1"></a>    rq1_py</span>
+<span id="cb95-7"><a href="#cb95-7" aria-hidden="true" tabindex="-1"></a>    .loc[:, [</span>
+<span id="cb95-8"><a href="#cb95-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"pattern"</span>, <span class="st">"observed_label"</span>, <span class="st">"pattern_class"</span>, <span class="st">"eta_timepoint"</span>,</span>
+<span id="cb95-9"><a href="#cb95-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"subject_peak_timepoint"</span>, <span class="st">"subject_mean_D0"</span>, <span class="st">"subject_mean_D10"</span>,</span>
+<span id="cb95-10"><a href="#cb95-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"subject_mean_D14_15"</span>, <span class="st">"subject_mean_D28"</span>, <span class="st">"top_10_genes"</span></span>
+<span id="cb95-11"><a href="#cb95-11" aria-hidden="true" tabindex="-1"></a>    ]]</span>
+<span id="cb95-12"><a href="#cb95-12" aria-hidden="true" tabindex="-1"></a>    .sort_values(<span class="st">"eta_timepoint"</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb95-13"><a href="#cb95-13" aria-hidden="true" tabindex="-1"></a>    .head(<span class="dv">6</span>)</span>
+<span id="cb95-14"><a href="#cb95-14" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     pattern  ...                                       top_10_genes
 0   Pattern3  ...  LY6E, ISG15, IFITM1, IFITM2, IFI6, IFITM3, MX1...
@@ -5109,16 +5283,16 @@ Complete Python preparation script
 <section id="rq2-identity-programs-versus-activity-programs" class="level2">
 <h2 class="anchored" data-anchor-id="rq2-identity-programs-versus-activity-programs"><strong>RQ2: Identity Programs Versus Activity Programs</strong></h2>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-27-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-27-1" role="tab" aria-controls="tabset-27-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-27-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-27-2" role="tab" aria-controls="tabset-27-2" aria-selected="false">Python</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-28-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-28-1" role="tab" aria-controls="tabset-28-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-28-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-28-2" role="tab" aria-controls="tabset-28-2" aria-selected="false">Python</a></li></ul>
 <div class="tab-content">
-<div id="tabset-27-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-27-1-tab">
+<div id="tabset-28-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-28-1-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a>rq2 <span class="sc">|&gt;</span></span>
-<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(pattern, observed_label, pattern_class,</span>
-<span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a>         eta_timepoint, eta_broad_cell_type,</span>
-<span id="cb91-4"><a href="#cb91-4" aria-hidden="true" tabindex="-1"></a>         eta_time_to_cell_ratio, dominant_broad_cell_type) <span class="sc">|&gt;</span></span>
-<span id="cb91-5"><a href="#cb91-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(pattern) <span class="sc">|&gt;</span></span>
-<span id="cb91-6"><a href="#cb91-6" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>rq2 <span class="sc">|&gt;</span></span>
+<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(pattern, observed_label, pattern_class,</span>
+<span id="cb97-3"><a href="#cb97-3" aria-hidden="true" tabindex="-1"></a>         eta_timepoint, eta_broad_cell_type,</span>
+<span id="cb97-4"><a href="#cb97-4" aria-hidden="true" tabindex="-1"></a>         eta_time_to_cell_ratio, dominant_broad_cell_type) <span class="sc">|&gt;</span></span>
+<span id="cb97-5"><a href="#cb97-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(pattern) <span class="sc">|&gt;</span></span>
+<span id="cb97-6"><a href="#cb97-6" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
@@ -5237,17 +5411,17 @@ Complete Python preparation script
 </div>
 </div>
 </div>
-<div id="tabset-27-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-27-2-tab">
+<div id="tabset-28-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-28-2-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a>(</span>
-<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a>    rq2_py</span>
-<span id="cb92-3"><a href="#cb92-3" aria-hidden="true" tabindex="-1"></a>    .loc[:, [</span>
-<span id="cb92-4"><a href="#cb92-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"pattern"</span>, <span class="st">"observed_label"</span>, <span class="st">"pattern_class"</span>,</span>
-<span id="cb92-5"><a href="#cb92-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"eta_timepoint"</span>, <span class="st">"eta_broad_cell_type"</span>,</span>
-<span id="cb92-6"><a href="#cb92-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"eta_time_to_cell_ratio"</span>, <span class="st">"dominant_broad_cell_type"</span></span>
-<span id="cb92-7"><a href="#cb92-7" aria-hidden="true" tabindex="-1"></a>    ]]</span>
-<span id="cb92-8"><a href="#cb92-8" aria-hidden="true" tabindex="-1"></a>    .sort_values(<span class="st">"pattern"</span>)</span>
-<span id="cb92-9"><a href="#cb92-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb98-2"><a href="#cb98-2" aria-hidden="true" tabindex="-1"></a>    rq2_py</span>
+<span id="cb98-3"><a href="#cb98-3" aria-hidden="true" tabindex="-1"></a>    .loc[:, [</span>
+<span id="cb98-4"><a href="#cb98-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"pattern"</span>, <span class="st">"observed_label"</span>, <span class="st">"pattern_class"</span>,</span>
+<span id="cb98-5"><a href="#cb98-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"eta_timepoint"</span>, <span class="st">"eta_broad_cell_type"</span>,</span>
+<span id="cb98-6"><a href="#cb98-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"eta_time_to_cell_ratio"</span>, <span class="st">"dominant_broad_cell_type"</span></span>
+<span id="cb98-7"><a href="#cb98-7" aria-hidden="true" tabindex="-1"></a>    ]]</span>
+<span id="cb98-8"><a href="#cb98-8" aria-hidden="true" tabindex="-1"></a>    .sort_values(<span class="st">"pattern"</span>)</span>
+<span id="cb98-9"><a href="#cb98-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     pattern  ... dominant_broad_cell_type
 0   Pattern1  ...                   T_cell
@@ -5272,23 +5446,23 @@ Complete Python preparation script
 <section id="rq3-which-program-is-ifn-associated-and-when-does-it-peak" class="level2">
 <h2 class="anchored" data-anchor-id="rq3-which-program-is-ifn-associated-and-when-does-it-peak"><strong>RQ3: Which Program Is IFN-Associated and When Does It Peak?</strong></h2>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-28-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-28-1" role="tab" aria-controls="tabset-28-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-28-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-28-2" role="tab" aria-controls="tabset-28-2" aria-selected="false">Python</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-29-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-29-1" role="tab" aria-controls="tabset-29-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-29-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-29-2" role="tab" aria-controls="tabset-29-2" aria-selected="false">Python</a></li></ul>
 <div class="tab-content">
-<div id="tabset-28-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-28-1-tab">
+<div id="tabset-29-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-29-1-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a>rq3 <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(</span>
-<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a>  here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"processed"</span>, <span class="st">"interpretation"</span>, <span class="st">"rq_tables"</span>,</span>
-<span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a>             <span class="st">"RQ3_ifn_associated_program.csv"</span>),</span>
-<span id="cb94-4"><a href="#cb94-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">show_col_types =</span> <span class="cn">FALSE</span></span>
-<span id="cb94-5"><a href="#cb94-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb94-6"><a href="#cb94-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb94-7"><a href="#cb94-7" aria-hidden="true" tabindex="-1"></a>rq3 <span class="sc">|&gt;</span></span>
-<span id="cb94-8"><a href="#cb94-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(pattern, observed_label, spearman_ifn_score_rho,</span>
-<span id="cb94-9"><a href="#cb94-9" aria-hidden="true" tabindex="-1"></a>         ifn_top_gene_overlap_top15, subject_peak_timepoint,</span>
-<span id="cb94-10"><a href="#cb94-10" aria-hidden="true" tabindex="-1"></a>         D10_median_top_gene_log2fc, D10_frac_top_genes_up,</span>
-<span id="cb94-11"><a href="#cb94-11" aria-hidden="true" tabindex="-1"></a>         D14_15_median_top_gene_log2fc, D14_15_frac_top_genes_up,</span>
-<span id="cb94-12"><a href="#cb94-12" aria-hidden="true" tabindex="-1"></a>         top_15_genes) <span class="sc">|&gt;</span></span>
-<span id="cb94-13"><a href="#cb94-13" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a>rq3 <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(</span>
+<span id="cb100-2"><a href="#cb100-2" aria-hidden="true" tabindex="-1"></a>  here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"processed"</span>, <span class="st">"interpretation"</span>, <span class="st">"rq_tables"</span>,</span>
+<span id="cb100-3"><a href="#cb100-3" aria-hidden="true" tabindex="-1"></a>             <span class="st">"RQ3_ifn_associated_program.csv"</span>),</span>
+<span id="cb100-4"><a href="#cb100-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">show_col_types =</span> <span class="cn">FALSE</span></span>
+<span id="cb100-5"><a href="#cb100-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb100-6"><a href="#cb100-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb100-7"><a href="#cb100-7" aria-hidden="true" tabindex="-1"></a>rq3 <span class="sc">|&gt;</span></span>
+<span id="cb100-8"><a href="#cb100-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(pattern, observed_label, spearman_ifn_score_rho,</span>
+<span id="cb100-9"><a href="#cb100-9" aria-hidden="true" tabindex="-1"></a>         ifn_top_gene_overlap_top15, subject_peak_timepoint,</span>
+<span id="cb100-10"><a href="#cb100-10" aria-hidden="true" tabindex="-1"></a>         D10_median_top_gene_log2fc, D10_frac_top_genes_up,</span>
+<span id="cb100-11"><a href="#cb100-11" aria-hidden="true" tabindex="-1"></a>         D14_15_median_top_gene_log2fc, D14_15_frac_top_genes_up,</span>
+<span id="cb100-12"><a href="#cb100-12" aria-hidden="true" tabindex="-1"></a>         top_15_genes) <span class="sc">|&gt;</span></span>
+<span id="cb100-13"><a href="#cb100-13" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
@@ -5335,20 +5509,20 @@ Complete Python preparation script
 </div>
 </div>
 </div>
-<div id="tabset-28-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-28-2-tab">
+<div id="tabset-29-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-29-2-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a>rq3_py <span class="op">=</span> pd.read_csv(</span>
-<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/processed/interpretation/rq_tables/"</span></span>
-<span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"RQ3_ifn_associated_program.csv"</span></span>
-<span id="cb95-4"><a href="#cb95-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb95-5"><a href="#cb95-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb95-6"><a href="#cb95-6" aria-hidden="true" tabindex="-1"></a>rq3_py.loc[:, [</span>
-<span id="cb95-7"><a href="#cb95-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"pattern"</span>, <span class="st">"observed_label"</span>, <span class="st">"spearman_ifn_score_rho"</span>,</span>
-<span id="cb95-8"><a href="#cb95-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ifn_top_gene_overlap_top15"</span>, <span class="st">"subject_peak_timepoint"</span>,</span>
-<span id="cb95-9"><a href="#cb95-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"D10_median_top_gene_log2fc"</span>, <span class="st">"D10_frac_top_genes_up"</span>,</span>
-<span id="cb95-10"><a href="#cb95-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"D14_15_median_top_gene_log2fc"</span>, <span class="st">"D14_15_frac_top_genes_up"</span>,</span>
-<span id="cb95-11"><a href="#cb95-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"top_15_genes"</span></span>
-<span id="cb95-12"><a href="#cb95-12" aria-hidden="true" tabindex="-1"></a>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a>rq3_py <span class="op">=</span> pd.read_csv(</span>
+<span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/processed/interpretation/rq_tables/"</span></span>
+<span id="cb101-3"><a href="#cb101-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"RQ3_ifn_associated_program.csv"</span></span>
+<span id="cb101-4"><a href="#cb101-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb101-5"><a href="#cb101-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb101-6"><a href="#cb101-6" aria-hidden="true" tabindex="-1"></a>rq3_py.loc[:, [</span>
+<span id="cb101-7"><a href="#cb101-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"pattern"</span>, <span class="st">"observed_label"</span>, <span class="st">"spearman_ifn_score_rho"</span>,</span>
+<span id="cb101-8"><a href="#cb101-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ifn_top_gene_overlap_top15"</span>, <span class="st">"subject_peak_timepoint"</span>,</span>
+<span id="cb101-9"><a href="#cb101-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"D10_median_top_gene_log2fc"</span>, <span class="st">"D10_frac_top_genes_up"</span>,</span>
+<span id="cb101-10"><a href="#cb101-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"D14_15_median_top_gene_log2fc"</span>, <span class="st">"D14_15_frac_top_genes_up"</span>,</span>
+<span id="cb101-11"><a href="#cb101-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"top_15_genes"</span></span>
+<span id="cb101-12"><a href="#cb101-12" aria-hidden="true" tabindex="-1"></a>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    pattern  ...                                       top_15_genes
 0  Pattern3  ...  LY6E, ISG15, IFITM1, IFITM2, IFI6, IFITM3, MX1...
@@ -5365,24 +5539,24 @@ Complete Python preparation script
 <h2 class="anchored" data-anchor-id="why-directionality-is-separate"><strong>Why Directionality Is Separate</strong></h2>
 <p>CoGAPS tells us which genes and cells participate in the same non-negative pattern. It does not tell us whether those genes are higher or lower than baseline. To answer that, the case study uses subject-level pseudobulk log2 fold changes for the top genes of each pattern.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-29-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-29-1" role="tab" aria-controls="tabset-29-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-29-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-29-2" role="tab" aria-controls="tabset-29-2" aria-selected="false">Python</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-30-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-30-1" role="tab" aria-controls="tabset-30-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-30-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-30-2" role="tab" aria-controls="tabset-30-2" aria-selected="false">Python</a></li></ul>
 <div class="tab-content">
-<div id="tabset-29-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-29-1-tab">
+<div id="tabset-30-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-30-1-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>directionality <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(</span>
-<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a>  here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"processed"</span>, <span class="st">"directionality"</span>, <span class="st">"tables"</span>,</span>
-<span id="cb97-3"><a href="#cb97-3" aria-hidden="true" tabindex="-1"></a>             <span class="st">"pattern_directionality_summary.csv"</span>),</span>
-<span id="cb97-4"><a href="#cb97-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">show_col_types =</span> <span class="cn">FALSE</span></span>
-<span id="cb97-5"><a href="#cb97-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb97-6"><a href="#cb97-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb97-7"><a href="#cb97-7" aria-hidden="true" tabindex="-1"></a>directionality <span class="sc">|&gt;</span></span>
-<span id="cb97-8"><a href="#cb97-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(pattern <span class="sc">==</span> <span class="st">"Pattern3"</span>,</span>
-<span id="cb97-9"><a href="#cb97-9" aria-hidden="true" tabindex="-1"></a>         scope <span class="sc">==</span> <span class="st">"all_cells"</span>,</span>
-<span id="cb97-10"><a href="#cb97-10" aria-hidden="true" tabindex="-1"></a>         timepoint_merged <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"D10"</span>, <span class="st">"D14/15"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb97-11"><a href="#cb97-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(pattern, timepoint_merged, n_genes_tested,</span>
-<span id="cb97-12"><a href="#cb97-12" aria-hidden="true" tabindex="-1"></a>         median_gene_log2fc, frac_genes_up,</span>
-<span id="cb97-13"><a href="#cb97-13" aria-hidden="true" tabindex="-1"></a>         pattern_direction_consensus) <span class="sc">|&gt;</span></span>
-<span id="cb97-14"><a href="#cb97-14" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a>directionality <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(</span>
+<span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a>  here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"processed"</span>, <span class="st">"directionality"</span>, <span class="st">"tables"</span>,</span>
+<span id="cb103-3"><a href="#cb103-3" aria-hidden="true" tabindex="-1"></a>             <span class="st">"pattern_directionality_summary.csv"</span>),</span>
+<span id="cb103-4"><a href="#cb103-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">show_col_types =</span> <span class="cn">FALSE</span></span>
+<span id="cb103-5"><a href="#cb103-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb103-6"><a href="#cb103-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb103-7"><a href="#cb103-7" aria-hidden="true" tabindex="-1"></a>directionality <span class="sc">|&gt;</span></span>
+<span id="cb103-8"><a href="#cb103-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(pattern <span class="sc">==</span> <span class="st">"Pattern3"</span>,</span>
+<span id="cb103-9"><a href="#cb103-9" aria-hidden="true" tabindex="-1"></a>         scope <span class="sc">==</span> <span class="st">"all_cells"</span>,</span>
+<span id="cb103-10"><a href="#cb103-10" aria-hidden="true" tabindex="-1"></a>         timepoint_merged <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"D10"</span>, <span class="st">"D14/15"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb103-11"><a href="#cb103-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(pattern, timepoint_merged, n_genes_tested,</span>
+<span id="cb103-12"><a href="#cb103-12" aria-hidden="true" tabindex="-1"></a>         median_gene_log2fc, frac_genes_up,</span>
+<span id="cb103-13"><a href="#cb103-13" aria-hidden="true" tabindex="-1"></a>         pattern_direction_consensus) <span class="sc">|&gt;</span></span>
+<span id="cb103-14"><a href="#cb103-14" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
@@ -5425,23 +5599,23 @@ Complete Python preparation script
 </div>
 </div>
 </div>
-<div id="tabset-29-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-29-2-tab">
+<div id="tabset-30-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-30-2-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a>directionality_py <span class="op">=</span> pd.read_csv(</span>
-<span id="cb98-2"><a href="#cb98-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/processed/directionality/tables/"</span></span>
-<span id="cb98-3"><a href="#cb98-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"pattern_directionality_summary.csv"</span></span>
-<span id="cb98-4"><a href="#cb98-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb98-5"><a href="#cb98-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb98-6"><a href="#cb98-6" aria-hidden="true" tabindex="-1"></a>directionality_py.loc[</span>
-<span id="cb98-7"><a href="#cb98-7" aria-hidden="true" tabindex="-1"></a>    directionality_py[<span class="st">"pattern"</span>].eq(<span class="st">"Pattern3"</span>)</span>
-<span id="cb98-8"><a href="#cb98-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">&amp;</span> directionality_py[<span class="st">"scope"</span>].eq(<span class="st">"all_cells"</span>)</span>
-<span id="cb98-9"><a href="#cb98-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">&amp;</span> directionality_py[<span class="st">"timepoint_merged"</span>].isin([<span class="st">"D10"</span>, <span class="st">"D14/15"</span>]),</span>
-<span id="cb98-10"><a href="#cb98-10" aria-hidden="true" tabindex="-1"></a>    [</span>
-<span id="cb98-11"><a href="#cb98-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"pattern"</span>, <span class="st">"timepoint_merged"</span>, <span class="st">"n_genes_tested"</span>,</span>
-<span id="cb98-12"><a href="#cb98-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">"median_gene_log2fc"</span>, <span class="st">"frac_genes_up"</span>,</span>
-<span id="cb98-13"><a href="#cb98-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">"pattern_direction_consensus"</span></span>
-<span id="cb98-14"><a href="#cb98-14" aria-hidden="true" tabindex="-1"></a>    ]</span>
-<span id="cb98-15"><a href="#cb98-15" aria-hidden="true" tabindex="-1"></a>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a>directionality_py <span class="op">=</span> pd.read_csv(</span>
+<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/processed/directionality/tables/"</span></span>
+<span id="cb104-3"><a href="#cb104-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"pattern_directionality_summary.csv"</span></span>
+<span id="cb104-4"><a href="#cb104-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb104-5"><a href="#cb104-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb104-6"><a href="#cb104-6" aria-hidden="true" tabindex="-1"></a>directionality_py.loc[</span>
+<span id="cb104-7"><a href="#cb104-7" aria-hidden="true" tabindex="-1"></a>    directionality_py[<span class="st">"pattern"</span>].eq(<span class="st">"Pattern3"</span>)</span>
+<span id="cb104-8"><a href="#cb104-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">&amp;</span> directionality_py[<span class="st">"scope"</span>].eq(<span class="st">"all_cells"</span>)</span>
+<span id="cb104-9"><a href="#cb104-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">&amp;</span> directionality_py[<span class="st">"timepoint_merged"</span>].isin([<span class="st">"D10"</span>, <span class="st">"D14/15"</span>]),</span>
+<span id="cb104-10"><a href="#cb104-10" aria-hidden="true" tabindex="-1"></a>    [</span>
+<span id="cb104-11"><a href="#cb104-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"pattern"</span>, <span class="st">"timepoint_merged"</span>, <span class="st">"n_genes_tested"</span>,</span>
+<span id="cb104-12"><a href="#cb104-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">"median_gene_log2fc"</span>, <span class="st">"frac_genes_up"</span>,</span>
+<span id="cb104-13"><a href="#cb104-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">"pattern_direction_consensus"</span></span>
+<span id="cb104-14"><a href="#cb104-14" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb104-15"><a href="#cb104-15" aria-hidden="true" tabindex="-1"></a>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     pattern timepoint_merged  ...  frac_genes_up  pattern_direction_consensus
 25  Pattern3              D10  ...           0.88                    mostly_up
@@ -5454,83 +5628,6 @@ Complete Python preparation script
 </div>
 </div>
 </section>
-<section id="r-and-python-agreement" class="level2">
-<h2 class="anchored" data-anchor-id="r-and-python-agreement"><strong>R and Python Agreement</strong></h2>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-30-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-30-1" role="tab" aria-controls="tabset-30-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-30-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-30-2" role="tab" aria-controls="tabset-30-2" aria-selected="false">Python</a></li></ul>
-<div class="tab-content">
-<div id="tabset-30-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-30-1-tab">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a>comparison <span class="ot">&lt;-</span> jsonlite<span class="sc">::</span><span class="fu">fromJSON</span>(</span>
-<span id="cb100-2"><a href="#cb100-2" aria-hidden="true" tabindex="-1"></a>  here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"processed"</span>, <span class="st">"r_python_comparison"</span>,</span>
-<span id="cb100-3"><a href="#cb100-3" aria-hidden="true" tabindex="-1"></a>             <span class="st">"comparison_metrics.json"</span>)</span>
-<span id="cb100-4"><a href="#cb100-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb100-5"><a href="#cb100-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb100-6"><a href="#cb100-6" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
-<span id="cb100-7"><a href="#cb100-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">metric =</span> <span class="fu">c</span>(<span class="st">"Cell score Spearman"</span>, <span class="st">"Gene loading Spearman"</span>,</span>
-<span id="cb100-8"><a href="#cb100-8" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Top 50 gene Jaccard"</span>),</span>
-<span id="cb100-9"><a href="#cb100-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">mean_matched_agreement =</span> <span class="fu">c</span>(</span>
-<span id="cb100-10"><a href="#cb100-10" aria-hidden="true" tabindex="-1"></a>    comparison<span class="sc">$</span>mean_matched_cell_score_spearman,</span>
-<span id="cb100-11"><a href="#cb100-11" aria-hidden="true" tabindex="-1"></a>    comparison<span class="sc">$</span>mean_matched_gene_loading_spearman,</span>
-<span id="cb100-12"><a href="#cb100-12" aria-hidden="true" tabindex="-1"></a>    comparison<span class="sc">$</span>mean_matched_top_50_gene_jaccard</span>
-<span id="cb100-13"><a href="#cb100-13" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb100-14"><a href="#cb100-14" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
-<span id="cb100-15"><a href="#cb100-15" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<thead>
-<tr class="header">
-<th style="text-align: left;">metric</th>
-<th style="text-align: right;">mean_matched_agreement</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Cell score Spearman</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Gene loading Spearman</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Top 50 gene Jaccard</td>
-<td style="text-align: right;">1</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<div id="tabset-30-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-30-2-tab">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"data/processed/r_python_comparison/comparison_metrics.json"</span>) <span class="im">as</span> f:</span>
-<span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a>    comparison_py <span class="op">=</span> json.load(f)</span>
-<span id="cb101-3"><a href="#cb101-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb101-4"><a href="#cb101-4" aria-hidden="true" tabindex="-1"></a>pd.DataFrame({</span>
-<span id="cb101-5"><a href="#cb101-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"metric"</span>: [</span>
-<span id="cb101-6"><a href="#cb101-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Cell score Spearman"</span>,</span>
-<span id="cb101-7"><a href="#cb101-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Gene loading Spearman"</span>,</span>
-<span id="cb101-8"><a href="#cb101-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Top 50 gene Jaccard"</span>,</span>
-<span id="cb101-9"><a href="#cb101-9" aria-hidden="true" tabindex="-1"></a>    ],</span>
-<span id="cb101-10"><a href="#cb101-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"mean_matched_agreement"</span>: [</span>
-<span id="cb101-11"><a href="#cb101-11" aria-hidden="true" tabindex="-1"></a>        comparison_py[<span class="st">"mean_matched_cell_score_spearman"</span>],</span>
-<span id="cb101-12"><a href="#cb101-12" aria-hidden="true" tabindex="-1"></a>        comparison_py[<span class="st">"mean_matched_gene_loading_spearman"</span>],</span>
-<span id="cb101-13"><a href="#cb101-13" aria-hidden="true" tabindex="-1"></a>        comparison_py[<span class="st">"mean_matched_top_50_gene_jaccard"</span>],</span>
-<span id="cb101-14"><a href="#cb101-14" aria-hidden="true" tabindex="-1"></a>    ],</span>
-<span id="cb101-15"><a href="#cb101-15" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>                  metric  mean_matched_agreement
-0    Cell score Spearman                     1.0
-1  Gene loading Spearman                     1.0
-2    Top 50 gene Jaccard                     1.0</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<p>The selected R and Python runs match exactly in the exported comparison summaries. This lets the case study teach R as the default route while still showing Python as a first-class alternate implementation.</p>
-</section>
 <section id="k5-comparator" class="level2">
 <h2 class="anchored" data-anchor-id="k5-comparator"><strong>K=5 Comparator</strong></h2>
 <p><code>K = 5</code> is included as a precomputed comparator, not as a required rerun. Its role is instructional: it shows that a lower-rank model can be stable and still too compressed for the main biological question.</p>
@@ -5539,17 +5636,17 @@ Complete Python preparation script
 <div class="tab-content">
 <div id="tabset-31-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-31-1-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a>k5_rq1 <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(</span>
-<span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a>  here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"processed"</span>, <span class="st">"comparator_model_k5"</span>, <span class="st">"r"</span>,</span>
-<span id="cb103-3"><a href="#cb103-3" aria-hidden="true" tabindex="-1"></a>             <span class="st">"RQ1_time_varying_patterns.csv"</span>),</span>
-<span id="cb103-4"><a href="#cb103-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">show_col_types =</span> <span class="cn">FALSE</span></span>
-<span id="cb103-5"><a href="#cb103-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb103-6"><a href="#cb103-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb103-7"><a href="#cb103-7" aria-hidden="true" tabindex="-1"></a>k5_rq1 <span class="sc">|&gt;</span></span>
-<span id="cb103-8"><a href="#cb103-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(eta_timepoint)) <span class="sc">|&gt;</span></span>
-<span id="cb103-9"><a href="#cb103-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(pattern, eta_timepoint, peak_timepoint,</span>
-<span id="cb103-10"><a href="#cb103-10" aria-hidden="true" tabindex="-1"></a>         spearman_ifn_score_rho, candidate_ifn_pattern) <span class="sc">|&gt;</span></span>
-<span id="cb103-11"><a href="#cb103-11" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a>k5_rq1 <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(</span>
+<span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a>  here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"processed"</span>, <span class="st">"comparator_model_k5"</span>, <span class="st">"r"</span>,</span>
+<span id="cb106-3"><a href="#cb106-3" aria-hidden="true" tabindex="-1"></a>             <span class="st">"RQ1_time_varying_patterns.csv"</span>),</span>
+<span id="cb106-4"><a href="#cb106-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">show_col_types =</span> <span class="cn">FALSE</span></span>
+<span id="cb106-5"><a href="#cb106-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb106-6"><a href="#cb106-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb106-7"><a href="#cb106-7" aria-hidden="true" tabindex="-1"></a>k5_rq1 <span class="sc">|&gt;</span></span>
+<span id="cb106-8"><a href="#cb106-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(eta_timepoint)) <span class="sc">|&gt;</span></span>
+<span id="cb106-9"><a href="#cb106-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(pattern, eta_timepoint, peak_timepoint,</span>
+<span id="cb106-10"><a href="#cb106-10" aria-hidden="true" tabindex="-1"></a>         spearman_ifn_score_rho, candidate_ifn_pattern) <span class="sc">|&gt;</span></span>
+<span id="cb106-11"><a href="#cb106-11" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
@@ -5611,19 +5708,19 @@ Complete Python preparation script
 </div>
 <div id="tabset-31-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-31-2-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a>k5_rq1_py <span class="op">=</span> pd.read_csv(</span>
-<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/processed/comparator_model_k5/python/"</span></span>
-<span id="cb104-3"><a href="#cb104-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"RQ1_time_varying_patterns.csv"</span></span>
-<span id="cb104-4"><a href="#cb104-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb104-5"><a href="#cb104-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb104-6"><a href="#cb104-6" aria-hidden="true" tabindex="-1"></a>(</span>
-<span id="cb104-7"><a href="#cb104-7" aria-hidden="true" tabindex="-1"></a>    k5_rq1_py</span>
-<span id="cb104-8"><a href="#cb104-8" aria-hidden="true" tabindex="-1"></a>    .sort_values(<span class="st">"eta_timepoint"</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb104-9"><a href="#cb104-9" aria-hidden="true" tabindex="-1"></a>    .loc[:, [</span>
-<span id="cb104-10"><a href="#cb104-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"pattern"</span>, <span class="st">"eta_timepoint"</span>, <span class="st">"peak_timepoint"</span>,</span>
-<span id="cb104-11"><a href="#cb104-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"spearman_ifn_score_rho"</span>, <span class="st">"candidate_ifn_pattern"</span></span>
-<span id="cb104-12"><a href="#cb104-12" aria-hidden="true" tabindex="-1"></a>    ]]</span>
-<span id="cb104-13"><a href="#cb104-13" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb107"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a>k5_rq1_py <span class="op">=</span> pd.read_csv(</span>
+<span id="cb107-2"><a href="#cb107-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/processed/comparator_model_k5/python/"</span></span>
+<span id="cb107-3"><a href="#cb107-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"RQ1_time_varying_patterns.csv"</span></span>
+<span id="cb107-4"><a href="#cb107-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb107-5"><a href="#cb107-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb107-6"><a href="#cb107-6" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb107-7"><a href="#cb107-7" aria-hidden="true" tabindex="-1"></a>    k5_rq1_py</span>
+<span id="cb107-8"><a href="#cb107-8" aria-hidden="true" tabindex="-1"></a>    .sort_values(<span class="st">"eta_timepoint"</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb107-9"><a href="#cb107-9" aria-hidden="true" tabindex="-1"></a>    .loc[:, [</span>
+<span id="cb107-10"><a href="#cb107-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"pattern"</span>, <span class="st">"eta_timepoint"</span>, <span class="st">"peak_timepoint"</span>,</span>
+<span id="cb107-11"><a href="#cb107-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"spearman_ifn_score_rho"</span>, <span class="st">"candidate_ifn_pattern"</span></span>
+<span id="cb107-12"><a href="#cb107-12" aria-hidden="true" tabindex="-1"></a>    ]]</span>
+<span id="cb107-13"><a href="#cb107-13" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    pattern  eta_timepoint  ... spearman_ifn_score_rho  candidate_ifn_pattern
 0  Pattern2       0.012787  ...               0.311443                  False
@@ -5788,11 +5885,11 @@ Optional extension
 <h2 class="anchored" data-anchor-id="session-info"><strong>Session Info</strong></h2>
 <hr>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">requireNamespace</span>(<span class="st">"sessioninfo"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
-<span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a>  sessioninfo<span class="sc">::</span><span class="fu">session_info</span>()</span>
-<span id="cb106-3"><a href="#cb106-3" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb106-4"><a href="#cb106-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sessionInfo</span>()</span>
-<span id="cb106-5"><a href="#cb106-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">requireNamespace</span>(<span class="st">"sessioninfo"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb109-2"><a href="#cb109-2" aria-hidden="true" tabindex="-1"></a>  sessioninfo<span class="sc">::</span><span class="fu">session_info</span>()</span>
+<span id="cb109-3"><a href="#cb109-3" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb109-4"><a href="#cb109-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sessionInfo</span>()</span>
+<span id="cb109-5"><a href="#cb109-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>─ Session info ───────────────────────────────────────────────────────────────
  setting  value
@@ -6393,7 +6490,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox","closeEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","openEffect":"zoom","loop":false,"selector":".lightbox","descPosition":"bottom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {
