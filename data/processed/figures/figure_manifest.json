@@ -25,7 +25,11 @@
     "figure_06_ifn_top_gene_directionality_heatmap_png": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/k10_case_study_figures/figure_06_ifn_top_gene_directionality_heatmap.png",
     "figure_06_ifn_top_gene_directionality_heatmap_svg": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/k10_case_study_figures/figure_06_ifn_top_gene_directionality_heatmap.svg",
     "figure_07_r_python_agreement_summary_png": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/k10_case_study_figures/figure_07_r_python_agreement_summary.png",
-    "figure_07_r_python_agreement_summary_svg": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/k10_case_study_figures/figure_07_r_python_agreement_summary.svg"
+    "figure_07_r_python_agreement_summary_svg": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/k10_case_study_figures/figure_07_r_python_agreement_summary.svg",
+    "figure_08_pattern_scores_on_transcriptome_umap_png": "data/processed/figures/figure_08_pattern_scores_on_transcriptome_umap.png",
+    "figure_08_pattern_scores_on_transcriptome_umap_svg": "data/processed/figures/figure_08_pattern_scores_on_transcriptome_umap.svg",
+    "figure_08_pattern_scores_on_transcriptome_umap_source_csv": "data/processed/figures/source_tables/figure_08_transcriptome_umap_pattern_scores_source.csv"
   },
-  "source_tables_dir": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/k10_case_study_figures/source_tables"
+  "source_tables_dir": "/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/k10_case_study_figures/source_tables",
+  "figure_08_embedding_source": "Transcriptome UMAP"
 }

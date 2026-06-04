@@ -1,21 +1,34 @@
 # **Data Visualization**
 ***
 
-The figures in this section are produced from small source tables in `data/processed/figures/source_tables/`. They are included as saved images for speed, but the underlying tables are available for learners to modify.
+The previous sections showed where the data came from, how the teaching dataset was prepared, and how CoGAPS pattern scores were summarized. In this section, you will use figures to decide what evidence is worth carrying into the formal analysis. A good visualization does not prove the result by itself. It tells you what to inspect next.
+
+The figures are built from small source tables in `data/processed/figures/source_tables/`. Saved images are shown first so the section loads quickly, and the source tables are available when you want to modify a plot.
+
+| Figure | Source table | What it shows | Research question | What it cannot prove |
+|---|---|---|---|---|
+| K-selection figure | `figure_01_k_selection_source.csv` | How candidate model ranks balance stability, temporal resolution, and goal-aligned evidence. | Why use `K = 10` for the main model? | It does not identify a biological program by itself. |
+| Pattern usage across time | `figure_03_pattern_usage_by_time_matrix.csv` | Mean pattern usage for each CoGAPS pattern across infection days. | Which temporal programs appear across the experimental time course? | It does not tell whether a pattern is driven by cell identity, subject effects, or gene-direction changes. |
+| Pattern usage by broad cell type | `figure_04_pattern_usage_by_cell_type_matrix.csv` | Mean pattern usage across broad PBMC identities. | Which patterns look identity-like versus activity-like? | It does not show whether a pattern changes over time within the same cell type. |
+| Pattern scores on transcriptome UMAP | `figure_08_transcriptome_umap_pattern_scores_source.csv` | Cell-level pattern scores over a transcriptome embedding. | Where do selected patterns appear in cell-state space? | It is a context view, not a statistical test or a replacement for subject-level summaries. |
+| IFN pattern trajectory | `figure_05_ifn_pattern_subject_trajectory_source.csv`; `figure_05_ifn_pattern_summary_trajectory_source.csv` | Subject-level trajectory for the candidate IFN-associated pattern. | Does the candidate IFN program peak in the late acute window? | It does not show whether top genes are upregulated relative to baseline. |
+| Directionality heatmap | `figure_06_ifn_top_gene_directionality_matrix.csv` | Log2 fold-change direction for top genes in the IFN-associated pattern. | Do top genes support an upregulated late acute response? | It does not replace the CoGAPS model; it adds direction to the non-negative pattern interpretation. |
 
 ## **K Selection**
 
 ![](data/processed/figures/figure_01_k_selection.png){fig-alt="K-selection figure summarizing stability, temporal effect size, and biological signals across tested K values." width=850 .lightbox}
 
-The K-selection figure is used as a teaching exercise. Learners should notice that the most stable model is not automatically the model that best answers the biological question.
+This figure is a visualization of a modeling decision. The left panel asks whether a model rank is stable across seeds while still resolving temporal structure. The right panel summarizes a goal-aligned score that combines stability, low redundancy, temporal signal, and IFN-candidate evidence.
 
-This expands the sweep panel from the opening roadmap. The left plot asks whether a model is both stable across seeds and able to resolve temporal structure. The right plot ranks candidate K values using a goal-aligned score that combines stability, low redundancy, temporal signal, and IFN-candidate evidence. `K = 5` remains an important comparator because it is stable, but it is too compact to separate the late acute interferon-associated program clearly.
+Use this plot to compare `K = 5` and `K = 10`. `K = 5` is useful because it is stable and compact, but compact models can compress several biological signals into fewer patterns. `K = 10` stays in a stable region while separating a late acute IFN-associated program more clearly. That is why `K = 10` is used for the main model and `K = 5` remains a sensitivity comparison.
 
 ## **Pattern Usage Across Time**
 
 ![](data/processed/figures/figure_03_pattern_usage_by_time_heatmap.png){fig-alt="Heatmap of mean CoGAPS pattern usage across experimental timepoints for the selected K=10 model." width=850 .lightbox}
 
-This expands the temporal-pattern heatmap from the opening roadmap. Rows are CoGAPS patterns, columns are infection days, and color shows the mean cell score for each pattern at each timepoint. Pattern numbers are run-specific labels; they become biologically meaningful only after you compare trajectories, cell-type summaries, top genes, and directionality evidence.
+This heatmap is the first visual pass at Research Question 1. Rows are CoGAPS patterns, columns are infection days, and color shows mean pattern usage. Pattern labels such as `Pattern3` are model labels, not biological names. They become meaningful only after you compare the time pattern with cell-type summaries, top genes, subject-level trajectories, and directionality.
+
+Before looking ahead, ask: which patterns change across time, and which patterns look mostly flat?
 
 ::: {.panel-tabset}
 
@@ -74,24 +87,107 @@ plt.show()
 
 :::
 
-## **Identity and Activity Views**
+## **Pattern Usage By Broad Cell Type**
 
 ![](data/processed/figures/figure_04_pattern_usage_by_broad_cell_type_heatmap.png){fig-alt="Heatmap of mean CoGAPS pattern usage by broad immune-cell type." width=850 .lightbox}
 
-This later view adds the broad-cell-type pattern summary that is intentionally not crowded into the opening roadmap. PBMC identity is expected to explain a large part of single-cell variation because T cells, B cells, natural killer cells, monocytes, neutrophils, and plasmablasts have distinct baseline transcriptional programs. Comparing this heatmap with the time heatmap helps separate identity-like patterns from activity-like patterns. The IFN-associated pattern is used most strongly in monocytes but changes much more over time than the identity-like patterns.
+This figure connects back to Data Exploration. PBMC samples contain a mixture of immune-cell identities, and that mixture can affect how a pattern looks over time. A pattern can look temporal because cells changed their gene-expression activity, because the mix of cell types changed, or because both happened.
+
+Use this heatmap to ask whether each pattern mostly tracks broad immune-cell identity. For example, a pattern that is strongest in T cells or B cells may be useful, but you should be cautious about calling it an infection-response program unless it also changes within the temporal summaries. The candidate IFN-associated pattern is different: it has a strong temporal signal and is enriched in monocytes, which makes it a better candidate for a dynamic response.
+
+## **Pattern Scores On A Transcriptome UMAP**
+
+![](data/processed/figures/figure_08_pattern_scores_on_transcriptome_umap.png){fig-alt="Transcriptome UMAP of discovery cells colored by broad PBMC identity and selected K=10 CoGAPS pattern scores for Pattern3, Pattern7, and Pattern10." width=850 .lightbox}
+
+This cell-level context view is part of the visualization evidence path. The coordinates come from the transcriptome UMAP stored in the full preprocessed H5AD object; the small source table included here stores only the discovery-cell coordinates, metadata, and selected-model pattern scores. The first panel shows broad PBMC identity. The other panels color the same cells by selected CoGAPS pattern scores.
+
+Do not treat a UMAP as proof. Nearby points are useful for visual context, but the axes are not biological units, and the display can change with preprocessing and embedding parameters. The reason to include this view is narrower: it helps you see that identity-like patterns concentrate in broad cell-state regions, while the IFN-associated pattern appears as a pattern score over cells in those same transcriptome neighborhoods.
+
+::: {.panel-tabset}
+
+## R
+
+```{r}
+#| label: plot-pattern-umap-r
+embedding_scores <- readr::read_csv(
+  here::here("data", "processed", "figures", "source_tables",
+             "figure_08_transcriptome_umap_pattern_scores_source.csv"),
+  show_col_types = FALSE
+)
+
+selected_patterns <- c(
+  Pattern3 = "Pattern3: IFN-associated activity",
+  Pattern7 = "Pattern7: T-cell identity",
+  Pattern10 = "Pattern10: B-cell identity"
+)
+
+embedding_long <- embedding_scores |>
+  dplyr::select(cell_id, umap_1, umap_2, dplyr::all_of(names(selected_patterns))) |>
+  tidyr::pivot_longer(
+    cols = dplyr::all_of(names(selected_patterns)),
+    names_to = "pattern",
+    values_to = "cell_score"
+  ) |>
+  dplyr::mutate(pattern_label = selected_patterns[pattern])
+
+ggplot(embedding_long, aes(x = umap_1, y = umap_2, color = cell_score)) +
+  geom_point(size = 0.35, alpha = 0.75) +
+  facet_wrap(~ pattern_label, ncol = 3) +
+  scale_color_viridis_c(option = "C") +
+  labs(x = "UMAP 1", y = "UMAP 2", color = "Cell score") +
+  theme_minimal(base_size = 10) +
+  theme(panel.grid = element_blank())
+```
+
+## Python
+
+```{python}
+#| label: plot-pattern-umap-python
+embedding_scores = pd.read_csv(
+    "data/processed/figures/source_tables/"
+    "figure_08_transcriptome_umap_pattern_scores_source.csv"
+)
+
+selected_patterns = {
+    "Pattern3": "Pattern3: IFN-associated activity",
+    "Pattern7": "Pattern7: T-cell identity",
+    "Pattern10": "Pattern10: B-cell identity",
+}
+
+fig, axes = plt.subplots(1, 3, figsize=(11, 3.6), sharex=True, sharey=True)
+for ax, (pattern, title) in zip(axes, selected_patterns.items()):
+    image = ax.scatter(
+        embedding_scores["umap_1"],
+        embedding_scores["umap_2"],
+        c=embedding_scores[pattern],
+        s=2,
+        alpha=0.75,
+    )
+    ax.set_title(title)
+    ax.set_xlabel("UMAP 1")
+    ax.set_ylabel("UMAP 2")
+    ax.set_xticks([])
+    ax.set_yticks([])
+fig.colorbar(image, ax=axes.ravel().tolist(), label="Cell score")
+plt.show()
+```
+
+:::
 
 ## **IFN Pattern Trajectory**
 
 ![](data/processed/figures/figure_05_ifn_pattern_trajectory.png){fig-alt="Subject-level trajectory for the IFN-associated CoGAPS pattern, showing a rise at day 10 and day 14 or 15." width=850 .lightbox}
 
-This expands the Pattern 3 trajectory from the opening roadmap. Gray lines show subject-level means, the red line shows the subject mean with standard error, and the shaded region marks the late acute window. Subject-level trajectories make the central finding visible without treating each cell as an independent person.
+This trajectory is the main visual evidence for the late acute timing of the candidate IFN-associated program. Gray lines show subject-level means. The red line shows the mean across subjects with standard error. The shaded region marks the late acute window.
 
-## **Directionality and R/Python Agreement**
+This subject-level view is important because cells are not independent people. If you plotted every cell as a separate observation, the figure would look more precise than the study design supports. Here, each subject contributes a time-course summary before the across-subject mean is drawn.
+
+## **Directionality**
 
 ![](data/processed/figures/figure_06_ifn_top_gene_directionality_heatmap.png){fig-alt="Heatmap showing log2 fold-change directionality for top IFN-associated pattern genes across timepoints." width=850 .lightbox}
 
-![](data/processed/figures/figure_07_r_python_agreement_summary.png){fig-alt="Agreement summary comparing matched R and Python CoGAPS patterns." width=850 .lightbox}
+The directionality heatmap comes after the trajectory for a reason. CoGAPS scores are non-negative, so a high pattern score tells you that a cell or group uses a pattern more strongly, but it does not tell you whether the top genes are higher or lower than baseline. This heatmap adds that missing direction by showing pseudobulk log2 fold changes for top genes in the candidate IFN-associated pattern.
 
-The directionality figure answers a question CoGAPS cannot answer alone: are the top genes in the IFN-associated pattern higher than baseline at the peak timepoints? The R/Python agreement figure confirms that the selected R and Python workflows produce matching artifacts.
+Use this figure as a final visualization check before Data Analysis. If the trajectory rises at `D10` and `D14/15`, and the top genes are also mostly higher than baseline at those timepoints, the IFN-associated interpretation becomes more convincing. The next section turns these visual checks into research-question tables and model diagnostics.
 
 ***
