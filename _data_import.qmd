@@ -1,9 +1,20 @@
 # **Data Import**
 ***
 
-The required analysis imports small CSV and JSON artifacts that are already included with the case study. This keeps the standard case-study path fast and reproducible.
+In this section, you will import the analysis-ready files used in the required case-study path. These files are small `CSV` and `JSON` files that are already included with the case study.
 
-The large inputs needed to rerun CoGAPS from scratch are intentionally external:
+A `CSV` file is a rectangular table: rows are observations or summaries, and columns are variables. A `JSON` file stores structured metadata, such as model settings or diagnostic values. In R, the imported files become data frames. In Python, they become tables managed by `pandas`.
+
+The raw GEO archive, `GSE154386_RAW.tar`, is not imported here. Downloading that file starts the optional full preprocessing workflow: extract 10x files, build single-cell objects, perform quality control, normalize counts, select genes, annotate broad cell types, and construct the discovery subset. That workflow is covered in **Data Wrangling and Preprocessing**. Here, you will import the selected-model files needed for the main analysis.
+
+| File family | Example file | What one row means | Why you import it |
+|---|---|---|---|
+| Pattern summary | `RQ1_time_varying_patterns.csv` | One CoGAPS pattern. | Rank patterns by temporal variation and IFN association. |
+| Top-gene table | `cogaps_K10_seed2_iter2000.top_genes.csv` | One gene-pattern entry. | Inspect which genes define each pattern. |
+| Run metrics | `cogaps_K10_seed2_iter2000.metrics.json` | One model run summary. | Confirm `K`, seed, iterations, runtime, and diagnostic settings. |
+| Diagnostic trace | `cogaps_K10_seed2_iter2000.trace.csv` | One saved trace point during the model run. | Check convergence-related traces before interpretation. |
+
+The larger files needed to rerun CoGAPS from scratch are intentionally external:
 
 - raw GEO download: `GSE154386_RAW.tar`
 - preprocessed H5AD cache
@@ -15,16 +26,53 @@ These files are documented in `data/artifact_manifest.json` and are distributed 
 
 ## **Import the Selected-Model Results**
 
+Before importing data, build paths relative to the project root. Project-relative paths make the same code work on different computers and inside the Docker runtime.
+
 ::: {.panel-tabset}
 
 ## R
 
+In R, `here::here()` builds a path from the project root. `readr::read_csv()` reads a CSV table, and `jsonlite::fromJSON()` reads a JSON file.
+
 ```{r}
-#| label: import-selected-r
+#| label: import-file-map-r
+# Build paths to the selected K = 10 R files.
 r_selected_dir <- here::here(
   "data", "processed", "selected_model_k10", "r"
 )
 
+r_import_plan <- data.frame(
+  file_role = c(
+    "pattern summary",
+    "top genes",
+    "run metrics",
+    "diagnostic trace"
+  ),
+  file_name = c(
+    "RQ1_time_varying_patterns.csv",
+    "cogaps_K10_seed2_iter2000.top_genes.csv",
+    "cogaps_K10_seed2_iter2000.metrics.json",
+    "cogaps_K10_seed2_iter2000.trace.csv"
+  )
+)
+
+r_import_plan$relative_path <- file.path(
+  "data", "processed", "selected_model_k10", "r",
+  r_import_plan$file_name
+)
+
+r_import_plan$file_exists <- file.exists(
+  file.path(here::here(), r_import_plan$relative_path)
+)
+
+r_import_plan |>
+  select(file_role, relative_path, file_exists) |>
+  knitr::kable()
+```
+
+```{r}
+#| label: import-selected-r
+# Read selected-model tables and metadata.
 r_rq1 <- readr::read_csv(
   file.path(r_selected_dir, "RQ1_time_varying_patterns.csv"),
   show_col_types = FALSE
@@ -35,6 +83,58 @@ r_top_genes <- readr::read_csv(
   show_col_types = FALSE
 )
 
+r_model_metrics <- jsonlite::fromJSON(
+  file.path(r_selected_dir, "cogaps_K10_seed2_iter2000.metrics.json")
+)
+
+r_trace <- readr::read_csv(
+  file.path(r_selected_dir, "cogaps_K10_seed2_iter2000.trace.csv"),
+  show_col_types = FALSE
+)
+
+data.frame(
+  imported_object = c("r_rq1", "r_top_genes", "r_trace"),
+  rows = c(nrow(r_rq1), nrow(r_top_genes), nrow(r_trace)),
+  columns = c(ncol(r_rq1), ncol(r_top_genes), ncol(r_trace)),
+  first_columns = c(
+    paste(head(names(r_rq1), 5), collapse = ", "),
+    paste(head(names(r_top_genes), 4), collapse = ", "),
+    paste(head(names(r_trace), 4), collapse = ", ")
+  )
+) |>
+  knitr::kable()
+```
+
+```{r}
+#| label: import-sanity-r
+# Confirm that the imported files describe the expected selected model.
+data.frame(
+  check = c(
+    "model rank K",
+    "seed",
+    "iterations",
+    "CoGAPS threads",
+    "number of pattern rows",
+    "patterns represented in top-gene table",
+    "diagnostic trace length"
+  ),
+  value = c(
+    r_model_metrics$K,
+    r_model_metrics$seed,
+    r_model_metrics$n_iter,
+    r_model_metrics$nThreads,
+    nrow(r_rq1),
+    length(unique(r_top_genes$pattern)),
+    nrow(r_trace)
+  )
+) |>
+  knitr::kable()
+```
+
+The imported R objects are now available for later sections. For example, this preview shows the most time-varying patterns in the selected model.
+
+```{r}
+#| label: import-preview-r
 r_rq1 |>
   select(pattern, eta_timepoint, peak_timepoint,
          spearman_ifn_score_rho, candidate_ifn_pattern) |>
@@ -45,18 +145,95 @@ r_rq1 |>
 
 ## Python
 
+In Python, `pathlib.Path()` builds project-relative paths. `pandas.read_csv()` reads CSV tables, and `json.load()` reads a JSON file.
+
 ```{python}
-#| label: import-selected-python
+#| label: import-file-map-python
 from pathlib import Path
+import json
 import pandas as pd
 
 py_selected_dir = Path("data/processed/selected_model_k10/python")
 
+py_import_plan = pd.DataFrame({
+    "file_role": [
+        "pattern summary",
+        "top genes",
+        "run metrics",
+        "diagnostic trace",
+    ],
+    "file_name": [
+        "RQ1_time_varying_patterns.csv",
+        "cogaps_K10_seed2_iter2000.top_genes.csv",
+        "cogaps_K10_seed2_iter2000.metrics.json",
+        "cogaps_K10_seed2_iter2000.trace.csv",
+    ],
+})
+
+py_import_plan["relative_path"] = py_import_plan["file_name"].map(
+    lambda name: str(py_selected_dir / name)
+)
+py_import_plan["file_exists"] = py_import_plan["relative_path"].map(
+    lambda path: Path(path).exists()
+)
+
+py_import_plan.loc[:, ["file_role", "relative_path", "file_exists"]]
+```
+
+```{python}
+#| label: import-selected-python
+# Read selected-model tables and metadata.
 py_rq1 = pd.read_csv(py_selected_dir / "RQ1_time_varying_patterns.csv")
 py_top_genes = pd.read_csv(
     py_selected_dir / "cogaps_K10_seed2_iter2000.top_genes.csv"
 )
 
+with open(py_selected_dir / "cogaps_K10_seed2_iter2000.metrics.json") as f:
+    py_model_metrics = json.load(f)
+
+py_trace = pd.read_csv(py_selected_dir / "cogaps_K10_seed2_iter2000.trace.csv")
+
+pd.DataFrame({
+    "imported_object": ["py_rq1", "py_top_genes", "py_trace"],
+    "rows": [len(py_rq1), len(py_top_genes), len(py_trace)],
+    "columns": [py_rq1.shape[1], py_top_genes.shape[1], py_trace.shape[1]],
+    "first_columns": [
+        ", ".join(py_rq1.columns[:5]),
+        ", ".join(py_top_genes.columns[:4]),
+        ", ".join(py_trace.columns[:4]),
+    ],
+})
+```
+
+```{python}
+#| label: import-sanity-python
+# Confirm that the imported files describe the expected selected model.
+pd.DataFrame({
+    "check": [
+        "model rank K",
+        "seed",
+        "iterations",
+        "CoGAPS threads",
+        "number of pattern rows",
+        "patterns represented in top-gene table",
+        "diagnostic trace length",
+    ],
+    "value": [
+        py_model_metrics["K"],
+        2,
+        py_model_metrics["n_iter"],
+        py_model_metrics["cogaps_threads"],
+        len(py_rq1),
+        py_top_genes["pattern"].nunique(),
+        len(py_trace),
+    ],
+})
+```
+
+The imported Python objects are now available for later sections. For example, this preview shows the most time-varying patterns in the selected model.
+
+```{python}
+#| label: import-preview-python
 py_rq1.loc[
     :, ["pattern", "eta_timepoint", "peak_timepoint",
         "spearman_ifn_score_rho", "candidate_ifn_pattern"]
@@ -65,8 +242,8 @@ py_rq1.loc[
 
 :::
 
-The R and Python selected-model artifacts match exactly for the final `K = 10`, `seed = 2`, `nIterations = 2000` run. We still show both pathways because learners may work in either language.
+Both tabs import the same kinds of files. You only need to run the language you plan to use, but the two examples follow the same programming pattern: build a path, read a file, inspect the imported object, and run sanity checks.
 
-The raw GEO download and full study-subset preparation workflow are covered in the **Data Wrangling and Preprocessing** section. That placement is intentional: the full workflow is provenance and preprocessing code, not ordinary data import code for the standard case-study path.
+The sanity-check tables confirm that the selected-model files describe the expected `K = 10`, `seed = 2`, `nIterations = 2000` run. The next sections explore these imported tables before reshaping them for interpretation.
 
 ***

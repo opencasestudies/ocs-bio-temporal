@@ -88,10 +88,13 @@ Blackshaw
 Bowden
 Breshock
 Brinkworth
+callout
 Colantuoni
+compositionally
 comparator
 Comparator
 cytotoxic
+dendritic
 directionality
 Directionality
 Dmitrijs
@@ -116,6 +119,7 @@ Hu
 Humana
 ifn
 interpretability
+interpretable
 Isaacs
 iter
 Jaffe
@@ -138,6 +142,7 @@ Mesirov
 Metagenes
 mononuclear
 Muschelli
+multiplets
 neutrophils
 NK
 NMF
@@ -145,6 +150,7 @@ Ochs
 omics
 opencasestudies
 Oshane
+overrepresented
 Parmigiani
 PLOS
 pre
@@ -171,6 +177,7 @@ Tabrizi
 tabset
 Tamayo
 Taub
+transcriptome
 transcriptomic
 Tsang
 underset
