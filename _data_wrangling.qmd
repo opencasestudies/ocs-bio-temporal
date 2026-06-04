@@ -375,7 +375,7 @@ adata_hvg = adata_qc[:, adata_qc.var["highly_variable"]].copy()
 
 :::
 
-The Python script uses Scanpy's highly variable gene workflow. The R script shows the same teaching decision with a simpler variance-ranking implementation. Because gene selection can affect learned patterns, the exact method should be documented whenever the full model is rerun.
+The Python script uses the Scanpy highly variable gene workflow. The R script shows the same teaching decision with a simpler variance-ranking implementation. Because gene selection can affect learned patterns, the exact method should be documented whenever the full model is rerun.
 
 ### **Attach Biological Context With Marker Scores**
 
