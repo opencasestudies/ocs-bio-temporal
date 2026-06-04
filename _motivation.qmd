@@ -7,7 +7,9 @@ Dengue is a mosquito-borne viral disease with a growing global footprint. In its
 
 *Image source: [CBS News, "Maps show dengue fever risk areas as CDC warns of global case surge"](https://www.cbsnews.com/news/dengue-fever-map-what-to-know-global-case-surge/){target="_blank"}.*
 
-For this case study, the public-health problem leads to a biological question: how does the immune system change over time during dengue infection?
+Dengue surges are not only a question of case counts. As [CBS News reported during the 2024 global surge](https://www.cbsnews.com/news/dengue-fever-map-what-to-know-global-case-surge/){target="_blank"}, U.S. health officials warned clinicians to stay alert for dengue as international records were being broken and locally acquired cases appeared in places such as Puerto Rico and Florida. That matters because dengue care is highly time-dependent: clinicians need to recognize possible cases, order appropriate tests, monitor warning signs, and identify patients who may progress to severe dengue.
+
+There is no dengue-specific antiviral treatment, so care depends on supportive management and close monitoring. Public-health response also depends on timing: surveillance, diagnostics, clinical readiness, travel history, and mosquito-control decisions all become more important during surges. In this case study, that public-health timing problem leads to a biological question: how does the immune system change over time during dengue infection?
 
 Blood contains many peripheral blood mononuclear cell, or PBMC, populations at once, including T cells, B cells, natural killer cells, monocytes, and antigen-presenting cells. During infection, each cell still carries its immune-cell identity, but it may also activate antiviral, inflammatory, or recovery-associated transcriptional programs.
 
