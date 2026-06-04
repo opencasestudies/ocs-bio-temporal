@@ -89,6 +89,9 @@ Bowden
 Breshock
 Brinkworth
 callout
+CBS
+CDC
+CDCHAN
 Colantuoni
 compositionally
 comparator
@@ -112,8 +115,10 @@ Friberg
 GenePattern
 geq
 Golub
+Gounder
 Gromowski
 GSE
+HAN
 Hodis
 Hu
 Humana
@@ -141,6 +146,7 @@ Meng
 Mesirov
 Metagenes
 mononuclear
+Moniuszko
 Muschelli
 multiplets
 neutrophils

@@ -412,7 +412,8 @@ window.Quarto = {
 </figure>
 </div>
 <p><em>Image source: <a href="https://www.cbsnews.com/news/dengue-fever-map-what-to-know-global-case-surge/" target="_blank">CBS News, “Maps show dengue fever risk areas as CDC warns of global case surge”</a>.</em></p>
-<p>For this case study, the public-health problem leads to a biological question: how does the immune system change over time during dengue infection?</p>
+<p>Dengue surges are not only a question of case counts. As <a href="https://www.cbsnews.com/news/dengue-fever-map-what-to-know-global-case-surge/" target="_blank">CBS News reported during the 2024 global surge</a>, U.S. health officials warned clinicians to stay alert for dengue as international records were being broken and locally acquired cases appeared in places such as Puerto Rico and Florida. That matters because dengue care is highly time-dependent: clinicians need to recognize possible cases, order appropriate tests, monitor warning signs, and identify patients who may progress to severe dengue.</p>
+<p>There is no dengue-specific antiviral treatment, so care depends on supportive management and close monitoring. Public-health response also depends on timing: surveillance, diagnostics, clinical readiness, travel history, and mosquito-control decisions all become more important during surges. In this case study, that public-health timing problem leads to a biological question: how does the immune system change over time during dengue infection?</p>
 <p>Blood contains many peripheral blood mononuclear cell, or PBMC, populations at once, including T cells, B cells, natural killer cells, monocytes, and antigen-presenting cells. During infection, each cell still carries its immune-cell identity, but it may also activate antiviral, inflammatory, or recovery-associated transcriptional programs.</p>
 <p>That creates the central puzzle. If cells from day 10 look different from cells at baseline, what changed? Did the sample contain different immune-cell populations? Did one subject contribute more strongly than another? Or did similar cell types activate a shared infection-response program over time?</p>
 <p>Ordinary clustering is useful for finding groups of similar cells, but it is not always enough for this question. A cell does not have to be only “identity” or only “response.” A monocyte can remain a monocyte while also expressing an interferon-stimulated antiviral program. This case study therefore focuses on latent transcriptional programs: patterns of gene expression that can be shared across cells and vary over time.</p>
@@ -5764,6 +5765,11 @@ Optional extension
 <section id="key-scientific-and-methodological-references" class="level2">
 <h2 class="anchored" data-anchor-id="key-scientific-and-methodological-references"><strong>Key Scientific and Methodological References</strong></h2>
 <ul>
+<li>World Health Organization. (2025). <em>Dengue: global situation</em>. Weekly Epidemiological Record, 100(52), 665-678. <a href="https://www.who.int/publications/i/item/who-wer10052-665-678" target="_blank">https://www.who.int/publications/i/item/who-wer10052-665-678</a></li>
+<li>World Health Organization. (2025). Dengue. <a href="https://www.who.int/news-room/fact-sheets/detail/dengue-and-severe-dengue" target="_blank">https://www.who.int/news-room/fact-sheets/detail/dengue-and-severe-dengue</a></li>
+<li>Centers for Disease Control and Prevention. (2024). <em>Increased risk of dengue virus infections in the United States</em>. Health Alert Network Health Advisory CDCHAN-00511. <a href="https://www.cdc.gov/han/2024/han00511.html" target="_blank">https://www.cdc.gov/han/2024/han00511.html</a></li>
+<li>Centers for Disease Control and Prevention. (2026). Clinical care of dengue. <a href="https://www.cdc.gov/dengue/hcp/clinical-care/index.html" target="_blank">https://www.cdc.gov/dengue/hcp/clinical-care/index.html</a></li>
+<li>Moniuszko, S., Gounder, C., &amp; Johnston, T. (2024). Maps show dengue fever risk areas as CDC warns of global case surge. <em>CBS News</em>. <a href="https://www.cbsnews.com/news/dengue-fever-map-what-to-know-global-case-surge/" target="_blank">https://www.cbsnews.com/news/dengue-fever-map-what-to-know-global-case-surge/</a></li>
 <li>Waickman, A. T., Friberg, H., Gromowski, G. D., Rutvisuttinunt, W., Li, T., Siegfried, H., Victor, K., McCracken, M. K., Fernandez, S., Srikiatkhachorn, A., Ellison, D., Jarman, R. G., Thomas, S. J., Rothman, A. L., Endy, T., &amp; Currier, J. R. (2021). Temporally integrated single cell RNA sequencing analysis of PBMC from experimental and natural primary human DENV-1 infections. <em>PLOS Pathogens</em>, 17(1), e1009240. <a href="https://doi.org/10.1371/journal.ppat.1009240" target="_blank">https://doi.org/10.1371/journal.ppat.1009240</a></li>
 <li>Lee, D. D., &amp; Seung, H. S. (1999). Learning the parts of objects by non-negative matrix factorization. <em>Nature</em>, 401, 788-791. <a href="https://doi.org/10.1038/44565" target="_blank">https://doi.org/10.1038/44565</a></li>
 <li>Brunet, J. P., Tamayo, P., Golub, T. R., &amp; Mesirov, J. P. (2004). Metagenes and molecular pattern discovery using matrix factorization. <em>Proceedings of the National Academy of Sciences</em>, 101(12), 4164-4169. <a href="https://doi.org/10.1073/pnas.0308531101" target="_blank">https://doi.org/10.1073/pnas.0308531101</a></li>
@@ -6387,7 +6393,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"loop":false,"openEffect":"zoom","descPosition":"bottom","selector":".lightbox","closeEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox","closeEffect":"zoom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {

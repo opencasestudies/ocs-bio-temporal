@@ -27,6 +27,11 @@
 
 ## **Key Scientific and Methodological References**
 
+- World Health Organization. (2025). *Dengue: global situation*. Weekly Epidemiological Record, 100(52), 665-678. [https://www.who.int/publications/i/item/who-wer10052-665-678](https://www.who.int/publications/i/item/who-wer10052-665-678){target="_blank"}
+- World Health Organization. (2025). Dengue. [https://www.who.int/news-room/fact-sheets/detail/dengue-and-severe-dengue](https://www.who.int/news-room/fact-sheets/detail/dengue-and-severe-dengue){target="_blank"}
+- Centers for Disease Control and Prevention. (2024). *Increased risk of dengue virus infections in the United States*. Health Alert Network Health Advisory CDCHAN-00511. [https://www.cdc.gov/han/2024/han00511.html](https://www.cdc.gov/han/2024/han00511.html){target="_blank"}
+- Centers for Disease Control and Prevention. (2026). Clinical care of dengue. [https://www.cdc.gov/dengue/hcp/clinical-care/index.html](https://www.cdc.gov/dengue/hcp/clinical-care/index.html){target="_blank"}
+- Moniuszko, S., Gounder, C., & Johnston, T. (2024). Maps show dengue fever risk areas as CDC warns of global case surge. *CBS News*. [https://www.cbsnews.com/news/dengue-fever-map-what-to-know-global-case-surge/](https://www.cbsnews.com/news/dengue-fever-map-what-to-know-global-case-surge/){target="_blank"}
 - Waickman, A. T., Friberg, H., Gromowski, G. D., Rutvisuttinunt, W., Li, T., Siegfried, H., Victor, K., McCracken, M. K., Fernandez, S., Srikiatkhachorn, A., Ellison, D., Jarman, R. G., Thomas, S. J., Rothman, A. L., Endy, T., & Currier, J. R. (2021). Temporally integrated single cell RNA sequencing analysis of PBMC from experimental and natural primary human DENV-1 infections. *PLOS Pathogens*, 17(1), e1009240. [https://doi.org/10.1371/journal.ppat.1009240](https://doi.org/10.1371/journal.ppat.1009240){target="_blank"}
 - Lee, D. D., & Seung, H. S. (1999). Learning the parts of objects by non-negative matrix factorization. *Nature*, 401, 788-791. [https://doi.org/10.1038/44565](https://doi.org/10.1038/44565){target="_blank"}
 - Brunet, J. P., Tamayo, P., Golub, T. R., & Mesirov, J. P. (2004). Metagenes and molecular pattern discovery using matrix factorization. *Proceedings of the National Academy of Sciences*, 101(12), 4164-4169. [https://doi.org/10.1073/pnas.0308531101](https://doi.org/10.1073/pnas.0308531101){target="_blank"}
