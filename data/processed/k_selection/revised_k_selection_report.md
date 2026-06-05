@@ -10,7 +10,7 @@ The revised selected model for the main Case Study 5 analysis is:
 - `seed = 2`
 - `nIterations = 2000`
 
-The previous sweep selected `K = 5` because the original rule preferred the smallest K on the seed-to-seed stability plateau. That rule is useful for a compact baseline, but it does not fully match the proposal's primary biological goal: resolving temporal dengue-response programs, especially a D10 interferon-associated activity program.
+The previous sweep selected `K = 5` because the original rule preferred the smallest K on the seed-to-seed stability plateau. That rule is useful for a compact baseline, but it can be too compressed when the biological question is temporal immune activity: resolving dengue-response programs, especially a D10 interferon-associated activity program.
 
 The revised rule is:
 
@@ -20,7 +20,7 @@ This selects `K = 10`.
 
 ## Why Reassess K?
 
-The proposal asks whether CoGAPS can recover temporal immune programs, separate cell identity from infection activity, and identify interferon-stimulated antiviral responses. A low-rank model can be highly stable while compressing several biological processes into broad lineage-associated factors. The K-selection criterion therefore needs to include biological resolution, not only numerical reproducibility.
+This case study asks whether CoGAPS can recover temporal immune programs, separate cell identity from infection activity, and identify interferon-stimulated antiviral responses. A low-rank model can be highly stable while compressing several biological processes into broad lineage-associated factors. The K-selection criterion therefore needs to include biological resolution, not only numerical reproducibility.
 
 This follows the identity/activity framing from Kotliar et al. (2019), where the useful rank depends on the resolution desired by the analyst, and the CoGAPS protocol emphasis on annotating patterns by biological process rather than selecting dimensionality mechanically. Fertig et al. (2014) also motivates using CoGAPS specifically to interpret time-course patterns as overlapping biological processes. Waickman et al. (2021) provides the biological prior that the strongest experimental DENV-1 host response occurs around day 10 and includes interferon/inflammatory genes.
 
@@ -85,13 +85,13 @@ The leading candidate pattern is `Pattern5`:
 - top-15 IFN gene overlap: `6`
 - top genes: `LY6E, IFITM1, ISG15, IFITM2, IFI6, IFITM3, MX1, PSME2, IRF7, XAF1, HLA-A, B2M, MT2A, MYL12A, IFI44L`
 
-This aligns with the proposed case-study biology: an interferon-associated program peaking at D10, rather than a purely lineage-dominant low-rank factor.
+This aligns with the case-study biology: an interferon-associated program peaking at D10, rather than a purely lineage-dominant low-rank factor.
 
 ## Interpretation
 
 `K=5` remains useful as a compact stability baseline. It demonstrates that the strongest low-rank structure in this balanced PBMC subset is lineage/identity-associated. However, because the case study's central question is temporal immune activity, `K=10` is the better primary analysis model: it remains on the stability plateau and resolves a D10 IFN-like activity program.
 
-The case study should present this as a methodological lesson: the best K depends on the analysis goal. Stability is necessary, but biological resolution determines whether the chosen model can answer the research questions.
+The main takeaway is methodological: the best K depends on the analysis goal. Stability is necessary, but biological resolution determines whether the chosen model can answer the research questions.
 
 ## Local Supporting References
 
@@ -112,4 +112,3 @@ The case study should present this as a methodological lesson: the best K depend
 - `/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/revised_k_selection_K10/figures/stability_vs_temporal_effect.png`
 - `/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/revised_k_selection_K10/figures/plateau_biology_signals.png`
 - `/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/revised_k_selection_K10/figures/revised_k_goal_aligned_score.png`
-

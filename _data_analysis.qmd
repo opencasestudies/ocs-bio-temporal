@@ -1,15 +1,104 @@
 # **Data Analysis**
 ***
 
-This section answers the research questions using the selected `K = 10`, `seed = 2`, `nIterations = 2000` model. R is the default implementation, and Python is shown as an alternate implementation in tabs throughout the analysis.
+Dengue infection does not change every immune cell in the same way at the same time. Some transcriptional patterns reflect stable PBMC identity, such as T-cell, monocyte, B-cell, or plasmablast-associated structure. Other patterns may reflect infection-response activity that rises and falls across the experimental time course. The central analysis question is how to separate those two sources of variation so that a temporal immune program is not mistaken for ordinary cell-type composition.
 
-## **Why `K = 10`?**
+In this section, you will use the selected `K = 10` CoGAPS model to answer the main research questions. You will first examine why this rank was chosen from the sweep, then check whether the selected model behaved sensibly using stability and convergence diagnostics. After that, you will connect CoGAPS outputs to biological interpretation: ranking temporal programs, distinguishing identity-like from activity-like patterns, identifying the IFN-associated late acute response, and using directionality analysis to ask whether the top genes in that program increase relative to baseline.
 
-The initial sweep selected `K = 5` under a conservative rule: choose the smallest K on the stability plateau. That rule found a stable compact model, but it compressed the infection-response biology too much for this case-study goal.
+The goal is not simply to name a pattern. The goal is to build a chain of evidence from model selection, diagnostics, cell scores, gene loadings, subject-level summaries, and pseudobulk expression changes. By the end of the section, you should be able to explain why `Pattern3` is interpreted as an IFN-associated late acute response and why the compact `K = 5` model is useful as a sensitivity comparison but not used as the main model.
+
+| Analysis step | Question it answers | Required now? | Main files |
+|---|---|---|---|
+| Rank sweep | Which values of `K` are stable enough to consider? | No; read and inspect precomputed results. | `data/processed/k_selection/` |
+| K-selection review | Why is `K = 10` the main model? | Yes; interpret the selection evidence. | `stability_plateau_candidates.csv`; `revised_k_selection_manifest.json` |
+| Selected CoGAPS run | What hyperparameters produced the model? | No; optional reproduction. | `data/processed/selected_model_k10/` |
+| Diagnostics | Did the selected run behave like a usable model fit? | Yes; inspect metrics and traces. | `*.metrics.json`; `*.trace.csv`; `*.diagnostics.json` |
+| Research-question tables | What temporal, identity, and IFN-associated programs were found? | Yes. | `data/processed/interpretation/rq_tables/` |
+| Directionality | Are top genes higher or lower than baseline? | Yes; interpret precomputed pseudobulk contrasts. | `data/processed/directionality/` |
+| `K = 5` comparator | What is lost in a compact stable model? | Yes; sensitivity interpretation only. | `data/processed/comparator_model_k5/` |
+
+## **The Sweep as a Modeling Experiment**
+
+CoGAPS rank, written as `K`, is the number of latent patterns the model is allowed to learn. A small `K` can be attractive because it is compact and often stable across random seeds. The biological risk is compression: several immune processes can be squeezed into one broad pattern, especially when cell identity, subject effects, and infection timing all vary in the same dataset.
+
+For this case study, the sweep was used as a modeling experiment. Each run asked: if we choose this `K`, this random seed, and this iteration count, do we recover stable patterns that can separate PBMC identity from dengue-associated temporal activity?
+
+In code, the sweep is a grid. One row of a job table becomes one model run.
+
+```{python}
+#| eval: false
+# This is the core idea behind scripts/reproduction/gse154386_make_cogaps_jobs_tsv.py.
+k_grid = [5, 6, 7, 8, 9, 10, 11, 12, 16, 20, 24, 28, 32, 36, 40]
+seeds = [1, 2, 3, 4, 5]
+iteration_grid = [2000, 4000, 6000, 8000]
+
+for k_value in k_grid:
+    for n_iter in iteration_grid:
+        for seed in seeds:
+            print(k_value, seed, n_iter, sep="\t")
+```
+
+The most important reproduction scripts for the sweep are included in `scripts/reproduction/`:
+
+| Script | Role |
+|---|---|
+| `gse154386_make_cogaps_jobs_tsv.py` | Creates one `K`, seed, iteration row per sweep job. |
+| `gse154386_cogaps_sweep_array_singleprocess_rhino_light.sbatch` | Runs the sweep as a SLURM array on an HPC system. |
+| `gse154386_run_one_singleprocess.py` | Runs one PyCoGAPS model and writes tables, traces, and metrics. |
+| `gse154386_aggregate_results.py` | Aggregates per-run metrics into reproducibility and stability summaries. |
+| `cs5_generate_revised_k_selection_report.py` | Reassesses K-selection using stability plus biological-resolution criteria. |
+
+## **How the Sweep Runs on HPC**
+
+The sweep treats model rank selection as a reproducible modeling experiment. Instead of running one CoGAPS model by hand, the workflow creates a table of model runs. Each row specifies a rank `K`, a random seed, and an iteration count. On an HPC system, a SLURM array can then assign one row to each task.
+
+The job-table script creates those rows:
+
+```{bash}
+#| eval: false
+python scripts/reproduction/gse154386_make_cogaps_jobs_tsv.py \
+  --k-grid 5,6,7,8,9,10,11,12,16,20,24,28,32,36,40 \
+  --seeds 1,2,3,4,5 \
+  --iters 2000,4000,6000,8000 \
+  --out GSE154386/cogaps_sweep_singleprocess_hpc/jobs.tsv
+```
+
+The SLURM launcher reads that table and sends each row to the single-run script. The important idea is that every model run is handled the same way: read one set of parameters, run PyCoGAPS, write outputs with a consistent file stem, and record enough metadata to compare the run later.
+
+```{bash}
+#| eval: false
+sbatch --array=1-300%15 \
+  scripts/reproduction/gse154386_cogaps_sweep_array_singleprocess_rhino_light.sbatch
+```
+
+The single-run script, `gse154386_run_one_singleprocess.py`, is the center of the sweep. For one `K`, seed, and iteration count, it loads the prepared discovery-set CoGAPS input, runs PyCoGAPS, and writes the model outputs needed for interpretation. Those outputs include gene loadings, cell scores, top genes for each pattern, pattern summaries, diagnostic traces, and a metrics JSON file. This is why the sweep can be reviewed after the fact: each run leaves behind both biological summaries and technical diagnostics.
+
+After the sweep finishes, `gse154386_aggregate_results.py` collects the per-run outputs into comparison tables. At this stage, the analysis is no longer asking what one model found. It is asking whether models with the same `K` behave consistently across seeds, whether they recover time-varying programs, and whether higher ranks resolve biological signal that lower ranks compress.
+
+The revised K-selection report is then generated from the aggregated sweep results. That report does not choose `K` by stability alone. It first asks which ranks are reproducible enough to consider, then asks which of those ranks resolves a biologically useful temporal program. This is the logic that leads to `K = 10` for the main analysis while keeping `K = 5` as a compact sensitivity comparison.
+
+## **How `K = 10` Was Selected**
+
+The sweep was first reviewed with a conservative stability rule:
+
+> Original rule: choose the smallest `K` on the seed-to-seed stability plateau.
+
+That rule selected `K = 5`. A stability plateau means that the same value of `K` gives broadly similar patterns across random seeds, so the result is not driven by one lucky initialization. Choosing the smallest plateau value is often useful because it avoids an unnecessarily complex model.
+
+For this data set, however, the first rule was too compact for the main biological question. A model can be stable and still merge several immune processes into broad PBMC identity patterns. In the sweep table below, `K = 5` has very high stability, but it has a small maximum temporal effect size and no IFN-candidate activity-like pattern. In plain language, it is reproducible, but it mostly summarizes stable cell identity.
+
+The closer sweep review asked a second question: among stable models, which is the smallest `K` that also separates a dengue-associated temporal program from the background PBMC mixture? This changed K-selection from a one-metric decision into a two-step decision:
+
+| Step | Rule | Why it matters |
+|---|---|---|
+| 1. Stability gate | Keep K values on the seed-to-seed stability plateau. | The selected model should be reproducible across random starts. |
+| 2. Biological-resolution gate | Among those stable K values, choose the smallest K with at least one IFN-candidate, activity-like temporal program. | The selected model should resolve infection-response activity, not only stable immune-cell identity. |
 
 The revised rule is:
 
 > Select the smallest stability-plateau K that resolves at least one IFN-candidate, activity-like temporal program.
+
+This rule selects `K = 10`. The intermediate K values explain why. `K = 8` and `K = 9` begin to show IFN-candidate signal, but their candidate patterns are not activity-like by the timepoint-versus-cell-type heuristic used here. `K = 10` remains stable, has a much larger temporal effect size, and resolves one IFN-candidate activity-like program. `K = 12` is also on the plateau, but it does not improve the biological-resolution criterion enough to justify moving past the smaller `K = 10` model.
 
 ::: {.panel-tabset}
 
@@ -31,14 +120,15 @@ k_plateau <- readr::read_csv(
 k_plateau |>
   transmute(
     K,
-    selected_n_iter,
-    stability_core = round(stability_core, 3),
-    max_eta_timepoint = round(max_eta_timepoint, 3),
-    candidate_ifn_patterns = candidate_ifn_pattern_count_mean,
-    activity_like_patterns = activity_like_pattern_count_mean,
-    revised_selection = if_else(
+    iter = selected_n_iter,
+    stability = round(stability_core, 3),
+    `temporal eta` = round(max_eta_timepoint, 3),
+    `IFN cand.` = candidate_ifn_pattern_count_mean,
+    `activity-like` = activity_like_pattern_count_mean,
+    score = round(goal_aligned_score, 3),
+    selected = if_else(
       K == k_manifest$revised_chosen_k,
-      "selected for main analysis",
+      "yes",
       ""
     )
   ) |>
@@ -49,9 +139,7 @@ k_plateau |>
 
 ```{python}
 #| label: k-selection-table-python
-import json
-import pandas as pd
-
+#| results: asis
 with open(
     "data/processed/k_selection/revised_k_selection_manifest.json"
 ) as f:
@@ -61,34 +149,188 @@ k_plateau_py = pd.read_csv(
     "data/processed/k_selection/stability_plateau_candidates.csv"
 )
 
-(
+k_selection_display = (
     k_plateau_py
     .assign(
         stability_core=lambda x: x["stability_core"].round(3),
         max_eta_timepoint=lambda x: x["max_eta_timepoint"].round(3),
-        revised_selection=lambda x: x["K"].eq(
+        goal_aligned_score=lambda x: x["goal_aligned_score"].round(3),
+        selected=lambda x: x["K"].eq(
             k_manifest_py["revised_chosen_k"]
-        ).map({True: "selected for main analysis", False: ""})
+        ).map({True: "yes", False: ""})
     )
     .rename(columns={
-        "candidate_ifn_pattern_count_mean": "candidate_ifn_patterns",
-        "activity_like_pattern_count_mean": "activity_like_patterns",
+        "selected_n_iter": "iter",
+        "stability_core": "stability",
+        "max_eta_timepoint": "temporal eta",
+        "candidate_ifn_pattern_count_mean": "IFN cand.",
+        "activity_like_pattern_count_mean": "activity-like",
+        "goal_aligned_score": "score",
     })
     .loc[:, [
-        "K", "selected_n_iter", "stability_core", "max_eta_timepoint",
-        "candidate_ifn_patterns", "activity_like_patterns",
-        "revised_selection"
+        "K", "iter", "stability", "temporal eta",
+        "IFN cand.", "activity-like", "score", "selected"
     ]]
 )
+
+print(k_selection_display.to_markdown(index=False))
 ```
 
 :::
 
-`K = 10` remains on the stability plateau and is the smallest plateau model that resolves the target kind of program: an IFN-candidate, activity-like temporal factor. `K = 5` remains useful as a comparator because it shows what is lost when the rank is too compact for the biological goal.
+Read the table as a record of the decision. `stability` stays high across the plateau candidates, so stability alone cannot distinguish the biological usefulness of these ranks. The temporal effect column is what changes the interpretation: `K = 5` has a maximum temporal effect size near zero, while `K = 10` shows a much stronger temporal effect and is the first plateau model with an activity-like IFN-candidate pattern.
 
-## **Optional Full CoGAPS Run**
+The selected model is `K = 10`, `seed = 2`, and `nIterations = 2000`. `K = 10` stays on the stability plateau and resolves an activity-like IFN-candidate temporal program. `K = 5` is still valuable, but it is used as a sensitivity comparator because it is stable and compact while compressing the temporal biology.
 
-The full model run is not required for the standard case-study path. It takes about 24 minutes for each selected R or Python run on the tested four-core OpenMP Docker setup, and it requires large H5AD inputs distributed through Zenodo rather than included with the small teaching artifacts.
+One technical detail matters for interpretation: pattern numbers are model labels, not biological names. A sweep report may label the IFN-candidate pattern as `Pattern5`, while the selected R model outputs label the IFN-associated program as `Pattern3`. That is not a biological contradiction. It means that factor labels can permute across runs or implementations, so you should follow the evidence attached to the pattern: timing, cell-type association, top genes, IFN-score correlation, and directionality.
+
+## **Selected `K = 10` Model Settings**
+
+The main analysis starts from precomputed selected-model files. If you want to rerun the selected model, download the large reproduction files from Zenodo and run inside the case-study Docker image.
+
+The selected model uses the same biological dataset and model rank in R and Python. R is shown first because it is the default path in this case study.
+
+| Parameter | Value | Programming role | Biological or interpretive reason |
+|---|---:|---|---|
+| `K` / `nPatterns` | `10` | Number of CoGAPS patterns. | Resolves a late acute IFN-associated temporal program while retaining stable identity patterns. |
+| `seed` | `2` | Makes the selected run reproducible. | Fixes the representative model used for interpretation. |
+| `nIterations` | `2000` | Number of sampler iterations. | Selected from the sweep for the stable K=10 representative run. |
+| `nThreads` | `4` | Uses OpenMP threading for CoGAPS. | Keeps local optional reruns tractable in the Docker runtime. |
+| `sparseOptimization` | `TRUE` | Uses sparse-aware CoGAPS updates. | Appropriate for sparse single-cell expression matrices. |
+| `outputFrequency` | `100` | Records traces during the run. | Supports convergence and stability diagnostics. |
+| `checkpointInterval` | `500` | Writes checkpoint information during the run. | Allows recovery and provenance for longer runs. |
+| `nSnapshots` | `10` | Collects diagnostic snapshots. | Helps inspect sampler behavior beyond the final result. |
+| `snapshotPhase` | `all` | Samples both model phases where available. | Makes diagnostic output more complete. |
+| `takePumpSamples` | `TRUE` | Collects pump statistics. | Adds another diagnostic view of sampler behavior. |
+
+::: {.panel-tabset}
+
+## R
+
+```{r}
+#| label: selected-model-call-r
+#| eval: false
+params <- CogapsParams(
+  nPatterns = 10,
+  nIterations = 2000,
+  seed = 2,
+  sparseOptimization = TRUE
+)
+params@takePumpSamples <- TRUE
+
+result <- CoGAPS(
+  data_matrix,
+  params,
+  nThreads = 4,
+  outputFrequency = 100,
+  checkpointOutFile = "cogaps_K10_seed2_iter2000.checkpoint.out",
+  checkpointInterval = 500,
+  nSnapshots = 10,
+  snapshotPhase = "all",
+  asynchronousUpdates = TRUE
+)
+```
+
+The complete R runner is included as `scripts/reproduction/cs5_run_selected_model_r.R`. It reads the discovery H5AD, runs CoGAPS, writes matrices and top-gene tables, and records metrics in JSON.
+
+## Python
+
+```{python}
+#| label: selected-model-call-python
+#| eval: false
+params = CoParams(adata=cogaps_input)
+setParams(
+    params,
+    {
+        "nPatterns": 10,
+        "nIterations": 2000,
+        "seed": 2,
+        "useSparseOptimization": True,
+        "transposeData": False,
+        "nThreads": 4,
+        "takePumpSamples": True,
+    },
+)
+
+result = CoGAPS(
+    cogaps_input,
+    params,
+    nThreads=4,
+    outputFrequency=100,
+    checkpointOutFile="cogaps_K10_seed2_iter2000.checkpoint.out",
+    checkpointInterval=500,
+    nSnapshots=10,
+    snapshotPhase="all",
+)
+```
+
+The complete Python runner is included as `scripts/reproduction/cs5_run_selected_model_python.py`. It writes the same families of outputs: model object, metrics, diagnostics, trace table, gene loadings, cell scores, top genes, and research-question summaries.
+
+:::
+
+If you download the large reproduction files from Zenodo, you can run either selected-model implementation from the repository root. The examples below mount the repository and a local Zenodo download directory into the same Docker image used for the case study.
+
+::: {.panel-tabset}
+
+## R
+
+```{bash}
+#| eval: false
+export CS5_ZENODO_DIR="/path/to/downloaded/cs5_sweep_results"
+
+docker run --platform linux/amd64 --rm \
+  -v "$PWD":/home/rstudio/project:rw \
+  -v "$CS5_ZENODO_DIR":/home/rstudio/project/data/cs5_sweep_results:ro \
+  -w /home/rstudio/project \
+  othomas2/cs5-cogaps-runtime:0.1.0 \
+  Rscript scripts/reproduction/cs5_run_selected_model_r.R \
+    --discovery-h5ad /home/rstudio/project/data/cs5_sweep_results/cache/gse154386_experimental_discovery_cells_x_genes.h5ad \
+    --outdir /home/rstudio/project/GSE154386/cogaps_r_revised_model_K10_seed2_iter2000 \
+    --k 10 \
+    --seed 2 \
+    --n-iter 2000 \
+    --cogaps-threads 4 \
+    --blas-threads 1 \
+    --output-frequency 100 \
+    --checkpoint-interval 500 \
+    --n-snapshots 10 \
+    --snapshot-phase all \
+    --take-pump-samples \
+    --use-sparse-opt
+```
+
+## Python
+
+```{bash}
+#| eval: false
+export CS5_ZENODO_DIR="/path/to/downloaded/cs5_sweep_results"
+
+docker run --platform linux/amd64 --rm \
+  -v "$PWD":/home/rstudio/project:rw \
+  -v "$CS5_ZENODO_DIR":/home/rstudio/project/data/cs5_sweep_results:ro \
+  -w /home/rstudio/project \
+  othomas2/cs5-cogaps-runtime:0.1.0 \
+  python scripts/reproduction/cs5_run_selected_model_python.py \
+    --cogaps-input-h5ad /home/rstudio/project/data/cs5_sweep_results/cache/gse154386_experimental_discovery_genes_x_cells.h5ad \
+    --discovery-h5ad /home/rstudio/project/data/cs5_sweep_results/cache/gse154386_experimental_discovery_cells_x_genes.h5ad \
+    --source-script /home/rstudio/project/scripts/reproduction/gse154386_sparse_distributed_cogaps.py \
+    --outdir /home/rstudio/project/GSE154386/cogaps_python_revised_model_K10_seed2_iter2000 \
+    --k 10 \
+    --seed 2 \
+    --n-iter 2000 \
+    --cogaps-threads 4 \
+    --blas-threads 1 \
+    --output-frequency 100 \
+    --checkpoint-interval 500 \
+    --n-snapshots 10 \
+    --snapshot-phase all \
+    --take-pump-samples \
+    --use-sparse-opt
+```
+
+:::
+
+You can summarize the selected run from the included metrics files:
 
 ::: {.panel-tabset}
 
@@ -108,14 +350,15 @@ data.frame(
   nIterations = r_metrics$n_iter,
   nThreads = r_metrics$nThreads,
   sparseOptimization = r_metrics$sparseOptimization,
+  outputFrequency = r_metrics$outputFrequency,
+  checkpointInterval = r_metrics$checkpointInterval,
+  nSnapshots = r_metrics$nSnapshots,
   runtime_minutes = round(r_metrics$runtime_sec / 60, 1),
   meanChiSq = r_metrics$meanChiSq,
   trace_length = r_metrics$chisqHistory_length
 ) |>
   knitr::kable()
 ```
-
-The R run used OpenMP with four CoGAPS threads, sparse optimization, checkpointing every 500 iterations, trace output every 100 iterations, 10 snapshots, and pump sampling.
 
 ## Python
 
@@ -130,21 +373,133 @@ with open(
 pd.DataFrame([{
     "language": py_metrics["language"],
     "K": py_metrics["K"],
-    "seed": 2,
+    "seed_requested": 2,
     "nIterations": py_metrics["n_iter"],
     "nThreads": py_metrics["cogaps_threads"],
     "sparseOptimization": py_metrics["use_sparse_optimization"],
+    "outputFrequency": py_metrics["outputFrequency"],
+    "checkpointInterval": py_metrics["checkpointInterval"],
+    "nSnapshots": py_metrics["nSnapshots"],
     "runtime_minutes": round(py_metrics["runtime_sec"] / 60, 1),
     "meanChiSq": py_metrics["meanChiSq"],
     "trace_length": py_metrics["chisqHistory_length"],
 }])
 ```
 
-The Python run used the same selected model settings and diagnostic targets as the R run.
+:::
+
+In the four-thread Docker setup used to create these files, the selected R and Python runs each took about 24 minutes. That timing is why the analysis above uses precomputed files.
+
+## **From CoGAPS Output to Analysis Tables**
+
+The selected CoGAPS run does not directly produce a table called "temporal programs" or "identity versus activity." It produces pattern matrices. The gene-loading matrix says which genes define each pattern, and the cell-score matrix says how strongly each cell uses each pattern. The research-question tables are built by joining those scores back to cell metadata, summarizing them at biologically meaningful levels, and then adding gene-based annotations.
+
+This is the most important programming idea in the analysis section: model output becomes biological evidence only after careful joins, grouping, summarizing, reshaping, and filtering. The table below names the main files in that chain.
+
+| File | Where it comes from | What it contributes |
+|---|---|---|
+| `cogaps_K10_seed2_iter2000.gene_loadings.csv` | CoGAPS gene-pattern matrix | Pattern-defining genes and top-gene lists. |
+| `cogaps_K10_seed2_iter2000.cell_scores.csv` | CoGAPS cell-pattern matrix | Pattern usage score for each discovery-set cell. |
+| `cogaps_K10_seed2_iter2000.discovery_cells_with_patterns.csv` | Cell metadata joined to cell scores | Subject, timepoint, broad cell type, marker scores, and pattern scores in one table. |
+| `cogaps_K10_seed2_iter2000.pattern_summary.csv` | Cell scores, metadata, IFN scores, and top genes | Temporal effect size, cell-type effect size, IFN correlation, and pattern class. |
+| `pattern_annotation_table.csv` | Interpretation-layer merge | Subject-level summaries, readable labels, dominant cell type, top genes, and notes. |
+| `RQ1`, `RQ2`, and `RQ3` tables | Filtered and reordered views of the annotation table | Learner-facing evidence for each research question. |
+
+The first transformation is the join between cell metadata and CoGAPS cell scores. The included file `discovery_cells_with_patterns.csv` already contains that join, so you can inspect the programming move without rerunning CoGAPS.
+
+::: {.panel-tabset}
+
+## R
+
+```{r}
+#| label: cogaps-output-lineage-r
+selected_cells <- readr::read_csv(
+  here::here("data", "processed", "selected_model_k10", "r",
+             "cogaps_K10_seed2_iter2000.discovery_cells_with_patterns.csv"),
+  show_col_types = FALSE
+)
+
+pattern_cols <- names(selected_cells)[grepl("^Pattern[0-9]+$", names(selected_cells))]
+
+subject_time_rebuilt <- selected_cells |>
+  group_by(subject, timepoint_merged, day_merged_numeric) |>
+  summarize(
+    n_cells = n(),
+    across(all_of(pattern_cols), ~ mean(.x, na.rm = TRUE)),
+    .groups = "drop"
+  )
+
+subject_time_rebuilt_long <- subject_time_rebuilt |>
+  tidyr::pivot_longer(
+    cols = all_of(pattern_cols),
+    names_to = "pattern",
+    values_to = "mean_pattern_score"
+  )
+
+subject_time_rebuilt_long |>
+  filter(pattern == "Pattern3") |>
+  arrange(subject, day_merged_numeric) |>
+  select(subject, timepoint_merged, n_cells, pattern, mean_pattern_score) |>
+  head(9) |>
+  knitr::kable(digits = 3)
+```
+
+## Python
+
+```{python}
+#| label: cogaps-output-lineage-python
+selected_cells_py = pd.read_csv(
+    "data/processed/selected_model_k10/r/"
+    "cogaps_K10_seed2_iter2000.discovery_cells_with_patterns.csv",
+    index_col=0,
+)
+
+pattern_cols_py = [
+    col for col in selected_cells_py.columns
+    if col.startswith("Pattern")
+]
+
+subject_time_rebuilt_py = (
+    selected_cells_py
+    .groupby(["subject", "timepoint_merged", "day_merged_numeric"],
+             as_index=False)
+    .agg(
+        n_cells=("subject", "size"),
+        **{pattern: (pattern, "mean") for pattern in pattern_cols_py}
+    )
+)
+
+subject_time_rebuilt_long_py = subject_time_rebuilt_py.melt(
+    id_vars=["subject", "timepoint_merged", "day_merged_numeric", "n_cells"],
+    value_vars=pattern_cols_py,
+    var_name="pattern",
+    value_name="mean_pattern_score",
+)
+
+(
+    subject_time_rebuilt_long_py
+    .loc[subject_time_rebuilt_long_py["pattern"].eq("Pattern3"),
+         ["subject", "timepoint_merged", "n_cells",
+          "day_merged_numeric", "pattern", "mean_pattern_score"]]
+    .sort_values(["subject", "day_merged_numeric"])
+    .drop(columns="day_merged_numeric")
+    .head(9)
+)
+```
 
 :::
 
+In both languages, the programming move is the same. The code identifies pattern columns, groups cells by subject and timepoint, computes mean pattern usage within each group, and reshapes the wide pattern table into a long table. The reshaping step is not cosmetic: long tables are easier to filter, plot, and summarize by pattern.
+
+The richer interpretation layer is built by `scripts/reproduction/cs5_build_k10_interpretation_layer.py`. That script starts from the selected-model outputs, builds subject-level summaries, joins top-gene lists, adds readable labels, and writes the `RQ1`, `RQ2`, and `RQ3` tables used below. The script defaults to writing rebuilt tables to `data/processed/interpretation_rebuilt` so that you can inspect the workflow without overwriting the included analysis files.
+
+> **Checkpoint.** When you look at a research-question table below, ask which columns came from cell scores, which came from gene loadings, and which were added later as interpretation labels.
+
 ## **Stability and Convergence Diagnostics**
+
+A CoGAPS run should not be interpreted only from the final matrices. Before treating patterns as biology, you should ask whether the run behaved like a usable model fit. In this case study, diagnostics come from three files: the trace table records how chi-square and atom counts changed over recorded trace points, the diagnostics JSON records sampler outputs such as snapshots and pump statistics, and the metrics JSON records runtime, total updates, and run settings.
+
+The chi-square trace is the first diagnostic to inspect because it tracks model fit over the recorded trace points. A rapidly decreasing early trace followed by much smaller late changes is consistent with a sampler that has moved away from a poor initial state and is no longer changing dramatically. That does not prove a global optimum or biological correctness, but it is a necessary technical check before interpretation.
 
 ::: {.panel-tabset}
 
@@ -173,8 +528,6 @@ ggplot(r_trace, aes(x = trace_index, y = chisq)) +
 
 ```{python}
 #| label: diagnostic-trace-python
-import matplotlib.pyplot as plt
-
 py_trace = pd.read_csv(
     "data/processed/selected_model_k10/python/"
     "cogaps_K10_seed2_iter2000.trace.csv"
@@ -191,9 +544,137 @@ plt.show()
 
 :::
 
-The chi-square trace decreases rapidly early in the run and then changes more gradually, consistent with the selected run reaching a stable fitted state for the teaching analysis. The run also wrote A-atom and P-atom traces, snapshots, pump statistics, and machine-readable diagnostics.
+The plot is easier to interpret when paired with a compact diagnostic table. The code below combines the trace, diagnostics JSON, and metrics JSON into a small checklist. Notice that these are programming summaries of run behavior: they do not use gene names or timepoints, so they are technical diagnostics rather than biological evidence.
+
+::: {.panel-tabset}
+
+## R
+
+```{r}
+#| label: diagnostic-evidence-r
+r_diag <- jsonlite::fromJSON(
+  here::here("data", "processed", "selected_model_k10", "r",
+             "cogaps_K10_seed2_iter2000.diagnostics.json")
+)
+r_metrics_diag <- jsonlite::fromJSON(
+  here::here("data", "processed", "selected_model_k10", "r",
+             "cogaps_K10_seed2_iter2000.metrics.json")
+)
+
+r_trace_diag <- readr::read_csv(
+  here::here("data", "processed", "selected_model_k10", "r",
+             "cogaps_K10_seed2_iter2000.trace.csv"),
+  show_col_types = FALSE
+)
+
+last_five <- tail(r_trace_diag$chisq, 5)
+shape_text <- function(x) {
+  if (is.null(x) || length(x) == 0) return("")
+  paste(unlist(x), collapse = " x ")
+}
+
+data.frame(
+  diagnostic = c(
+    "chi-square first trace point",
+    "chi-square final trace point",
+    "chi-square reduction",
+    "final-five relative range",
+    "trace points",
+    "A and P atom traces",
+    "snapshots",
+    "pump statistic dimensions",
+    "total updates",
+    "runtime minutes"
+  ),
+  value = c(
+    round(first(r_trace_diag$chisq) / 1e6, 1),
+    round(last(r_trace_diag$chisq) / 1e6, 1),
+    paste0(round(
+      100 * (first(r_trace_diag$chisq) - last(r_trace_diag$chisq)) /
+        first(r_trace_diag$chisq), 1
+    ), "%"),
+    paste0(round(
+      100 * (max(last_five) - min(last_five)) / last(r_trace_diag$chisq), 4
+    ), "%"),
+    r_diag$chisqHistory_length,
+    paste(r_diag$atomhistoryA_length, r_diag$atomhistoryP_length, sep = " / "),
+    paste0(
+      r_diag$equilibrationSnapshotsA_length,
+      " equilibration / ",
+      r_diag$samplingSnapshotsA_length,
+      " sampling"
+    ),
+    shape_text(r_diag$pumpStat_shape),
+    r_diag$totalUpdates,
+    round(r_metrics_diag$runtime_sec / 60, 1)
+  )
+) |>
+  knitr::kable()
+```
+
+## Python
+
+```{python}
+#| label: diagnostic-evidence-python
+with open(
+    "data/processed/selected_model_k10/python/"
+    "cogaps_K10_seed2_iter2000.diagnostics.json"
+) as f:
+    py_diag = json.load(f)
+
+with open(
+    "data/processed/selected_model_k10/python/"
+    "cogaps_K10_seed2_iter2000.metrics.json"
+) as f:
+    py_metrics_diag = json.load(f)
+
+py_trace_diag = pd.read_csv(
+    "data/processed/selected_model_k10/python/"
+    "cogaps_K10_seed2_iter2000.trace.csv"
+)
+
+last_five_py = py_trace_diag["chisq"].tail(5)
+diagnostic_table_py = pd.DataFrame({
+    "diagnostic": [
+        "chi-square first trace point",
+        "chi-square final trace point",
+        "chi-square reduction",
+        "final-five relative range",
+        "trace points",
+        "A and P atom traces",
+        "snapshots",
+        "pump statistic dimensions",
+        "total updates",
+        "runtime minutes",
+    ],
+    "value": [
+        round(py_trace_diag["chisq"].iloc[0] / 1e6, 1),
+        round(py_trace_diag["chisq"].iloc[-1] / 1e6, 1),
+        f"{100 * (py_trace_diag['chisq'].iloc[0] - py_trace_diag['chisq'].iloc[-1]) / py_trace_diag['chisq'].iloc[0]:.1f}%",
+        f"{100 * (last_five_py.max() - last_five_py.min()) / py_trace_diag['chisq'].iloc[-1]:.4f}%",
+        py_diag["chisqHistory_length"],
+        f"{py_diag['atomhistoryA_length']} / {py_diag['atomhistoryP_length']}",
+        f"{py_diag['equilibrationSnapshotsA_length']} equilibration / {py_diag['samplingSnapshotsA_length']} sampling",
+        " x ".join(map(str, py_diag.get("pumpMatrix_shape", []))),
+        py_diag["totalUpdates"],
+        round(py_metrics_diag["runtime_sec"] / 60, 1),
+    ],
+})
+
+diagnostic_table_py
+```
+
+:::
+
+The selected run passes the basic technical checks used here. Chi-square drops from about 149.3 million to about 124.0 million, and the last five recorded trace points vary by only about 0.005 percent of the final value. The run also records 40 chi-square trace points, atom traces for both matrices, equilibration and sampling snapshots, pump statistics, roughly 238 million updates, and a runtime of about 24 minutes. Together, these diagnostics support treating the model as technically usable for interpretation, while still leaving the biological claims to be checked with time courses, top genes, and directionality.
+
+> **Checkpoint.** The diagnostics tell you whether the run behaved sensibly; they do not tell you what Pattern3 means. Biological interpretation starts only after the technical run checks are acceptable.
 
 ## **RQ1: Which Latent Programs Vary Over Time?**
+
+Research Question 1 asks which latent programs change across the experimental infection time course. Biologically, this table helps you separate programs that are mostly stable across days from programs that rise or fall as infection progresses. The table you inspect here is not a raw CoGAPS output. It is built from the interpretation-layer annotation table, which combines CoGAPS cell scores, subject-level time summaries, top genes from the loading matrix, and pattern-level statistics.
+
+The inputs are the selected-model cell-score table, the gene-loading table, the pattern-summary table, and the subject-level summaries produced by the interpretation-layer script. The programming move is a rank-and-select operation. You start with one row per pattern in `pattern_annotation_table.csv`, keep the columns that describe temporal behavior, rank patterns by `eta_timepoint`, and display the strongest temporal programs. The subject-level columns such as `subject_mean_D10` are there because the biological question is about repeated subjects over infection days, not thousands of cells treated as independent people.
 
 ::: {.panel-tabset}
 
@@ -201,18 +682,20 @@ The chi-square trace decreases rapidly early in the run and then changes more gr
 
 ```{r}
 #| label: rq1-temporal-programs-r
-rq1 <- readr::read_csv(
-  here::here("data", "processed", "interpretation", "rq_tables",
-             "RQ1_temporal_programs.csv"),
+pattern_annotation <- readr::read_csv(
+  here::here("data", "processed", "interpretation",
+             "pattern_annotation_table.csv"),
   show_col_types = FALSE
 )
 
-rq1 |>
+rq1_view <- pattern_annotation |>
   select(pattern, observed_label, pattern_class, eta_timepoint,
          subject_peak_timepoint, subject_mean_D0, subject_mean_D10,
          subject_mean_D14_15, subject_mean_D28, top_10_genes) |>
   arrange(desc(eta_timepoint)) |>
-  head(6) |>
+  head(6)
+
+rq1_view |>
   knitr::kable(digits = 3)
 ```
 
@@ -220,12 +703,12 @@ rq1 |>
 
 ```{python}
 #| label: rq1-temporal-programs-python
-rq1_py = pd.read_csv(
-    "data/processed/interpretation/rq_tables/RQ1_temporal_programs.csv"
+pattern_annotation_py = pd.read_csv(
+    "data/processed/interpretation/pattern_annotation_table.csv"
 )
 
-(
-    rq1_py
+rq1_view_py = (
+    pattern_annotation_py
     .loc[:, [
         "pattern", "observed_label", "pattern_class", "eta_timepoint",
         "subject_peak_timepoint", "subject_mean_D0", "subject_mean_D10",
@@ -234,13 +717,23 @@ rq1_py = pd.read_csv(
     .sort_values("eta_timepoint", ascending=False)
     .head(6)
 )
+
+rq1_view_py
 ```
 
 :::
 
-The dominant temporal program is `Pattern3`, annotated as an IFN-associated temporal activity program. Its subject-level mean score rises from 0.026 at `D0` to 0.211 at `D10`, remains high at 0.193 at `D14/15`, and returns near baseline by `D28`.
+This code is the same logic used to create `RQ1_temporal_programs.csv`: select temporal evidence columns, sort by temporal effect size, and keep the patterns most relevant to the research question. You should conclude that `Pattern3` is the dominant temporal program in the selected model. Its mean subject-level score rises from baseline at `D0`, peaks at `D10`, remains high at `D14/15`, and returns near baseline by `D28`. That timing matches the late acute window introduced earlier in the case study.
+
+This table cannot prove that `Pattern3` is an interferon program by itself. It tells you that `Pattern3` is the strongest time-varying pattern. The biological label still depends on top genes, IFN-score correlation, and directionality.
+
+> **Checkpoint.** In the RQ1 table, the subject-mean columns come from cell scores summarized by subject and timepoint. The `top_10_genes` column comes from gene loadings. Those are different kinds of evidence.
 
 ## **RQ2: Identity Programs Versus Activity Programs**
+
+Research Question 2 asks whether a pattern mostly reflects stable PBMC identity or dynamic infection activity. This matters because PBMC data mix many immune-cell types in one expression matrix. A pattern can look important because it separates T cells from monocytes, or because it changes over infection time, or because both are true.
+
+The inputs are the same pattern annotation table and the pattern-summary statistics derived from cell scores joined to timepoint and broad cell-type metadata. The programming move is a comparison of two effect sizes. `eta_timepoint` asks how much of a pattern's variation is explained by infection day, while `eta_broad_cell_type` asks how much is explained by broad immune-cell identity. The interpretation-layer script classifies a pattern as activity-like when the timepoint effect is more than 1.5 times the cell-type effect, identity-like when the cell-type effect is more than 1.5 times the timepoint effect, and mixed otherwise.
 
 ::: {.panel-tabset}
 
@@ -248,11 +741,21 @@ The dominant temporal program is `Pattern3`, annotated as an IFN-associated temp
 
 ```{r}
 #| label: rq2-identity-activity-r
-rq2 |>
-  select(pattern, observed_label, pattern_class,
+rq2_view <- pattern_annotation |>
+  mutate(
+    recomputed_class = case_when(
+      eta_timepoint > 1.5 * eta_broad_cell_type ~ "activity-like",
+      eta_broad_cell_type > 1.5 * eta_timepoint ~ "identity-like",
+      TRUE ~ "mixed"
+    ),
+    eta_time_to_cell_ratio = eta_timepoint / eta_broad_cell_type
+  ) |>
+  select(pattern, observed_label, pattern_class, recomputed_class,
          eta_timepoint, eta_broad_cell_type,
          eta_time_to_cell_ratio, dominant_broad_cell_type) |>
-  arrange(pattern) |>
+  arrange(pattern)
+
+rq2_view |>
   knitr::kable(digits = 3)
 ```
 
@@ -260,22 +763,41 @@ rq2 |>
 
 ```{python}
 #| label: rq2-identity-activity-python
-(
-    rq2_py
-    .loc[:, [
-        "pattern", "observed_label", "pattern_class",
-        "eta_timepoint", "eta_broad_cell_type",
-        "eta_time_to_cell_ratio", "dominant_broad_cell_type"
-    ]]
-    .sort_values("pattern")
+import numpy as np
+
+rq2_view_py = pattern_annotation_py.copy()
+rq2_view_py["recomputed_class"] = np.select(
+    [
+        rq2_view_py["eta_timepoint"] > 1.5 * rq2_view_py["eta_broad_cell_type"],
+        rq2_view_py["eta_broad_cell_type"] > 1.5 * rq2_view_py["eta_timepoint"],
+    ],
+    ["activity-like", "identity-like"],
+    default="mixed",
 )
+rq2_view_py["eta_time_to_cell_ratio"] = (
+    rq2_view_py["eta_timepoint"] / rq2_view_py["eta_broad_cell_type"]
+)
+
+rq2_view_py.loc[:, [
+    "pattern", "observed_label", "pattern_class", "recomputed_class",
+    "eta_timepoint", "eta_broad_cell_type",
+    "eta_time_to_cell_ratio", "dominant_broad_cell_type"
+]].sort_values("pattern")
 ```
 
 :::
 
-The selected model mostly recovers stable immune-cell identity structure: T cell, monocyte, NK cell, B cell, and plasmablast-associated programs. The key exception is `Pattern3`, where the timepoint effect is about 2.76 times the broad-cell-type effect. That is the clearest activity-like program.
+This code recreates the logic behind `RQ2_identity_vs_activity.csv`. The stored `pattern_class` and the recomputed class should agree; showing both columns makes the classification rule auditable. You should notice that most selected-model patterns are identity-like, which means CoGAPS is recovering stable immune-cell structure in the PBMC mixture. `Pattern3` is the key exception: its timepoint effect is much larger than its broad-cell-type effect, making it the clearest activity-like program in the selected model.
+
+The limitation is that this classification is a heuristic, not a biological truth label. A pattern classified as identity-like can still change with infection within a specific cell type, and an activity-like pattern can still be stronger in one broad cell compartment than another. The classification helps you decide what evidence to inspect next.
+
+> **Checkpoint.** If cell-type composition changed strongly across days, which column would help you notice that a pattern might be identity-like rather than infection-activity-like?
 
 ## **RQ3: Which Program Is IFN-Associated and When Does It Peak?**
+
+Research Question 3 asks which pattern is most consistent with an interferon-associated late acute response. No single column is enough to answer that question. A strong candidate should vary over time, correlate with an IFN gene-set score, contain interferon-stimulated genes among its top loadings, peak in the late acute window, and show that its top genes increase relative to baseline.
+
+The inputs are the pattern annotation table and the pattern-level directionality summary. The programming move is now a filter-and-join operation. First, the annotation table is filtered to candidate IFN patterns. Then the directionality summary is joined in so that the same row contains both CoGAPS-based evidence and expression-change evidence. This lets you read timing, IFN-gene evidence, and up-or-down expression behavior together rather than treating them as disconnected tables.
 
 ::: {.panel-tabset}
 
@@ -283,18 +805,32 @@ The selected model mostly recovers stable immune-cell identity structure: T cell
 
 ```{r}
 #| label: rq3-ifn-program-r
-rq3 <- readr::read_csv(
-  here::here("data", "processed", "interpretation", "rq_tables",
-             "RQ3_ifn_associated_program.csv"),
+directionality_for_rq3 <- readr::read_csv(
+  here::here("data", "processed", "directionality", "tables",
+             "pattern_directionality_summary.csv"),
   show_col_types = FALSE
-)
+) |>
+  filter(pattern == "Pattern3",
+         scope == "all_cells",
+         stratum == "all_cells",
+         timepoint_merged %in% c("D10", "D14/15")) |>
+  mutate(timepoint_key = if_else(timepoint_merged == "D14/15",
+                                 "D14_15", timepoint_merged)) |>
+  select(pattern, timepoint_key,
+         median_gene_log2fc, frac_genes_up) |>
+  tidyr::pivot_wider(
+    names_from = timepoint_key,
+    values_from = c(median_gene_log2fc, frac_genes_up)
+  )
 
-rq3 |>
-  select(pattern, observed_label, spearman_ifn_score_rho,
-         ifn_top_gene_overlap_top15, subject_peak_timepoint,
-         D10_median_top_gene_log2fc, D10_frac_top_genes_up,
-         D14_15_median_top_gene_log2fc, D14_15_frac_top_genes_up,
-         top_15_genes) |>
+rq3_view <- pattern_annotation |>
+  filter(candidate_ifn_pattern) |>
+  select(pattern, observed_label, eta_timepoint, eta_broad_cell_type,
+         spearman_ifn_score_rho, ifn_top_gene_overlap_top15,
+         subject_peak_timepoint, top_15_genes) |>
+  left_join(directionality_for_rq3, by = "pattern")
+
+rq3_view |>
   knitr::kable(digits = 3)
 ```
 
@@ -302,27 +838,189 @@ rq3 |>
 
 ```{python}
 #| label: rq3-ifn-program-python
-rq3_py = pd.read_csv(
-    "data/processed/interpretation/rq_tables/"
-    "RQ3_ifn_associated_program.csv"
+directionality_for_rq3_py = pd.read_csv(
+    "data/processed/directionality/tables/"
+    "pattern_directionality_summary.csv"
 )
 
-rq3_py.loc[:, [
-    "pattern", "observed_label", "spearman_ifn_score_rho",
-    "ifn_top_gene_overlap_top15", "subject_peak_timepoint",
-    "D10_median_top_gene_log2fc", "D10_frac_top_genes_up",
-    "D14_15_median_top_gene_log2fc", "D14_15_frac_top_genes_up",
-    "top_15_genes"
+directionality_for_rq3_py = (
+    directionality_for_rq3_py
+    .loc[
+        directionality_for_rq3_py["pattern"].eq("Pattern3")
+        & directionality_for_rq3_py["scope"].eq("all_cells")
+        & directionality_for_rq3_py["stratum"].eq("all_cells")
+        & directionality_for_rq3_py["timepoint_merged"].isin(["D10", "D14/15"]),
+        ["pattern", "timepoint_merged", "median_gene_log2fc", "frac_genes_up"]
+    ]
+    .assign(
+        timepoint_key=lambda x: x["timepoint_merged"].replace({"D14/15": "D14_15"})
+    )
+    .pivot(
+        index="pattern",
+        columns="timepoint_key",
+        values=["median_gene_log2fc", "frac_genes_up"],
+    )
+)
+directionality_for_rq3_py.columns = [
+    f"{value}_{timepoint}" for value, timepoint in directionality_for_rq3_py.columns
+]
+directionality_for_rq3_py = directionality_for_rq3_py.reset_index()
+
+candidate_ifn_mask_py = (
+    pattern_annotation_py["candidate_ifn_pattern"]
+    .astype(str)
+    .str.lower()
+    .isin(["true", "1", "yes"])
+)
+
+rq3_view_py = (
+    pattern_annotation_py
+    .loc[candidate_ifn_mask_py,
+         ["pattern", "observed_label", "eta_timepoint", "eta_broad_cell_type",
+          "spearman_ifn_score_rho", "ifn_top_gene_overlap_top15",
+          "subject_peak_timepoint", "top_15_genes"]]
+    .merge(directionality_for_rq3_py, on="pattern", how="left")
+)
+
+rq3_view_py
+```
+
+:::
+
+You should conclude that `Pattern3` is most consistent with an IFN-associated late acute response. It has a strong IFN-score correlation, contains several interferon-stimulated genes among its top genes, peaks at `D10`, and remains elevated at `D14/15`.
+
+This table still cannot prove mechanism. It supports the narrower interpretation that `Pattern3` is consistent with an interferon-associated late acute response in this discovery subset. Mechanistic claims would require additional experimental or clinical evidence outside this case study.
+
+> **Checkpoint.** The IFN label is supported by gene identity and IFN-score correlation, while the "late acute response" claim is supported by subject-level timing and directionality. Keep those evidence types separate.
+
+## **Why Directionality Is Separate**
+
+CoGAPS uses non-negative factorization. That means a high gene loading says a gene belongs strongly to a pattern, and a high cell score says a cell uses that pattern strongly. It does not say whether the gene increased or decreased relative to baseline.
+
+The biological question for directionality is narrower than the CoGAPS question. CoGAPS identifies a pattern and its top genes; directionality asks whether those top genes are higher or lower than baseline during infection. For that question, the case study uses a separate pseudobulk analysis. Pseudobulk means aggregating cells into biologically meaningful groups before calculating expression contrasts. Here, cells are grouped by subject and timepoint. Then each group is compared with the same subject's `D0` baseline.
+
+The inputs are the precomputed group-expression table, the top genes from the selected CoGAPS pattern, and the directionality summaries written by `gse154386_pattern_directionality.py`. This programming choice has a biological reason. A subject's cells are not independent people, so the contrast is built from subject-level summaries rather than treating every cell as a separate replicate. The code then asks a different question from CoGAPS: after a pattern has been identified, do its top genes move up or down during infection relative to the same subject's baseline? The included directionality tables let you inspect that calculation without rebuilding the large expression object.
+
+::: {.panel-tabset}
+
+## R
+
+```{r}
+#| label: directionality-calculation-example-r
+group_expression <- readr::read_csv(
+  here::here("data", "processed", "directionality", "tables",
+             "group_expression_log2cpm.csv"),
+  show_col_types = FALSE
+)
+
+example_gene <- group_expression |>
+  filter(scope == "all_cells",
+         stratum == "all_cells",
+         subject == "Subject2",
+         gene == "LY6E") |>
+  arrange(day_merged_numeric)
+
+baseline_log2_cpm <- example_gene |>
+  filter(timepoint_merged == "D0") |>
+  pull(log2_cpm)
+
+example_gene |>
+  mutate(log2fc_vs_D0 = log2_cpm - baseline_log2_cpm) |>
+  select(subject, timepoint_merged, gene, n_cells,
+         log2_cpm, log2fc_vs_D0) |>
+  knitr::kable(digits = 3)
+```
+
+## Python
+
+```{python}
+#| label: directionality-calculation-example-python
+group_expression_py = pd.read_csv(
+    "data/processed/directionality/tables/group_expression_log2cpm.csv"
+)
+
+example_gene_py = (
+    group_expression_py
+    .query(
+        "scope == 'all_cells' and stratum == 'all_cells' "
+        "and subject == 'Subject2' and gene == 'LY6E'"
+    )
+    .sort_values("day_merged_numeric")
+    .copy()
+)
+
+baseline_log2_cpm_py = example_gene_py.loc[
+    example_gene_py["timepoint_merged"].eq("D0"),
+    "log2_cpm"
+].iloc[0]
+
+example_gene_py["log2fc_vs_D0"] = (
+    example_gene_py["log2_cpm"] - baseline_log2_cpm_py
+)
+
+example_gene_py.loc[:, [
+    "subject", "timepoint_merged", "gene", "n_cells",
+    "log2_cpm", "log2fc_vs_D0"
 ]]
 ```
 
 :::
 
-`Pattern3` is the IFN-associated program. It has a Spearman correlation of 0.756 with the IFN program score, six IFN genes among its top 15 genes, and a subject-level peak at `D10`. Directionality analysis shows that the top genes are mostly higher than baseline at the peak timepoints: 88% are up at `D10`, and 96% are up at `D14/15`.
+This example follows one top IFN-associated gene for one subject. The programming move is a within-subject subtraction: the `D0` log expression value becomes the baseline, and every later timepoint is expressed as a log2 fold-change from that baseline. The full directionality script repeats the same idea across subjects, top genes, patterns, timepoints, and cell-type strata. A gene is labeled `up`, `down`, or `near_zero` using a log2 fold-change threshold; pattern-level direction is summarized from the top genes.
 
-## **Why Directionality Is Separate**
+The next step scales from one gene to the top genes that define `Pattern3`. The gene-level table stores one row per pattern, gene, timepoint, and stratum. The pattern-level table then summarizes those gene rows with quantities such as the median log2 fold-change and the fraction of top genes that are up relative to baseline.
 
-CoGAPS tells us which genes and cells participate in the same non-negative pattern. It does not tell us whether those genes are higher or lower than baseline. To answer that, the case study uses subject-level pseudobulk log2 fold changes for the top genes of each pattern.
+::: {.panel-tabset}
+
+## R
+
+```{r}
+#| label: directionality-gene-summary-r
+gene_directionality <- readr::read_csv(
+  here::here("data", "processed", "directionality", "tables",
+             "gene_directionality_summary.csv"),
+  show_col_types = FALSE
+)
+
+gene_directionality |>
+  filter(pattern == "Pattern3",
+         scope == "all_cells",
+         stratum == "all_cells",
+         timepoint_merged == "D10") |>
+  arrange(rank) |>
+  select(rank, gene, median_log2fc, frac_up,
+         gene_direction_consensus) |>
+  head(10) |>
+  knitr::kable(digits = 3)
+```
+
+## Python
+
+```{python}
+#| label: directionality-gene-summary-python
+gene_directionality_py = pd.read_csv(
+    "data/processed/directionality/tables/"
+    "gene_directionality_summary.csv"
+)
+
+(
+    gene_directionality_py
+    .loc[
+        gene_directionality_py["pattern"].eq("Pattern3")
+        & gene_directionality_py["scope"].eq("all_cells")
+        & gene_directionality_py["stratum"].eq("all_cells")
+        & gene_directionality_py["timepoint_merged"].eq("D10"),
+        ["rank", "gene", "median_log2fc", "frac_up",
+         "gene_direction_consensus"]
+    ]
+    .sort_values("rank")
+    .head(10)
+)
+```
+
+:::
+
+This gene-level view is useful because it shows that directionality is not assigned from one marker alone. The code filters the gene-level directionality table to `Pattern3`, the all-cell scope, and the `D10` timepoint, then ranks the top genes by their CoGAPS loading rank. The pattern-level direction below summarizes the top genes together. That summary is more appropriate for interpreting a CoGAPS pattern, because a pattern is a weighted gene program rather than a single-gene result.
 
 ::: {.panel-tabset}
 
@@ -339,6 +1037,7 @@ directionality <- readr::read_csv(
 directionality |>
   filter(pattern == "Pattern3",
          scope == "all_cells",
+         stratum == "all_cells",
          timepoint_merged %in% c("D10", "D14/15")) |>
   select(pattern, timepoint_merged, n_genes_tested,
          median_gene_log2fc, frac_genes_up,
@@ -358,6 +1057,7 @@ directionality_py = pd.read_csv(
 directionality_py.loc[
     directionality_py["pattern"].eq("Pattern3")
     & directionality_py["scope"].eq("all_cells")
+    & directionality_py["stratum"].eq("all_cells")
     & directionality_py["timepoint_merged"].isin(["D10", "D14/15"]),
     [
         "pattern", "timepoint_merged", "n_genes_tested",
@@ -368,6 +1068,31 @@ directionality_py.loc[
 ```
 
 :::
+
+For `Pattern3`, most top genes are higher than baseline at the late acute timepoints. You should interpret that as directionality support for the IFN-associated label: the pattern is not only IFN-associated by gene identity, but also consistent with an upregulated late acute response. The limitation is that this summary does not prove causality, does not identify the signaling source of the response, and does not replace cell-type-specific validation. It is a focused expression-change check for the genes that define the selected CoGAPS pattern.
+
+To reproduce the directionality tables from the large expression object, run the directionality script after the selected model outputs are available. This step is separate from CoGAPS because it answers a different question: not "which genes define the pattern?", but "did those genes increase or decrease relative to baseline?"
+
+```{bash}
+#| eval: false
+export CS5_ZENODO_DIR="/path/to/downloaded/cs5_sweep_results"
+
+docker run --platform linux/amd64 --rm \
+  -v "$PWD":/home/rstudio/project:rw \
+  -v "$CS5_ZENODO_DIR":/home/rstudio/project/data/cs5_sweep_results:ro \
+  -w /home/rstudio/project \
+  othomas2/cs5-cogaps-runtime:0.1.0 \
+  python scripts/reproduction/gse154386_pattern_directionality.py \
+    --sweep-outdir /home/rstudio/project/data/cs5_sweep_results \
+    --run-stem cogaps_K10_seed2_iter2000 \
+    --outdir /home/rstudio/project/GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000 \
+    --top-n 25 \
+    --baseline-timepoint D0 \
+    --cohort experimental \
+    --layer counts \
+    --min-cells 10 \
+    --log2fc-threshold 0.25
+```
 
 ## **K=5 Comparator**
 
@@ -413,16 +1138,75 @@ k5_rq1_py = pd.read_csv(
 
 :::
 
-Learners should compare this table with the `K = 10` results and ask: what biological resolution do we gain by moving from a compact stable model to the selected goal-aligned model?
+The `K = 5` model is stable, but the strongest patterns are identity-like and no pattern meets the IFN-candidate criterion used for the selected analysis. This is the sensitivity takeaway: a compact model can be technically reproducible while being too compressed for a specific biological goal.
 
 ## **RQ4 Optional Extension: Natural Infection Projection**
 
-Projection into the natural infection cohort is biologically motivated because the original study compared experimental and natural primary infection. It is not part of the required analysis path yet. The official extension should:
+Projection into the natural infection cohort is biologically motivated because the original study compared experimental and natural primary infection. It is not part of the main analysis yet. A future extension would use the `K = 10` gene loading matrix learned from the experimental discovery cohort, project those programs into natural infection samples with a validated projectR-style or NNLS workflow, compare acute natural samples with convalescent reference samples, and report subject-level and cell-type-level summaries. Those results should be clearly labeled as transfer-learning evidence rather than primary discovery.
 
-1. use the `K = 10` gene loading matrix learned from the experimental discovery cohort
-1. project those programs into natural infection samples with a validated projectR-style or NNLS workflow
-1. compare acute natural samples with convalescent reference samples
-1. report subject-level and cell-type-level summaries
-1. clearly label projection results as transfer-learning evidence rather than primary discovery
+## **Complete Reproduction Scripts**
+
+The excerpts above are meant for learning. The full scripts below are included for provenance and optional reproduction. They do not run while you work through the analysis above.
+
+```{r}
+#| label: show-analysis-reproduction-scripts
+#| echo: false
+#| results: asis
+emit_script_detail <- function(path, title, language) {
+  full_path <- here::here(path)
+  cat("<details><summary>", title, "</summary>\n\n", sep = "")
+  cat("```", language, "\n", sep = "")
+  cat(readLines(full_path), sep = "\n")
+  cat("\n```\n\n</details>\n\n")
+}
+
+emit_script_detail(
+  "scripts/reproduction/gse154386_make_cogaps_jobs_tsv.py",
+  "Sweep job-table generator",
+  "python"
+)
+emit_script_detail(
+  "scripts/reproduction/gse154386_cogaps_sweep_array_singleprocess_rhino_light.sbatch",
+  "SLURM array sweep launcher",
+  "bash"
+)
+emit_script_detail(
+  "scripts/reproduction/gse154386_run_one_singleprocess.py",
+  "One-run PyCoGAPS sweep runner",
+  "python"
+)
+emit_script_detail(
+  "scripts/reproduction/gse154386_aggregate_results.py",
+  "Sweep aggregation script",
+  "python"
+)
+emit_script_detail(
+  "scripts/reproduction/cs5_generate_revised_k_selection_report.py",
+  "Revised K-selection report generator",
+  "python"
+)
+emit_script_detail(
+  "scripts/reproduction/cs5_build_k10_interpretation_layer.py",
+  "K = 10 interpretation-layer table builder",
+  "python"
+)
+emit_script_detail(
+  "scripts/reproduction/cs5_run_selected_model_r.R",
+  "Selected K = 10 R CoGAPS runner",
+  "r"
+)
+emit_script_detail(
+  "scripts/reproduction/cs5_run_selected_model_python.py",
+  "Selected K = 10 Python CoGAPS runner",
+  "python"
+)
+emit_script_detail(
+  "scripts/reproduction/gse154386_pattern_directionality.py",
+  "Directionality analysis script",
+  "python"
+)
+```
+
+The helper files in `scripts/reproduction/` complete the reproduction bundle. They include the shared sweep utilities, Python CoGAPS helper functions, the sweep configuration file, and the original source workflow used by several scripts.
 
 ***
