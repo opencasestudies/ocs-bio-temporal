@@ -385,7 +385,7 @@ def build_anndata_from_triplet(triplet: dict) -> AnnData:
 
 `SingleCellExperiment` and `AnnData` are not just storage formats. They help keep expression values attached to the correct cell and gene annotations, which is essential when the analysis moves from raw counts to biological interpretation. They also make later steps easier to audit: when you filter cells, select genes, score markers, or save outputs, the data object keeps the matched expression values and metadata together.
 
-After this step, the workflow has a labeled single-cell object. Biologically, that means every expression measurement can be traced back to a cell, a gene, and a sample. Programmatically, it means later filtering and summarizing can use the same object instead of passing separate matrices and metadata tables around by hand.
+After this step, the workflow has a labeled single-cell object. Biologically, that means every expression measurement can be traced back to a cell, a gene, and a sample. In code, later filtering and summarizing can use the same object instead of passing separate matrices and metadata tables around by hand.
 
 ::: {.callout-note collapse="true" title="Optional: file-reading helper functions used above"}
 The main build-object code uses small helper functions to read compressed 10x matrix and table files. These helpers are shown here so the code above is auditable. You do not need to memorize them; the important idea is that the matrix, barcode table, and feature table are read together and then aligned into one labeled single-cell object.

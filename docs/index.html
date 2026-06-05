@@ -3153,7 +3153,7 @@ Checkpoint
 </div>
 </div>
 <p><code>SingleCellExperiment</code> and <code>AnnData</code> are not just storage formats. They help keep expression values attached to the correct cell and gene annotations, which is essential when the analysis moves from raw counts to biological interpretation. They also make later steps easier to audit: when you filter cells, select genes, score markers, or save outputs, the data object keeps the matched expression values and metadata together.</p>
-<p>After this step, the workflow has a labeled single-cell object. Biologically, that means every expression measurement can be traced back to a cell, a gene, and a sample. Programmatically, it means later filtering and summarizing can use the same object instead of passing separate matrices and metadata tables around by hand.</p>
+<p>After this step, the workflow has a labeled single-cell object. Biologically, that means every expression measurement can be traced back to a cell, a gene, and a sample. In code, later filtering and summarizing can use the same object instead of passing separate matrices and metadata tables around by hand.</p>
 <div class="callout callout-style-default callout-note callout-titled" title="Optional: file-reading helper functions used above">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -5297,7 +5297,7 @@ Answer
 <span id="cb79-19"><a href="#cb79-19" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"CoGAPS pattern"</span>)</span>
 <span id="cb79-20"><a href="#cb79-20" aria-hidden="true" tabindex="-1"></a>fig.colorbar(image, ax<span class="op">=</span>ax, label<span class="op">=</span><span class="st">"Mean usage"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>&lt;matplotlib.colorbar.Colorbar object at 0x7fffc4d03550&gt;</code></pre>
+<pre><code>&lt;matplotlib.colorbar.Colorbar object at 0x7fffc4d07550&gt;</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb81"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
 <span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -5511,7 +5511,7 @@ Text(0, 0.5, 'UMAP 2')
 <h2 class="anchored" data-anchor-id="the-sweep-as-a-modeling-experiment"><strong>The Sweep as a Modeling Experiment</strong></h2>
 <p>CoGAPS rank, written as <code>K</code>, is the number of latent patterns the model is allowed to learn. A small <code>K</code> can be attractive because it is compact and often stable across random seeds. The biological risk is compression: several immune processes can be squeezed into one broad pattern, especially when cell identity, subject effects, and infection timing all vary in the same dataset.</p>
 <p>For this case study, the sweep was used as a modeling experiment. Each run asked: if we choose this <code>K</code>, this random seed, and this iteration count, do we recover stable patterns that can separate PBMC identity from dengue-associated temporal activity?</p>
-<p>Programmatically, the sweep is a grid. One row of a job table becomes one model run.</p>
+<p>In code, the sweep is a grid. One row of a job table becomes one model run.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb88"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This is the core idea behind scripts/reproduction/gse154386_make_cogaps_jobs_tsv.py.</span></span>
 <span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>k_grid <span class="op">=</span> [<span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">10</span>, <span class="dv">11</span>, <span class="dv">12</span>, <span class="dv">16</span>, <span class="dv">20</span>, <span class="dv">24</span>, <span class="dv">28</span>, <span class="dv">32</span>, <span class="dv">36</span>, <span class="dv">40</span>]</span>
@@ -12424,7 +12424,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","selector":".lightbox","openEffect":"zoom","loop":false,"descPosition":"bottom"});
+<script>var lightboxQuarto = GLightbox({"selector":".lightbox","closeEffect":"zoom","openEffect":"zoom","descPosition":"bottom","loop":false});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {

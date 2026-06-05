@@ -23,7 +23,7 @@ CoGAPS rank, written as `K`, is the number of latent patterns the model is allow
 
 For this case study, the sweep was used as a modeling experiment. Each run asked: if we choose this `K`, this random seed, and this iteration count, do we recover stable patterns that can separate PBMC identity from dengue-associated temporal activity?
 
-Programmatically, the sweep is a grid. One row of a job table becomes one model run.
+In code, the sweep is a grid. One row of a job table becomes one model run.
 
 ```{python}
 #| eval: false

@@ -200,6 +200,7 @@ SLURM
 BLAS
 CPM
 auditable
+equilibration
 strata
 nPatterns
 nThreads
