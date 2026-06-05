@@ -23,3 +23,6 @@ zenodo_upload/
 
 # Local review/planning deliverables for discussion, not case-study content.
 review/
+review_exports/
+
+**/*.quarto_ipynb

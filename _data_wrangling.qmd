@@ -1,18 +1,20 @@
 # **Data Wrangling and Preprocessing**
 ***
 
-You do not need to run the full preprocessing workflow to complete this case study, but you should understand the decisions that produced the files you are using. CoGAPS will find structure in whatever matrix you give it. That structure can be biologically meaningful, but it can also reflect low-quality cells, sequencing-depth differences, unstable gene selection, or one overrepresented sample. Preprocessing is the step where you reduce those avoidable sources of distortion before interpreting latent immune programs.
+Before CoGAPS can discover temporal immune programs, the raw single-cell data must become a trustworthy cell-by-gene matrix. Every cell needs to stay connected to its subject, infection day, cohort, quality-control information, and broad immune-cell identity. Without that structure, a model can still find patterns, but those patterns may reflect damaged cells, sequencing-depth differences, unstable gene selection, or one overrepresented sample rather than dengue-associated biology.
+
+This section shows how the case-study discovery set was produced and how the selected CoGAPS cell scores are reshaped for interpretation. The goal is not to memorize every preprocessing command. The goal is to understand how each decision protects the later biological claim that a pattern reflects temporal infection-response activity rather than technical noise, PBMC composition, or sampling imbalance.
 
 This section separates two kinds of work:
 
 - **Optional full preprocessing code:** download the GEO raw files, build single-cell objects, perform quality control, normalize counts, select highly variable genes, annotate broad immune-cell types, and construct the discovery subset.
 - **Required case-study wrangling:** use the small selected-model files in `data/processed` to summarize CoGAPS scores by subject, timepoint, and broad cell type.
 
-The optional preprocessing code is shown as provenance. Read it to understand the workflow, but do not run it unless you are doing full reproduction with the large Zenodo files and the case-study Docker image.
+You will see both kinds of work in this section. First, you will read the preprocessing workflow in pieces so the source of the analysis files is transparent. Then you will return to the included selected-model files and practice the wrangling moves used for the rest of the case study.
 
-## **From GEO Files to the Teaching Dataset**
+## **From Raw 10x Files to the Discovery Set**
 
-The full workflow starts from raw 10x Genomics files in GEO and ends with smaller tables used for the required analysis path. The diagram below is a roadmap for the preprocessing decisions that produced the teaching dataset.
+The full workflow starts from raw 10x Genomics files in GEO and ends with the analysis-ready discovery set used for CoGAPS interpretation. Read the diagram from top to bottom as a map of decisions. At each step, ask what biological comparison would be affected if that decision changed.
 
 ```{mermaid}
 flowchart TB
@@ -41,7 +43,7 @@ flowchart TB
   end
 
   subgraph S3[" "]
-    P3["3. Define the teaching<br/>discovery set"]:::stage
+    P3["3. Define the case-study<br/>discovery set"]:::stage
     I{{"Assign broad PBMC identity"}}:::decision
     J{{"Use experimental cohort<br/>for the main time course"}}:::decision
     K["Balance samples<br/>up to 600 cells each"]:::process
@@ -50,7 +52,7 @@ flowchart TB
   subgraph S4[" "]
     P4["4. Create files<br/>used later"]:::stage
     L["Large reproduction files<br/>H5AD/RDS + manifests"]:::output
-    M["Small case-study tables<br/>composition, scores, RQ tables"]:::output
+    M["Small analysis tables<br/>composition, scores, RQ tables"]:::output
     N["Optional natural cohort target<br/>reserved for projection"]:::note
   end
 
@@ -66,13 +68,31 @@ flowchart TB
   style S4 fill:#f8fafc,stroke:#cbd5e1,stroke-width:1px,color:#102a43
 ```
 
+:::{.definition_box}
+::::{.definition_box_header}
+Terms to know before reading the code
+::::
+::::{.inner_block}
+- **10x triplet:** The matrix, barcode, and feature files that must be read together for each 10x Genomics sample.
+- **Cell barcode:** The label used to identify one captured cell or droplet in a single-cell sequencing experiment.
+- **Cell-by-gene matrix:** A table-like structure where each row is a cell, each column is a gene, and each value is an expression measurement.
+- **Cell metadata:** Information attached to each cell, such as subject, infection day, cohort, and quality-control measurements.
+- **Single-cell object:** A labeled data container, such as `SingleCellExperiment` in R or `AnnData` in Python, that keeps expression values aligned with cell and gene annotations.
+- **Sparse matrix:** A memory-efficient way to store a matrix with many zero values, which is common in single-cell RNA-seq.
+::::
+:::
+
+Those terms are the vocabulary of the preprocessing workflow. They also explain why the early code is so careful about filenames, matrix orientation, and metadata: a temporal immune-program analysis only works if each expression value is attached to the correct cell, gene, subject, and day.
+
 ## **Preprocessing Decisions That Shape Interpretation**
 
 Every row in the table below is an analysis decision, not just a software setting. These choices define which cells are considered reliable, which genes are available for factorization, which timepoints are compared, and which cohort is used for temporal discovery.
 
+Three decisions deserve special attention as you read. Quality control affects whether technical stress can masquerade as immune activation. Highly variable gene selection affects which biological signals CoGAPS is allowed to learn. Sample balancing affects whether the model is dominated by one subject or day. These decisions are practical, but they are also biological because they shape what the later patterns can mean.
+
 | Decision | Value used | Biological or analytical reason | What it affects | Limitation or sensitivity |
 |---|---|---|---|---|
-| Source archive | `GSE154386_RAW.tar` from GEO accession `GSE154386` | Starts from the public source data so the teaching dataset can be traced to Waickman et al. 2021. | Provenance of all downstream single-cell objects. | The archive is large and is only needed for full reproduction. |
+| Source archive | `GSE154386_RAW.tar` from GEO accession `GSE154386` | Starts from the public source data so the discovery set can be traced to Waickman et al. 2021. | Provenance of all downstream single-cell objects. | The archive is large and is only needed for full reproduction. |
 | Minimum genes per cell | `MIN_GENES = 200` | Cells with very few detected genes provide too little transcriptome information for learning coordinated gene-expression programs. | Which cells enter normalization and CoGAPS input preparation. | More or less stringent cutoffs could change rare-cell retention. |
 | Minimum counts per cell | `MIN_COUNTS = 500` | Low-count cells are more likely to reflect poor RNA recovery than interpretable immune activity. | Which cells remain after QC. | Count thresholds are practical filters, not biological boundaries. |
 | Mitochondrial fraction filter | `MAX_PCT_MT = 20` | High mitochondrial signal can indicate stressed or damaged cells, which can create technical stress-like programs. | QC cell retention. | High mitochondrial signal can be technical or biological, so this cutoff should be reported. |
@@ -81,21 +101,35 @@ Every row in the table below is an analysis decision, not just a software settin
 | Normalization | Library-size normalization followed by log transform | Cells are sequenced to different depths; normalization puts expression values on a more comparable scale. | Expression values used for marker scoring, HVG selection, and downstream summaries. | Normalization reduces technical scale differences but does not remove all batch or subject effects. |
 | Highly variable genes | `N_HVGS = 5000` | CoGAPS should focus on genes carrying useful cell-to-cell or time-course variation, not genes that are nearly constant. | CoGAPS input gene space. | Different HVG strategies can change the patterns; the Python and R reproduction scripts use related but not identical implementations. |
 | Timepoint merge | Experimental `D14` and `D15` are merged to `D14/15` | Nearby late experimental days are combined to support a stable late-timepoint summary. | Timepoint labels used in figures and research-question tables. | The merge improves interpretability but removes a one-day distinction. |
-| Broad cell-type annotation | Marker-set scores for broad immune-cell identities | PBMC identity is a major source of expression variation; broad labels help separate identity-like patterns from activity-like programs. | Composition summaries and identity/activity pattern classification. | Broad labels are useful for teaching but are not fine-grained cell-state annotations. |
+| Broad cell-type annotation | Marker-set scores for broad immune-cell identities | PBMC identity is a major source of expression variation; broad labels help separate identity-like patterns from activity-like programs. | Composition summaries and identity/activity pattern classification. | Broad labels are useful for interpretation but are not fine-grained cell-state annotations. |
 | Discovery cohort | Experimental cohort only | The experimental infection cohort has aligned days, making it the appropriate primary time course for temporal program discovery. | CoGAPS model input for the required case-study path. | Natural infection samples are not used as the primary discovery model here. |
 | Discovery-set balancing | Up to `600` cells per sample | Balancing reduces the chance that one sample or timepoint dominates the learned patterns. | Number of discovery cells used for CoGAPS. | This is not an abundance estimate for the full source study. |
 | Random seed | `seed = 42` for subset construction | Makes the balanced discovery subset reproducible. | Which cells are selected when a sample has more than 600 cells. | A different seed could select a slightly different subset. |
 | Natural cohort | Reserved as an optional projection target | Keeps the primary lesson focused on the aligned experimental time course. | Optional extension, not required for the main case study. | Projection requires separate validation before being treated as a main result. |
 
-## **How the Preprocessing Decisions Were Made**
+## **Read the Preprocessing Workflow in Pieces**
 
 The code excerpts below mirror the stages in the workflow diagram. They are shown with `eval: false`, so you can read them as tutorial code without downloading large files or rebuilding the dataset during the required analysis path. Each subsection starts with the biological or analytical reason for the step, then shows how the R and Python scripts implement that idea.
 
 The R tab appears first because R is the default analysis path in this case study. The Python tab is shown in parallel for learners who prefer or need the Python implementation.
 
+As you read the code, watch for reusable programming moves:
+
+| Programming move | Where it appears | Why it matters |
+|---|---|---|
+| Parse structured filenames | sample metadata | turns source-file names into subject, cohort, and day columns |
+| Keep labeled containers | single-cell objects | keeps counts, cell metadata, and gene metadata aligned |
+| Use Boolean filters | quality control | makes cell and gene retention rules explicit |
+| Rank and subset features | highly variable genes | defines the gene space used for pattern discovery |
+| Score gene sets | marker and program scores | connects expression measurements to biological interpretation |
+| Sample within groups | balanced discovery subset | prevents one sample from dominating the model input |
+| Write a manifest | reproducible outputs | records enough information to explain or reproduce the data products |
+
 ### **Identify Source Files and Sample Metadata**
 
-The raw GEO archive contains sample-level 10x files, but the biological labels needed for analysis are encoded in file names. Before any filtering or modeling can happen, each cell needs metadata such as subject, cohort, and infection day. These labels are what allow you to ask temporal questions later.
+The raw GEO archive contains sample-level 10x files. In this context, "sample-level" means that the raw sequencing output is organized one biological sample at a time, rather than as one combined study-wide table. For each sample, the 10x Genomics files are usually a small set of linked files: a sparse expression matrix, a list of cell barcodes, and a list of gene or feature names. These files have to be read together because the matrix alone only contains numbers; the barcode and feature files tell you which cells and genes those numbers refer to.
+
+The biological labels needed for analysis are encoded in file names. Before any filtering or modeling can happen, each cell needs metadata such as subject, cohort, and infection day. These labels are what allow you to ask temporal questions later.
 
 The programming idea is to make implicit information explicit: parse sample names once, store the result in columns, and use those columns for all later grouping.
 
@@ -105,29 +139,48 @@ The programming idea is to make implicit information explicit: parse sample name
 
 ```{r}
 #| eval: false
+# Store the GEO download URL in one place so the source archive is explicit
+# and easy to change if the download location ever changes.
 RAW_TAR_URL <- "https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE154386&format=file"
 
 download_if_needed <- function(url, dest) {
+  # Skip the download when the archive is already present.
+  # This makes the full preprocessing script safe to rerun.
   if (file.exists(dest) && file.info(dest)$size > 0) {
     message("[skip] ", dest, " already exists")
     return(invisible(dest))
   }
 
+  # Download the GEO archive as a binary file because it is a tar archive,
+  # not a text table.
   download.file(url, destfile = dest, mode = "wb", quiet = FALSE)
   invisible(dest)
 }
 
 parse_sample_key <- function(sample_key) {
+  # Source filenames encode sample metadata in a pattern like:
+  # GSM4670192_Subject2_D0 or GSM4670216_Natural1_Dneg3.
+  # The regular expression captures the GEO ID, subject label, and day label.
   match <- regexec("^(GSM[0-9]+)_([^_]+)_(D(?:neg)?[0-9]+)$", sample_key)
   parts <- regmatches(sample_key, match)[[1]]
   if (length(parts) == 0) stop("Could not parse sample key: ", sample_key)
 
+  # Pull the captured pieces out of the regular-expression match.
   gsm_id <- parts[[2]]
   subject <- parts[[3]]
   tp <- parts[[4]]
+
+  # Convert filename labels into analysis-ready columns.
+  # Subject labels beginning with "Subject" are from the experimental cohort;
+  # labels beginning with "Natural" are from the natural infection cohort.
   cohort <- if (startsWith(subject, "Subject")) "experimental" else "natural"
+
+  # Convert D0, D2, and Dneg3-style labels into numeric days.
+  # Numeric days are useful later for sorting and plotting the time course.
   day <- if (startsWith(tp, "Dneg")) -as.integer(sub("Dneg", "", tp)) else as.integer(sub("D", "", tp))
 
+  # Return one metadata row. This row will be copied to every cell from
+  # the corresponding sample when the single-cell object is built.
   data.frame(
     gsm_id = gsm_id,
     sample_id = gsm_id,
@@ -149,31 +202,53 @@ from pathlib import Path
 import re
 import requests
 
+# Store the GEO download URL in one place so the source archive is explicit
+# and easy to change if the download location ever changes.
 RAW_TAR_URL = "https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE154386&format=file"
 
 def download(url: str, dest: Path, chunk_mb: int = 16) -> None:
+    # Skip the download when the archive is already present.
+    # This makes the full preprocessing script safe to rerun.
     if dest.exists() and dest.stat().st_size > 0:
         print(f"[skip] {dest} already exists")
         return
 
+    # Download to a temporary ".part" file first. The file is renamed only
+    # after the download finishes, which avoids leaving a partial archive
+    # with the expected final name.
     tmp = dest.with_suffix(dest.suffix + ".part")
     with requests.get(url, stream=True, timeout=180) as response:
         response.raise_for_status()
         with open(tmp, "wb") as handle:
+            # Stream the archive in chunks so Python does not need to hold
+            # the full GEO tar file in memory at once.
             for chunk in response.iter_content(chunk_size=chunk_mb * 1024 * 1024):
                 if chunk:
                     handle.write(chunk)
     tmp.rename(dest)
 
 def parse_sample_key(sample_key: str) -> dict:
+    # Source filenames encode sample metadata in a pattern like:
+    # GSM4670192_Subject2_D0 or GSM4670216_Natural1_Dneg3.
+    # The regular expression captures the GEO ID, subject label, and day label.
     match = re.match(r"^(GSM\d+)_([^_]+)_(D(?:neg)?\d+)$", sample_key)
     if not match:
         raise ValueError(f"Could not parse sample key: {sample_key}")
 
+    # Pull the captured pieces out of the regular-expression match.
     gsm_id, subject, tp = match.groups()
+
+    # Convert filename labels into analysis-ready values.
+    # Subject labels beginning with "Subject" are from the experimental cohort;
+    # labels beginning with "Natural" are from the natural infection cohort.
     cohort = "experimental" if subject.startswith("Subject") else "natural"
+
+    # Convert D0, D2, and Dneg3-style labels into numeric days.
+    # Numeric days are useful later for sorting and plotting the time course.
     day = -int(tp.replace("Dneg", "")) if tp.startswith("Dneg") else int(tp.replace("D", ""))
 
+    # Return a dictionary that will become cell metadata when each sample is
+    # loaded into the single-cell object.
     return {
         "gsm_id": gsm_id,
         "sample_id": gsm_id,
@@ -189,11 +264,15 @@ def parse_sample_key(sample_key: str) -> dict:
 
 In R, the parsed metadata becomes a data frame. In Python, it becomes a dictionary. In both languages, the goal is the same: every cell must carry the biological labels needed for subject-level and timepoint-level summaries.
 
+After this step, the workflow has not changed any expression values yet. It has created the metadata columns that make the later temporal comparisons possible. The most important programming idea is that a filename is not just a filename here: it is the source of subject, cohort, and infection-day information.
+
 ### **Build the Cell-by-Gene Data Object**
 
 Single-cell RNA-seq data do not begin as a tidy table. The 10x files separate the expression matrix, cell barcodes, and gene or feature names. The preprocessing script recombines those pieces into a single-cell object so counts, cell metadata, and gene metadata stay aligned.
 
 This alignment is biologically important. If genes and cells are mislabeled or transposed, marker scoring and CoGAPS interpretation can point to the wrong biological signal. The code also keeps only gene-expression features and makes gene names unique, which reduces ambiguity later.
+
+The R and Python workflows use different object classes for the same basic purpose. In R, a `SingleCellExperiment` object stores the expression matrix in an assay, cell-level information in `colData()`, and gene-level information in `rowData()`. In Python, an `AnnData` object stores the expression matrix in `.X`, cell-level information in `.obs`, and gene-level information in `.var`. You can think of both objects as labeled containers: they keep the counts matrix connected to the cell and gene annotations that make the matrix interpretable.
 
 ::: {.panel-tabset}
 
@@ -202,21 +281,44 @@ This alignment is biologically important. If genes and cells are mislabeled or t
 ```{r}
 #| eval: false
 read_sample_sce <- function(sample_key, triplet) {
+  # Start by parsing the sample name so every cell from this sample
+  # can inherit subject, cohort, and infection-day metadata.
   meta <- parse_sample_key(sample_key)
+
+  # Read the 10x count matrix. At this stage, the matrix is features x cells,
+  # which is the usual orientation for raw 10x Matrix Market files.
   mat <- read_mtx_gz(triplet$matrix) # features x cells
+
+  # Read the cell barcodes. These become the cell names after we attach
+  # the sample ID to make each barcode unique across samples.
   barcodes <- read_table_gz(triplet$barcodes)[[1]]
+
+  # Different 10x versions may call the gene file "features" or "genes".
+  # This line accepts either name.
   features_path <- triplet$features %||% triplet$genes
   features <- read_table_gz(features_path)
 
+  # The feature table contains gene IDs and, when available, gene symbols.
+  # Gene symbols are easier to interpret later when inspecting top genes.
   gene_ids <- as.character(features[[1]])
   gene_symbols <- if (ncol(features) >= 2L) as.character(features[[2]]) else gene_ids
+
+  # Some 10x files include multiple feature types. For this RNA-seq analysis,
+  # keep only gene-expression features and drop any non-RNA feature rows.
   feature_types <- if (ncol(features) >= 3L) as.character(features[[3]]) else rep("Gene Expression", length(gene_symbols))
   keep <- feature_types == "Gene Expression"
 
+  # Subset the matrix to retained gene-expression features and keep it sparse.
+  # Sparse matrices are efficient because most single-cell counts are zero.
   mat <- as(mat[keep, , drop = FALSE], "dgCMatrix")
+
+  # Name rows with unique gene symbols and columns with sample-prefixed
+  # cell barcodes so cells from different samples cannot collide.
   rownames(mat) <- make.unique(gene_symbols[keep], sep = "_")
   colnames(mat) <- paste0(meta$sample_id, ":", barcodes)
 
+  # Build the R single-cell container: counts in assays, gene metadata in
+  # rowData, and one copied metadata row for every cell in colData.
   SingleCellExperiment(
     assays = list(counts = mat),
     rowData = DataFrame(gene_id = gene_ids[keep]),
@@ -233,25 +335,46 @@ from anndata import AnnData
 from pathlib import Path
 
 def build_anndata_from_triplet(triplet: dict) -> AnnData:
+    # Start by parsing the sample name so every cell from this sample
+    # can inherit subject, cohort, and infection-day metadata.
     sample_key = str(triplet["sample_key"])
     meta = parse_sample_key(sample_key)
 
+    # Read the 10x count matrix. At this stage, the matrix is features x cells,
+    # which is the usual orientation for raw 10x Matrix Market files.
     matrix = read_mtx(Path(triplet["matrix"]))  # features x cells
+
+    # Read the cell barcodes. These become cell names after we attach
+    # the sample ID to make each barcode unique across samples.
     barcodes = read_text_table(Path(triplet["barcodes"])).iloc[:, 0].astype(str).tolist()
+
+    # Different 10x versions may call the gene file "features" or "genes".
+    # This line accepts either name.
     features = read_text_table(Path(triplet.get("features", triplet.get("genes"))))
 
+    # The feature table contains gene IDs and, when available, gene symbols.
+    # Gene symbols are easier to interpret later when inspecting top genes.
     gene_ids = features.iloc[:, 0].astype(str).tolist()
     gene_symbols = features.iloc[:, 1].astype(str).tolist() if features.shape[1] > 1 else gene_ids
+
+    # Some 10x files include multiple feature types. For this RNA-seq analysis,
+    # keep only gene-expression features and drop any non-RNA feature rows.
     feature_types = (
         features.iloc[:, 2].astype(str).tolist()
         if features.shape[1] > 2
         else ["Gene Expression"] * len(gene_symbols)
     )
 
+    # Subset the matrix to retained gene-expression features.
     keep = np.array([x == "Gene Expression" for x in feature_types])
     matrix = matrix[keep, :]
 
+    # AnnData expects cells x genes, so transpose the raw 10x matrix.
+    # Keeping the matrix sparse saves memory for mostly zero count data.
     adata = AnnData(X=matrix.T.tocsr())  # cells x genes
+
+    # Name cells with sample-prefixed barcodes and genes with unique symbols
+    # so later joins and summaries point to the correct cells and genes.
     adata.obs_names = [f"{meta['sample_id']}:{barcode}" for barcode in barcodes]
     adata.var_names = pd.Index([g for g, k in zip(gene_symbols, keep) if k])
     adata.var_names_make_unique()
@@ -260,7 +383,82 @@ def build_anndata_from_triplet(triplet: dict) -> AnnData:
 
 :::
 
-`SingleCellExperiment` and `AnnData` are not just storage formats. They help keep expression values attached to the correct cell and gene annotations, which is essential when the analysis moves from raw counts to biological interpretation.
+`SingleCellExperiment` and `AnnData` are not just storage formats. They help keep expression values attached to the correct cell and gene annotations, which is essential when the analysis moves from raw counts to biological interpretation. They also make later steps easier to audit: when you filter cells, select genes, score markers, or save outputs, the data object keeps the matched expression values and metadata together.
+
+After this step, the workflow has a labeled single-cell object. Biologically, that means every expression measurement can be traced back to a cell, a gene, and a sample. Programmatically, it means later filtering and summarizing can use the same object instead of passing separate matrices and metadata tables around by hand.
+
+::: {.callout-note collapse="true" title="Optional: file-reading helper functions used above"}
+The main build-object code uses small helper functions to read compressed 10x matrix and table files. These helpers are shown here so the code above is auditable. You do not need to memorize them; the important idea is that the matrix, barcode table, and feature table are read together and then aligned into one labeled single-cell object.
+
+The `parse_sample_key()` function is defined in the previous subsection. The helpers below handle the remaining file-reading steps.
+
+**R**
+
+```{r}
+#| eval: false
+open_text_file <- function(path) {
+  # 10x files are often gzip-compressed. This helper opens either a
+  # compressed or uncompressed text file.
+  if (grepl("\\.gz$", path)) {
+    gzfile(path, open = "rt")
+  } else {
+    file(path, open = "rt")
+  }
+}
+
+open_binary_file <- function(path) {
+  # Matrix Market files are read as binary connections.
+  if (grepl("\\.gz$", path)) {
+    gzfile(path, open = "rb")
+  } else {
+    file(path, open = "rb")
+  }
+}
+
+read_table_gz <- function(path) {
+  # Read a barcode or feature table with no header row.
+  con <- open_text_file(path)
+  on.exit(close(con), add = TRUE)
+
+  readr::read_tsv(
+    con,
+    col_names = FALSE,
+    show_col_types = FALSE
+  )
+}
+
+read_mtx_gz <- function(path) {
+  # Read a sparse Matrix Market expression matrix.
+  con <- open_binary_file(path)
+  on.exit(close(con), add = TRUE)
+
+  Matrix::readMM(con)
+}
+```
+
+**Python**
+
+```{python}
+#| eval: false
+import gzip
+import pandas as pd
+from scipy import sparse
+from scipy.io import mmread
+
+def read_text_table(path):
+    # Read a barcode or feature table with no header row.
+    opener = gzip.open if path.suffix == ".gz" else open
+    with opener(path, "rt") as handle:
+        return pd.read_csv(handle, sep="\t", header=None)
+
+def read_mtx(path):
+    # Read a sparse Matrix Market expression matrix.
+    opener = gzip.open if path.suffix == ".gz" else open
+    with opener(path, "rb") as handle:
+        matrix = mmread(handle)
+    return sparse.csr_matrix(matrix)
+```
+:::
 
 ### **Remove Low-Quality Cells and Rare Genes**
 
@@ -274,23 +472,33 @@ The code uses several filters at the same time: minimum detected genes, minimum 
 
 ```{r}
 #| eval: false
+# Define QC thresholds in named variables so the filtering choices are visible
+# and easy to report or change during full reproduction.
 MIN_GENES <- 200L
 MIN_COUNTS <- 500L
 MAX_PCT_MT <- 20
 MIN_CELLS_PER_GENE <- 10L
 
+# Calculate cell-level QC metrics, including detected genes, total counts,
+# and the percentage of counts from mitochondrial genes.
 qc <- scuttle::perCellQCMetrics(sce_all, subsets = list(Mito = which(is_mito)))
 sce_all$n_genes_by_counts <- qc$detected
 sce_all$total_counts <- qc$sum
 sce_all$pct_counts_mt <- qc$subsets_Mito_percent
 
+# Build one Boolean vector that marks cells passing all QC criteria.
+# TRUE means the cell is retained; FALSE means it is filtered out.
 keep_cells <- sce_all$n_genes_by_counts >= MIN_GENES &
   sce_all$total_counts >= MIN_COUNTS &
   sce_all$pct_counts_mt <= MAX_PCT_MT &
   !sce_all$high_genes_outlier &
   !sce_all$high_counts_outlier
 
+# Subset the object to retained cells.
 sce_qc <- sce_all[, keep_cells]
+
+# Keep genes detected in at least MIN_CELLS_PER_GENE cells.
+# This removes genes too rare to support stable pattern interpretation.
 keep_genes <- Matrix::rowSums(counts(sce_qc) > 0) >= MIN_CELLS_PER_GENE
 sce_qc <- sce_qc[keep_genes, ]
 ```
@@ -299,11 +507,15 @@ sce_qc <- sce_qc[keep_genes, ]
 
 ```{python}
 #| eval: false
+# Define QC thresholds in named variables so the filtering choices are visible
+# and easy to report or change during full reproduction.
 MIN_GENES = 200
 MIN_COUNTS = 500
 MAX_PCT_MT = 20.0
 MIN_CELLS_PER_GENE = 10
 
+# Calculate cell-level QC metrics, including detected genes, total counts,
+# and the percentage of counts from mitochondrial genes.
 sc.pp.calculate_qc_metrics(
     adata_all,
     qc_vars=["mt", "ribo", "hb"],
@@ -311,6 +523,8 @@ sc.pp.calculate_qc_metrics(
     inplace=True,
 )
 
+# Build one Boolean mask that marks cells passing all QC criteria.
+# True means the cell is retained; False means it is filtered out.
 keep_cells = (
     (adata_all.obs["n_genes_by_counts"] >= MIN_GENES)
     & (adata_all.obs["total_counts"] >= MIN_COUNTS)
@@ -319,7 +533,11 @@ keep_cells = (
     & (~adata_all.obs["high_counts_outlier"])
 )
 
+# Subset the AnnData object to retained cells.
 adata_qc = adata_all[keep_cells].copy()
+
+# Keep genes detected in at least MIN_CELLS_PER_GENE cells.
+# This removes genes too rare to support stable pattern interpretation.
 sc.pp.filter_genes(adata_qc, min_cells=MIN_CELLS_PER_GENE)
 ```
 
@@ -327,11 +545,19 @@ sc.pp.filter_genes(adata_qc, min_cells=MIN_CELLS_PER_GENE)
 
 The filter values are deliberately visible because they affect interpretation. If a learner changes these thresholds during full reproduction, the resulting CoGAPS patterns may change too.
 
+:::{.callout-note title="Checkpoint"}
+Which filter is most directly aimed at damaged or stressed cells? Which filter could remove rare but real biology if it were made too strict?
+:::
+
+:::{.callout-tip collapse="true" title="Answer"}
+The mitochondrial fraction filter is most directly aimed at damaged or stressed cells, because high mitochondrial signal can be a sign that a cell is compromised. The minimum-cells-per-gene filter could remove rare but real biology if it were too strict, especially genes expressed only in a small immune-cell population or transient activation state. This is why QC thresholds should be reported as analysis decisions rather than treated as invisible defaults.
+:::
+
 ### **Normalize Expression and Select Variable Genes**
 
 After QC, cells still differ in sequencing depth. Library-size normalization and log transformation make expression values more comparable before marker scoring and variable-gene selection. This does not make the data perfect, but it reduces a major technical scale difference.
 
-Highly variable gene selection then focuses the model on genes that carry useful variation across cells and timepoints. CoGAPS can run on many genes, but in a teaching analysis, using 5,000 highly variable genes keeps the model tractable while preserving the major transcriptional structure needed for temporal program discovery.
+Highly variable gene selection then focuses the model on genes that carry useful variation across cells and timepoints. CoGAPS can run on many genes, but using 5,000 highly variable genes keeps the model tractable while preserving the major transcriptional structure needed for temporal program discovery.
 
 ::: {.panel-tabset}
 
@@ -339,17 +565,28 @@ Highly variable gene selection then focuses the model on genes that carry useful
 
 ```{r}
 #| eval: false
+# Keep the number of highly variable genes explicit because it defines
+# the gene space available to CoGAPS.
 N_HVGS <- 5000L
 
+# Normalize for library size and log-transform counts so cells with different
+# sequencing depths are more comparable.
 sce_qc <- scuttle::logNormCounts(sce_qc)
 
 select_hvgs <- function(sce, n_hvgs) {
+  # Extract log-normalized expression values from the single-cell object.
   logmat <- as.matrix(logcounts(sce))
+
+  # Compute one variance value per gene. Genes with larger variance carry
+  # more cell-to-cell or time-course information.
   vars <- apply(logmat, 1L, stats::var)
+
+  # Rank genes by variance and keep the top n_hvgs genes.
   keep <- order(vars, decreasing = TRUE)[seq_len(min(n_hvgs, length(vars)))]
   sce[keep, ]
 }
 
+# Create the HVG-filtered object used for downstream modeling.
 sce_hvg <- select_hvgs(sce_qc, N_HVGS)
 ```
 
@@ -357,11 +594,17 @@ sce_hvg <- select_hvgs(sce_qc, N_HVGS)
 
 ```{python}
 #| eval: false
+# Keep the number of highly variable genes explicit because it defines
+# the gene space available to CoGAPS.
 N_HVGS = 5000
 
+# Normalize for library size, then log-transform counts so cells with
+# different sequencing depths are more comparable.
 sc.pp.normalize_total(adata_qc, target_sum=1e4)
 sc.pp.log1p(adata_qc)
 
+# Ask Scanpy to identify highly variable genes. The batch key helps choose
+# genes that vary across the study without being driven by one sample alone.
 sc.pp.highly_variable_genes(
     adata_qc,
     n_top_genes=N_HVGS,
@@ -370,18 +613,36 @@ sc.pp.highly_variable_genes(
     batch_key="sample_id",
 )
 
+# Subset the AnnData object to the selected highly variable genes.
 adata_hvg = adata_qc[:, adata_qc.var["highly_variable"]].copy()
 ```
 
 :::
 
-The Python script uses the Scanpy highly variable gene workflow. The R script shows the same teaching decision with a simpler variance-ranking implementation. Because gene selection can affect learned patterns, the exact method should be documented whenever the full model is rerun.
+The Python script uses the Scanpy highly variable gene workflow. The R script shows the same analysis decision with a simpler variance-ranking implementation. Because gene selection can affect learned patterns, the exact method should be documented whenever the full model is rerun.
+
+:::{.callout-note title="Checkpoint"}
+Highly variable genes may include infection-response genes, but they can also emphasize stable PBMC identity differences. Why will you need cell-type and timepoint summaries before naming a CoGAPS pattern biologically?
+:::
+
+:::{.callout-tip collapse="true" title="Answer"}
+Highly variable genes capture strong variation, but strong variation is not automatically infection biology. In PBMC data, many high-variance signals come from stable immune-cell identities, such as T cells, B cells, monocytes, or plasmablasts. You need timepoint summaries to see whether a pattern changes across infection days, and cell-type summaries to see whether the same pattern mostly separates broad immune-cell identities.
+:::
 
 ### **Attach Biological Context With Marker Scores**
 
-CoGAPS learns patterns from the expression matrix, but learners still need biological anchors for interpretation. Marker scores create those anchors by asking whether a cell expresses genes associated with broad PBMC identities, such as T cells, monocytes, natural killer cells, B cells, plasmablasts, dendritic cells, or neutrophils. Program scores, such as the interferon score, provide a first clue about infection-response biology.
+CoGAPS learns patterns from the expression matrix, but those pattern labels are numerical at first. A pattern called `Pattern3` does not tell you whether it is related to T cells, monocytes, interferon signaling, or something else. Marker and program scores provide biological anchors before you interpret the CoGAPS patterns.
 
-This step is not final cell typing. It is a teaching-level annotation layer that helps you ask whether a pattern is mostly stable PBMC identity, dynamic infection activity, or a mixture of both.
+A marker score is a simple gene-set score. It asks whether each cell expresses a small group of genes associated with a broad PBMC identity, such as T cells, monocytes, natural killer cells, B cells, plasmablasts, dendritic cells, or neutrophils. A program score uses the same idea, but the gene set represents a biological activity rather than a cell identity. In this case study, the most important program score is the interferon, or IFN, program score.
+
+These marker lists are not learned from the data. They are manually specified biological reference gene sets. The broad PBMC marker sets are canonical markers chosen to support coarse immune-cell interpretation and to match the major leukocyte populations discussed in [Waickman et al. 2021](https://doi.org/10.1371/journal.ppat.1009240){target="_blank"}; they are not copied as an exact marker table from that paper. The interferon program is also manually specified, but it is more directly anchored in the source study's dengue-response biology: Waickman et al. report interferon-induced and inflammation-associated genes such as `IFITM1`, `IFI6`, `ISG15`, `MX1`, `TRIM22`, and `LY6E` as prominent genes induced during the acute response.
+
+| Score type | Example score | Where the genes come from | What it helps you ask | Important limitation |
+|---|---|---|---|---|
+| Broad marker score | `T_cell_score`, `Monocyte_score` | Manually curated canonical PBMC marker genes | Does this cell resemble a broad immune-cell identity? | It is an annotation aid, not a definitive cell-type call. |
+| Program score | `ifn_program_score` | Manually specified response genes, with the IFN list anchored in Waickman et al.'s acute dengue-response genes and common interferon-stimulated genes | Does this cell express an antiviral or inflammatory response program? | It does not prove that a CoGAPS pattern is caused by interferon signaling. |
+
+This step is not final cell typing. It gives you guideposts for asking whether a pattern is mostly stable PBMC identity, dynamic infection activity, or a mixture of both.
 
 ::: {.panel-tabset}
 
@@ -389,41 +650,93 @@ This step is not final cell typing. It is a teaching-level annotation layer that
 
 ```{r}
 #| eval: false
+# Broad marker lists are manually specified reference gene sets.
+# They give each cell coarse PBMC identity scores for later interpretation.
 BROAD_MARKERS <- list(
   Monocyte = c("LST1", "FCN1", "CTSS", "SAT1", "TYMP", "S100A8", "S100A9"),
   T_cell = c("CD3D", "CD3E", "TRAC", "LTB", "IL7R", "MALAT1"),
   NK_cell = c("NKG7", "GNLY", "PRF1", "CTSW", "KLRD1", "TYROBP"),
-  B_cell = c("MS4A1", "CD79A", "CD79B", "CD74", "HLA-DRA", "BANK1")
+  B_cell = c("MS4A1", "CD79A", "CD79B", "CD74", "HLA-DRA", "BANK1"),
+  Plasmablast = c("MZB1", "JCHAIN", "XBP1", "SDC1", "IGHG1", "IGKC"),
+  Dendritic = c("FCER1A", "CST3", "CLEC10A", "CD1C", "HLA-DRA"),
+  Neutrophil = c("FCGR3B", "CXCR2", "CSF3R", "MNDA", "S100A8", "S100A9")
+)
+
+# Program lists score biological activity rather than broad cell identity.
+# The IFN program includes interferon-stimulated and acute inflammatory
+# response genes highlighted by Waickman et al. and related IFN biology.
+PROGRAMS <- list(
+  ifn_program = c(
+    "IFITM1", "IFI6", "ISG15", "MX1", "IFIT1", "IFIT3",
+    "IFI44L", "ISG20", "LY6E", "TRIM22", "OAS1", "OASL"
+  ),
+  plasmablast_program = c("MZB1", "JCHAIN", "XBP1", "SDC1", "IGHG1", "IGKC"),
+  translation_program = c("RPL4", "RPL5", "RPL6", "RPS3", "RPS8", "EEF2"),
+  mito_program = c("MT-CYB", "MT-ND4", "MT-ND1", "MT-CO1", "MT-CO2")
 )
 
 score_gene_sets <- function(sce, gene_sets) {
+  # Use log-normalized expression values for marker scoring.
   logmat <- logcounts(sce)
+
+  # Score each marker set separately.
   for (label in names(gene_sets)) {
+    # Keep only marker genes that are present in the dataset.
     present <- intersect(gene_sets[[label]], rownames(sce))
     if (length(present) >= 2L) {
+      # Average expression across the marker genes for each cell.
+      # The result is a new cell-level metadata column such as T_cell_score.
       colData(sce)[[paste0(label, "_score")]] <-
         Matrix::colMeans(logmat[present, , drop = FALSE])
     }
   }
+
+  # Return the same object with added score columns.
   sce
 }
+
+# Add broad identity scores and response-program scores.
+sce_qc <- score_gene_sets(sce_qc, BROAD_MARKERS)
+sce_qc <- score_gene_sets(sce_qc, PROGRAMS)
 ```
 
 ## Python
 
 ```{python}
 #| eval: false
+# Broad marker lists are manually specified reference gene sets.
+# They give each cell coarse PBMC identity scores for later interpretation.
 BROAD_MARKERS = {
     "Monocyte": ["LST1", "FCN1", "CTSS", "SAT1", "TYMP", "S100A8", "S100A9"],
     "T_cell": ["CD3D", "CD3E", "TRAC", "LTB", "IL7R", "MALAT1"],
     "NK_cell": ["NKG7", "GNLY", "PRF1", "CTSW", "KLRD1", "TYROBP"],
     "B_cell": ["MS4A1", "CD79A", "CD79B", "CD74", "HLA-DRA", "BANK1"],
+    "Plasmablast": ["MZB1", "JCHAIN", "XBP1", "SDC1", "IGHG1", "IGKC"],
+    "Dendritic": ["FCER1A", "CST3", "CLEC10A", "CD1C", "HLA-DRA"],
+    "Neutrophil": ["FCGR3B", "CXCR2", "CSF3R", "MNDA", "S100A8", "S100A9"],
+}
+
+# Program lists score biological activity rather than broad cell identity.
+# The IFN program includes interferon-stimulated and acute inflammatory
+# response genes highlighted by Waickman et al. and related IFN biology.
+PROGRAMS = {
+    "ifn_program": [
+        "IFITM1", "IFI6", "ISG15", "MX1", "IFIT1", "IFIT3",
+        "IFI44L", "ISG20", "LY6E", "TRIM22", "OAS1", "OASL",
+    ],
+    "plasmablast_program": ["MZB1", "JCHAIN", "XBP1", "SDC1", "IGHG1", "IGKC"],
+    "translation_program": ["RPL4", "RPL5", "RPL6", "RPS3", "RPS8", "EEF2"],
+    "mito_program": ["MT-CYB", "MT-ND4", "MT-ND1", "MT-CO1", "MT-CO2"],
 }
 
 def score_gene_sets(adata, gene_sets):
+    # Score each marker set separately.
     for label, genes in gene_sets.items():
+        # Keep only marker genes that are present in the dataset.
         present = [gene for gene in genes if gene in adata.var_names]
         if len(present) >= 2:
+            # Scanpy stores each score as a new cell-level metadata column
+            # in adata.obs, such as T_cell_score.
             sc.tl.score_genes(
                 adata,
                 present,
@@ -431,12 +744,24 @@ def score_gene_sets(adata, gene_sets):
                 use_raw=False,
             )
 
+# Add broad identity scores and response-program scores.
 score_gene_sets(adata_qc, BROAD_MARKERS)
+score_gene_sets(adata_qc, PROGRAMS)
 ```
 
 :::
 
-The important idea is that marker sets turn many individual gene measurements into interpretable columns. Those columns are later summarized by timepoint and broad cell type so you can separate composition from infection-associated activity.
+:::{.callout-tip collapse="true" title="How score_gene_sets() works"}
+The scoring function loops over one named gene set at a time. For each set, it first keeps only genes that are actually present in the single-cell object. This protects the workflow from failing when a marker gene is absent after filtering or highly variable gene selection.
+
+In the R version, the score is the average log-normalized expression of the present genes in each cell. In the Python version, `scanpy.tl.score_genes()` computes an analogous per-cell gene-set score and stores it in `adata.obs`. Either way, the output is a new cell-level metadata column, such as `Monocyte_score` or `ifn_program_score`.
+
+The score tells you whether each cell expresses a group of genes associated with a broad PBMC identity or response program. It should be treated as an annotation aid, not as ground truth. You still need to compare these scores with CoGAPS pattern usage, top genes, time trajectories, and diagnostics before assigning a biological label to a pattern.
+:::
+
+The important idea is that marker and program sets turn many individual gene measurements into interpretable columns. Those columns are later summarized by timepoint and broad cell type so you can separate PBMC composition from infection-associated activity.
+
+After this step, the workflow has biological guideposts attached to cells. Those guideposts are not proof that a CoGAPS pattern is a T-cell program, monocyte program, or interferon-response program. They are evidence to compare against pattern scores, top genes, and temporal trajectories.
 
 ### **Construct the Balanced Experimental Discovery Set**
 
@@ -450,23 +775,36 @@ Within the experimental cohort, samples are balanced so that no sample contribut
 
 ```{r}
 #| eval: false
+# Limit each sample to the same maximum number of cells so the largest
+# samples do not dominate the discovery model.
 DISCOVERY_MAX_CELLS_PER_SAMPLE <- 600L
+
+# Use a fixed seed so the same cells are selected each time the full
+# preprocessing workflow is rerun.
 RANDOM_SEED <- 42L
 
 balanced_subset <- function(sce, max_cells_per_sample, seed) {
   set.seed(seed)
+
+  # Split cell indices by sample ID, then sample within each sample.
   keep <- unlist(lapply(split(seq_len(ncol(sce)), sce$sample_id), function(idx) {
     if (length(idx) <= max_cells_per_sample) {
+      # Keep all cells when the sample already has 600 or fewer cells.
       idx
     } else {
+      # Otherwise, randomly choose the requested number of cells.
       sample(idx, max_cells_per_sample)
     }
   }), use.names = FALSE)
 
+  # Return the subsetted single-cell object.
   sce[, keep]
 }
 
+# Use only the aligned experimental cohort for the primary temporal model.
 sce_exp <- sce_hvg[, sce_hvg$cohort == "experimental"]
+
+# Apply the balancing rule to create the discovery set.
 sce_discovery <- balanced_subset(sce_exp, DISCOVERY_MAX_CELLS_PER_SAMPLE, RANDOM_SEED)
 ```
 
@@ -474,7 +812,12 @@ sce_discovery <- balanced_subset(sce_exp, DISCOVERY_MAX_CELLS_PER_SAMPLE, RANDOM
 
 ```{python}
 #| eval: false
+# Limit each sample to the same maximum number of cells so the largest
+# samples do not dominate the discovery model.
 DISCOVERY_MAX_CELLS_PER_SAMPLE = 600
+
+# Use a fixed seed so the same cells are selected each time the full
+# preprocessing workflow is rerun.
 RANDOM_SEED = 42
 
 def balanced_sample_by_group(
@@ -483,27 +826,43 @@ def balanced_sample_by_group(
     max_cells_per_group=DISCOVERY_MAX_CELLS_PER_SAMPLE,
     seed=RANDOM_SEED,
 ):
+    # Create a reproducible random number generator.
     rng = np.random.default_rng(seed)
     keep = []
 
+    # Group cells by sample ID and sample within each group.
     for _, idx in adata.obs.groupby(groupby, observed=True).groups.items():
         idx_list = list(idx)
         if len(idx_list) <= max_cells_per_group:
+            # Keep all cells when the sample already has 600 or fewer cells.
             keep.extend(idx_list)
         else:
+            # Otherwise, randomly choose the requested number of cells.
             keep.extend(
                 rng.choice(idx_list, max_cells_per_group, replace=False).tolist()
             )
 
+    # Return a copy of the subsetted AnnData object.
     return adata[keep].copy()
 
+# Use only the aligned experimental cohort for the primary temporal model.
 adata_exp = adata_hvg[adata_hvg.obs["cohort"] == "experimental"].copy()
+
+# Apply the balancing rule to create the discovery set.
 adata_discovery = balanced_sample_by_group(adata_exp)
 ```
 
 :::
 
 Grouped sampling is the key programming move. The code splits cells by sample, samples within each sample, and recombines the selected cells. Biologically, that keeps the model from being dominated by the largest sample.
+
+:::{.callout-note title="Checkpoint"}
+The balanced discovery set is good for modeling temporal programs. Why would it be inappropriate to use this same balanced subset to estimate the original abundance of T cells, monocytes, or B cells in the full source study?
+:::
+
+:::{.callout-tip collapse="true" title="Answer"}
+The subset was intentionally balanced so that each sample contributes up to the same number of cells. That helps CoGAPS learn patterns without being dominated by the largest samples, but it changes the original sample sizes. Because abundance questions depend on the original number and proportion of cells, the balanced subset is appropriate for pattern discovery but not for estimating cell-type abundance in the full source study.
+:::
 
 ### **Save Reproducible Outputs**
 
@@ -517,12 +876,17 @@ This is not just bookkeeping. If two learners rerun preprocessing with different
 
 ```{r}
 #| eval: false
+# Save the full HVG object for full reproduction.
 saveRDS(sce_hvg, file.path(workdir, "gse154386_preprocessed_hvg.rds"))
+
+# Save the balanced experimental discovery object used for CoGAPS input.
 saveRDS(
   sce_discovery,
   file.path(workdir, "gse154386_experimental_discovery_genes_x_cells.rds")
 )
 
+# Record the source, object shapes, and preprocessing settings in a manifest.
+# This gives future reruns a compact provenance record.
 manifest <- list(
   source = "GSE154386",
   raw_tar_url = RAW_TAR_URL,
@@ -535,6 +899,7 @@ manifest <- list(
   seed = RANDOM_SEED
 )
 
+# Write the manifest as JSON so it is easy for either R or Python to read.
 jsonlite::write_json(
   manifest,
   file.path(results_dir, "preprocessing_manifest.json"),
@@ -547,11 +912,16 @@ jsonlite::write_json(
 
 ```{python}
 #| eval: false
+# Save the full HVG object for full reproduction.
 adata_hvg.write_h5ad(workdir / "gse154386_preprocessed_hvg.h5ad")
+
+# Save the balanced experimental discovery object used for CoGAPS input.
 adata_discovery_cogaps.write_h5ad(
     workdir / "gse154386_experimental_discovery_cells_x_genes.h5ad"
 )
 
+# Record the source, object shapes, and preprocessing settings in a manifest.
+# This gives future reruns a compact provenance record.
 write_manifest(
     results_dir / "preprocessing_manifest.json",
     {
@@ -570,11 +940,11 @@ write_manifest(
 
 :::
 
-The required case-study analysis starts after this point. It uses selected summaries and model outputs already stored in `data/processed`, while the large raw, preprocessed, and model-input files are handled through the reproduction archive.
+After this step, the preprocessing workflow has two kinds of outputs. The large single-cell objects preserve the full reproduction path. The smaller CSV and JSON files are the portable evidence tables used in the rest of the case study.
 
 ## **Complete Optional Reproduction Scripts**
 
-The excerpts above are easier to learn from than a full script. The complete scripts are included below for reproducibility. They are displayed as source code only; they do not run during this case study.
+The excerpts above are easier to learn from than a full script. The complete scripts are included below for reproducibility, but you can skip this block on a first read. They are displayed as source code only; they do not run during this case study.
 
 ::: {.panel-tabset}
 
@@ -626,9 +996,17 @@ cat("\n```\n\n</details>\n")
 
 :::
 
-## **Wrangle Cell Scores Into Subject-Level Summaries**
+## **Return to the Case-Study Files**
 
 From this point forward, you return to the small files already included in `data/processed`. You are no longer preprocessing raw single-cell data. Instead, you are wrangling selected-model outputs into tables that support biological interpretation.
+
+| Starting point | Programming move | Resulting evidence |
+|---|---|---|
+| cell-level CoGAPS scores | group by subject, timepoint, and pattern | subject-timepoint means |
+| subject-timepoint means | reshape from long to wide | readable time-course tables |
+| pattern summary metrics | filter, rank, and compare | identity/activity evidence table |
+
+### **Wrangle Cell Scores Into Subject-Level Summaries**
 
 Cell-level CoGAPS scores are useful, but cells from the same subject and timepoint are not independent people. If you treated thousands of cells as thousands of independent biological replicates, the analysis would exaggerate the amount of independent evidence. The subject-timepoint summary is the better evidence unit for temporal claims in this case study.
 
@@ -642,12 +1020,17 @@ In R, `group_by()` declares which columns define the group and `summarize()` cal
 
 ```{r}
 #| label: subject-summary-r
+# Read the subject-timepoint table created from the selected K = 10
+# CoGAPS cell scores. Each row is one subject, one timepoint, and one pattern.
 subject_time <- readr::read_csv(
   here::here("data", "processed", "interpretation", "subject_level",
              "subject_time_pattern_means_long.csv"),
   show_col_types = FALSE
 )
 
+# Inspect Pattern3 because earlier figures suggested it rises during the
+# late acute window. The table keeps n_cells visible so the summary size
+# is not hidden.
 subject_time |>
   filter(pattern == "Pattern3") |>
   select(subject, timepoint_merged, day_merged_numeric,
@@ -663,11 +1046,16 @@ In Python, `groupby()` declares the grouping columns and `agg()` calculates one 
 
 ```{python}
 #| label: subject-summary-python
+# Read the subject-timepoint table created from the selected K = 10
+# CoGAPS cell scores. Each row is one subject, one timepoint, and one pattern.
 subject_time = pd.read_csv(
     "data/processed/interpretation/subject_level/"
     "subject_time_pattern_means_long.csv"
 )
 
+# Inspect Pattern3 because earlier figures suggested it rises during the
+# late acute window. The table keeps n_cells visible so the summary size
+# is not hidden.
 subject_time.loc[
     subject_time["pattern"].eq("Pattern3"),
     ["subject", "timepoint_merged", "day_merged_numeric",
@@ -687,6 +1075,8 @@ The next chunk reshapes the same information so subjects become rows and infecti
 
 ```{r}
 #| label: pattern3-subject-wide-r
+# Keep Pattern3, sort the timepoints, then reshape the table so each
+# subject's time course can be read across a single row.
 pattern3_subject_wide <- subject_time |>
   filter(pattern == "Pattern3") |>
   mutate(timepoint_merged = factor(timepoint_merged, levels = timepoint_order)) |>
@@ -706,6 +1096,8 @@ pattern3_subject_wide |>
 
 ```{python}
 #| label: pattern3-subject-wide-python
+# Keep Pattern3, sort the timepoints, then reshape the table so each
+# subject's time course can be read across a single row.
 pattern3_subject_wide_py = (
     subject_time
     .loc[subject_time["pattern"].eq("Pattern3"),
@@ -726,15 +1118,21 @@ pattern3_subject_wide_py.round(3)
 
 The wide view is a quick check on the working hypothesis from Data Exploration: `Pattern3` is low near baseline and increases during the late acute window. You will still need formal summaries, diagnostics, and directionality checks before treating it as the interferon-associated program.
 
-## **Classify Patterns as Identity-Like or Activity-Like**
+:::{.callout-note title="Checkpoint"}
+For a temporal claim, what is the evidence unit: one cell, one subject, or one subject at one timepoint? Why does that choice matter for how confident the figure should look?
+:::
 
-The final wrangling task prepares the table used for the identity/activity research question. The case study uses a simple heuristic:
+:::{.callout-tip collapse="true" title="Answer"}
+For the temporal claims in this case study, the evidence unit is a subject at one timepoint. Individual cells are useful measurements, but cells from the same subject and day are not independent biological replicates. Summarizing by subject-timepoint keeps the repeated-subject design visible and prevents the analysis from looking more precise than the study design supports.
+:::
 
-- **timepoint variation** asks whether a pattern changes across infection days;
-- **broad cell-type variation** asks whether a pattern mainly separates immune-cell identities;
-- **mixed patterns** require caution because both sources of structure may matter.
+### **Prepare the Identity/Activity Table**
 
-The summary table already stores this classification for each selected `K = 10` pattern.
+The final wrangling task prepares the table used for the identity/activity research question. This table asks whether a pattern changes mostly across infection days, mostly across broad immune-cell identities, or across both. That distinction matters because a pattern can look temporal if the mix of PBMC cell types changes over time, even if the pattern itself is mostly a cell-identity signal.
+
+The heuristic compares two summaries. `eta_timepoint` measures how much pattern variation is associated with infection day. `eta_broad_cell_type` measures how much pattern variation is associated with broad PBMC identity. A pattern with stronger timepoint variation is a better candidate for dynamic infection activity, while a pattern with stronger cell-type variation is more likely to represent stable PBMC identity or composition.
+
+The summary table already stores this classification for each selected `K = 10` pattern. Here you inspect the prepared table so the later analysis can focus on interpretation rather than table construction.
 
 ::: {.panel-tabset}
 
@@ -742,12 +1140,15 @@ The summary table already stores this classification for each selected `K = 10` 
 
 ```{r}
 #| label: identity-activity-table-r
+# Read the pattern-level table used to prepare the identity/activity question.
+# Each row summarizes one selected-model pattern.
 rq2 <- readr::read_csv(
   here::here("data", "processed", "interpretation", "rq_tables",
              "RQ2_identity_vs_activity.csv"),
   show_col_types = FALSE
 )
 
+# Count how many patterns fall into each broad interpretation class.
 rq2 |>
   count(pattern_class) |>
   knitr::kable()
@@ -755,6 +1156,8 @@ rq2 |>
 
 ```{r}
 #| label: identity-activity-preview-r
+# Preview the patterns with the largest timepoint effect first.
+# eta_timepoint and eta_broad_cell_type are compared in the analysis section.
 rq2 |>
   select(pattern, eta_timepoint, eta_broad_cell_type,
          pattern_class, dominant_broad_cell_type,
@@ -768,11 +1171,14 @@ rq2 |>
 
 ```{python}
 #| label: identity-activity-table-python
+# Read the pattern-level table used to prepare the identity/activity question.
+# Each row summarizes one selected-model pattern.
 rq2_py = pd.read_csv(
     "data/processed/interpretation/rq_tables/"
     "RQ2_identity_vs_activity.csv"
 )
 
+# Count how many patterns fall into each broad interpretation class.
 rq2_py["pattern_class"].value_counts().rename_axis(
     "pattern_class"
 ).reset_index(name="n")
@@ -780,6 +1186,8 @@ rq2_py["pattern_class"].value_counts().rename_axis(
 
 ```{python}
 #| label: identity-activity-preview-python
+# Preview the patterns with the largest timepoint effect first.
+# eta_timepoint and eta_broad_cell_type are compared in the analysis section.
 (
     rq2_py
     .loc[:, ["pattern", "eta_timepoint", "eta_broad_cell_type",
@@ -794,6 +1202,40 @@ rq2_py["pattern_class"].value_counts().rename_axis(
 
 In the selected `K = 10` run, most patterns are classified as identity-like. One pattern is classified as activity-like, which makes it the main candidate for the infection-response program explored later. This classification is a guide, not a substitute for biological interpretation: you still need top genes, subject trajectories, directionality, and model diagnostics.
 
-By the end of preprocessing, raw sequencing files have become subject-level summaries of CoGAPS pattern use. The next section uses those summaries to visualize temporal programs, cell-identity structure, and the candidate IFN-associated response.
+:::{.callout-note title="Checkpoint"}
+If a pattern has high cell-type variation but low timepoint variation, what kind of biological story would be most cautious? If a pattern has high timepoint variation, what additional evidence would you want before calling it an infection-response program?
+:::
+
+:::{.callout-tip collapse="true" title="Answer"}
+A pattern with high cell-type variation but low timepoint variation should be described cautiously as identity-like or composition-associated, not as a dynamic infection-response program. A pattern with high timepoint variation is a stronger candidate for infection-response activity, but it still needs supporting evidence. You would want to inspect top genes, subject-level trajectories, directionality relative to baseline, and model diagnostics before assigning a biological label.
+:::
+
+:::{.definition_box}
+::::{.definition_box_header}
+Key terms from this section
+::::
+::::{.inner_block}
+- **Sample-level 10x files:** Raw 10x Genomics files organized by biological sample. Each sample has linked files for the expression matrix, cell barcodes, and gene or feature names.
+- **10x triplet:** A set of three files that must be read together: `matrix.mtx`, `barcodes.tsv`, and `features.tsv` or `genes.tsv`. The matrix stores counts, the barcode file names cells, and the feature file names genes or other measured features.
+- **Cell barcode:** A sequence label used to identify one captured cell or droplet in a single-cell sequencing experiment.
+- **Feature:** A measured item in the 10x matrix. In this case study, the preprocessing keeps gene-expression features for the RNA-seq analysis.
+- **Cell-by-gene matrix:** A matrix where rows are cells and columns are genes. Each value records the expression measurement for one gene in one cell.
+- **Sparse matrix:** A compact matrix format used when most values are zero. Single-cell RNA-seq count matrices are usually sparse because most genes are not detected in most cells.
+- **`SingleCellExperiment`:** An R/Bioconductor object for single-cell data. It stores expression matrices in assays, cell metadata in `colData()`, and gene metadata in `rowData()`.
+- **`AnnData`:** A Python object commonly used by Scanpy for single-cell data. It stores the expression matrix in `.X`, cell metadata in `.obs`, and gene metadata in `.var`.
+- **Cell metadata:** Information attached to each cell, such as sample ID, subject, cohort, infection day, quality-control metrics, and broad cell-type annotation.
+- **Gene metadata:** Information attached to each gene, such as gene symbol, gene ID, feature type, or whether the gene was selected as highly variable.
+- **Quality control:** Filtering and diagnostic checks used to remove cells or genes that are unlikely to support reliable biological interpretation.
+- **Highly variable genes:** Genes selected because they vary substantially across cells or samples and are therefore informative for learning latent patterns.
+- **Marker score:** A summary score based on a known set of marker genes. Marker scores help connect expression data to broad immune-cell identities or biological programs.
+- **Program score:** A gene-set score for a biological activity rather than a broad cell identity. In this case study, `ifn_program_score` asks whether cells express an interferon-associated antiviral response gene set.
+- **Canonical PBMC marker:** A gene commonly used as a reference signal for a broad peripheral blood mononuclear cell identity, such as T cells, B cells, NK cells, or monocytes. These markers support coarse annotation, but they are not definitive cell-type labels.
+- **Interferon-stimulated gene:** A gene whose expression can increase when cells respond to interferon signaling. Interferon-stimulated genes are part of antiviral immune responses and help anchor the IFN-associated interpretation in this case study.
+- **Annotation aid:** A supporting label or score used to guide interpretation. Annotation aids help you reason about patterns, but they should be checked against additional evidence before being treated as biological conclusions.
+- **Balanced discovery subset:** The experimental subset used for CoGAPS, with up to 600 cells per sample so that one sample does not dominate the learned patterns.
+::::
+:::
+
+By the end of this section, you have followed the path from raw sequencing files to analysis-ready model inputs, then from cell-level CoGAPS scores to subject-level summaries. The next section uses those summaries to visualize temporal programs, cell-identity structure, and the candidate IFN-associated response.
 
 ***

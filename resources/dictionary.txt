@@ -195,3 +195,12 @@ Veres
 Zenodo
 Zhou
 Zibetti
+HPC
+SLURM
+BLAS
+CPM
+auditable
+strata
+nPatterns
+nThreads
+nIterations
