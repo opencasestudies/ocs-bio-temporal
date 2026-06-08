@@ -1,20 +1,22 @@
 # **Data Wrangling and Preprocessing**
 ***
 
-Before CoGAPS can discover temporal immune programs, the raw single-cell data must become a trustworthy cell-by-gene matrix. Every cell needs to stay connected to its subject, infection day, cohort, quality-control information, and broad immune-cell identity. Without that structure, a model can still find patterns, but those patterns may reflect damaged cells, sequencing-depth differences, unstable gene selection, or one overrepresented sample rather than dengue-associated biology.
+The previous section showed two import paths: the required path that reads the small selected-model files, and the optional source-file path that turns large 10x Genomics files into a labeled single-cell object. This section starts after that import step. The question now is how an imported single-cell object becomes a trustworthy discovery set for temporal CoGAPS analysis.
+
+Before CoGAPS can discover temporal immune programs, every cell needs to stay connected to its subject, infection day, cohort, quality-control information, and broad immune-cell identity. Without that structure, a model can still find patterns, but those patterns may reflect damaged cells, sequencing-depth differences, unstable gene selection, or one overrepresented sample rather than dengue-associated biology.
 
 This section shows how the case-study discovery set was produced and how the selected CoGAPS cell scores are reshaped for interpretation. The goal is not to memorize every preprocessing command. The goal is to understand how each decision protects the later biological claim that a pattern reflects temporal infection-response activity rather than technical noise, PBMC composition, or sampling imbalance.
 
 This section separates two kinds of work:
 
-- **Optional full preprocessing code:** download the GEO raw files, build single-cell objects, perform quality control, normalize counts, select highly variable genes, annotate broad immune-cell types, and construct the discovery subset.
+- **Optional full preprocessing code:** start from the imported single-cell object, perform quality control, normalize counts, select highly variable genes, annotate broad immune-cell types, and construct the discovery subset.
 - **Required case-study wrangling:** use the small selected-model files in `data/processed` to summarize CoGAPS scores by subject, timepoint, and broad cell type.
 
 You will see both kinds of work in this section. First, you will read the preprocessing workflow in pieces so the source of the analysis files is transparent. Then you will return to the included selected-model files and practice the wrangling moves used for the rest of the case study.
 
-## **From Raw 10x Files to the Discovery Set**
+## **From Imported Object to the Discovery Set**
 
-The full workflow starts from raw 10x Genomics files in GEO and ends with the analysis-ready discovery set used for CoGAPS interpretation. Read the diagram from top to bottom as a map of decisions. At each step, ask what biological comparison would be affected if that decision changed.
+The optional import step produced a labeled single-cell object: expression counts are connected to cells, genes, subjects, cohorts, and infection days. The workflow below begins from that object and ends with the analysis-ready discovery set used for CoGAPS interpretation. Read the diagram from top to bottom as a map of decisions. At each step, ask what biological comparison would be affected if that decision changed.
 
 ```{mermaid}
 flowchart TB
@@ -25,64 +27,56 @@ flowchart TB
   classDef note fill:#f3eefc,stroke:#6b46c1,stroke-width:1.5px,color:#102a43
   classDef stage fill:#1f4e79,stroke:#123047,stroke-width:2px,color:#ffffff
 
-  A["Source data<br/><b>GEO GSE154386</b><br/>raw 10x archive"]:::source
+  A["Imported single-cell object<br/>counts + subject/cohort/day metadata"]:::source
 
   subgraph S1[" "]
-    P1["1. Build the single-cell<br/>data object"]:::stage
-    B["Parse file names<br/>subject, cohort, day"]:::process
-    C["Read 10x triplets<br/>matrix + barcodes + features"]:::process
-    D["Attach metadata<br/>cells x genes object"]:::process
-  end
-
-  subgraph S2[" "]
-    P2["2. Apply preprocessing<br/>decisions"]:::stage
+    P1["1. Apply preprocessing<br/>decisions"]:::stage
     E{{"QC filters<br/>cells and genes"}}:::decision
     F["Normalize counts<br/>library-size + log scale"]:::process
     G{{"Select HVGs<br/>5,000 genes"}}:::decision
     H["Score marker/program sets<br/>PBMC identity + IFN clues"]:::process
   end
 
-  subgraph S3[" "]
-    P3["3. Define the case-study<br/>discovery set"]:::stage
+  subgraph S2[" "]
+    P2["2. Define the case-study<br/>discovery set"]:::stage
     I{{"Assign broad PBMC identity"}}:::decision
     J{{"Use experimental cohort<br/>for the main time course"}}:::decision
     K["Balance samples<br/>up to 600 cells each"]:::process
   end
 
-  subgraph S4[" "]
-    P4["4. Create files<br/>used later"]:::stage
+  subgraph S3[" "]
+    P3["3. Create files<br/>used later"]:::stage
     L["Large reproduction files<br/>H5AD/RDS + manifests"]:::output
     M["Small analysis tables<br/>composition, scores, RQ tables"]:::output
     N["Optional natural cohort target<br/>reserved for projection"]:::note
   end
 
-  A --> P1 --> B --> C --> D --> P2 --> E --> F --> G --> H --> P3 --> I --> J --> K --> P4
-  P4 --> M
-  P4 --> L
-  P4 --> N
+  A --> P1 --> E --> F --> G --> H --> P2 --> I --> J --> K --> P3
+  P3 --> M
+  P3 --> L
+  P3 --> N
   J -. "not part of required path" .-> N
 
   style S1 fill:#f8fafc,stroke:#cbd5e1,stroke-width:1px,color:#102a43
   style S2 fill:#f8fafc,stroke:#cbd5e1,stroke-width:1px,color:#102a43
   style S3 fill:#f8fafc,stroke:#cbd5e1,stroke-width:1px,color:#102a43
-  style S4 fill:#f8fafc,stroke:#cbd5e1,stroke-width:1px,color:#102a43
 ```
 
 :::{.definition_box}
 ::::{.definition_box_header}
-Terms to know before reading the code
+Terms to know before reading the preprocessing code
 ::::
 ::::{.inner_block}
-- **10x triplet:** The matrix, barcode, and feature files that must be read together for each 10x Genomics sample.
-- **Cell barcode:** The label used to identify one captured cell or droplet in a single-cell sequencing experiment.
-- **Cell-by-gene matrix:** A table-like structure where each row is a cell, each column is a gene, and each value is an expression measurement.
-- **Cell metadata:** Information attached to each cell, such as subject, infection day, cohort, and quality-control measurements.
-- **Single-cell object:** A labeled data container, such as `SingleCellExperiment` in R or `AnnData` in Python, that keeps expression values aligned with cell and gene annotations.
-- **Sparse matrix:** A memory-efficient way to store a matrix with many zero values, which is common in single-cell RNA-seq.
+- **Quality control:** Filtering and diagnostic checks used to remove cells or genes that are unlikely to support reliable biological interpretation.
+- **Boolean mask:** A vector of `TRUE`/`FALSE` values in R or `True`/`False` values in Python used to keep or remove rows, columns, cells, or genes.
+- **Library-size normalization:** A scaling step that reduces differences caused by cells having different total sequencing counts.
+- **Log transformation:** A transformation that compresses large expression values so comparisons are less dominated by the most abundant transcripts.
+- **Highly variable genes:** Genes selected because they vary substantially across cells or samples and are therefore informative for learning latent patterns.
+- **Balanced discovery subset:** The experimental subset used for CoGAPS, with up to 600 cells per sample so that one sample does not dominate the learned patterns.
 ::::
 :::
 
-Those terms are the vocabulary of the preprocessing workflow. They also explain why the early code is so careful about filenames, matrix orientation, and metadata: a temporal immune-program analysis only works if each expression value is attached to the correct cell, gene, subject, and day.
+Those terms are the vocabulary of the preprocessing workflow. They also explain why the code is careful about filtering, scaling, gene selection, and sample balance: a temporal immune-program analysis only works if the model is learning biological structure rather than technical artifacts or sampling imbalance.
 
 ## **Preprocessing Decisions That Shape Interpretation**
 
@@ -92,7 +86,7 @@ Three decisions deserve special attention as you read. Quality control affects w
 
 | Decision | Value used | Biological or analytical reason | What it affects | Limitation or sensitivity |
 |---|---|---|---|---|
-| Source archive | `GSE154386_RAW.tar` from GEO accession `GSE154386` | Starts from the public source data so the discovery set can be traced to Waickman et al. 2021. | Provenance of all downstream single-cell objects. | The archive is large and is only needed for full reproduction. |
+| Imported single-cell object | Labeled `SingleCellExperiment` or `AnnData` object with counts and sample metadata | Keeps expression values aligned with subject, cohort, infection day, cell, and gene labels. | Starting point for QC, normalization, annotation, and discovery-set construction. | Incorrect metadata or matrix orientation would compromise downstream biological interpretation. |
 | Minimum genes per cell | `MIN_GENES = 200` | Cells with very few detected genes provide too little transcriptome information for learning coordinated gene-expression programs. | Which cells enter normalization and CoGAPS input preparation. | More or less stringent cutoffs could change rare-cell retention. |
 | Minimum counts per cell | `MIN_COUNTS = 500` | Low-count cells are more likely to reflect poor RNA recovery than interpretable immune activity. | Which cells remain after QC. | Count thresholds are practical filters, not biological boundaries. |
 | Mitochondrial fraction filter | `MAX_PCT_MT = 20` | High mitochondrial signal can indicate stressed or damaged cells, which can create technical stress-like programs. | QC cell retention. | High mitochondrial signal can be technical or biological, so this cutoff should be reported. |
@@ -109,7 +103,7 @@ Three decisions deserve special attention as you read. Quality control affects w
 
 ## **Read the Preprocessing Workflow in Pieces**
 
-The code excerpts below mirror the stages in the workflow diagram. They are shown with `eval: false`, so you can read them as tutorial code without downloading large files or rebuilding the dataset during the required analysis path. Each subsection starts with the biological or analytical reason for the step, then shows how the R and Python scripts implement that idea.
+The code excerpts below mirror the stages in the workflow diagram. They are shown with `eval: false`, so you can read them as tutorial code without rebuilding the dataset during the required analysis path. Each subsection starts with the biological or analytical reason for the step, then shows how the R and Python scripts implement that idea.
 
 The R tab appears first because R is the default analysis path in this case study. The Python tab is shown in parallel for learners who prefer or need the Python implementation.
 
@@ -117,348 +111,12 @@ As you read the code, watch for reusable programming moves:
 
 | Programming move | Where it appears | Why it matters |
 |---|---|---|
-| Parse structured filenames | sample metadata | turns source-file names into subject, cohort, and day columns |
-| Keep labeled containers | single-cell objects | keeps counts, cell metadata, and gene metadata aligned |
+| Start from labeled containers | imported single-cell objects | keeps counts, cell metadata, and gene metadata aligned during preprocessing |
 | Use Boolean filters | quality control | makes cell and gene retention rules explicit |
 | Rank and subset features | highly variable genes | defines the gene space used for pattern discovery |
 | Score gene sets | marker and program scores | connects expression measurements to biological interpretation |
 | Sample within groups | balanced discovery subset | prevents one sample from dominating the model input |
 | Write a manifest | reproducible outputs | records enough information to explain or reproduce the data products |
-
-### **Identify Source Files and Sample Metadata**
-
-The raw GEO archive contains sample-level 10x files. In this context, "sample-level" means that the raw sequencing output is organized one biological sample at a time, rather than as one combined study-wide table. For each sample, the 10x Genomics files are usually a small set of linked files: a sparse expression matrix, a list of cell barcodes, and a list of gene or feature names. These files have to be read together because the matrix alone only contains numbers; the barcode and feature files tell you which cells and genes those numbers refer to.
-
-The biological labels needed for analysis are encoded in file names. Before any filtering or modeling can happen, each cell needs metadata such as subject, cohort, and infection day. These labels are what allow you to ask temporal questions later.
-
-The programming idea is to make implicit information explicit: parse sample names once, store the result in columns, and use those columns for all later grouping.
-
-::: {.panel-tabset}
-
-## R
-
-```{r}
-#| eval: false
-# Store the GEO download URL in one place so the source archive is explicit
-# and easy to change if the download location ever changes.
-RAW_TAR_URL <- "https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE154386&format=file"
-
-download_if_needed <- function(url, dest) {
-  # Skip the download when the archive is already present.
-  # This makes the full preprocessing script safe to rerun.
-  if (file.exists(dest) && file.info(dest)$size > 0) {
-    message("[skip] ", dest, " already exists")
-    return(invisible(dest))
-  }
-
-  # Download the GEO archive as a binary file because it is a tar archive,
-  # not a text table.
-  download.file(url, destfile = dest, mode = "wb", quiet = FALSE)
-  invisible(dest)
-}
-
-parse_sample_key <- function(sample_key) {
-  # Source filenames encode sample metadata in a pattern like:
-  # GSM4670192_Subject2_D0 or GSM4670216_Natural1_Dneg3.
-  # The regular expression captures the GEO ID, subject label, and day label.
-  match <- regexec("^(GSM[0-9]+)_([^_]+)_(D(?:neg)?[0-9]+)$", sample_key)
-  parts <- regmatches(sample_key, match)[[1]]
-  if (length(parts) == 0) stop("Could not parse sample key: ", sample_key)
-
-  # Pull the captured pieces out of the regular-expression match.
-  gsm_id <- parts[[2]]
-  subject <- parts[[3]]
-  tp <- parts[[4]]
-
-  # Convert filename labels into analysis-ready columns.
-  # Subject labels beginning with "Subject" are from the experimental cohort;
-  # labels beginning with "Natural" are from the natural infection cohort.
-  cohort <- if (startsWith(subject, "Subject")) "experimental" else "natural"
-
-  # Convert D0, D2, and Dneg3-style labels into numeric days.
-  # Numeric days are useful later for sorting and plotting the time course.
-  day <- if (startsWith(tp, "Dneg")) -as.integer(sub("Dneg", "", tp)) else as.integer(sub("D", "", tp))
-
-  # Return one metadata row. This row will be copied to every cell from
-  # the corresponding sample when the single-cell object is built.
-  data.frame(
-    gsm_id = gsm_id,
-    sample_id = gsm_id,
-    subject = subject,
-    cohort = cohort,
-    timepoint_raw = tp,
-    timepoint_display = paste0("D", day),
-    day_numeric = day,
-    stringsAsFactors = FALSE
-  )
-}
-```
-
-## Python
-
-```{python}
-#| eval: false
-from pathlib import Path
-import re
-import requests
-
-# Store the GEO download URL in one place so the source archive is explicit
-# and easy to change if the download location ever changes.
-RAW_TAR_URL = "https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE154386&format=file"
-
-def download(url: str, dest: Path, chunk_mb: int = 16) -> None:
-    # Skip the download when the archive is already present.
-    # This makes the full preprocessing script safe to rerun.
-    if dest.exists() and dest.stat().st_size > 0:
-        print(f"[skip] {dest} already exists")
-        return
-
-    # Download to a temporary ".part" file first. The file is renamed only
-    # after the download finishes, which avoids leaving a partial archive
-    # with the expected final name.
-    tmp = dest.with_suffix(dest.suffix + ".part")
-    with requests.get(url, stream=True, timeout=180) as response:
-        response.raise_for_status()
-        with open(tmp, "wb") as handle:
-            # Stream the archive in chunks so Python does not need to hold
-            # the full GEO tar file in memory at once.
-            for chunk in response.iter_content(chunk_size=chunk_mb * 1024 * 1024):
-                if chunk:
-                    handle.write(chunk)
-    tmp.rename(dest)
-
-def parse_sample_key(sample_key: str) -> dict:
-    # Source filenames encode sample metadata in a pattern like:
-    # GSM4670192_Subject2_D0 or GSM4670216_Natural1_Dneg3.
-    # The regular expression captures the GEO ID, subject label, and day label.
-    match = re.match(r"^(GSM\d+)_([^_]+)_(D(?:neg)?\d+)$", sample_key)
-    if not match:
-        raise ValueError(f"Could not parse sample key: {sample_key}")
-
-    # Pull the captured pieces out of the regular-expression match.
-    gsm_id, subject, tp = match.groups()
-
-    # Convert filename labels into analysis-ready values.
-    # Subject labels beginning with "Subject" are from the experimental cohort;
-    # labels beginning with "Natural" are from the natural infection cohort.
-    cohort = "experimental" if subject.startswith("Subject") else "natural"
-
-    # Convert D0, D2, and Dneg3-style labels into numeric days.
-    # Numeric days are useful later for sorting and plotting the time course.
-    day = -int(tp.replace("Dneg", "")) if tp.startswith("Dneg") else int(tp.replace("D", ""))
-
-    # Return a dictionary that will become cell metadata when each sample is
-    # loaded into the single-cell object.
-    return {
-        "gsm_id": gsm_id,
-        "sample_id": gsm_id,
-        "subject": subject,
-        "cohort": cohort,
-        "timepoint_raw": tp,
-        "timepoint_display": f"D{day}",
-        "day_numeric": day,
-    }
-```
-
-:::
-
-In R, the parsed metadata becomes a data frame. In Python, it becomes a dictionary. In both languages, the goal is the same: every cell must carry the biological labels needed for subject-level and timepoint-level summaries.
-
-After this step, the workflow has not changed any expression values yet. It has created the metadata columns that make the later temporal comparisons possible. The most important programming idea is that a filename is not just a filename here: it is the source of subject, cohort, and infection-day information.
-
-### **Build the Cell-by-Gene Data Object**
-
-Single-cell RNA-seq data do not begin as a tidy table. The 10x files separate the expression matrix, cell barcodes, and gene or feature names. The preprocessing script recombines those pieces into a single-cell object so counts, cell metadata, and gene metadata stay aligned.
-
-This alignment is biologically important. If genes and cells are mislabeled or transposed, marker scoring and CoGAPS interpretation can point to the wrong biological signal. The code also keeps only gene-expression features and makes gene names unique, which reduces ambiguity later.
-
-The R and Python workflows use different object classes for the same basic purpose. In R, a `SingleCellExperiment` object stores the expression matrix in an assay, cell-level information in `colData()`, and gene-level information in `rowData()`. In Python, an `AnnData` object stores the expression matrix in `.X`, cell-level information in `.obs`, and gene-level information in `.var`. You can think of both objects as labeled containers: they keep the counts matrix connected to the cell and gene annotations that make the matrix interpretable.
-
-::: {.panel-tabset}
-
-## R
-
-```{r}
-#| eval: false
-read_sample_sce <- function(sample_key, triplet) {
-  # Start by parsing the sample name so every cell from this sample
-  # can inherit subject, cohort, and infection-day metadata.
-  meta <- parse_sample_key(sample_key)
-
-  # Read the 10x count matrix. At this stage, the matrix is features x cells,
-  # which is the usual orientation for raw 10x Matrix Market files.
-  mat <- read_mtx_gz(triplet$matrix) # features x cells
-
-  # Read the cell barcodes. These become the cell names after we attach
-  # the sample ID to make each barcode unique across samples.
-  barcodes <- read_table_gz(triplet$barcodes)[[1]]
-
-  # Different 10x versions may call the gene file "features" or "genes".
-  # This line accepts either name.
-  features_path <- triplet$features %||% triplet$genes
-  features <- read_table_gz(features_path)
-
-  # The feature table contains gene IDs and, when available, gene symbols.
-  # Gene symbols are easier to interpret later when inspecting top genes.
-  gene_ids <- as.character(features[[1]])
-  gene_symbols <- if (ncol(features) >= 2L) as.character(features[[2]]) else gene_ids
-
-  # Some 10x files include multiple feature types. For this RNA-seq analysis,
-  # keep only gene-expression features and drop any non-RNA feature rows.
-  feature_types <- if (ncol(features) >= 3L) as.character(features[[3]]) else rep("Gene Expression", length(gene_symbols))
-  keep <- feature_types == "Gene Expression"
-
-  # Subset the matrix to retained gene-expression features and keep it sparse.
-  # Sparse matrices are efficient because most single-cell counts are zero.
-  mat <- as(mat[keep, , drop = FALSE], "dgCMatrix")
-
-  # Name rows with unique gene symbols and columns with sample-prefixed
-  # cell barcodes so cells from different samples cannot collide.
-  rownames(mat) <- make.unique(gene_symbols[keep], sep = "_")
-  colnames(mat) <- paste0(meta$sample_id, ":", barcodes)
-
-  # Build the R single-cell container: counts in assays, gene metadata in
-  # rowData, and one copied metadata row for every cell in colData.
-  SingleCellExperiment(
-    assays = list(counts = mat),
-    rowData = DataFrame(gene_id = gene_ids[keep]),
-    colData = DataFrame(meta[rep(1L, ncol(mat)), , drop = FALSE])
-  )
-}
-```
-
-## Python
-
-```{python}
-#| eval: false
-from anndata import AnnData
-from pathlib import Path
-
-def build_anndata_from_triplet(triplet: dict) -> AnnData:
-    # Start by parsing the sample name so every cell from this sample
-    # can inherit subject, cohort, and infection-day metadata.
-    sample_key = str(triplet["sample_key"])
-    meta = parse_sample_key(sample_key)
-
-    # Read the 10x count matrix. At this stage, the matrix is features x cells,
-    # which is the usual orientation for raw 10x Matrix Market files.
-    matrix = read_mtx(Path(triplet["matrix"]))  # features x cells
-
-    # Read the cell barcodes. These become cell names after we attach
-    # the sample ID to make each barcode unique across samples.
-    barcodes = read_text_table(Path(triplet["barcodes"])).iloc[:, 0].astype(str).tolist()
-
-    # Different 10x versions may call the gene file "features" or "genes".
-    # This line accepts either name.
-    features = read_text_table(Path(triplet.get("features", triplet.get("genes"))))
-
-    # The feature table contains gene IDs and, when available, gene symbols.
-    # Gene symbols are easier to interpret later when inspecting top genes.
-    gene_ids = features.iloc[:, 0].astype(str).tolist()
-    gene_symbols = features.iloc[:, 1].astype(str).tolist() if features.shape[1] > 1 else gene_ids
-
-    # Some 10x files include multiple feature types. For this RNA-seq analysis,
-    # keep only gene-expression features and drop any non-RNA feature rows.
-    feature_types = (
-        features.iloc[:, 2].astype(str).tolist()
-        if features.shape[1] > 2
-        else ["Gene Expression"] * len(gene_symbols)
-    )
-
-    # Subset the matrix to retained gene-expression features.
-    keep = np.array([x == "Gene Expression" for x in feature_types])
-    matrix = matrix[keep, :]
-
-    # AnnData expects cells x genes, so transpose the raw 10x matrix.
-    # Keeping the matrix sparse saves memory for mostly zero count data.
-    adata = AnnData(X=matrix.T.tocsr())  # cells x genes
-
-    # Name cells with sample-prefixed barcodes and genes with unique symbols
-    # so later joins and summaries point to the correct cells and genes.
-    adata.obs_names = [f"{meta['sample_id']}:{barcode}" for barcode in barcodes]
-    adata.var_names = pd.Index([g for g, k in zip(gene_symbols, keep) if k])
-    adata.var_names_make_unique()
-    return adata
-```
-
-:::
-
-`SingleCellExperiment` and `AnnData` are not just storage formats. They help keep expression values attached to the correct cell and gene annotations, which is essential when the analysis moves from raw counts to biological interpretation. They also make later steps easier to audit: when you filter cells, select genes, score markers, or save outputs, the data object keeps the matched expression values and metadata together.
-
-After this step, the workflow has a labeled single-cell object. Biologically, that means every expression measurement can be traced back to a cell, a gene, and a sample. In code, later filtering and summarizing can use the same object instead of passing separate matrices and metadata tables around by hand.
-
-::: {.callout-note collapse="true" title="Optional: file-reading helper functions used above"}
-The main build-object code uses small helper functions to read compressed 10x matrix and table files. These helpers are shown here so the code above is auditable. You do not need to memorize them; the important idea is that the matrix, barcode table, and feature table are read together and then aligned into one labeled single-cell object.
-
-The `parse_sample_key()` function is defined in the previous subsection. The helpers below handle the remaining file-reading steps.
-
-**R**
-
-```{r}
-#| eval: false
-open_text_file <- function(path) {
-  # 10x files are often gzip-compressed. This helper opens either a
-  # compressed or uncompressed text file.
-  if (grepl("\\.gz$", path)) {
-    gzfile(path, open = "rt")
-  } else {
-    file(path, open = "rt")
-  }
-}
-
-open_binary_file <- function(path) {
-  # Matrix Market files are read as binary connections.
-  if (grepl("\\.gz$", path)) {
-    gzfile(path, open = "rb")
-  } else {
-    file(path, open = "rb")
-  }
-}
-
-read_table_gz <- function(path) {
-  # Read a barcode or feature table with no header row.
-  con <- open_text_file(path)
-  on.exit(close(con), add = TRUE)
-
-  readr::read_tsv(
-    con,
-    col_names = FALSE,
-    show_col_types = FALSE
-  )
-}
-
-read_mtx_gz <- function(path) {
-  # Read a sparse Matrix Market expression matrix.
-  con <- open_binary_file(path)
-  on.exit(close(con), add = TRUE)
-
-  Matrix::readMM(con)
-}
-```
-
-**Python**
-
-```{python}
-#| eval: false
-import gzip
-import pandas as pd
-from scipy import sparse
-from scipy.io import mmread
-
-def read_text_table(path):
-    # Read a barcode or feature table with no header row.
-    opener = gzip.open if path.suffix == ".gz" else open
-    with opener(path, "rt") as handle:
-        return pd.read_csv(handle, sep="\t", header=None)
-
-def read_mtx(path):
-    # Read a sparse Matrix Market expression matrix.
-    opener = gzip.open if path.suffix == ".gz" else open
-    with opener(path, "rb") as handle:
-        matrix = mmread(handle)
-    return sparse.csr_matrix(matrix)
-```
-:::
 
 ### **Remove Low-Quality Cells and Rare Genes**
 
@@ -889,7 +547,7 @@ saveRDS(
 # This gives future reruns a compact provenance record.
 manifest <- list(
   source = "GSE154386",
-  raw_tar_url = RAW_TAR_URL,
+  import_source = "GSE154386_RAW.tar from GEO",
   hvg_shape = c(cells = ncol(sce_hvg), genes = nrow(sce_hvg)),
   experimental_discovery_shape = c(
     cells = ncol(sce_discovery),
@@ -926,7 +584,7 @@ write_manifest(
     results_dir / "preprocessing_manifest.json",
     {
         "source": "GSE154386",
-        "raw_tar_url": RAW_TAR_URL,
+        "import_source": "GSE154386_RAW.tar from GEO",
         "hvg_shape": [int(adata_hvg.n_obs), int(adata_hvg.n_vars)],
         "experimental_discovery_shape": [
             int(adata_discovery_cogaps.n_obs),
@@ -944,7 +602,11 @@ After this step, the preprocessing workflow has two kinds of outputs. The large 
 
 ## **Complete Optional Reproduction Scripts**
 
-The excerpts above are easier to learn from than a full script. The complete scripts are included below for reproducibility, but you can skip this block on a first read. They are displayed as source code only; they do not run during this case study.
+The excerpts in **Data Import** and in this section are easier to learn from than a full script. If you want to run the optional preparation workflow, run one of the complete scripts below instead of copying the excerpts one at a time.
+
+Each script is the executable version of the workflow you just walked through. It downloads or reuses the GEO source archive, imports the 10x files into a labeled single-cell object, applies the preprocessing decisions described above, constructs the balanced experimental discovery set, and saves large local objects plus a manifest. It prepares the inputs needed before CoGAPS is run; it does not run CoGAPS itself.
+
+You can skip this block on a first read. The full scripts are displayed as source code for reproducibility, but they do not run during the required case-study path.
 
 ::: {.panel-tabset}
 
@@ -1215,17 +877,12 @@ A pattern with high cell-type variation but low timepoint variation should be de
 Key terms from this section
 ::::
 ::::{.inner_block}
-- **Sample-level 10x files:** Raw 10x Genomics files organized by biological sample. Each sample has linked files for the expression matrix, cell barcodes, and gene or feature names.
-- **10x triplet:** A set of three files that must be read together: `matrix.mtx`, `barcodes.tsv`, and `features.tsv` or `genes.tsv`. The matrix stores counts, the barcode file names cells, and the feature file names genes or other measured features.
-- **Cell barcode:** A sequence label used to identify one captured cell or droplet in a single-cell sequencing experiment.
-- **Feature:** A measured item in the 10x matrix. In this case study, the preprocessing keeps gene-expression features for the RNA-seq analysis.
-- **Cell-by-gene matrix:** A matrix where rows are cells and columns are genes. Each value records the expression measurement for one gene in one cell.
-- **Sparse matrix:** A compact matrix format used when most values are zero. Single-cell RNA-seq count matrices are usually sparse because most genes are not detected in most cells.
-- **`SingleCellExperiment`:** An R/Bioconductor object for single-cell data. It stores expression matrices in assays, cell metadata in `colData()`, and gene metadata in `rowData()`.
-- **`AnnData`:** A Python object commonly used by Scanpy for single-cell data. It stores the expression matrix in `.X`, cell metadata in `.obs`, and gene metadata in `.var`.
 - **Cell metadata:** Information attached to each cell, such as sample ID, subject, cohort, infection day, quality-control metrics, and broad cell-type annotation.
 - **Gene metadata:** Information attached to each gene, such as gene symbol, gene ID, feature type, or whether the gene was selected as highly variable.
 - **Quality control:** Filtering and diagnostic checks used to remove cells or genes that are unlikely to support reliable biological interpretation.
+- **Boolean mask:** A vector of `TRUE`/`FALSE` values in R or `True`/`False` values in Python used to keep or remove cells or genes.
+- **Library-size normalization:** A scaling step that reduces differences caused by cells having different total sequencing counts.
+- **Log transformation:** A transformation that compresses large expression values so comparisons are less dominated by the most abundant transcripts.
 - **Highly variable genes:** Genes selected because they vary substantially across cells or samples and are therefore informative for learning latent patterns.
 - **Marker score:** A summary score based on a known set of marker genes. Marker scores help connect expression data to broad immune-cell identities or biological programs.
 - **Program score:** A gene-set score for a biological activity rather than a broad cell identity. In this case study, `ifn_program_score` asks whether cells express an interferon-associated antiviral response gene set.
@@ -1233,9 +890,11 @@ Key terms from this section
 - **Interferon-stimulated gene:** A gene whose expression can increase when cells respond to interferon signaling. Interferon-stimulated genes are part of antiviral immune responses and help anchor the IFN-associated interpretation in this case study.
 - **Annotation aid:** A supporting label or score used to guide interpretation. Annotation aids help you reason about patterns, but they should be checked against additional evidence before being treated as biological conclusions.
 - **Balanced discovery subset:** The experimental subset used for CoGAPS, with up to 600 cells per sample so that one sample does not dominate the learned patterns.
+- **Subject-level summary:** A table that summarizes cell-level values within a subject and timepoint, so temporal claims are tied to biological sampling units rather than to individual cells alone.
+- **Manifest:** A small metadata file that records where outputs came from, which parameters were used, and how files relate to one another.
 ::::
 :::
 
-By the end of this section, you have followed the path from raw sequencing files to analysis-ready model inputs, then from cell-level CoGAPS scores to subject-level summaries. The next section uses those summaries to visualize temporal programs, cell-identity structure, and the candidate IFN-associated response.
+By the end of this section, you have followed the path from an imported single-cell object to analysis-ready model inputs, then from cell-level CoGAPS scores to subject-level summaries. The next section uses those summaries to visualize temporal programs, cell-identity structure, and the candidate IFN-associated response.
 
 ***

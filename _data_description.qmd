@@ -34,7 +34,7 @@ Then, the selected model results are prepared for this case study:
 1. Run and diagnose the selected `K = 10` CoGAPS model.
 1. Export small tables and figures used in the case study.
 
-The full raw and preprocessed files are too large for our purposes here, so the main analysis starts from smaller case-study files already included in this repository. The **Data Wrangling and Preprocessing** section returns to these steps in more detail, introduces the full preprocessing scripts, and explains the choices behind quality control, normalization, feature selection, annotation, and subsetting. You do not need to run that full workflow to complete the required case study, but you should understand how the teaching dataset was produced.
+The full raw and preprocessed files are too large for our purposes here, so the main analysis starts from smaller case-study files already included in this repository. The **Data Import** section shows where the optional source files enter the workflow. The **Data Wrangling and Preprocessing** section then explains the choices behind quality control, normalization, feature selection, annotation, and subsetting. You do not need to run that full workflow to complete the required case study, but you should understand how the teaching dataset was produced.
 
 Because the case study uses several related files, the row meaning changes from table to table:
 
