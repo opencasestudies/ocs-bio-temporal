@@ -3006,7 +3006,7 @@ Optional: file-reading helper functions used above
 </div>
 </div>
 </div>
-<p>The next section uses the small included files to explore the discovery set before you move deeper into preprocessing decisions. The optional full-preparation workflow resumes in <strong>Data Wrangling and Preprocessing</strong>, where the imported single-cell object is filtered, normalized, annotated, and subset for modeling. The complete runnable preparation scripts are provided there.</p>
+<p>The next section uses the small included files to explore the discovery set before you move deeper into preprocessing decisions. The optional full-preparation workflow resumes in <strong>Data Wrangling and Preprocessing</strong>, where the imported single-cell object is filtered, normalized, annotated, and subset for modeling. The complete executable preparation scripts are provided there.</p>
 <hr>
 </section>
 </section>
@@ -4555,7 +4555,7 @@ Answer
 <section id="complete-optional-reproduction-scripts" class="level2">
 <h2 class="anchored" data-anchor-id="complete-optional-reproduction-scripts"><strong>Complete Optional Reproduction Scripts</strong></h2>
 <p>The excerpts in <strong>Data Import</strong> and in this section are easier to learn from than a full script. If you want to run the optional preparation workflow, run one of the complete scripts below instead of copying the excerpts one at a time.</p>
-<p>Each script is the runnable version of the workflow you just walked through. It downloads or reuses the GEO source archive, imports the 10x files into a labeled single-cell object, applies the preprocessing decisions described above, constructs the balanced experimental discovery set, and saves large local objects plus a manifest. It prepares the inputs needed before CoGAPS is run; it does not run CoGAPS itself.</p>
+<p>Each script is the executable version of the workflow you just walked through. It downloads or reuses the GEO source archive, imports the 10x files into a labeled single-cell object, applies the preprocessing decisions described above, constructs the balanced experimental discovery set, and saves large local objects plus a manifest. It prepares the inputs needed before CoGAPS is run; it does not run CoGAPS itself.</p>
 <p>You can skip this block on a first read. The full scripts are displayed as source code for reproducibility, but they do not run during the required case-study path.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-32-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-32-1" role="tab" aria-controls="tabset-32-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-32-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-32-2" role="tab" aria-controls="tabset-32-2" aria-selected="false">Python</a></li></ul>
@@ -6145,19 +6145,19 @@ How to read the figures in this section
 [&lt;matplotlib.lines.Line2D object at 0x7fffc4a57310&gt;]
 &lt;matplotlib.patches.Polygon object at 0x7fffc4c535e0&gt;
 [&lt;matplotlib.lines.Line2D object at 0x7fffc4a56da0&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7fffc4a22320&gt;
+&lt;matplotlib.patches.Polygon object at 0x7fffc4a1e320&gt;
 [&lt;matplotlib.lines.Line2D object at 0x7fffc4a57ca0&gt;]
 &lt;matplotlib.patches.Polygon object at 0x7fffc4a74400&gt;
 [&lt;matplotlib.lines.Line2D object at 0x7fffc4a56ad0&gt;]
 &lt;matplotlib.patches.Polygon object at 0x7fffc4a56320&gt;
 [&lt;matplotlib.lines.Line2D object at 0x7fffc489c370&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7fffc4ae15d0&gt;
+&lt;matplotlib.patches.Polygon object at 0x7fffc4ae55d0&gt;
 [&lt;matplotlib.lines.Line2D object at 0x7fffc489c9a0&gt;]
 &lt;matplotlib.patches.Polygon object at 0x7fffc4b4a650&gt;
 [&lt;matplotlib.lines.Line2D object at 0x7fffc489cfd0&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7fffc4986ef0&gt;
+&lt;matplotlib.patches.Polygon object at 0x7fffc4982ef0&gt;
 [&lt;matplotlib.lines.Line2D object at 0x7fffc489d600&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7fffc49bb070&gt;
+&lt;matplotlib.patches.Polygon object at 0x7fffc49bf070&gt;
 [&lt;matplotlib.lines.Line2D object at 0x7fffc489dc30&gt;]
 &lt;matplotlib.patches.Polygon object at 0x7fffc49ea8c0&gt;
 [&lt;matplotlib.lines.Line2D object at 0x7fffc489e260&gt;]</code></pre>
@@ -13384,7 +13384,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","openEffect":"zoom","loop":false,"selector":".lightbox"});
+<script>var lightboxQuarto = GLightbox({"loop":false,"selector":".lightbox","closeEffect":"zoom","descPosition":"bottom","openEffect":"zoom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {

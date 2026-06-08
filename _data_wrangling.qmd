@@ -604,7 +604,7 @@ After this step, the preprocessing workflow has two kinds of outputs. The large 
 
 The excerpts in **Data Import** and in this section are easier to learn from than a full script. If you want to run the optional preparation workflow, run one of the complete scripts below instead of copying the excerpts one at a time.
 
-Each script is the runnable version of the workflow you just walked through. It downloads or reuses the GEO source archive, imports the 10x files into a labeled single-cell object, applies the preprocessing decisions described above, constructs the balanced experimental discovery set, and saves large local objects plus a manifest. It prepares the inputs needed before CoGAPS is run; it does not run CoGAPS itself.
+Each script is the executable version of the workflow you just walked through. It downloads or reuses the GEO source archive, imports the 10x files into a labeled single-cell object, applies the preprocessing decisions described above, constructs the balanced experimental discovery set, and saves large local objects plus a manifest. It prepares the inputs needed before CoGAPS is run; it does not run CoGAPS itself.
 
 You can skip this block on a first read. The full scripts are displayed as source code for reproducibility, but they do not run during the required case-study path.
 

@@ -1070,6 +1070,6 @@ def read_mtx(path):
 ```
 :::
 
-The next section uses the small included files to explore the discovery set before you move deeper into preprocessing decisions. The optional full-preparation workflow resumes in **Data Wrangling and Preprocessing**, where the imported single-cell object is filtered, normalized, annotated, and subset for modeling. The complete runnable preparation scripts are provided there.
+The next section uses the small included files to explore the discovery set before you move deeper into preprocessing decisions. The optional full-preparation workflow resumes in **Data Wrangling and Preprocessing**, where the imported single-cell object is filtered, normalized, annotated, and subset for modeling. The complete executable preparation scripts are provided there.
 
 ***
