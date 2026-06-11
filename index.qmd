@@ -1,5 +1,6 @@
 ---
 title: "**Biomedical Open Case Studies: Discovering Temporal Immune Programs with CoGAPS in Single-Cell Dengue Infection Data**"
+bibliography: resources/references.bib
 include-sections:
   stat-los: true
   data-import: true
@@ -15,7 +16,6 @@ execute:
 
 {{< include _ocs_frontmatter.qmd >}}
 
-{{< include _cite.qmd >}}
 
 {{< include _motivation.qmd >}}
 
@@ -69,7 +69,11 @@ execute:
 
 {{< include _additional_info.qmd >}}
 
-## Session Info
+{{< include _glossary_table.qmd >}}
+
+{{< include _bibliography.qmd >}}
+
+## **Session Info**
 ***
 
 ```{r}

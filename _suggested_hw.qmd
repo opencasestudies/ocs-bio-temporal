@@ -1,5 +1,33 @@
-# **Suggested Homework or Further Exploration**
+# **Continued Learning**
 ***
+
+:::{.next_steps_box}
+::::{.next_steps_box_header}
+Common Next Steps
+::::
+::::{.inner_block}
+Discuss common next steps for this type of an analysis in this box. Is there a specific number of steps that you need to do before a specific step? Is a "next step" more of an alternate step?
+::::
+:::
+
+<!--
+## Reinforcement Exercises
+
+Uncomment this section if you're suggesting an exercise that reiterates a large portion of the case study so learners can practice a hard skill again, reinforcing topics from the case study
+-->
+
+
+## Advancement Exercises
+
+Use this section to suggest different levels of exercises that build upon topics from the case study ... next steps, tangential skills, diving deeper into a side quest, etc.
+
+Perhaps explain how the suggested exercises relate to the common next steps.
+
+### Beginner
+
+### Intermediate
+
+### Advanced
 
 These are individual exercises. Each can be completed by one learner without a group project.
 
