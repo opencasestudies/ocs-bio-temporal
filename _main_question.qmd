@@ -3,6 +3,17 @@
 
 You will use the selected `K = 10` CoGAPS model to answer three connected research questions about the experimental dengue infection time course. Each question is paired with the evidence you will inspect later in the case study.
 
+:::{.main_question}
+::::{.main_question_header}
+Our main questions
+::::
+::::{.inner_block}
+1. Which temporal immune programs appear across the experimental dengue time course?
+2. Which programs reflect PBMC identity, dynamic infection activity, or both?
+3. Which program is most consistent with an interferon-associated late acute response?
+::::
+:::
+
 <table>
   <colgroup>
     <col style="width: 150px;">

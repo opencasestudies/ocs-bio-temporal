@@ -69,7 +69,7 @@ execute:
 
 {{< include _additional_info.qmd >}}
 
-## **Session Info**
+## Session Info
 ***
 
 ```{r}

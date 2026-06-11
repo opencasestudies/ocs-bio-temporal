@@ -20,29 +20,19 @@ This work is funded through the National Institutes of Health, specifically the 
 
 ---
 
-**Data, Runtime, and Reproducibility**
+**Data Availability, Runtime, and Reproducibility**
 
-The case-study repository contains the source files, website files, scripts, and teaching artifacts needed to reproduce the analyses in this case study. Large raw, preprocessed, model-object, and checkpoint files are uploaded to Zenodo, DOI pending publication.
+The public source data for this case study are available from GEO accession [GSE154386](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE154386){target="_blank"}. The case-study repository contains the source files, scripts, small CSV/JSON tables, and figures needed for the standard path through the analysis. Large raw, preprocessed, model-object, checkpoint, and selected-model reproduction files are stored in a Zenodo reproduction archive; DOI pending publication.
+
+The runtime setup and Docker commands are described in **Packages and Setup**. In brief, the Docker image supplies the software environment, the case-study repository supplies the standard-path files, and the Zenodo archive supplies the large files needed only for full reproduction.
 
 | Resource | Location | Purpose |
 |---|---|---|
 | Source single-cell data | GEO accession [GSE154386](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE154386){target="_blank"} | Original public data source from Waickman et al. 2021. |
-| Case-study source | [opencasestudies/ocs-bio-temporal](https://github.com/opencasestudies/ocs-bio-temporal){target="_blank"} | Source files, included teaching artifacts, scripts, and website output. |
-| Large reproduction artifacts | Zenodo draft; DOI pending publication | Optional full-reproduction files, including large H5AD inputs, model objects, checkpoints, and sweep summaries. |
-| Runtime image | `othomas2/cs5-cogaps-runtime:0.1.0` | Docker image used for RStudio Server sessions and optional local reproduction. |
+| Case-study source | [opencasestudies/ocs-bio-temporal](https://github.com/opencasestudies/ocs-bio-temporal){target="_blank"} | Source files, scripts, and small included files used by the standard path. |
+| Large reproduction files | Zenodo draft; DOI pending publication | Optional full-reproduction files, including raw/preprocessed objects, selected-model inputs and outputs, model objects, checkpoints, and K-selection summaries. |
+| Runtime image | `othomas2/cs5-cogaps-runtime:0.1.0` | Docker image that provides R, Python, CoGAPS, PyCoGAPS, and supporting packages. |
 
-To launch the runtime locally, clone the repository, open a terminal in the repository root, and run:
-
-```bash
-docker run --platform linux/amd64 --rm -it \
-  -p 8787:8787 \
-  -e PASSWORD="Password12" \
-  -v "$PWD":/home/rstudio/project:rw \
-  othomas2/cs5-cogaps-runtime:0.1.0
-```
-
-Then open [http://localhost:8787](http://localhost:8787){target="_blank"}, sign in with username `rstudio` and password `Password12`, and copy code from the online case study into the RStudio Server session.
-
-The standard case-study path uses precomputed artifacts so you can focus on interpretation, diagnostics, and reproducible analysis decisions. Full CoGAPS reruns are optional reproduction steps. In the four-thread Docker setup used for this draft, the selected `K = 10` R and Python model runs each took about 24 minutes.
+The K-selection sweep is documented as precomputed evidence. You will inspect the sweep summaries to understand why `K = 10` was selected, but rerunning the full sweep is not part of the standard path or the full reproduction path.
 
 ---

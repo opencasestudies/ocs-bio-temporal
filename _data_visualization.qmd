@@ -14,11 +14,16 @@ The figures are built from small source tables in `data/processed/figures/source
 | IFN pattern trajectory | `figure_05_ifn_pattern_subject_trajectory_source.csv`; `figure_05_ifn_pattern_summary_trajectory_source.csv` | Subject-level trajectory for the candidate IFN-associated pattern. | Does the candidate IFN program peak in the late acute window? | It does not show whether top genes are higher or lower than baseline. |
 | Directionality heatmap | `figure_06_ifn_top_gene_directionality_matrix.csv` | Log2 fold-change direction for top genes in the IFN-associated pattern. | Do top genes support an upregulated late acute response? | It does not replace the CoGAPS model; it adds direction to the non-negative pattern interpretation. |
 
-:::{.callout-note title="How to read the figures in this section"}
+:::{.definition_box}
+::::{.definition_box_header}
+How to read the figures in this section
+::::
+::::{.inner_block}
 A CoGAPS heatmap cell is a mean pattern score, not an upregulated or downregulated gene. Pattern names such as `Pattern3` are model labels until they are connected to timing, cell identity, top genes, directionality, and diagnostics. UMAP plots provide cell-level context, while subject-level trajectories provide stronger evidence for temporal claims.
+::::
 :::
 
-## **K Selection Visualization**
+## K Selection Visualization
 
 ![](data/processed/figures/figure_01_k_selection.png){fig-alt="K-selection figure with stability and temporal resolution above a revised goal-aligned K-ranking panel." width=850 .lightbox}
 
@@ -26,7 +31,7 @@ This figure is a visualization of a modeling decision. The top panel asks whethe
 
 Use this plot to compare `K = 5` and `K = 10`. `K = 5` is useful because it is stable and compact, but compact models can compress several biological signals into fewer patterns. `K = 10` stays in a stable region while separating a late acute IFN-associated program more clearly. This is why `K = 10` is used for the main model and `K = 5` remains a sensitivity comparison.
 
-## **Pattern Usage Across Time**
+## Pattern Usage Across Time
 
 ![](data/processed/figures/figure_03_pattern_usage_by_time_small_multiples.png){fig-alt="Small-multiple line plots of mean CoGAPS pattern usage across experimental infection days for each selected K=10 pattern." width=850 .lightbox}
 
@@ -38,11 +43,11 @@ Start with the line panels. Each panel uses the same y-axis, so a sharp rise in 
 
 Now use the heatmap as a magnitude check. A line plot can make modest changes easy to notice, but the heatmap helps you compare how large each mean pattern score is relative to the rest of the model. Together, these views support a better first question: not "which single pattern changes?", but "which patterns show temporal structure strong enough to analyze more carefully?"
 
-The programming move is a reshape. The source table is stored in a wide form, with one row per pattern and one column per infection day. To draw either figure, you convert that table to long form so each row represents one pattern, one day, and one mean usage value. The line panels then map day to the x-axis and mean usage to the y-axis; the heatmap maps day, pattern, and mean usage to a grid of colored tiles.
+This figure starts with a reshape. The source table is stored in a wide form, with one row per pattern and one column per infection day. To draw either figure, you convert that table to long form so each row represents one pattern, one day, and one mean usage value. The line panels then map day to the x-axis and mean usage to the y-axis; the heatmap maps day, pattern, and mean usage to a grid of colored tiles.
 
 ::: {.panel-tabset}
 
-## R
+### R
 
 ```{r}
 #| label: viz-pattern-time-r
@@ -109,7 +114,7 @@ ggplot(pattern_time_heatmap, aes(x = timepoint, y = pattern, fill = mean_usage))
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
-## Python
+### Python
 
 ```{python}
 #| label: viz-pattern-time-python
@@ -185,7 +190,7 @@ plt.show()
 
 Before moving on, ask which patterns change most visibly over time and which merely have high average usage. `Pattern3` is the strongest visual candidate because it is low near baseline and higher during the late acute window. `Pattern9` has a smaller rise toward `D14/15`, so it should be treated as a secondary temporal pattern to inspect later. These observations are hypotheses at this point; the Data Analysis section will connect them to subject-level summaries, top genes, directionality, and model diagnostics.
 
-## **Pattern Usage By Broad Cell Type**
+## Pattern Usage by Broad Cell Type
 
 ![](data/processed/figures/figure_04_pattern_usage_by_broad_cell_type_heatmap.png){fig-alt="Heatmap of mean CoGAPS pattern usage by broad immune-cell type." width=850 .lightbox}
 
@@ -195,7 +200,7 @@ The source table has the same structure as the time heatmap, but the columns are
 
 ::: {.panel-tabset}
 
-## R
+### R
 
 ```{r}
 #| label: viz-pattern-celltype-r
@@ -230,7 +235,7 @@ ggplot(pattern_cell_long, aes(x = broad_cell_type, y = pattern, fill = mean_usag
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
-## Python
+### Python
 
 ```{python}
 #| label: viz-pattern-celltype-python
@@ -262,7 +267,7 @@ plt.show()
 
 Use this heatmap to separate visual hypotheses. Patterns that are strongest in T cells, B cells, or plasmablasts may be useful identity or composition patterns. A pattern should not be called an infection-response program from this plot alone. For `Pattern3`, the important observation is that it has a temporal signal and is also visible in monocyte-rich regions of the PBMC mixture. The Data Analysis section will test that interpretation more formally.
 
-## **Pattern Scores On A Transcriptome UMAP**
+## Pattern Scores on a Transcriptome UMAP
 
 ![](data/processed/figures/figure_08_pattern_scores_on_transcriptome_umap.png){fig-alt="Transcriptome UMAP of discovery cells colored by broad PBMC identity and selected K=10 CoGAPS pattern scores for Pattern3, Pattern7, and Pattern10." width=850 .lightbox}
 
@@ -272,7 +277,7 @@ Do not treat a UMAP as proof. Nearby points are useful for visual context, but t
 
 ::: {.panel-tabset}
 
-## R
+### R
 
 ```{r}
 #| label: viz-pattern-umap-r
@@ -309,7 +314,7 @@ ggplot(embedding_long, aes(x = umap_1, y = umap_2, color = cell_score)) +
   theme(panel.grid = element_blank())
 ```
 
-## Python
+### Python
 
 ```{python}
 #| label: viz-pattern-umap-python
@@ -348,17 +353,17 @@ plt.show()
 
 Read the UMAP together with the heatmaps. If a pattern is concentrated in one broad transcriptome neighborhood, it may be identity-like. If a pattern has a clear temporal trajectory but is still visible within recognizable cell-state regions, it may represent activity layered onto PBMC identity.
 
-## **IFN Pattern Trajectory**
+## IFN Pattern Trajectory
 
 ![](data/processed/figures/figure_05_ifn_pattern_trajectory.png){fig-alt="Subject-level trajectory for the IFN-associated CoGAPS pattern, showing a rise at day 10 and day 14 or 15." width=850 .lightbox}
 
 This trajectory is the main visual evidence for the late acute timing of the candidate IFN-associated program. Gray lines show subject-level means. The red line shows the mean across subjects with standard error. The shaded region marks the late acute window.
 
-This figure uses subject-timepoint summaries rather than treating every cell as an independent biological replicate. That choice matters because cells from the same subject and day are related measurements. The programming move is to plot one line per subject, then overlay the across-subject mean.
+This figure uses subject-timepoint summaries rather than treating every cell as an independent biological replicate. That choice matters because cells from the same subject and day are related measurements. The plotting strategy is to draw one line per subject, then overlay the across-subject mean.
 
 ::: {.panel-tabset}
 
-## R
+### R
 
 ```{r}
 #| label: viz-ifn-trajectory-r
@@ -405,7 +410,7 @@ ggplot() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
-## Python
+### Python
 
 ```{python}
 #| label: viz-ifn-trajectory-python
@@ -456,17 +461,17 @@ plt.show()
 
 This plot supports the visual hypothesis that `Pattern3` rises during the late acute window and returns closer to baseline by `D28`. It still does not show whether the genes associated with the pattern increase relative to baseline. That is why the next visualization checks directionality.
 
-## **Directionality Heatmap**
+## Directionality Heatmap
 
 ![](data/processed/figures/figure_06_ifn_top_gene_directionality_heatmap.png){fig-alt="Heatmap showing log2 fold-change directionality for top IFN-associated pattern genes across timepoints." width=850 .lightbox}
 
 The directionality heatmap comes after the trajectory for a reason. CoGAPS scores are non-negative, so a high pattern score tells you that a cell or group uses a pattern more strongly, but it does not tell you whether the top genes are higher or lower than baseline. This heatmap adds that missing direction by showing pseudobulk log2 fold changes for top genes in the candidate IFN-associated pattern.
 
-The programming choice here is a diverging color scale centered at zero. Values above zero indicate higher expression relative to baseline; values below zero indicate lower expression relative to baseline. Centering the color scale prevents a small negative value and a large positive value from being read as the same kind of evidence.
+The important plotting choice here is a diverging color scale centered at zero. Values above zero indicate higher expression relative to baseline; values below zero indicate lower expression relative to baseline. Centering the color scale prevents a small negative value and a large positive value from being read as the same kind of evidence.
 
 ::: {.panel-tabset}
 
-## R
+### R
 
 ```{r}
 #| label: viz-directionality-r
@@ -502,7 +507,7 @@ ggplot(direction_long, aes(x = timepoint, y = gene_label, fill = log2_fold_chang
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
-## Python
+### Python
 
 ```{python}
 #| label: viz-directionality-python

@@ -3,7 +3,7 @@
 
 By the end of this case study, you will be able to analyze longitudinal single-cell RNA-seq data from experimental dengue virus infection using CoGAPS, a Bayesian non-negative matrix factorization method.
 
-You may work through the analysis in R or Python. The case study uses precomputed teaching artifacts for the required path, so the focus is on importing, summarizing, visualizing, and interpreting the selected model rather than waiting for a full CoGAPS run. If you want to reproduce the full model run, you can download the large reproduction files from the Zenodo record and run the provided scripts inside the case-study Docker image.
+You may work through the analysis in R or Python. The standard path uses precomputed teaching files, so the focus is on importing, summarizing, visualizing, and interpreting the selected model rather than waiting for a full CoGAPS run. If you want to reproduce the full model run, you can download the large reproduction files from the Zenodo record and run the provided scripts inside the case-study Docker image.
 
 The objectives are organized into data science/bioinformatics, statistical/modeling, and biological/topical goals.
 
@@ -17,7 +17,7 @@ The objectives are organized into data science/bioinformatics, statistical/model
 
 {{< include _biological_los.qmd >}}
 
-## **Objectives Map**
+## Objectives Map
 
 | Objective area | You will practice this by... | Main section |
 |---|---|---|
