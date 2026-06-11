@@ -1,50 +1,36 @@
-# **Suggested Homework or Further Exploration**
+# **Continued Learning**
 ***
 
-These are individual exercises. Each can be completed by one learner without a group project.
+:::{.next_steps_box}
+::::{.next_steps_box_header}
+Common Next Steps
+::::
+::::{.inner_block}
+Discuss common next steps for this type of an analysis in this box. Is there a specific number of steps that you need to do before a specific step? Is a "next step" more of an alternate step?
+::::
+:::
 
-## Core Homework
+<!--
+## Reinforcement Exercises
 
-1. Recreate the K-selection table and write a short justification for selecting `K = 10` over `K = 5`.
-1. Choose one identity-like pattern and annotate it using its top genes, dominant broad cell type, and time-course behavior.
-1. Replot the IFN-associated pattern trajectory with one panel per subject.
-1. Use the directionality table to identify which top IFN-associated genes are most consistently up at `D10` and `D14/15`.
-1. Inspect the selected-model metrics and write a short note about whether the diagnostic traces support using the precomputed result for interpretation.
+Uncomment this section if you're suggesting an exercise that reiterates a large portion of the case study so learners can practice a hard skill again, reinforcing topics from the case study
+-->
 
-## Side Quests
 
-1. Redraw the pattern-by-cell-type heatmap using a different color scale and explain whether the interpretation changes.
-1. Repeat the identity-versus-activity classification with a different ratio cutoff, such as 1.25 or 2.0, and record which pattern labels change.
-1. Compare `K = 5` and `K = 10` top genes for the strongest time-varying pattern in each model.
-1. Create a small glossary entry for one method concept, such as non-negative matrix factorization, pseudobulk, OpenMP, or transfer learning.
+## Advancement Exercises
 
-## Optional Natural Infection Projection
+Use this section to suggest different levels of exercises that build upon topics from the case study ... next steps, tangential skills, diving deeper into a side quest, etc.
 
-<table>
-  <colgroup>
-    <col style="width: 150px;">
-    <col>
-  </colgroup>
-  <thead>
-    <tr>
-      <th></th>
-      <th>Optional extension</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><img src="assets/question_icons/rq4_natural_projection.png" alt="Icon showing CoGAPS programs learned from an experimental time course projected into a second cell dataset." width="140"></td>
-      <td><strong>Can programs learned from the experimental infection cohort be projected into natural primary dengue infection samples?</strong><br>This extension is framed as a planning and reproduction exercise. The standard analysis does not claim final natural-cohort projection results because those samples are not aligned to the same experimental clock.</td>
-    </tr>
-  </tbody>
-</table>
+Perhaps explain how the suggested exercises relate to the common next steps.
 
-1. Draft the projection analysis plan, including the input object, learned gene-loading matrix, projection method, and expected output tables.
-1. Define what would count as evidence that an experimental IFN-associated program transfers into natural infection.
-1. List at least two limitations that would make the natural-projection interpretation weaker than the experimental time-course interpretation.
+### Beginner
 
-## Challenge Extension
+### Intermediate
 
-Rerun the selected `K = 10` model locally in the Docker image using the external large H5AD artifacts. Then compare your newly generated metrics JSON with the precomputed metrics in this repository.
+### Advanced
+
+<!--
+Example from a previous case study: https://www.opencasestudies.org/ocs-bp-co2-emissions/#Suggested_Homework (though this example doesn't include different levels like Beginner, Intermediate, and Advanced)
+-->
 
 ***
