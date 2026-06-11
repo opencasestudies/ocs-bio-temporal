@@ -678,7 +678,7 @@ You will combine IFN-score correlation, interferon-stimulated top genes, day 10 
 </section>
 <section id="packages-and-setup" class="level1">
 <h1><strong>Packages and Setup</strong></h1>
-<p>This case study has two runnable paths. Both use the same Docker image, which provides the software environment, and both start from a local copy of the case-study repository.</p>
+<p>This case study has two ready-to-run paths. Both use the same Docker image, which provides the software environment, and both start from a local copy of the case-study repository.</p>
 <p>The <strong>standard path</strong> is the recommended path for most learners. It uses small CSV, JSON, and figure files already included in the repository, so you can focus on importing, summarizing, visualizing, diagnosing, and interpreting the selected <code>K = 10</code> model outputs.</p>
 <p>The <strong>full reproduction path</strong> is optional. Use it if you want to regenerate the prepared discovery-set files, rerun the selected <code>K = 10</code> CoGAPS model, or recreate directionality outputs. This path requires the large reproduction files from Zenodo and more time and storage. It does not include rerunning the full K-selection sweep; the sweep is treated as precomputed evidence that you will inspect in the analysis section.</p>
 <table class="caption-top table">
@@ -720,7 +720,7 @@ You will combine IFN-score correlation, interferon-stimulated top genes, day 10 
 <p>The Docker image supplies software, not project data. The <code>-v</code> options in the commands below mount local folders into the container so RStudio Server can see them.</p>
 <section id="use-rstudio-server" class="level2">
 <h2 class="anchored" data-anchor-id="use-rstudio-server">Use RStudio Server</h2>
-<p>Both runnable paths use RStudio Server inside the Docker image. After Docker starts, open <a href="http://localhost:8787" target="_blank">http://localhost:8787</a> and sign in with username <code>rstudio</code> and password <code>Password12</code>. Keep the online case-study page open in one browser tab and RStudio Server open in another.</p>
+<p>Both ready-to-run paths use RStudio Server inside the Docker image. After Docker starts, open <a href="http://localhost:8787" target="_blank">http://localhost:8787</a> and sign in with username <code>rstudio</code> and password <code>Password12</code>. Keep the online case-study page open in one browser tab and RStudio Server open in another.</p>
 <p>In RStudio Server, work from <code>/home/rstudio/project</code>. That folder is the copy of the case-study repository that you mounted with Docker. If you are unsure where you are, run <code>getwd()</code> in the R Console or <code>pwd</code> in the Terminal.</p>
 <p>The schematic below labels the main panes you will use while working through the case study.</p>
 <div id="fig-rstudio-server-labeled" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1361,7 +1361,7 @@ D_{g,c} \approx \sum_{k=1}^{K} A_{g,k} P_{k,c}
 </section>
 <section id="what-one-row-means" class="level2">
 <h2 class="anchored" data-anchor-id="what-one-row-means">What One Row Means</h2>
-<p>Different file families summarize different biological or computational units. Keeping those row meanings straight will help you avoid overinterpreting the results.</p>
+<p>Different file families summarize different biological or computational units. Keeping those row meanings straight will help you avoid over-interpreting the results.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
@@ -5450,7 +5450,7 @@ Show answer
 </div>
 </div>
 </div>
-<p>Finally, the workflow keeps highly variable genes. The R excerpt shows the decision with a simple variance ranking; the Python script uses Scanpy’s highly variable gene routine with <code>sample_id</code> as a batch key.</p>
+<p>Finally, the workflow keeps highly variable genes. The R excerpt shows the decision with a simple variance ranking; the Python script uses the Scanpy highly variable gene routine with <code>sample_id</code> as a batch key.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-40-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-40-1" role="tab" aria-controls="tabset-40-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-40-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-40-2" role="tab" aria-controls="tabset-40-2" aria-selected="false">Python</a></li></ul>
 <div class="tab-content">
@@ -7446,9 +7446,9 @@ Show answer
 [&lt;matplotlib.lines.Line2D object at 0x7fffc487b880&gt;]
 &lt;matplotlib.patches.Polygon object at 0x7fffc4a0afe0&gt;
 [&lt;matplotlib.lines.Line2D object at 0x7fffc487a7d0&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7fffc4a3dab0&gt;
+&lt;matplotlib.patches.Polygon object at 0x7fffc4a35db0&gt;
 [&lt;matplotlib.lines.Line2D object at 0x7fffc487a4d0&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7fffc4b08f40&gt;
+&lt;matplotlib.patches.Polygon object at 0x7fffc4b04f40&gt;
 [&lt;matplotlib.lines.Line2D object at 0x7fffc487a890&gt;]
 &lt;matplotlib.patches.Polygon object at 0x7fffc4b397e0&gt;
 [&lt;matplotlib.lines.Line2D object at 0x7fffc48c40d0&gt;]
@@ -14683,7 +14683,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"selector":".lightbox","descPosition":"bottom","openEffect":"zoom","closeEffect":"zoom","loop":false});
+<script>var lightboxQuarto = GLightbox({"selector":".lightbox","openEffect":"zoom","closeEffect":"zoom","loop":false,"descPosition":"bottom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {
