@@ -12,6 +12,9 @@ GitHub repository.
 
 ## Main Groups
 
+- Source download, import, preprocessing, and discovery-set construction:
+  - `../prepare_gse154386_subset_r.R`
+  - `../prepare_gse154386_subset_python.py`
 - Sweep setup and aggregation:
   - `gse154386_cogaps_sweep_config.sh`
   - `gse154386_make_cogaps_jobs_tsv.py`

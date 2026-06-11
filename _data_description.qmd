@@ -1,169 +1,94 @@
 # **What Are the Data?**
 ***
 
-In this section, you will connect the original public study to the smaller case-study files used for the required analysis. The goal is to know which data layer you are using before you import, summarize, or interpret any CoGAPS results.
+Now that you know how to launch the analysis environment, this section explains what the data files represent. You will not import, preprocess, or analyze the files here. That work begins in **Data Import**. The goal for this section is simpler: know which data layer you are looking at before you start reading tables or interpreting CoGAPS patterns.
 
-The source data come from GEO accession `GSE154386`, associated with Waickman et al. 2021. The study used a 10x Genomics 5-prime single-cell RNA-seq workflow to profile unfractionated peripheral blood mononuclear cells, or `PBMCs`. Unfractionated means the immune-cell mixture was measured together rather than first being sorted into one purified immune-cell type. In practice, T cells, B cells, natural killer cells, monocytes, and related antigen-presenting cells enter the analysis together.
+The public source data come from GEO accession `GSE154386`, associated with Waickman et al. 2021. The source study used a 10x Genomics 5-prime single-cell RNA-seq workflow to profile unfractionated peripheral blood mononuclear cells, or `PBMCs`. PBMCs are immune cells isolated from blood, including T cells, B cells, natural killer cells, monocytes, and related antigen-presenting cells. Unfractionated means those immune-cell types were measured together rather than first being sorted into separate purified populations.
 
-This design is useful for studying host response, but it also means that cell identity and infection-response activity are mixed in the same expression matrix. The original study also includes natural infection samples; those are biologically important, but they are reserved here for optional projection material rather than the required case-study path.
+That design is useful for studying host response because many immune-cell types can be examined in the same experiment. It also creates the central modeling challenge in this case study: stable immune-cell identity and dynamic infection-response activity are mixed in the same expression matrix. CoGAPS is useful here because it can help separate these overlapping sources of variation into latent patterns.
 
-| Data layer | What it contains | Role in this case study |
-|---|---|---|
-| Original public source data | Raw 10x single-cell files from GEO accession `GSE154386`. | Public provenance for the full Waickman et al. 2021 study. |
-| Experimental infection cohort | Three dengue-naive adults sampled at aligned study days `D0`, `D2`, `D4`, `D6`, `D8`, `D10`, `D14/15`, and `D28`. | Primary temporal discovery cohort for the required analysis. |
-| Balanced teaching dataset | A subset of the experimental cohort with 4,800 cells and 5,000 highly variable genes. | CoGAPS input summarized by the case-study files included here. |
-| Selected-model files | Selected `K = 10` R and Python outputs, K-selection summaries, directionality tables, and figures. | Required case-study path for importing, visualizing, diagnosing, and interpreting the selected model. |
-| Zenodo reproduction files | Large raw, preprocessed, model-object, and checkpoint files. | Optional full reproduction path for learners who want to rerun preprocessing or CoGAPS locally. |
+The source study includes both experimental dengue infection samples and natural infection samples. The main case-study analysis focuses on the experimental cohort because those subjects were sampled on aligned study days. Natural infection samples remain important context and may be used in optional extension work, but they are not part of the required main analysis.
+
+## Data Layers
+
+The case study uses several data layers. The table below is a map, not a workflow. Later sections will show how to import files, check coverage, preprocess source data, draw figures, and answer research questions.
+
+| Data layer | What it represents | Path | Where you will use it |
+|---|---|---|---|
+| Original public source data | Raw 10x single-cell files from GEO accession `GSE154386`. | Full reproduction | Data Import introduces where source 10x files enter R or Python. |
+| Experimental infection cohort | Three dengue-naive adults sampled at aligned study days `D0`, `D2`, `D4`, `D6`, `D8`, `D10`, `D14/15`, and `D28`. | Standard path and full reproduction | Data Exploration checks subject and timepoint coverage. |
+| Balanced discovery set | The experimental subset used for the selected CoGAPS model: 4,800 cells and 5,000 highly variable genes. | Standard path and full reproduction | Data Wrangling explains how the discovery set was prepared. |
+| Selected `K = 10` model outputs | Pattern scores, gene loadings, top genes, diagnostics, and research-question summary tables from the selected model. | Standard path | Data Import, Visualization, and Analysis use these files directly. |
+| K-selection evidence | Precomputed tables and figures used to justify the selected model rank. | Standard path | Data Visualization previews the evidence; Data Analysis explains the decision. |
+| Zenodo reproduction files | Large raw, preprocessed, model-object, checkpoint, and selected-model reproduction files. | Full reproduction | Full-reproduction scripts use these files after you download and mount the Zenodo archive. |
+| Natural infection files | Source-study samples from natural dengue infection. | Optional extension | Suggested Homework or Further Exploration may use these as projection targets. |
 
 The timeline labels use `D` for experimental study day. For example, `D0` is day 0, `D10` is day 10, and `D14/15` combines samples collected around days 14 and 15.
 
-## **From Source Data to the Teaching Dataset**
+## From Source Data to Analysis Files
 
-The teaching dataset is not a separate biological study. It is a smaller, traceable representation of the source data and selected CoGAPS model. The transformation has two parts.
+The included analysis files are not a separate biological study. They are a smaller, traceable representation of the source data and the selected CoGAPS model. The transformation has two broad stages.
 
-First, the source data are prepared for modeling:
+First, the source single-cell data are prepared for modeling. The full preparation workflow downloads the public `GSE154386` raw 10x files from GEO, attaches sample metadata, applies quality control, normalizes expression, selects highly variable genes, adds broad biological labels, and constructs the balanced experimental discovery set. **Data Import** shows where the source files enter the workflow. **Data Wrangling and Preprocessing** explains why those preparation decisions matter.
 
-1. Download the public `GSE154386` raw 10x files from GEO.
-1. Build single-cell objects and attach sample metadata.
-1. Apply quality control, normalization, and highly variable gene selection.
-1. Annotate broad immune-cell identities for interpretation.
-1. Construct a balanced experimental discovery subset.
+Second, the selected model results are prepared for interpretation. The selected `K = 10` model is run and diagnosed, then smaller tables and figures are exported for the standard path through the case study. **Data Visualization** shows how those tables become figures. **Data Analysis** uses them to answer the research questions.
 
-Then, the selected model results are prepared for this case study:
+The full raw, preprocessed, model-object, and checkpoint files are too large for the standard path, so they are stored in the Zenodo reproduction archive. The case-study repository includes the smaller files needed to inspect the selected model, reproduce the main summaries, and follow the interpretation.
 
-1. Run and diagnose the selected `K = 10` CoGAPS model.
-1. Export small tables and figures used in the case study.
+## What One Row Means
 
-The full raw and preprocessed files are too large for our purposes here, so the main analysis starts from smaller case-study files already included in this repository. The **Data Import** section shows where the optional source files enter the workflow. The **Data Wrangling and Preprocessing** section then explains the choices behind quality control, normalization, feature selection, annotation, and subsetting. You do not need to run that full workflow to complete the required case study, but you should understand how the teaching dataset was produced.
+Different file families summarize different biological or computational units. Keeping those row meanings straight will help you avoid overinterpreting the results.
 
-Because the case study uses several related files, the row meaning changes from table to table:
-
-| File type | What one row represents | How you will use it |
-|---|---|---|
-| Single-cell expression matrices | One cell, with genes represented as columns or matrix features. | Optional reproduction and model input preparation. |
-| Discovery cell-score files | One discovery-set cell with metadata and `Pattern1` to `Pattern10` scores. | Cell-level summaries and broad pattern visualization. |
-| Subject-timepoint summaries | One subject, timepoint, and pattern. | Repeated-sampling interpretation of temporal trajectories. |
-| Gene-loading and top-gene files | One gene-pattern entry, often with a rank and weight. | Biological interpretation of each CoGAPS pattern. |
-| Pattern summary tables | One CoGAPS pattern. | Ranking temporal variation, identity/activity structure, and IFN association. |
-| Diagnostic traces and metrics | One trace point or one run-level summary record. | Checking model runtime, convergence diagnostics, and selected-model settings. |
-
-The next code chunk reads `data/artifact_manifest.json` to show which small files are included here and which larger files belong to the Zenodo reproduction archive.
-
-::: {.panel-tabset}
-
-## R
-
-```{r}
-#| label: artifact-manifest-summary-r
-manifest <- jsonlite::fromJSON(here::here("data", "artifact_manifest.json"))
-
-data.frame(
-  file_group = c("Included case-study files", "Zenodo reproduction files"),
-  file_count = c(nrow(manifest$copied), nrow(manifest$skipped)),
-  size_mb = c(
-    round(sum(manifest$copied$size_bytes) / 1024^2, 2),
-    round(sum(manifest$skipped$size_bytes) / 1024^2, 2)
-  )
-) |>
-  knitr::kable()
-```
-
-## Python
-
-```{python}
-#| label: artifact-manifest-summary-python
-import json
-import pandas as pd
-
-with open("data/artifact_manifest.json") as f:
-    manifest_py = json.load(f)
-
-pd.DataFrame({
-    "file_group": [
-        "Included case-study files",
-        "Zenodo reproduction files",
-    ],
-    "file_count": [
-        len(manifest_py["copied"]),
-        len(manifest_py["skipped"]),
-    ],
-    "size_mb": [
-        round(sum(x["size_bytes"] for x in manifest_py["copied"]) / 1024**2, 2),
-        round(sum(x["size_bytes"] for x in manifest_py["skipped"]) / 1024**2, 2),
-    ],
-})
-```
-
-:::
-
-The included case-study files contain selected-model outputs, K-selection tables, directionality summaries, implementation diagnostics, and figures. The Zenodo reproduction files include larger H5AD inputs, RDS model objects, raw/preprocessed objects, and checkpoint files. The manifest at `data/artifact_manifest.json` records which files are included with the case study and which belong to the larger reproduction archive.
-
-## **Teaching Discovery Set**
-
-The core CoGAPS analysis uses a balanced experimental discovery set rather than the entire published single-cell atlas. This teaching discovery set contains 4,800 cells and 5,000 highly variable genes. Each experimental timepoint contributes 600 cells, so the selected model is not dominated by a single high-yield sample.
-
-This balancing choice supports clearer pattern comparison across timepoints. It should not be used to estimate the true abundance of each immune-cell type in the original study population.
-
-::: {.panel-tabset}
-
-## R
-
-```{r}
-#| label: discovery-composition-table-r
-composition <- readr::read_csv(
-  here::here("data", "processed", "figures", "source_tables",
-             "figure_02_discovery_set_composition_source.csv"),
-  show_col_types = FALSE
-)
-
-composition |>
-  group_by(timepoint_merged) |>
-  summarize(n_cells = sum(n_cells), .groups = "drop") |>
-  knitr::kable()
-```
-
-## Python
-
-```{python}
-#| label: discovery-composition-table-python
-composition_py = pd.read_csv(
-    "data/processed/figures/source_tables/"
-    "figure_02_discovery_set_composition_source.csv"
-)
-
-composition_py.groupby("timepoint_merged", as_index=False)["n_cells"].sum()
-```
-
-:::
-
-The table above counts cells, not independent people. A cell is the row-level observation used for expression summaries and CoGAPS pattern scores. The biological design, however, is anchored by subjects and their repeated timepoints.
+| File family | One row represents | Used for | Interpretation caution |
+|---|---|---|---|
+| Single-cell expression matrices | One cell, with genes stored as matrix features or columns. | Full reproduction and model input preparation. | Matrix orientation matters; cells and genes must stay correctly labeled. |
+| Discovery cell-score files | One discovery-set cell with metadata and `Pattern1` to `Pattern10` scores. | Cell-level summaries and pattern visualization. | Cells are not independent biological replicates. |
+| Subject-timepoint summaries | One subject, one timepoint, and one pattern. | Temporal trajectories and repeated-sampling interpretation. | These summaries are better evidence for time-course claims than treating every cell as independent. |
+| Gene-loading and top-gene tables | One gene-pattern entry, often with a rank and weight. | Biological interpretation of each CoGAPS pattern. | CoGAPS weights are non-negative and do not indicate whether a gene is up- or down-regulated. |
+| Pattern summary tables | One CoGAPS pattern. | Ranking temporal variation, identity/activity structure, and IFN association. | Pattern labels such as `Pattern3` are model labels, not biological names. |
+| Diagnostic traces and metrics | One trace point or one run-level summary record. | Runtime, convergence, and selected-model checks. | Diagnostics support interpretation, but they are not biological findings by themselves. |
 
 ::: {.definition_box}
 :::: {.definition_box_header}
 Independence and repeated sampling
 ::::
 :::: {.inner_block}
-Single cells are not independent biological replicates. Many cells come from the same subject at the same experimental day. You will use cell-level summaries to visualize patterns, but the biological interpretation should also consider subject-level trajectories and repeated sampling over time.
+Single cells are not independent biological replicates. Many cells come from the same subject at the same experimental day. You will use cell-level summaries to visualize patterns, but biological interpretation should also consider subject-level trajectories and repeated sampling over time.
 ::::
 :::
 
-## **Data Dictionary**
+## Balanced Discovery Set
 
-The columns below appear repeatedly in the import, wrangling, visualization, and analysis sections.
+The core CoGAPS analysis uses a balanced experimental discovery set rather than the entire published single-cell atlas. The discovery set contains 4,800 cells and 5,000 highly variable genes, with 600 cells contributing to each experimental timepoint. This makes the selected model easier to compare across infection days because no single day contributes far more cells than the others.
 
-| Column or term | Meaning | Why it matters |
+This balancing choice is for modeling and interpretation. It should not be used to estimate the true abundance of each immune-cell type in the original source study. You will inspect the discovery-set composition in **Data Exploration**, then return to the preprocessing decisions that created the discovery set in **Data Wrangling and Preprocessing**.
+
+## Data Dictionary
+
+The terms below appear repeatedly in the import, exploration, wrangling, visualization, and analysis sections.
+
+| Study design term | Meaning | Why it matters |
 |---|---|---|
 | `subject` | Experimental participant identifier, such as `Subject2`. | Links cells back to the biological person sampled over time. |
-| `sample_id` | GEO sample identifier for a specific sample. | Tracks the source sample used to build the teaching subset. |
+| `sample_id` | GEO sample identifier for a specific sample. | Tracks the source sample used to build the discovery set. |
 | `timepoint_merged` | Display label for the experimental day, such as `D0`, `D10`, or `D14/15`. | Defines the temporal axis used in figures and summaries. |
 | `day_merged_numeric` | Numeric version of the timepoint, with `D14/15` represented as 14.5. | Lets plots and summaries order the time course correctly. |
+
+| Cell and composition term | Meaning | Why it matters |
+|---|---|---|
 | `broad_cell_type` | Broad immune-cell identity, such as `T_cell`, `Monocyte`, or `B_cell`. | Helps distinguish cell-identity structure from infection-response activity. |
 | `n_cells` | Number of cells in a group. | Shows how much cell-level evidence contributes to a summary. |
 | `fraction` | Proportion of cells in a timepoint or group. | Helps compare cell composition across days. |
+
+| CoGAPS model term | Meaning | Why it matters |
+|---|---|---|
 | `Pattern1` to `Pattern10` | CoGAPS pattern scores for the selected `K = 10` model. | Larger values mean stronger activity of that pattern in a cell or group. |
 | `pattern` | Pattern label used in long-format summaries. | Lets you compare results pattern by pattern. |
 | `gene` | Gene symbol in a pattern or directionality table. | Connects model patterns to biological interpretation. |
 | `weight` | CoGAPS gene loading for a pattern. | Larger values indicate genes that contribute more strongly to that pattern. |
+
+| Interpretation term | Meaning | Why it matters |
+|---|---|---|
 | `eta_timepoint` | Fraction of pattern-score variation explained by experimental timepoint. | Helps rank patterns by temporal structure. |
 | `eta_broad_cell_type` | Fraction of pattern-score variation explained by broad immune-cell type. | Helps distinguish identity-like programs from activity-like programs. |
 | `spearman_ifn_score_rho` | Spearman correlation between a pattern score and an interferon-program score. | Supports evaluation of IFN-associated patterns. |
@@ -171,6 +96,6 @@ The columns below appear repeatedly in the import, wrangling, visualization, and
 | `log2FC` | Log2 fold change from a pseudobulk directionality comparison. | Indicates whether selected genes are higher or lower relative to baseline. |
 | `direction` | Direction label derived from `log2FC`, such as up, down, or unchanged. | Adds up/down regulation context that CoGAPS weights alone do not encode. |
 
-Now that you know the data layers, design units, and key columns, the next sections import the case-study files and inspect the tables that carry the selected CoGAPS model through the analysis.
+You now know what the file families represent and which biological units they summarize. Next, you will import the selected-model files and check that the tables needed for the analysis are present.
 
 ***

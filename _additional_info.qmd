@@ -1,7 +1,7 @@
 # **Additional Information**
 ***
 
-## **Helpful Links**
+## Helpful Links
 
 - [GEO accession GSE154386](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE154386){target="_blank"}
 - [Open Case Studies Guide](https://www.opencasestudies.org/OCS_Guide/){target="_blank"}
@@ -10,7 +10,7 @@
 - [AnnData documentation](https://anndata.readthedocs.io/){target="_blank"}
 - [Scanpy documentation](https://scanpy.readthedocs.io/){target="_blank"}
 
-## **Concepts Covered**
+## Concepts Covered
 
 - longitudinal single-cell RNA-seq
 - PBMC immune-cell composition
@@ -25,7 +25,7 @@
 - R and Python reproducibility
 - Small teaching artifacts included with the case study
 
-## **Key Scientific and Methodological References**
+## Key Scientific and Methodological References
 
 - World Health Organization. (2025). *Dengue: global situation*. Weekly Epidemiological Record, 100(52), 665-678. [https://www.who.int/publications/i/item/who-wer10052-665-678](https://www.who.int/publications/i/item/who-wer10052-665-678){target="_blank"}
 - World Health Organization. (2025). Dengue. [https://www.who.int/news-room/fact-sheets/detail/dengue-and-severe-dengue](https://www.who.int/news-room/fact-sheets/detail/dengue-and-severe-dengue){target="_blank"}

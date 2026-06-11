@@ -1,7 +1,7 @@
 # **Context and Background**
 ***
 
-## **Dengue Infection and PBMC Host Response**
+## Dengue Infection and PBMC Host Response
 
 Dengue virus, often abbreviated `DENV`, is a mosquito-borne RNA virus that can trigger a systemic immune response. In this case study, you will not try to identify which cells are infected by the virus. Instead, you will study how immune cells in blood change their gene-expression activity over time after primary `DENV-1` exposure.
 
@@ -9,7 +9,7 @@ Peripheral blood mononuclear cells, or `PBMCs`, are a mixed population of immune
 
 For example, a monocyte can remain a monocyte while also activating interferon-stimulated genes. A T cell or natural killer cell can retain its lineage markers while also showing activation or cytotoxic activity. This is the biological reason the case study focuses on latent transcriptional programs rather than only on cell clusters.
 
-## **What the Source Study Found**
+## What the Source Study Found
 
 The data come from [Waickman et al. 2021](https://doi.org/10.1371/journal.ppat.1009240){target="_blank"}, who profiled PBMCs from experimental and natural primary `DENV-1` infections using single-cell RNA sequencing. The source study captured 171,208 high-quality cells and annotated major leukocyte populations across both study arms.
 
@@ -25,7 +25,7 @@ Several source-study findings are important background for this case study:
 
 These points explain why this case study treats the experimental cohort as the primary temporal discovery set. The aligned experimental days let you ask which programs rise, peak, and return toward baseline. The natural infection cohort is biologically valuable, but its acute samples are not aligned to the same controlled post-challenge days.
 
-## **Why Latent Programs Are Useful**
+## Why Latent Programs Are Useful
 
 Ordinary clustering is often one of the first useful steps in single-cell analysis. It groups cells that have similar overall gene expression, which can help you annotate broad cell types, check whether expected immune-cell populations are present, and compare cell composition across timepoints.
 
@@ -37,7 +37,7 @@ A latent program is a gene-expression program inferred from many genes and many 
 
 This framing is common in single-cell analysis because a cell can participate in more than one program. CoGAPS is useful here because it represents each cell as a non-negative mixture of patterns rather than forcing each cell into only one category.
 
-## **What Is Non-negative Matrix Factorization?**
+## What Is Non-negative Matrix Factorization?
 
 Single-cell RNA-seq data are often organized as a matrix. In this case study, the rows represent genes, the columns represent cells, and each entry is a non-negative expression value for one gene in one cell.
 
@@ -96,7 +96,7 @@ This is also why the rank, written as `K`, matters. If `K` is too small, differe
 
 The references behind this overview are listed in the Additional Information section.
 
-## **Why CoGAPS?**
+## Why CoGAPS?
 
 CoGAPS is the specific NMF-family method used in this case study. It keeps the additive, non-negative structure described above, but fits the model using a Bayesian framework designed for genomic data.
 
@@ -106,7 +106,7 @@ In the selected model, you will interpret the same two linked outputs introduced
 
 This case study builds on three related uses of CoGAPS-style analyses: temporal CoGAPS for interpreting time-course transcriptional patterns, single-cell CoGAPS for identifying latent programs across cells, and projectR-style projection for asking whether learned patterns appear in another dataset.
 
-## **How to Interpret Pattern Labels**
+## How to Interpret Pattern Labels
 
 Pattern numbers are labels assigned by a model run. The biological interpretation is not the number itself. In the selected R and Python `K = 10` runs used here, the strongest interferon-associated activity program is `Pattern3`. In other runs or other ranks, a similar biological program may receive a different number.
 
@@ -114,7 +114,7 @@ For that reason, the case study emphasizes annotations, top genes, trajectories,
 
 CoGAPS also does not directly say whether genes are upregulated or downregulated. The `A` and `P` matrices are non-negative, so they show association with a pattern. To ask whether top genes are higher than baseline at a peak timepoint, the case study uses a separate subject-level pseudobulk directionality check.
 
-## **Identity-Like, Activity-Like, and Mixed Programs**
+## Identity-Like, Activity-Like, and Mixed Programs
 
 You will see three interpretation categories later in the analysis:
 
@@ -124,7 +124,7 @@ You will see three interpretation categories later in the analysis:
 
 These labels are interpretation aids, not ground truth. They help you decide what evidence to inspect next: cell-type summaries, pattern-by-day trajectories, top genes, and directionality relative to baseline.
 
-## **Projection as an Optional Extension**
+## Projection as an Optional Extension
 
 Once a set of patterns has been learned in one dataset, a transfer-learning workflow can ask whether those patterns are also detectable in another dataset. This idea appears in single-cell CoGAPS and projectR-style analyses: learn patterns in a discovery dataset, then project or score related samples against those learned patterns.
 

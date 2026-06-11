@@ -1,4 +1,4 @@
-## **Acknowledgments**
+## Acknowledgments
 ***
 
 We acknowledge Waickman et al. for generating and sharing the dengue single-cell RNA-seq data used in this case study through GEO accession GSE154386.

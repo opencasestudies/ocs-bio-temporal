@@ -1,11 +1,22 @@
 # **Data Import**
 ***
 
-In this section, you will import the files that enter the analysis environment. The required case-study path uses small `CSV` and `JSON` files that are already included with the case study. The optional full-reproduction path starts earlier, with large source 10x Genomics files that must be imported into a single-cell object before preprocessing.
+In this section, you will import the files that enter the analysis environment. Import means reading files into R or Python objects so you can inspect them later. It does not yet mean filtering cells, summarizing patterns, making figures, or answering the research questions.
 
 A `CSV` file is a rectangular table: rows are observations or summaries, and columns are variables. A `JSON` file stores structured metadata, such as model settings or diagnostic values. In R, the imported files become data frames. In Python, they become tables managed by `pandas`.
 
-If you are completing the required path, you will import the selected-model files needed for the main analysis. If you are reproducing the full workflow locally with the large Zenodo/GEO files, this section also shows where the raw source files enter R or Python. The preprocessing decisions that happen after import are covered in **Data Wrangling and Preprocessing**.
+There are two ways to use this section. In the **standard path**, you import the small selected-model files that are already included with the case study. In the **full reproduction path**, you also import the original source 10x Genomics files after downloading the large Zenodo and GEO files. The preprocessing decisions that happen after source-file import are covered in **Data Wrangling and Preprocessing**.
+
+The boundary between sections is important:
+
+| Section | What happens there | Main learner action |
+|---|---|---|
+| Data Import | Read files into R or Python objects. | Check that expected files exist and load correctly. |
+| Data Exploration | Inspect what the imported files represent. | Ask whether subjects, timepoints, and broad cell types are represented as expected. |
+| Data Wrangling and Preprocessing | Prepare and reshape data for modeling or summaries. | Understand filtering, normalization, annotation, balancing, and subject-level summaries. |
+| Data Analysis | Use the prepared evidence to answer the research questions. | Interpret model selection, diagnostics, temporal programs, top genes, and directionality. |
+
+The standard path imports four selected-model file families:
 
 | File family | Example file | What one row means | Why you import it |
 |---|---|---|---|
@@ -24,21 +35,98 @@ The larger files needed to rerun preprocessing or CoGAPS from scratch are intent
 
 These files are documented in `data/artifact_manifest.json` and are distributed through Zenodo for full reproduction.
 
-## **Import the Selected-Model Results**
+## Check the File Inventory
+
+Before importing model results, inspect the file inventory. The inventory is a `JSON` file that records which small files are included locally and which large files are kept in the Zenodo reproduction archive. This check helps you understand why some files can be loaded immediately while others require the full reproduction setup.
+
+Here, you read a structured file and summarize two lists inside it. The list named `copied` contains files included with the case study. The list named `skipped` contains large files that were intentionally left out and documented for Zenodo.
+
+::: {.panel-tabset}
+
+### R
+
+```{r}
+#| label: import-manifest-r
+manifest <- jsonlite::fromJSON(
+  here::here("data", "artifact_manifest.json")
+)
+
+data.frame(
+  file_group = c(
+    "included standard-path files",
+    "Zenodo reproduction files"
+  ),
+  file_count = c(
+    nrow(manifest$copied),
+    nrow(manifest$skipped)
+  ),
+  size_mb = c(
+    round(sum(manifest$copied$size_bytes) / 1024^2, 2),
+    round(sum(manifest$skipped$size_bytes) / 1024^2, 2)
+  )
+) |>
+  knitr::kable()
+```
+
+### Python
+
+```{python}
+#| label: import-manifest-python
+from pathlib import Path
+import json
+import pandas as pd
+
+with open("data/artifact_manifest.json") as f:
+    manifest_py = json.load(f)
+
+pd.DataFrame({
+    "file_group": [
+        "included standard-path files",
+        "Zenodo reproduction files",
+    ],
+    "file_count": [
+        len(manifest_py["copied"]),
+        len(manifest_py["skipped"]),
+    ],
+    "size_mb": [
+        round(sum(x["size_bytes"] for x in manifest_py["copied"]) / 1024**2, 2),
+        round(sum(x["size_bytes"] for x in manifest_py["skipped"]) / 1024**2, 2),
+    ],
+})
+```
+
+:::
+
+Read this as a data-availability check, not as a biological result. The standard path starts from the included small files. The full reproduction path adds the large source, model-object, and checkpoint files from Zenodo.
+
+## Standard Path: Import Selected-Model Results
 
 In this subsection, you will turn the selected-model files into named R or Python objects. This is not interpretation yet. It is the setup step that makes later summaries, figures, and diagnostics possible.
 
 The selected-model files come from the `K = 10`, `seed = 2`, `nIterations = 2000` CoGAPS run. You will import four file families: a pattern summary table, a top-gene table, a run-metrics file, and a diagnostic trace. At this stage, the practical question is: did you load the expected files, and do they describe the model you think they describe?
 
-The code below is split into short steps. Each step teaches one programming move: build a path, make a file checklist, read files, inspect table shapes, run sanity checks, and preview the pattern summary.
+The code below is split into short steps. Each step teaches one useful habit: build a path, make a file checklist, read files, inspect table shapes, run sanity checks, and preview the pattern summary.
 
-**Step 1: Point to the selected-model folder.**
+:::{.definition_box}
+::::{.definition_box_header}
+Programming terms
+::::
+::::{.inner_block}
+- **Path:** The location of a file or folder. Project-relative paths make code work across computers and inside Docker.
+- **Object:** A named value in memory, such as a table, list, or dictionary.
+- **Assignment:** The step where code gives a name to a value. R often uses `<-`; Python uses `=`.
+- **Table shape:** The number of rows and columns in a table.
+- **Sanity check:** A small check that catches obvious problems before interpretation begins.
+::::
+:::
 
-The first programming move is to define the folder that contains the files you want to import. In R, `here::here()` builds a path from the project root. In Python, `Path()` from `pathlib` does the same job. Project-relative paths are useful because they work on different computers and inside the Docker runtime.
+### Step 1: Point to the Selected-Model Folder
+
+Start by defining the folder that contains the files you want to import. In R, `here::here()` builds a path from the project root. In Python, `Path()` from `pathlib` does the same job. Project-relative paths are useful because they work on different computers and inside the Docker runtime.
 
 ::: {.panel-tabset}
 
-## R
+#### R
 
 ```{r}
 #| label: import-selected-dir-r
@@ -49,7 +137,7 @@ r_selected_dir <- here::here(
 r_selected_dir
 ```
 
-## Python
+#### Python
 
 ```{python}
 #| label: import-selected-dir-python
@@ -66,13 +154,13 @@ py_selected_dir
 
 The output is the folder path that the next chunks will use. You do not need to type the full path again each time; you can reuse the named object. In R, that object is called `r_selected_dir`. In Python, it is called `py_selected_dir`.
 
-**Step 2: Make a checklist of expected files.**
+### Step 2: Make a Checklist of Expected Files
 
 Before reading files, make a small checklist. This is a good reproducibility habit: it catches missing files, misspelled file names, and working-directory mistakes before you start interpreting results.
 
 ::: {.panel-tabset}
 
-## R
+#### R
 
 ```{r}
 #| label: import-file-map-r
@@ -88,6 +176,12 @@ r_import_plan <- data.frame(
     "cogaps_K10_seed2_iter2000.top_genes.csv",
     "cogaps_K10_seed2_iter2000.metrics.json",
     "cogaps_K10_seed2_iter2000.trace.csv"
+  ),
+  used_later_in = c(
+    "Data Analysis: temporal programs",
+    "Data Exploration and Data Analysis",
+    "Data Analysis: model diagnostics",
+    "Data Analysis: model diagnostics"
   )
 )
 
@@ -101,11 +195,11 @@ r_import_plan$file_exists <- file.exists(
 )
 
 r_import_plan |>
-  select(file_role, relative_path, file_exists) |>
+  select(file_role, relative_path, used_later_in, file_exists) |>
   knitr::kable()
 ```
 
-## Python
+#### Python
 
 ```{python}
 #| label: import-file-map-python
@@ -122,6 +216,12 @@ py_import_plan = pd.DataFrame({
         "cogaps_K10_seed2_iter2000.metrics.json",
         "cogaps_K10_seed2_iter2000.trace.csv",
     ],
+    "used_later_in": [
+        "Data Analysis: temporal programs",
+        "Data Exploration and Data Analysis",
+        "Data Analysis: model diagnostics",
+        "Data Analysis: model diagnostics",
+    ],
 })
 
 py_import_plan["relative_path"] = py_import_plan["file_name"].map(
@@ -131,14 +231,16 @@ py_import_plan["file_exists"] = py_import_plan["relative_path"].map(
     lambda path: Path(path).exists()
 )
 
-py_import_plan.loc[:, ["file_role", "relative_path", "file_exists"]]
+py_import_plan.loc[:, [
+    "file_role", "relative_path", "used_later_in", "file_exists"
+]]
 ```
 
 :::
 
-The `file_exists` column should be `TRUE` in R or `True` in Python for every required file. If one value is false, the problem is usually a path, file name, or missing-data issue. That is useful to know before you spend time debugging analysis code.
+The `file_exists` column should be `TRUE` in R or `True` in Python for every expected standard-path file. If one value is false, the problem is usually a path, file name, or missing-data issue. That is useful to know before you spend time debugging analysis code.
 
-**Step 3: Read the files into memory.**
+### Step 3: Read the Files into Memory
 
 Now you can import the files. A `CSV` file becomes a rectangular table. A `JSON` file becomes a structured object that stores run-level settings, such as model rank, iterations, and thread count.
 
@@ -146,7 +248,7 @@ The object names are intentionally descriptive. For example, `r_rq1` and `py_rq1
 
 ::: {.panel-tabset}
 
-## R
+#### R
 
 ```{r}
 #| label: import-selected-r
@@ -170,7 +272,7 @@ r_trace <- readr::read_csv(
 )
 ```
 
-## Python
+#### Python
 
 ```{python}
 #| label: import-selected-python
@@ -189,13 +291,13 @@ py_trace = pd.read_csv(py_selected_dir / "cogaps_K10_seed2_iter2000.trace.csv")
 
 This chunk does not print a table because its main job is to create objects for later use. In R, assignment uses `<-`. In Python, assignment uses `=`. In both languages, the name on the left is the object you will reuse later.
 
-**Step 4: Inspect the imported objects.**
+### Step 4: Inspect the Imported Objects
 
 After reading files, inspect their shapes. A table's shape tells you how many rows and columns were imported. This quick check can reveal accidental empty files, wrong file paths, or files that do not have the columns you expected.
 
 ::: {.panel-tabset}
 
-## R
+#### R
 
 ```{r}
 #| label: import-object-shapes-r
@@ -212,7 +314,7 @@ data.frame(
   knitr::kable()
 ```
 
-## Python
+#### Python
 
 ```{python}
 #| label: import-object-shapes-python
@@ -232,13 +334,13 @@ pd.DataFrame({
 
 Read this output as a basic import audit. The row counts tell you how much information was loaded. The `first_columns` field tells you whether the table looks like the file you intended to read. For example, the pattern summary should begin with pattern-level columns, while the trace file should begin with diagnostic trace columns.
 
-**Step 5: Run sanity checks on the selected model.**
+### Step 5: Run Sanity Checks on the Selected Model
 
 The next check asks whether the imported files describe the selected model used throughout the case study. These checks do not prove that the model is biologically correct. They only confirm that you imported the expected `K = 10`, `seed = 2`, `nIterations = 2000` run and that the main tables contain all ten patterns.
 
 ::: {.panel-tabset}
 
-## R
+#### R
 
 ```{r}
 #| label: import-sanity-r
@@ -265,7 +367,7 @@ data.frame(
   knitr::kable()
 ```
 
-## Python
+#### Python
 
 ```{python}
 #| label: import-sanity-python
@@ -295,13 +397,13 @@ pd.DataFrame({
 
 The sanity-check output should confirm that the imported files match the selected model. The number of pattern rows should be `10`, and the top-gene table should contain entries for all ten patterns. If those values do not match, stop here and resolve the import problem before continuing.
 
-**Step 6: Preview the pattern summary.**
+### Step 6: Preview the Pattern Summary
 
 As a final import check, sort the pattern summary by temporal variation. This preview helps you see why later sections focus on specific patterns, but it is not enough evidence by itself. A temporal score needs to be interpreted alongside cell-type summaries, top genes, model diagnostics, and directionality.
 
 ::: {.panel-tabset}
 
-## R
+#### R
 
 ```{r}
 #| label: import-preview-r
@@ -313,7 +415,7 @@ r_rq1 |>
   knitr::kable(digits = 3)
 ```
 
-## Python
+#### Python
 
 ```{python}
 #| label: import-preview-python
@@ -327,16 +429,23 @@ py_rq1.loc[
 
 By the end of this subsection, the selected-model files have become named objects in R or Python. You have also checked that they exist, have the expected shapes, and describe the selected `K = 10` model. The next sections use these imported tables to explore the discovery set and reshape model outputs for interpretation.
 
-## **Optional: Import Source 10x Files for Full Reproduction**
+## Full Reproduction Path: Import Source 10x Files
 
-You can skip this subsection if you are completing the required case-study path. It is included so the source of the prepared files is transparent, and so learners who download the large Zenodo/GEO files can see how the raw 10x Genomics files enter the workflow.
+Everything above this point is part of the standard path. You can skip this subsection if you are not running the optional full reproduction path.
+
+This subsection is included so the source of the prepared files is transparent, and so learners who download the large Zenodo/GEO files can see how the raw 10x Genomics files enter the workflow.
 
 The optional import path stops once the source data have become a labeled single-cell object. Quality control, normalization, gene selection, annotation, and discovery-set construction happen later in **Data Wrangling and Preprocessing**.
 
-:::{.callout-note title="How to run the optional full workflow"}
+:::{.disclaimer_box}
+::::{.disclaimer_box_header}
+Full reproduction note
+::::
+::::{.inner_block}
 The code chunks in this subsection are excerpts from the complete preparation scripts. They are shown so you can understand how the source 10x files become a labeled single-cell object. They are not intended to be copied and run one chunk at a time.
 
 If you want to run the optional full reproduction workflow, use the complete script shown in **Data Wrangling and Preprocessing**. That one script includes both the import steps in this section and the preprocessing steps in the next section. Keeping those steps in one script makes the workflow easier to rerun because the downloaded files, imported objects, quality-control decisions, and saved outputs are handled in one continuous run.
+::::
 :::
 
 ```{mermaid}
@@ -380,21 +489,21 @@ Terms to know for optional source-file import
 
 Those terms explain why the import code is careful about filenames, matrix orientation, and metadata. A temporal immune-program analysis only works if each expression value is attached to the correct cell, gene, subject, and day.
 
-### **Identify Source Files and Sample Metadata**
+### Identify Source Files and Sample Metadata
 
 Before expression values can be interpreted biologically, each cell has to be connected back to its sample. In this dataset, the sample name tells you which subject the cell came from, whether that subject was in the experimental or natural infection cohort, and which infection day the sample represents.
 
 The raw GEO archive contains sample-level 10x files. In this context, "sample-level" means that the raw sequencing output is organized one biological sample at a time, rather than as one combined study-wide table. For each sample, the 10x Genomics files are usually a small set of linked files: a sparse expression matrix, a list of cell barcodes, and a list of gene or feature names. These files have to be read together because the matrix alone only contains numbers; the barcode and feature files tell you which cells and genes those numbers refer to.
 
-The programming idea is to make implicit information explicit. A **variable** stores a value you want to reuse, such as a source URL or file path. A **function** is reusable code with inputs and outputs. Here, the function `parse_sample_key()` takes one sample name as input and returns metadata columns as output. Later, those metadata columns are copied onto every cell from that sample.
+The goal is to make implicit information explicit. A **variable** stores a value you want to reuse, such as a source URL or file path. A **function** is reusable code with inputs and outputs. Here, the function `parse_sample_key()` takes one sample name as input and returns metadata columns as output. Later, those metadata columns are copied onto every cell from that sample.
 
-**Step 1: Record where the raw archive comes from.**
+### Step 1: Record Where the Raw Archive Comes From
 
-The first code step does not download anything. It gives a name to the GEO source URL and to the local file name that would store the source archive. Naming these values makes the optional full workflow easier to audit because the source location is written once and reused.
+This first short chunk does not download anything. It gives a name to the GEO source URL and to the local file name that would store the source archive. Naming these values makes the optional full workflow easier to audit because the source location is written once and reused.
 
 ::: {.panel-tabset}
 
-## R
+#### R
 
 ```{r}
 #| label: source-archive-r
@@ -408,7 +517,7 @@ data.frame(
   knitr::kable()
 ```
 
-## Python
+#### Python
 
 ```{python}
 #| label: source-archive-python
@@ -428,13 +537,13 @@ pd.DataFrame({
 
 The archive is a source file, not an analysis table. It contains raw 10x files that still need to be connected to sample labels before quality control or modeling can happen.
 
-**Step 2: Inspect the structure of one sample name.**
+### Step 2: Inspect the Structure of One Sample Name
 
 The source filenames are not arbitrary. A name such as `GSM4670192_Subject2_D0` can be read as three pieces: a GEO sample identifier, a subject label, and a day label. The experimental samples use labels such as `Subject2`, while natural infection samples use labels such as `Natural1`.
 
 ::: {.panel-tabset}
 
-## R
+#### R
 
 ```{r}
 #| label: sample-key-examples-r
@@ -453,7 +562,7 @@ sample_key_examples |>
   knitr::kable()
 ```
 
-## Python
+#### Python
 
 ```{python}
 #| label: sample-key-examples-python
@@ -475,15 +584,15 @@ sample_key_examples
 
 The label `D0` means day 0. A label such as `Dneg3` means day -3. The numeric form of the day will matter later because it lets you sort timepoints and summarize pattern scores along the infection time course.
 
-**Step 3: Write a function that parses a sample name.**
+### Step 3: Write a Function That Parses a Sample Name
 
-The next code defines `parse_sample_key()`. In programming, a function is useful when the same operation needs to be repeated many times. The input is one sample name. The output is a small set of metadata fields that can be attached to cells from that sample.
+The next snippet defines `parse_sample_key()`. In programming, a function is useful when the same operation needs to be repeated many times. The input is one sample name. The output is a small set of metadata fields that can be attached to cells from that sample.
 
 The main programming tools are a regular expression and an `if` statement. A regular expression is a pattern used to find pieces of text. Here, it captures the GEO identifier, the subject label, and the day label. The `if` statement then translates the subject label into a cohort label and translates the day label into a number.
 
 ::: {.panel-tabset}
 
-## R
+#### R
 
 ```{r}
 #| label: parse-sample-key-r
@@ -529,7 +638,7 @@ parse_sample_key <- function(sample_key) {
 }
 ```
 
-## Python
+#### Python
 
 ```{python}
 #| label: parse-sample-key-python
@@ -566,13 +675,13 @@ def parse_sample_key(sample_key: str) -> dict:
 
 In R, the parsed metadata becomes a data frame. In Python, it becomes a dictionary, which can then be placed into a `pandas` table. In both languages, the goal is the same: every cell must carry the biological labels needed for subject-level and timepoint-level summaries.
 
-**Step 4: Test the function on two sample names.**
+### Step 4: Test the Function on Two Sample Names
 
-When you write a function, test it on a small example before using it on every file in a dataset. This is a programming habit, but it is also a biological check. If the day or cohort is parsed incorrectly here, every later time-course summary will be mislabeled.
+When you write a function, test it on a small example before using it on every file in a dataset. This is a coding habit, but it is also a biological check. If the day or cohort is parsed incorrectly here, every later time-course summary will be mislabeled.
 
 ::: {.panel-tabset}
 
-## R
+#### R
 
 ```{r}
 #| label: parse-sample-key-demo-r
@@ -585,7 +694,7 @@ parsed_examples |>
   knitr::kable()
 ```
 
-## Python
+#### Python
 
 ```{python}
 #| label: parse-sample-key-demo-python
@@ -601,7 +710,11 @@ parsed_examples
 
 Read the output from left to right. The `gsm_id` and `sample_id` identify the GEO sample. The `subject` and `cohort` columns tell you which biological group the sample belongs to. The `timepoint_display` column is a readable label for plotting, while `day_numeric` is the numeric version used for sorting and summarizing days.
 
-:::{.callout-tip title="Checkpoint"}
+:::{.think_question}
+::::{.think_question_header}
+Checkpoint
+::::
+::::{.inner_block}
 If the sample name is `GSM4670198_Subject2_D15`, what should the cohort and numeric day be?
 
 <details>
@@ -610,6 +723,7 @@ If the sample name is `GSM4670198_Subject2_D15`, what should the cohort and nume
 The cohort should be `experimental` because the subject label begins with `Subject`. The numeric day should be `15` because the timepoint label is `D15`.
 
 </details>
+::::
 :::
 
 <details>
@@ -619,7 +733,7 @@ The complete preparation scripts include a small download helper. This helper is
 
 ::: {.panel-tabset}
 
-## R
+#### R
 
 ```{r}
 #| eval: false
@@ -634,7 +748,7 @@ download_if_needed <- function(url, dest) {
 }
 ```
 
-## Python
+#### Python
 
 ```{python}
 #| eval: false
@@ -661,7 +775,7 @@ def download(url: str, dest: Path, chunk_mb: int = 16) -> None:
 
 After this step, the workflow has not changed any expression values yet. The important result is that each future cell-level observation can carry subject, cohort, and day labels. Without those labels, the later CoGAPS pattern scores could not be summarized by timepoint or subject.
 
-### **Build the Cell-by-Gene Data Object**
+### Build the Cell-by-Gene Data Object
 
 In the previous step, you learned how a sample name becomes metadata. Now you will see how the raw expression files become a labeled cell-by-gene object. The goal is not just to read files; the goal is to preserve the relationship between counts, cells, genes, and sample metadata.
 
@@ -685,13 +799,13 @@ The R and Python workflows use different object classes for the same basic purpo
 | Cell names | `colnames(sce)` | `adata.obs_names` |
 | Gene names | `rownames(sce)` | `adata.var_names` |
 
-**Step 1: Represent the three linked 10x pieces.**
+### Step 1: Represent the Three Linked 10x Pieces
 
 In the full reproduction script, this step reads `matrix.mtx`, `barcodes.tsv`, and `features.tsv` from disk. Here, the same idea is shown with a small in-memory example. The matrix, barcode table, and feature table are separate objects at first.
 
 ::: {.panel-tabset}
 
-## R
+#### R
 
 ```{r}
 #| label: toy-10x-pieces-r
@@ -725,7 +839,7 @@ data.frame(
   knitr::kable()
 ```
 
-## Python
+#### Python
 
 ```{python}
 #| label: toy-10x-pieces-python
@@ -762,13 +876,13 @@ pd.DataFrame({
 
 In this toy example, the count matrix has four feature rows and two cell columns. The feature table also has four rows, and the barcode list has two labels. Those matching dimensions are the first sign that the pieces can be aligned.
 
-**Step 2: Check orientation and dimensions.**
+### Step 2: Check Orientation and Dimensions
 
 Raw 10x matrices are usually stored as features by cells. That means rows match the feature table and columns match the barcode table. Many downstream analyses are described as cell-by-gene analyses, so the workflow needs to know when a transpose is required. A transpose flips a matrix so rows become columns and columns become rows.
 
 ::: {.panel-tabset}
 
-## R
+#### R
 
 ```{r}
 #| label: toy-10x-dim-check-r
@@ -784,7 +898,7 @@ data.frame(
   knitr::kable()
 ```
 
-## Python
+#### Python
 
 ```{python}
 #| label: toy-10x-dim-check-python
@@ -806,13 +920,13 @@ pd.DataFrame({
 
 These checks look simple, but they protect the biological interpretation. If the feature count does not match the matrix rows, gene labels could be attached to the wrong counts. If the barcode count does not match the matrix columns, cell metadata could be attached to the wrong cells.
 
-**Step 3: Keep the gene-expression rows.**
+### Step 3: Keep the Gene-Expression Rows
 
 Some 10x files include feature types that are not RNA gene-expression measurements. This case study models transcript abundance, so the import workflow keeps `Gene Expression` rows and drops other feature types before CoGAPS input preparation.
 
 ::: {.panel-tabset}
 
-## R
+#### R
 
 ```{r}
 #| label: toy-gene-expression-filter-r
@@ -828,7 +942,7 @@ data.frame(
   knitr::kable()
 ```
 
-## Python
+#### Python
 
 ```{python}
 #| label: toy-gene-expression-filter-python
@@ -849,13 +963,13 @@ toy_features_gene_expression.loc[
 
 The dropped toy feature, `TotalSeq_B`, represents the kind of non-RNA feature that should not be mixed into this RNA expression model. In the real dataset, this filtering step keeps the biological question focused on gene-expression programs.
 
-**Step 4: Name cells and genes before constructing the object.**
+### Step 4: Name Cells and Genes Before Constructing the Object
 
 Cell barcodes are only guaranteed to be unique within a sample. The same barcode sequence can appear in different samples, so the workflow prefixes each barcode with the sample ID. Gene symbols are easier for humans to interpret than gene IDs, but duplicated gene symbols can occur, so the workflow makes gene names unique.
 
 ::: {.panel-tabset}
 
-## R
+#### R
 
 ```{r}
 #| label: toy-name-cells-genes-r
@@ -876,7 +990,7 @@ data.frame(
   knitr::kable()
 ```
 
-## Python
+#### Python
 
 ```{python}
 #| label: toy-name-cells-genes-python
@@ -902,13 +1016,13 @@ pd.DataFrame({
 
 This is where the metadata from the previous subsection starts to matter. The count matrix has measurements, but the cell names and metadata make those measurements traceable to a subject and infection day.
 
-**Step 5: Build a labeled cell-by-gene representation.**
+### Step 5: Build a Labeled Cell-by-Gene Representation
 
 The raw 10x matrix is features by cells. For a cell-by-gene view, transpose the retained matrix so cells are rows and genes are columns. The small table below shows what the aligned expression data look like after naming cells and genes.
 
 ::: {.panel-tabset}
 
-## R
+#### R
 
 ```{r}
 #| label: toy-cell-by-gene-r
@@ -926,7 +1040,7 @@ toy_cell_by_gene_display |>
   knitr::kable()
 ```
 
-## Python
+#### Python
 
 ```{python}
 #| label: toy-cell-by-gene-python
@@ -950,7 +1064,7 @@ The code below shows the final construction step used in the complete preparatio
 
 ::: {.panel-tabset}
 
-## R
+#### R
 
 ```{r}
 #| eval: false
@@ -961,7 +1075,7 @@ SingleCellExperiment::SingleCellExperiment(
 )
 ```
 
-## Python
+#### Python
 
 ```{python}
 #| eval: false
@@ -984,7 +1098,11 @@ adata.var_names_make_unique()
 
 </details>
 
-:::{.callout-tip title="Checkpoint"}
+:::{.think_question}
+::::{.think_question_header}
+Checkpoint
+::::
+::::{.inner_block}
 If a raw 10x matrix has 20,000 feature rows and 800 cell columns, how many barcode labels should there be?
 
 <details>
@@ -993,11 +1111,14 @@ If a raw 10x matrix has 20,000 feature rows and 800 cell columns, how many barco
 There should be 800 barcode labels because barcodes label cells, and cells are columns in the raw 10x matrix before it is transposed into a cell-by-gene view.
 
 </details>
+::::
 :::
 
 After this step, the optional import path has produced a labeled single-cell object. Biologically, that means every expression measurement can be traced back to a cell, a gene, and a sample. In code, later filtering and summarizing can use the same object instead of passing separate matrices and metadata tables around by hand.
 
-::: {.callout-note collapse="true" title="Optional: file-reading helper functions used above"}
+<details>
+<summary>Optional: file-reading helper functions used above</summary>
+
 The complete preparation scripts use small helper functions to read compressed 10x matrix and table files. These helpers are file-reading utilities, not biological decisions. They are shown here for transparency, but the important concept is that the matrix, barcode table, and feature table are read together and checked before they are aligned into one labeled single-cell object.
 
 The `parse_sample_key()` function is defined in the previous subsection. The helpers below handle the remaining file-reading steps.
@@ -1068,7 +1189,8 @@ def read_mtx(path):
         matrix = mmread(handle)
     return sparse.csr_matrix(matrix)
 ```
-:::
+
+</details>
 
 The next section uses the small included files to explore the discovery set before you move deeper into preprocessing decisions. The optional full-preparation workflow resumes in **Data Wrangling and Preprocessing**, where the imported single-cell object is filtered, normalized, annotated, and subset for modeling. The complete executable preparation scripts are provided there.
 
