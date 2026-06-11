@@ -28,4 +28,4 @@ render-website: quarto_web
 
 # What docker image should be used for rendering?
 # The default is jhudsl/base_ottr:main
-rendering-docker-image: 'jhudsl/base_ottr:main'
+rendering-docker-image: 'othomas2/cs5-cogaps-runtime:0.1.0'
