@@ -37,7 +37,7 @@ The full raw, preprocessed, model-object, and checkpoint files are too large for
 
 ## What One Row Means
 
-Different file families summarize different biological or computational units. Keeping those row meanings straight will help you avoid overinterpreting the results.
+Different file families summarize different biological or computational units. Keeping those row meanings straight will help you avoid over-interpreting the results.
 
 | File family | One row represents | Used for | Interpretation caution |
 |---|---|---|---|

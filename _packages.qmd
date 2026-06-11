@@ -1,6 +1,6 @@
 # **Packages and Setup**
 
-This case study has two runnable paths. Both use the same Docker image, which provides the software environment, and both start from a local copy of the case-study repository.
+This case study has two ready-to-run paths. Both use the same Docker image, which provides the software environment, and both start from a local copy of the case-study repository.
 
 The **standard path** is the recommended path for most learners. It uses small CSV, JSON, and figure files already included in the repository, so you can focus on importing, summarizing, visualizing, diagnosing, and interpreting the selected `K = 10` model outputs.
 
@@ -16,7 +16,7 @@ The Docker image supplies software, not project data. The `-v` options in the co
 
 ## Use RStudio Server
 
-Both runnable paths use RStudio Server inside the Docker image. After Docker starts, open [http://localhost:8787](http://localhost:8787){target="_blank"} and sign in with username `rstudio` and password `Password12`. Keep the online case-study page open in one browser tab and RStudio Server open in another.
+Both ready-to-run paths use RStudio Server inside the Docker image. After Docker starts, open [http://localhost:8787](http://localhost:8787){target="_blank"} and sign in with username `rstudio` and password `Password12`. Keep the online case-study page open in one browser tab and RStudio Server open in another.
 
 In RStudio Server, work from `/home/rstudio/project`. That folder is the copy of the case-study repository that you mounted with Docker. If you are unsure where you are, run `getwd()` in the R Console or `pwd` in the Terminal.
 

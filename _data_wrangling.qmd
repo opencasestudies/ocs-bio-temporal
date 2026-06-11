@@ -309,7 +309,7 @@ sc.pp.log1p(adata_qc)
 
 :::
 
-Finally, the workflow keeps highly variable genes. The R excerpt shows the decision with a simple variance ranking; the Python script uses Scanpy's highly variable gene routine with `sample_id` as a batch key.
+Finally, the workflow keeps highly variable genes. The R excerpt shows the decision with a simple variance ranking; the Python script uses the Scanpy highly variable gene routine with `sample_id` as a batch key.
 
 ::: {.panel-tabset}
 
