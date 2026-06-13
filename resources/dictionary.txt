@@ -64,6 +64,7 @@ convalescent
 dengue
 factorization
 interferon
+initializations
 log2
 matrix
 monocyte
@@ -74,6 +75,9 @@ plasmablasts
 pseudobulk
 scRNA-seq
 scuttle
+Serotype
+serotype
+serotypes
 timepoint
 timepoints
 transcriptional
@@ -180,6 +184,7 @@ Sealfon
 Seung
 spearman
 Srikiatkhachorn
+subtype
 subtypes
 Tabrizi
 tabset
