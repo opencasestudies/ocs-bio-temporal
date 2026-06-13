@@ -2787,8 +2787,9 @@ D_{g,c} \approx \sum_{k=1}^{K} A_{g,k} P_{k,c}
 </section>
 <section id="standard-path-import-the-k-selected-model-files" class="level2">
 <h2 class="anchored" data-anchor-id="standard-path-import-the-k-selected-model-files">Standard Path: Import the K-Selected Model Files</h2>
-<p>In this subsection, you will turn the K-selected model files into named R or Python objects. This is not biological interpretation yet. It is the setup step that makes later summaries, figures, and diagnostics possible.</p>
-<p>Because the previous sweep-assessment step selected <code>K = 10</code>, the standard path now imports the <code>K = 10</code>, <code>seed = 2</code>, <code>nIterations = 2000</code> representative model files. You will import four file families: a pattern summary table, a top-gene table, a run-metrics file, and a diagnostic trace. At this stage, the practical question is: did you load the files that match the K decision?</p>
+<p>The K-selected files are exported outputs from a CoGAPS model fit to the prepared balanced experimental discovery matrix. The model fit produces two core kinds of information: <strong>gene loadings</strong>, which show which genes help define each pattern, and <strong>cell scores</strong>, which show how strongly each cell uses each pattern. The smaller tables you import here are derived from those outputs so you can inspect the selected model without rerunning CoGAPS.</p>
+<p>Some files summarize the model fit itself. The pattern summary and top-gene table help you see what patterns were learned and which genes contribute to them. Other files summarize the run and its diagnostics. The metrics file records settings such as <code>K</code>, seed, iterations, runtime, and thread count, while the trace file records diagnostic values saved during the run. You will import these diagnostic outputs now so the files are ready, but you will interpret them later in <strong>Data Analysis</strong> before treating any pattern as biological evidence.</p>
+<p>For now, the goal is practical: load the files that belong to the selected <code>K = 10</code> run and confirm that they have the expected structure. The biological interpretation comes later, after the model outputs are connected to subject, timepoint, cell-type, top-gene, directionality, and diagnostic evidence.</p>
 <p>The standard path imports four K-selected file families:</p>
 <table class="caption-top table">
 <colgroup>
@@ -8612,7 +8613,7 @@ Show answer
 [&lt;matplotlib.lines.Line2D object at 0x7fffc4854220&gt;]
 &lt;matplotlib.patches.Polygon object at 0x7fffc490d8d0&gt;
 [&lt;matplotlib.lines.Line2D object at 0x7fffc4854850&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7fffc477aa40&gt;
+&lt;matplotlib.patches.Polygon object at 0x7fffc4776a40&gt;
 [&lt;matplotlib.lines.Line2D object at 0x7fffc4854e80&gt;]
 &lt;matplotlib.patches.Polygon object at 0x7fffc47a7400&gt;
 [&lt;matplotlib.lines.Line2D object at 0x7fffc48554b0&gt;]</code></pre>
@@ -16053,7 +16054,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"selector":".lightbox","descPosition":"bottom","loop":false,"openEffect":"zoom","closeEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"selector":".lightbox","descPosition":"bottom","openEffect":"zoom","loop":false,"closeEffect":"zoom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {

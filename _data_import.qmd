@@ -426,9 +426,11 @@ The folder name `selected_model_k10` should now make sense. It contains the stan
 
 ## Standard Path: Import the K-Selected Model Files
 
-In this subsection, you will turn the K-selected model files into named R or Python objects. This is not biological interpretation yet. It is the setup step that makes later summaries, figures, and diagnostics possible.
+The K-selected files are exported outputs from a CoGAPS model fit to the prepared balanced experimental discovery matrix. The model fit produces two core kinds of information: **gene loadings**, which show which genes help define each pattern, and **cell scores**, which show how strongly each cell uses each pattern. The smaller tables you import here are derived from those outputs so you can inspect the selected model without rerunning CoGAPS.
 
-Because the previous sweep-assessment step selected `K = 10`, the standard path now imports the `K = 10`, `seed = 2`, `nIterations = 2000` representative model files. You will import four file families: a pattern summary table, a top-gene table, a run-metrics file, and a diagnostic trace. At this stage, the practical question is: did you load the files that match the K decision?
+Some files summarize the model fit itself. The pattern summary and top-gene table help you see what patterns were learned and which genes contribute to them. Other files summarize the run and its diagnostics. The metrics file records settings such as `K`, seed, iterations, runtime, and thread count, while the trace file records diagnostic values saved during the run. You will import these diagnostic outputs now so the files are ready, but you will interpret them later in **Data Analysis** before treating any pattern as biological evidence.
+
+For now, the goal is practical: load the files that belong to the selected `K = 10` run and confirm that they have the expected structure. The biological interpretation comes later, after the model outputs are connected to subject, timepoint, cell-type, top-gene, directionality, and diagnostic evidence.
 
 The standard path imports four K-selected file families:
 
