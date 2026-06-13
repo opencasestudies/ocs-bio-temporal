@@ -3,14 +3,14 @@
 
 Dengue infection does not change every immune cell in the same way at the same time. Some transcriptional patterns reflect stable PBMC identity, such as T-cell, monocyte, B-cell, or plasmablast-associated structure. Other patterns may reflect infection-response activity that rises and falls across the experimental time course. The central analysis question is how to separate those two sources of variation so that a temporal immune program is not mistaken for ordinary cell-type composition.
 
-In this section, you will use the selected `K = 10` CoGAPS model to answer the main research questions. You will first examine why this rank was chosen from the sweep, then check whether the selected model behaved sensibly using stability and convergence diagnostics. After that, you will connect CoGAPS outputs to biological interpretation: ranking temporal programs, distinguishing identity-like from activity-like patterns, identifying the IFN-associated late acute response, and using directionality analysis to ask whether the top genes in that program increase relative to baseline.
+In this section, you will answer the main research questions by moving from model-rank evidence to biological interpretation. You will first examine why the selected `K = 10` CoGAPS model was chosen from the sweep, then check whether that model behaved sensibly using stability and convergence diagnostics. After that, you will connect CoGAPS outputs to biological interpretation: ranking temporal programs, distinguishing identity-like from activity-like patterns, identifying the IFN-associated late acute response, and using directionality analysis to ask whether the top genes in that program increase relative to baseline.
 
 The goal is not simply to name a pattern. The goal is to build a chain of evidence from model selection, diagnostics, cell scores, gene loadings, subject-level summaries, and pseudobulk expression changes. By the end of the section, you should be able to explain why `Pattern3` is interpreted as an IFN-associated late acute response and why the compact `K = 5` model is useful as a sensitivity comparison but not used as the main model.
 
 | Analysis step | Question it answers | Required now? | Main files |
 |---|---|---|---|
 | Rank sweep | Which values of `K` are stable enough to consider? | No; read and inspect precomputed results. | `data/processed/k_selection/` |
-| K-selection review | Why is `K = 10` the main model? | Yes; interpret the selection evidence. | `stability_plateau_candidates.csv`; `revised_k_selection_manifest.json` |
+| K-selection review | Which value of `K` provides an appropriate CoGAPS model for this case-study goal? | Yes; interpret the selection evidence. | `stability_plateau_candidates.csv`; `revised_k_selection_manifest.json` |
 | Selected CoGAPS run | What hyperparameters produced the model? | No; optional reproduction. | `data/processed/selected_model_k10/` |
 | Diagnostics | Did the selected run behave like a usable model fit? | Yes; inspect metrics and traces. | `*.metrics.json`; `*.trace.csv`; `*.diagnostics.json` |
 | Research-question tables | What temporal, identity, and IFN-associated programs were found? | Yes. | `data/processed/interpretation/rq_tables/` |
@@ -75,9 +75,9 @@ The single-run script, `gse154386_run_one_singleprocess.py`, is the center of th
 
 After the sweep finishes, `gse154386_aggregate_results.py` collects the per-run outputs into comparison tables. At this stage, the analysis is no longer asking what one model found. It is asking whether models with the same `K` behave consistently across seeds, whether they recover time-varying programs, and whether higher ranks resolve biological signal that lower ranks compress.
 
-The revised K-selection report is then generated from the aggregated sweep results. That report does not choose `K` by stability alone. It first asks which ranks are reproducible enough to consider, then asks which of those ranks resolves a biologically useful temporal program. This is the logic that leads to `K = 10` for the main analysis while keeping `K = 5` as a compact sensitivity comparison.
+The revised K-selection report is then generated from the aggregated sweep results. That report does not choose `K` by stability alone. It first asks which ranks are reproducible enough to consider, then asks which of those ranks resolves a biologically useful temporal program. This is the evidence used to answer Research Question 1.
 
-## How `K = 10` Was Selected
+## Question 1: How Was `K = 10` Selected?
 
 The sweep was first reviewed with a conservative stability rule:
 
@@ -268,7 +268,7 @@ The complete Python runner is included as `scripts/reproduction/cs5_run_selected
 
 :::
 
-If you download the large reproduction files from Zenodo, you can run either selected-model implementation from the repository root. The examples below mount the repository and a local Zenodo download directory into the same Docker image used for the case study.
+If you download the Zenodo reproduction archive, you can run either selected-model implementation from the repository root. The examples below mount the repository and the local reproduction archive into the same Docker image used for the case study.
 
 ::: {.panel-tabset}
 
@@ -276,15 +276,15 @@ If you download the large reproduction files from Zenodo, you can run either sel
 
 ```{bash}
 #| eval: false
-export CS5_ZENODO_DIR="/path/to/downloaded/cs5_sweep_results"
+export CS5_REPRODUCTION_ARCHIVE="/path/to/downloaded/reproduction_archive"
 
 docker run --platform linux/amd64 --rm \
   -v "$PWD":/home/rstudio/project:rw \
-  -v "$CS5_ZENODO_DIR":/home/rstudio/project/data/cs5_sweep_results:ro \
+  -v "$CS5_REPRODUCTION_ARCHIVE":/home/rstudio/project/data/external/reproduction_archive:ro \
   -w /home/rstudio/project \
   othomas2/cs5-cogaps-runtime:0.1.0 \
   Rscript scripts/reproduction/cs5_run_selected_model_r.R \
-    --discovery-h5ad /home/rstudio/project/data/cs5_sweep_results/cache/gse154386_experimental_discovery_cells_x_genes.h5ad \
+    --discovery-h5ad /home/rstudio/project/data/external/reproduction_archive/cache/gse154386_experimental_discovery_cells_x_genes.h5ad \
     --outdir /home/rstudio/project/GSE154386/cogaps_r_revised_model_K10_seed2_iter2000 \
     --k 10 \
     --seed 2 \
@@ -303,16 +303,16 @@ docker run --platform linux/amd64 --rm \
 
 ```{bash}
 #| eval: false
-export CS5_ZENODO_DIR="/path/to/downloaded/cs5_sweep_results"
+export CS5_REPRODUCTION_ARCHIVE="/path/to/downloaded/reproduction_archive"
 
 docker run --platform linux/amd64 --rm \
   -v "$PWD":/home/rstudio/project:rw \
-  -v "$CS5_ZENODO_DIR":/home/rstudio/project/data/cs5_sweep_results:ro \
+  -v "$CS5_REPRODUCTION_ARCHIVE":/home/rstudio/project/data/external/reproduction_archive:ro \
   -w /home/rstudio/project \
   othomas2/cs5-cogaps-runtime:0.1.0 \
   python scripts/reproduction/cs5_run_selected_model_python.py \
-    --cogaps-input-h5ad /home/rstudio/project/data/cs5_sweep_results/cache/gse154386_experimental_discovery_genes_x_cells.h5ad \
-    --discovery-h5ad /home/rstudio/project/data/cs5_sweep_results/cache/gse154386_experimental_discovery_cells_x_genes.h5ad \
+    --cogaps-input-h5ad /home/rstudio/project/data/external/reproduction_archive/cache/gse154386_experimental_discovery_genes_x_cells.h5ad \
+    --discovery-h5ad /home/rstudio/project/data/external/reproduction_archive/cache/gse154386_experimental_discovery_cells_x_genes.h5ad \
     --source-script /home/rstudio/project/scripts/reproduction/gse154386_sparse_distributed_cogaps.py \
     --outdir /home/rstudio/project/GSE154386/cogaps_python_revised_model_K10_seed2_iter2000 \
     --k 10 \
@@ -392,7 +392,7 @@ In the four-thread Docker setup used to create these files, the selected R and P
 
 ## From CoGAPS Output to Analysis Tables
 
-The selected CoGAPS run does not directly produce a table called "temporal programs" or "identity versus activity." It produces pattern matrices. The gene-loading matrix says which genes define each pattern, and the cell-score matrix says how strongly each cell uses each pattern. The research-question tables are built by joining those scores back to cell metadata, summarizing them at biologically meaningful levels, and then adding gene-based annotations.
+The selected CoGAPS run does not directly produce a table called "temporal programs" or "identity versus activity." It produces pattern matrices. The gene-loading matrix says which genes define each pattern, and the cell-score matrix says how strongly each cell uses each pattern. The biological research-question tables are built by joining those scores back to cell metadata, summarizing them at biologically meaningful levels, and then adding gene-based annotations.
 
 This is the most important computational idea in the analysis section: model output becomes biological evidence only after careful joins, grouping, summarizing, reshaping, and filtering. The table below names the main files in that chain.
 
@@ -403,7 +403,7 @@ This is the most important computational idea in the analysis section: model out
 | `cogaps_K10_seed2_iter2000.discovery_cells_with_patterns.csv` | Cell metadata joined to cell scores | Subject, timepoint, broad cell type, marker scores, and pattern scores in one table. |
 | `cogaps_K10_seed2_iter2000.pattern_summary.csv` | Cell scores, metadata, IFN scores, and top genes | Temporal effect size, cell-type effect size, IFN correlation, and pattern class. |
 | `pattern_annotation_table.csv` | Interpretation-layer merge | Subject-level summaries, readable labels, dominant cell type, top genes, and notes. |
-| `RQ1`, `RQ2`, and `RQ3` tables | Filtered and reordered views of the annotation table | Learner-facing evidence for each research question. |
+| `RQ1`, `RQ2`, and `RQ3` tables | Filtered and reordered views of the annotation table | Learner-facing evidence for the temporal-program, identity-versus-activity, and IFN-associated-response questions. |
 
 The first transformation joins cell metadata to CoGAPS cell scores. The included file `discovery_cells_with_patterns.csv` already contains that join, so you can inspect the result without rerunning CoGAPS.
 
@@ -491,7 +491,7 @@ subject_time_rebuilt_long_py = subject_time_rebuilt_py.melt(
 
 In both languages, the same sequence appears. The code identifies pattern columns, groups cells by subject and timepoint, computes mean pattern usage within each group, and reshapes the wide pattern table into a long table. The reshaping step is not cosmetic: long tables are easier to filter, plot, and summarize by pattern.
 
-The richer interpretation layer is built by `scripts/reproduction/cs5_build_k10_interpretation_layer.py`. That script starts from the selected-model outputs, builds subject-level summaries, joins top-gene lists, adds readable labels, and writes the `RQ1`, `RQ2`, and `RQ3` tables used below. The script defaults to writing rebuilt tables to `data/processed/interpretation_rebuilt` so that you can inspect the workflow without overwriting the included analysis files.
+The richer interpretation layer is built by `scripts/reproduction/cs5_build_k10_interpretation_layer.py`. That script starts from the selected-model outputs, builds subject-level summaries, joins top-gene lists, adds readable labels, and writes the `RQ1`, `RQ2`, and `RQ3` tables used below. Those filenames preserve the original biological-question numbering from the interpretation layer; in the revised case-study question map, they provide evidence for Questions 2, 3, and 4. The script defaults to writing rebuilt tables to `data/processed/interpretation_rebuilt` so that you can inspect the workflow without overwriting the included analysis files.
 
 > **Checkpoint.** When you look at a research-question table below, ask which columns came from cell scores, which came from gene loadings, and which were added later as interpretation labels.
 
@@ -670,9 +670,9 @@ The selected run passes the basic technical checks used here. Chi-square drops f
 
 > **Checkpoint.** The diagnostics tell you whether the run behaved sensibly; they do not tell you what Pattern3 means. Biological interpretation starts only after the technical run checks are acceptable.
 
-## RQ1: Which Latent Programs Vary Over Time?
+## Question 2: Which Latent Programs Vary Over Time?
 
-Research Question 1 asks which latent programs change across the experimental infection time course. Biologically, this table helps you separate programs that are mostly stable across days from programs that rise or fall as infection progresses. The table you inspect here is not a raw CoGAPS output. It is built from the interpretation-layer annotation table, which combines CoGAPS cell scores, subject-level time summaries, top genes from the loading matrix, and pattern-level statistics.
+Research Question 2 asks which latent programs change across the experimental infection time course. Biologically, this table helps you separate programs that are mostly stable across days from programs that rise or fall as infection progresses. The table you inspect here is not a raw CoGAPS output. It is built from the interpretation-layer annotation table, which combines CoGAPS cell scores, subject-level time summaries, top genes from the loading matrix, and pattern-level statistics.
 
 The inputs are the selected-model cell-score table, the gene-loading table, the pattern-summary table, and the subject-level summaries produced by the interpretation-layer script. The task is a rank-and-select operation. You start with one row per pattern in `pattern_annotation_table.csv`, keep the columns that describe temporal behavior, rank patterns by `eta_timepoint`, and display the strongest temporal programs. The subject-level columns such as `subject_mean_D10` are there because the biological question is about repeated subjects over infection days, not thousands of cells treated as independent people.
 
@@ -727,11 +727,11 @@ This code is the same logic used to create `RQ1_temporal_programs.csv`: select t
 
 This table cannot prove that `Pattern3` is an interferon program by itself. It tells you that `Pattern3` is the strongest time-varying pattern. The biological label still depends on top genes, IFN-score correlation, and directionality.
 
-> **Checkpoint.** In the RQ1 table, the subject-mean columns come from cell scores summarized by subject and timepoint. The `top_10_genes` column comes from gene loadings. Those are different kinds of evidence.
+> **Checkpoint.** In the temporal-program table, the subject-mean columns come from cell scores summarized by subject and timepoint. The `top_10_genes` column comes from gene loadings. Those are different kinds of evidence.
 
-## RQ2: Identity Programs Versus Activity Programs
+## Question 3: Identity Programs Versus Activity Programs
 
-Research Question 2 asks whether a pattern mostly reflects stable PBMC identity or dynamic infection activity. This matters because PBMC data mix many immune-cell types in one expression matrix. A pattern can look important because it separates T cells from monocytes, or because it changes over infection time, or because both are true.
+Research Question 3 asks whether a pattern mostly reflects stable PBMC identity or dynamic infection activity. This matters because PBMC data mix many immune-cell types in one expression matrix. A pattern can look important because it separates T cells from monocytes, or because it changes over infection time, or because both are true.
 
 The inputs are the same pattern annotation table and the pattern-summary statistics derived from cell scores joined to timepoint and broad cell-type metadata. Here, the code compares two effect sizes. `eta_timepoint` asks how much of a pattern's variation is explained by infection day, while `eta_broad_cell_type` asks how much is explained by broad immune-cell identity. The interpretation-layer script classifies a pattern as activity-like when the timepoint effect is more than 1.5 times the cell-type effect, identity-like when the cell-type effect is more than 1.5 times the timepoint effect, and mixed otherwise.
 
@@ -793,9 +793,9 @@ The limitation is that this classification is a heuristic, not a biological trut
 
 > **Checkpoint.** If cell-type composition changed strongly across days, which column would help you notice that a pattern might be identity-like rather than infection-activity-like?
 
-## RQ3: Which Program Is IFN-Associated and When Does It Peak?
+## Question 4: Which Program Is IFN-Associated and When Does It Peak?
 
-Research Question 3 asks which pattern is most consistent with an interferon-associated late acute response. No single column is enough to answer that question. A strong candidate should vary over time, correlate with an IFN gene-set score, contain interferon-stimulated genes among its top loadings, peak in the late acute window, and show that its top genes increase relative to baseline.
+Research Question 4 asks which pattern is most consistent with an interferon-associated late acute response. No single column is enough to answer that question. A strong candidate should vary over time, correlate with an IFN gene-set score, contain interferon-stimulated genes among its top loadings, peak in the late acute window, and show that its top genes increase relative to baseline.
 
 The inputs are the pattern annotation table and the pattern-level directionality summary. This step filters and joins tables. First, the annotation table is filtered to candidate IFN patterns. Then the directionality summary is joined in so that the same row contains both CoGAPS-based evidence and expression-change evidence. This lets you read timing, IFN-gene evidence, and up-or-down expression behavior together rather than treating them as disconnected tables.
 
@@ -1075,15 +1075,15 @@ To reproduce the directionality tables from the large expression object, run the
 
 ```{bash}
 #| eval: false
-export CS5_ZENODO_DIR="/path/to/downloaded/cs5_sweep_results"
+export CS5_REPRODUCTION_ARCHIVE="/path/to/downloaded/reproduction_archive"
 
 docker run --platform linux/amd64 --rm \
   -v "$PWD":/home/rstudio/project:rw \
-  -v "$CS5_ZENODO_DIR":/home/rstudio/project/data/cs5_sweep_results:ro \
+  -v "$CS5_REPRODUCTION_ARCHIVE":/home/rstudio/project/data/external/reproduction_archive:ro \
   -w /home/rstudio/project \
   othomas2/cs5-cogaps-runtime:0.1.0 \
   python scripts/reproduction/gse154386_pattern_directionality.py \
-    --sweep-outdir /home/rstudio/project/data/cs5_sweep_results \
+    --sweep-outdir /home/rstudio/project/data/external/reproduction_archive \
     --run-stem cogaps_K10_seed2_iter2000 \
     --outdir /home/rstudio/project/GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000 \
     --top-n 25 \
@@ -1140,7 +1140,7 @@ k5_rq1_py = pd.read_csv(
 
 The `K = 5` model is stable, but the strongest patterns are identity-like and no pattern meets the IFN-candidate criterion used for the selected analysis. This is the sensitivity takeaway: a compact model can be technically reproducible while being too compressed for a specific biological goal.
 
-## RQ4 Optional Extension: Natural Infection Projection
+## Optional Extension: Natural Infection Projection
 
 Projection into the natural infection cohort is biologically motivated because the original study compared experimental and natural primary infection. It is not part of the main analysis yet. A future extension would use the `K = 10` gene loading matrix learned from the experimental discovery cohort, project those programs into natural infection samples with a validated projectR-style or NNLS workflow, compare acute natural samples with convalescent reference samples, and report subject-level and cell-type-level summaries. Those results should be clearly labeled as transfer-learning evidence rather than primary discovery.
 

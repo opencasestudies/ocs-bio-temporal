@@ -10,7 +10,9 @@ PLATFORM="${PLATFORM:-linux/amd64}"
 PORT="${PORT:-8787}"
 PASSWORD="${PASSWORD:-Password12}"
 
-CS5_SWEEP_RESULTS="${CS5_SWEEP_RESULTS:-/Users/othomas/Desktop/CS5_sweep_results}"
+CS5_REPRODUCTION_ARCHIVE="${CS5_REPRODUCTION_ARCHIVE:-}"
+DEFAULT_REPRODUCTION_ARCHIVE="${HOME}/cs5_reproduction_archive"
+CONTAINER_REPRODUCTION_ARCHIVE="/home/rstudio/project/data/external/reproduction_archive"
 
 CS5_PRIMARY_K="${CS5_PRIMARY_K:-10}"
 CS5_PRIMARY_SEED="${CS5_PRIMARY_SEED:-2}"
@@ -33,6 +35,10 @@ mkdir -p \
   "${REPO_ROOT}/data/processed/interpretation" \
   "${REPO_ROOT}/data/processed/r_python_comparison"
 
+if [[ -z "${CS5_REPRODUCTION_ARCHIVE}" && -d "${DEFAULT_REPRODUCTION_ARCHIVE}" ]]; then
+  CS5_REPRODUCTION_ARCHIVE="${DEFAULT_REPRODUCTION_ARCHIVE}"
+fi
+
 echo "Launching ${IMAGE}"
 echo "RStudio: http://localhost:${PORT}"
 echo "User: rstudio"
@@ -40,10 +46,19 @@ echo "Password: ${PASSWORD}"
 echo
 echo "Mounts:"
 echo "  case-study repo: ${REPO_ROOT}"
-echo "  sweep results:   ${CS5_SWEEP_RESULTS}"
+if [[ -n "${CS5_REPRODUCTION_ARCHIVE}" ]]; then
+  if [[ ! -d "${CS5_REPRODUCTION_ARCHIVE}" ]]; then
+    echo "ERROR: CS5_REPRODUCTION_ARCHIVE does not exist: ${CS5_REPRODUCTION_ARCHIVE}" >&2
+    exit 1
+  fi
+  echo "  reproduction archive: ${CS5_REPRODUCTION_ARCHIVE}"
+else
+  echo "  reproduction archive: not mounted (standard path)"
+fi
 echo
 
-docker run --platform "${PLATFORM}" -it --rm \
+docker_args=(
+  --platform "${PLATFORM}" -it --rm
   -p "${PORT}:8787" \
   -e PASSWORD="${PASSWORD}" \
   -e CS5_PRIMARY_K="${CS5_PRIMARY_K}" \
@@ -57,7 +72,8 @@ docker run --platform "${PLATFORM}" -it --rm \
   -e CS5_CHOSEN_K="${CS5_PRIMARY_K}" \
   -e CS5_CHOSEN_SEED="${CS5_PRIMARY_SEED}" \
   -e CS5_CHOSEN_N_ITER="${CS5_PRIMARY_N_ITER}" \
-  -e CS5_SWEEP_OUTDIR=/home/rstudio/project/data/external/cs5_sweep_results \
+  -e CS5_REPRODUCTION_ARCHIVE_DIR="${CONTAINER_REPRODUCTION_ARCHIVE}" \
+  -e CS5_SWEEP_OUTDIR="${CONTAINER_REPRODUCTION_ARCHIVE}" \
   -e CS5_PRIMARY_R_RESULTS_DIR=/home/rstudio/project/data/processed/selected_model_k10/r \
   -e CS5_PRIMARY_PYTHON_RESULTS_DIR=/home/rstudio/project/data/processed/selected_model_k10/python \
   -e CS5_COMPARATOR_R_RESULTS_DIR=/home/rstudio/project/data/processed/comparator_model_k5/r \
@@ -66,6 +82,13 @@ docker run --platform "${PLATFORM}" -it --rm \
   -e CS5_K_SELECTION_DIR=/home/rstudio/project/data/processed/k_selection \
   -e CS5_INTERPRETATION_DIR=/home/rstudio/project/data/processed/interpretation \
   -e CS5_R_PYTHON_COMPARISON_DIR=/home/rstudio/project/data/processed/r_python_comparison \
-  -v "${REPO_ROOT}:/home/rstudio/project:rw" \
-  -v "${CS5_SWEEP_RESULTS}:/home/rstudio/project/data/external/cs5_sweep_results:ro" \
-  "${IMAGE}"
+  -v "${REPO_ROOT}:/home/rstudio/project:rw"
+)
+
+if [[ -n "${CS5_REPRODUCTION_ARCHIVE}" ]]; then
+  docker_args+=(
+    -v "${CS5_REPRODUCTION_ARCHIVE}:${CONTAINER_REPRODUCTION_ARCHIVE}:ro"
+  )
+fi
+
+docker run "${docker_args[@]}" "${IMAGE}"

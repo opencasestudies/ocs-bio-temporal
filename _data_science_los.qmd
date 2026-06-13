@@ -1,7 +1,8 @@
 <u>**Data Science/Bioinformatics Learning Objectives:**</u>
 
-1. Import selected-model CoGAPS artifacts, metadata tables, diagnostics, and manifest files in R or Python.
-1. Summarize cell-level pattern scores, gene-level loadings, and run diagnostics as tidy analysis tables.
+1. Import selected-model CoGAPS files, metadata tables, diagnostics, manifests, and rank-selection evidence in R or Python.
+1. Check file inventories, table columns, object dimensions, sample metadata, and analysis units before interpreting model output.
+1. Distinguish standard-path files included with the case study from large full-reproduction files stored outside the repository.
 1. Join CoGAPS cell scores to subject, timepoint, and broad immune-cell-type annotations.
-1. Create reproducible summaries and visualizations from small teaching artifacts included with the case study.
-1. Explain which artifacts are included with the case study and which large reproduction files belong in the Zenodo archive.
+1. Reshape and summarize pattern scores by infection day, subject, and broad PBMC identity.
+1. Create reproducible visual summaries from included analysis files while keeping R as the default path and Python as a first-class alternate.

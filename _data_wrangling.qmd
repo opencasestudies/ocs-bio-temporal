@@ -669,11 +669,28 @@ The subset was intentionally balanced so that each sample contributes up to the 
 ::::
 :::
 
-### Step 5: Save Reproducible Outputs
+### Step 5: Confirm and Save CoGAPS-Ready Inputs
 
-The final preprocessing step records the outputs and their shapes. Large single-cell objects are useful for full reproduction, while smaller CSV and JSON files are better for the standard path. A manifest connects those two worlds by recording where files came from, how large they are, and which parameters were used.
+At this point, the preprocessing workflow has produced the discovery data that CoGAPS needs for model fitting. The object is no longer just an imported single-cell dataset. It has been filtered, normalized, restricted to highly variable genes, limited to the experimental cohort, labeled with biological metadata, and balanced so that no single sample dominates the model.
 
-This is not just bookkeeping. If two learners rerun preprocessing with different seeds or different HVG rules, the manifest helps explain why their model inputs may differ.
+This is the right place to pause before visualization or analysis. Visualization and interpretation depend on CoGAPS outputs, but CoGAPS can only be interpreted biologically if its input matrix is well defined. Before saving the files, check that the final discovery object has the structure required for the modeling question.
+
+| CoGAPS input requirement | What has been prepared | Why it matters |
+|---|---|---|
+| Reliable cells | Low-quality cells and technical outliers have been filtered. | Reduces the chance that patterns reflect damaged cells or sequencing artifacts. |
+| Informative genes | The matrix has been restricted to highly variable genes. | Focuses CoGAPS on genes that can distinguish PBMC identity and infection-response programs. |
+| Non-negative expression values | Normalized, log-transformed values are checked so invalid or negative values are removed before modeling. | CoGAPS is a non-negative matrix factorization method, so its input must be non-negative. |
+| Aligned biological metadata | Each cell remains linked to subject, sample, cohort, infection day, merged timepoint, and broad PBMC identity. | Later interpretation depends on joining cell scores back to biological context. |
+| Experimental discovery cohort | The required CoGAPS discovery input uses the experimental cohort only. | Aligned infection days make this cohort appropriate for temporal program discovery. |
+| Balanced sample contribution | Each sample contributes up to the same number of cells. | Prevents one large sample from dominating the learned patterns. |
+| Explicit matrix orientation | The workflow saves orientation-specific files, including the genes-by-cells matrix used for PyCoGAPS. | Gene loadings and cell scores can only be interpreted correctly when genes and cells are in the expected orientation. |
+| Reproducible provenance | A manifest records shapes, parameters, seed, and output paths. | Makes the modeling input traceable if preprocessing is rerun. |
+
+The key distinction is between the biological annotation context and the matrix passed to CoGAPS. The annotation context keeps cells connected to sample, subject, cohort, infection day, merged timepoint, and broad PBMC identity. The CoGAPS input matrix is the expression matrix used for factorization, where the model learns gene loadings and cell scores.
+
+Matrix orientation matters. In the R full-reproduction path, the `SingleCellExperiment` discovery object uses the usual genes-by-cells shape. In the Python full-reproduction path, the workflow saves both a cells-by-genes `AnnData` object for metadata and downstream joins and a genes-by-cells `AnnData` object for PyCoGAPS. The selected Python runner uses the genes-by-cells file with `transposeData = False`, so the file name is part of the provenance.
+
+The saved discovery object is appropriate for learning transcriptional programs. It is not appropriate for estimating the original abundance of immune-cell types in the source study, because the balanced subset intentionally changes sample sizes. That tradeoff is deliberate: the goal here is temporal program discovery, not population abundance estimation.
 
 The large objects are useful when you want to rerun later full-reproduction scripts. They are not needed for the standard path because the case study includes smaller derived tables.
 
@@ -689,6 +706,26 @@ saveRDS(
   sce_discovery,
   file.path(workdir, "gse154386_experimental_discovery_genes_x_cells.rds")
 )
+
+saveRDS(
+  sce_nat,
+  file.path(workdir, "gse154386_natural_projection_target.rds")
+)
+
+write_h5ad_if_available(
+  sce_hvg,
+  file.path(workdir, "gse154386_preprocessed_hvg.h5ad")
+)
+
+write_h5ad_if_available(
+  sce_discovery,
+  file.path(workdir, "gse154386_experimental_discovery_genes_x_cells.h5ad")
+)
+
+write_h5ad_if_available(
+  sce_nat,
+  file.path(workdir, "gse154386_natural_projection_target.h5ad")
+)
 ```
 
 #### Python
@@ -700,11 +737,19 @@ adata_hvg.write_h5ad(workdir / "gse154386_preprocessed_hvg.h5ad")
 adata_discovery_cogaps.write_h5ad(
     workdir / "gse154386_experimental_discovery_cells_x_genes.h5ad"
 )
+
+adata_discovery_cogaps.T.write_h5ad(
+    workdir / "gse154386_experimental_discovery_genes_x_cells.h5ad"
+)
+
+adata_nat_target.write_h5ad(
+    workdir / "gse154386_natural_projection_target.h5ad"
+)
 ```
 
 :::
 
-The manifest is the compact provenance record. It connects the saved files to the source accession, object shapes, balancing rule, and seed.
+The manifest is the compact provenance record. It connects the saved files to the source accession, object shapes, balancing rule, seed, and output paths.
 
 ::: {.panel-tabset}
 
@@ -714,14 +759,43 @@ The manifest is the compact provenance record. It connects the saved files to th
 #| eval: false
 manifest <- list(
   source = "GSE154386",
-  import_source = "GSE154386_RAW.tar from GEO",
+  raw_tar_url = RAW_TAR_URL,
+  n_samples = length(triplets),
+  all_cells_after_qc = ncol(sce_qc),
   hvg_shape = c(cells = ncol(sce_hvg), genes = nrow(sce_hvg)),
   experimental_discovery_shape = c(
     cells = ncol(sce_discovery),
     genes = nrow(sce_discovery)
   ),
-  max_cells_per_sample = DISCOVERY_MAX_CELLS_PER_SAMPLE,
-  seed = RANDOM_SEED
+  natural_projection_shape = c(
+    cells = ncol(sce_nat),
+    genes = nrow(sce_nat)
+  ),
+  max_cells_per_sample = args$max_cells_per_sample,
+  seed = args$seed,
+  outputs = list(
+    preprocessed_hvg = file.path(workdir, "gse154386_preprocessed_hvg.rds"),
+    discovery_genes_x_cells = file.path(
+      workdir,
+      "gse154386_experimental_discovery_genes_x_cells.rds"
+    ),
+    natural_projection_target = file.path(
+      workdir,
+      "gse154386_natural_projection_target.rds"
+    ),
+    preprocessed_hvg_h5ad = file.path(
+      workdir,
+      "gse154386_preprocessed_hvg.h5ad"
+    ),
+    discovery_genes_x_cells_h5ad = file.path(
+      workdir,
+      "gse154386_experimental_discovery_genes_x_cells.h5ad"
+    ),
+    natural_projection_target_h5ad = file.path(
+      workdir,
+      "gse154386_natural_projection_target.h5ad"
+    )
+  )
 )
 
 jsonlite::write_json(
@@ -740,21 +814,41 @@ write_manifest(
     results_dir / "preprocessing_manifest.json",
     {
         "source": "GSE154386",
-        "import_source": "GSE154386_RAW.tar from GEO",
+        "raw_tar_url": RAW_TAR_URL,
+        "n_samples": len(triplets),
+        "all_cells_after_qc": int(adata_qc.n_obs),
         "hvg_shape": [int(adata_hvg.n_obs), int(adata_hvg.n_vars)],
         "experimental_discovery_shape": [
             int(adata_discovery_cogaps.n_obs),
             int(adata_discovery_cogaps.n_vars),
         ],
+        "natural_projection_shape": [
+            int(adata_nat_target.n_obs),
+            int(adata_nat_target.n_vars),
+        ],
         "max_cells_per_sample": args.max_cells_per_sample,
         "seed": args.seed,
+        "outputs": {
+            "preprocessed_hvg": str(
+                workdir / "gse154386_preprocessed_hvg.h5ad"
+            ),
+            "discovery_cells_x_genes": str(
+                workdir / "gse154386_experimental_discovery_cells_x_genes.h5ad"
+            ),
+            "discovery_genes_x_cells": str(
+                workdir / "gse154386_experimental_discovery_genes_x_cells.h5ad"
+            ),
+            "natural_projection_target": str(
+                workdir / "gse154386_natural_projection_target.h5ad"
+            ),
+        },
     },
 )
 ```
 
 :::
 
-After this step, the preprocessing workflow has two kinds of outputs. The large single-cell objects preserve the full reproduction path. The smaller CSV and JSON files are the portable evidence tables used in the rest of the case study.
+After this step, the full-reproduction path has the large objects needed to rerun the selected CoGAPS model. The standard path returns to smaller precomputed tables, but those tables should now make more sense: they come from a CoGAPS model fit to this prepared experimental discovery matrix.
 
 ## Full Reproduction Path: Complete Optional Preparation Scripts
 

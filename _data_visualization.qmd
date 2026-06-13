@@ -7,9 +7,9 @@ The figures are built from small source tables in `data/processed/figures/source
 
 | Figure | Source table | What it shows | Research question | What it cannot prove |
 |---|---|---|---|---|
-| K-selection figure | `figure_01_k_selection_source.csv` | How candidate model ranks balance stability, temporal resolution, and goal-aligned evidence. | Why use `K = 10` for the main model? | It does not identify a biological program by itself. |
+| K-selection figure | `figure_01_k_selection_source.csv` | How candidate model ranks balance stability, temporal resolution, and goal-aligned evidence. | Which value of `K` provides an appropriate CoGAPS model for this case-study goal? | It does not identify a biological program by itself. |
 | Pattern usage across time | `figure_03_pattern_usage_by_time_matrix.csv` | Mean pattern usage trajectories and heatmap summaries for each CoGAPS pattern across infection days. | Which temporal programs appear across the experimental time course? | It does not tell whether a pattern is driven by cell identity, subject effects, or gene-direction changes. |
-| Pattern usage by broad cell type | `figure_04_pattern_usage_by_cell_type_matrix.csv` | Mean pattern usage across broad PBMC identities. | Which patterns look identity-like versus activity-like? | It does not show whether a pattern changes over time within the same cell type. |
+| Pattern usage by broad cell type | `figure_04_pattern_usage_by_cell_type_matrix.csv` | Mean pattern usage across broad PBMC identities. | Which programs reflect PBMC identity, dynamic infection activity, or both? | It does not show whether a pattern changes over time within the same cell type. |
 | Pattern scores on transcriptome UMAP | `figure_08_transcriptome_umap_pattern_scores_source.csv` | Cell-level pattern scores over a transcriptome embedding. | Where do selected patterns appear in cell-state space? | It is a context view, not a statistical test or a replacement for subject-level summaries. |
 | IFN pattern trajectory | `figure_05_ifn_pattern_subject_trajectory_source.csv`; `figure_05_ifn_pattern_summary_trajectory_source.csv` | Subject-level trajectory for the candidate IFN-associated pattern. | Does the candidate IFN program peak in the late acute window? | It does not show whether top genes are higher or lower than baseline. |
 | Directionality heatmap | `figure_06_ifn_top_gene_directionality_matrix.csv` | Log2 fold-change direction for top genes in the IFN-associated pattern. | Do top genes support an upregulated late acute response? | It does not replace the CoGAPS model; it adds direction to the non-negative pattern interpretation. |
@@ -27,7 +27,7 @@ A CoGAPS heatmap cell is a mean pattern score, not an upregulated or downregulat
 
 ![](data/processed/figures/figure_01_k_selection.png){fig-alt="K-selection figure with stability and temporal resolution above a revised goal-aligned K-ranking panel." width=850 .lightbox}
 
-This figure is a visualization of a modeling decision. The top panel asks whether a model rank is stable across seeds while still resolving temporal structure. The bottom panel summarizes a goal-aligned score that combines stability, low redundancy, temporal signal, and IFN-candidate evidence.
+This figure is a visual preview of Research Question 1. The top panel asks whether a model rank is stable across seeds while still resolving temporal structure. The bottom panel summarizes a goal-aligned score that combines stability, low redundancy, temporal signal, and IFN-candidate evidence.
 
 Use this plot to compare `K = 5` and `K = 10`. `K = 5` is useful because it is stable and compact, but compact models can compress several biological signals into fewer patterns. `K = 10` stays in a stable region while separating a late acute IFN-associated program more clearly. This is why `K = 10` is used for the main model and `K = 5` remains a sensitivity comparison.
 
@@ -35,7 +35,7 @@ Use this plot to compare `K = 5` and `K = 10`. `K = 5` is useful because it is s
 
 ![](data/processed/figures/figure_03_pattern_usage_by_time_small_multiples.png){fig-alt="Small-multiple line plots of mean CoGAPS pattern usage across experimental infection days for each selected K=10 pattern." width=850 .lightbox}
 
-This source table is the first visual pass at Research Question 1. Because temporal structure can be hard to see in a heatmap alone, you will inspect the same pattern-by-time table in two ways. The line-panel view emphasizes the shape of each pattern over time. The heatmap view emphasizes the relative magnitude of all pattern-day combinations in one compact display.
+This source table is the first visual pass at Research Question 2. Because temporal structure can be hard to see in a heatmap alone, you will inspect the same pattern-by-time table in two ways. The line-panel view emphasizes the shape of each pattern over time. The heatmap view emphasizes the relative magnitude of all pattern-day combinations in one compact display.
 
 Start with the line panels. Each panel uses the same y-axis, so a sharp rise in one pattern can be compared with smaller changes in other patterns. `Pattern3` shows the strongest late acute change, rising sharply at `D10` and remaining elevated at `D14/15` before returning toward baseline at `D28`. Other patterns also show temporal structure, but their changes are more modest. For example, `Pattern9` increases toward `D14/15` and then decreases at `D28`, making it a secondary visual candidate to carry forward rather than a pattern to ignore.
 

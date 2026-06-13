@@ -1,11 +1,11 @@
 # **Learning Objectives**
 ***
 
-By the end of this case study, you will be able to analyze longitudinal single-cell RNA-seq data from experimental dengue virus infection using CoGAPS, a Bayesian non-negative matrix factorization method.
+By the end of this case study, you will be able to evaluate CoGAPS model-rank evidence, import and inspect selected-model files, rebuild core summaries, and interpret temporal immune programs from longitudinal single-cell RNA-seq data collected during experimental dengue virus infection.
 
-You may work through the analysis in R or Python. The standard path uses precomputed teaching files, so the focus is on importing, summarizing, visualizing, and interpreting the selected model rather than waiting for a full CoGAPS run. If you want to reproduce the full model run, you can download the large reproduction files from the Zenodo record and run the provided scripts inside the case-study Docker image.
+You may work through the standard path in R or Python. The standard path uses included analysis files, selected-model outputs, and precomputed rank-selection evidence so that you can focus on evidence checking, visualization, interpretation, and reproducible summaries rather than waiting for a full CoGAPS run. The full-reproduction path is available separately for learners who want to download the large reproduction files from Zenodo and rerun the selected-model workflow inside the case-study Docker image.
 
-The objectives are organized into data science/bioinformatics, statistical/modeling, and biological/topical goals.
+The objectives are organized into data science/bioinformatics, statistical/modeling, and biological/topical goals. Together, they prepare you to answer the four research questions: choosing an appropriate CoGAPS rank, identifying temporal immune programs, distinguishing PBMC identity from dynamic infection activity, and evaluating evidence for an interferon-associated late acute response.
 
 {{< include _data_science_los.qmd >}}
 
@@ -19,14 +19,20 @@ The objectives are organized into data science/bioinformatics, statistical/model
 
 ## Objectives Map
 
-| Objective area | You will practice this by... | Main section |
+This map shows how the learning objectives connect to the work you will do in the case study. The first column names the learner goal, the second describes what you will practice, and the third points to the sections where that work appears.
+
+| Learning goal | You will practice this by... | Where it appears |
 |---|---|---|
-| Data import and artifacts | Importing selected-model tables, diagnostics, and manifest files in R or Python | Data Import |
-| Pattern summaries | Joining cell scores to metadata and summarizing patterns by timepoint, subject, and broad cell type | Data Wrangling and Preprocessing |
-| Rank selection | Evaluating why `K = 10` is used for the main model while `K = 5` remains a sensitivity comparison | Data Visualization; Data Analysis |
-| Diagnostics | Reading convergence, stability, runtime, and trace summaries before interpreting model output | Data Analysis |
-| Temporal biology | Interpreting which programs vary over the dengue time course and which appear identity-like, activity-like, or mixed | Data Analysis |
-| IFN evidence | Combining top genes, IFN-score correlation, trajectory, and directionality evidence for the late acute response | Data Analysis |
-| Limitations and extensions | Distinguishing confirmed results, sensitivity comparisons, and optional natural-cohort projection plans | Summary; Suggested Homework or Further Exploration |
+| Understand the study design and biological question | Explaining why the experimental DENV-1 PBMC cohort is the primary discovery set and why the analysis focuses on host immune response | Motivation; Context and Background; What Are the Data? |
+| Distinguish the standard path from full reproduction | Identifying which included analysis files support the standard path and which large files belong to the Zenodo/full-reproduction workflow | Packages and Setup; What Are the Data?; Data Import; Data Analysis; Additional Information |
+| Import and check the selected-model files | Loading manifests, metadata, diagnostics, selected-model tables, and rank-selection evidence in R or Python; checking columns, dimensions, and analysis units before interpretation | What Are the Data?; Data Import |
+| Build analysis-ready pattern summaries | Joining CoGAPS cell scores to subject, timepoint, and broad immune-cell-type metadata; summarizing pattern scores by infection day, subject, and PBMC identity | Data Import; Data Wrangling and Preprocessing; Data Analysis |
+| Understand preprocessing and discovery-set construction | Explaining why the balanced experimental discovery set is interpretable, what filtering and sampling decisions affect, and where the standard path has limits | Data Wrangling and Preprocessing; Limitations |
+| Choose and justify the CoGAPS rank | Using rank-sweep evidence, stability, redundancy, temporal signal, and biological resolution to decide which value of K supports the case-study goal | Main Questions; Context and Background; Data Visualization; Data Analysis |
+| Check whether the selected model is usable | Reading convergence, stability, runtime, and trace diagnostics before treating selected-model patterns as biologically interpretable | Data Analysis |
+| Identify temporal immune programs | Using pattern-by-day summaries, subject-level trajectories, top genes, and visual summaries to identify programs that vary across infection timepoints | Data Visualization; Data Analysis |
+| Separate PBMC identity from infection activity | Comparing broad-cell-type structure with infection-time structure so identity-like, activity-like, and mixed programs are interpreted cautiously | Context and Background; Data Exploration; Data Wrangling and Preprocessing; Data Visualization; Data Analysis |
+| Evaluate the interferon-associated response | Combining top genes, IFN-score correlation, timing, and pseudobulk directionality to decide which program best supports the late acute response interpretation | Data Import; Data Visualization; Data Analysis |
+| Interpret secondary signals and limitations | Discussing sensitivity comparisons, optional natural-cohort projection, small subject numbers, changing cell composition, and limits of biological labels | Limitations; Data Analysis; Summary; Suggested Homework or Further Exploration |
 
 ***

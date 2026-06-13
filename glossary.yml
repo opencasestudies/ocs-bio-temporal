@@ -1,4 +1,68 @@
-Term 1: |
-  Definition of Term 1
-Term2: |
-  Definition of Term 2
+Activity program: |
+  A coordinated gene-expression pattern that reflects what cells are doing, such as antiviral signaling, inflammation, cytotoxic activity, or antibody-related responses.
+Baseline sample: |
+  A starting reference sample collected before later post-infection changes are interpreted.
+Balanced discovery set: |
+  A smaller modeling dataset constructed so each experimental timepoint contributes the same number of cells.
+Biological replicate: |
+  An independently sampled biological unit, such as a participant, rather than an individual cell from the same participant.
+Biological resolution: |
+  The ability of a model to separate biologically meaningful signals, such as immune-cell identity and infection-response activity.
+Cell score: |
+  A value in the CoGAPS P matrix showing how strongly a cell uses a learned pattern.
+CoGAPS: |
+  A Bayesian non-negative matrix factorization method used to learn gene-expression patterns and cell-level pattern scores from genomic data.
+DENV-1: |
+  Dengue virus serotype 1, the viral serotype studied in the source experimental and natural primary infection cohorts.
+Experimental infection cohort: |
+  A study group sampled on a planned infection timeline, allowing responses from different participants to be compared at aligned timepoints.
+Gene loading: |
+  A value in the CoGAPS A matrix showing how strongly a gene contributes to a learned pattern.
+Host immune response: |
+  The immune reaction of a person or organism to infection, measured here through changes in blood immune-cell gene expression.
+IFN-score correlation: |
+  A comparison between CoGAPS pattern scores and an interferon-related gene score.
+Immune-cell identity: |
+  The relatively stable cell type assigned to an immune cell, such as T cell, B cell, natural killer cell, or monocyte.
+Interferon: |
+  An immune signaling protein that helps coordinate antiviral responses and can induce interferon-stimulated genes.
+Interferon-associated response: |
+  An immune response consistent with activation of interferon signaling during antiviral defense.
+Interferon-stimulated genes: |
+  Genes whose expression can increase when cells receive interferon signals during an antiviral response.
+Latent transcriptional program: |
+  An inferred gene-expression pattern shared across many cells, rather than a variable measured directly in the original data table.
+Late acute window: |
+  A later post-infection sampling window in which the experimental cohort shows strong immune-response activity.
+Natural infection cohort: |
+  A study group infected outside a planned experimental challenge setting, often with samples collected at less precisely aligned illness stages.
+Non-negative matrix factorization: |
+  A matrix decomposition approach that represents a non-negative data matrix as additive combinations of smaller non-negative pattern matrices.
+Pattern-by-day summary: |
+  A summary of CoGAPS pattern scores grouped by infection day or study timepoint.
+Peripheral blood mononuclear cells: |
+  Blood-derived immune cells that include T cells, B cells, natural killer cells, monocytes, and related antigen-presenting cells.
+Primary infection: |
+  A first dengue infection in the study framing, interpreted without the same prior dengue immune history expected in secondary infection.
+Projection: |
+  A transfer-learning step that scores a new dataset using patterns learned from a discovery dataset.
+Pseudobulk directionality: |
+  A summary that aggregates cell-level expression before comparing whether genes tend to increase or decrease relative to a reference condition.
+Rank K: |
+  The number of latent patterns the model is asked to learn.
+Rank-sweep evidence: |
+  Precomputed summaries comparing several candidate values of K before choosing the model used for interpretation.
+Redundancy: |
+  Overlap between model patterns that may indicate two patterns are capturing similar biological signal.
+Serotype: |
+  A subtype of a virus distinguished by how the immune system recognizes it; dengue virus has four major serotypes.
+Stability: |
+  Evidence that a pattern or model result is reproducible enough to support interpretation.
+Subject-level trajectory: |
+  A view of how a participant's pattern scores change over sampled timepoints.
+Temporal effect size: |
+  A summary of how much a pattern score varies across infection days or study timepoints.
+Temporal immune program: |
+  A gene-expression program whose use changes across infection timepoints.
+Top genes: |
+  Genes with the largest contributions to a model pattern, used to help interpret what biology the pattern may represent.

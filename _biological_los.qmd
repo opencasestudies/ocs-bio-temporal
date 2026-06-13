@@ -1,9 +1,9 @@
 <u>**Biological/Topical Learning Objectives:**</u>
 
-1. Describe the experimental and natural DENV-1 PBMC cohorts in Waickman et al. 2021 and explain why the experimental cohort is the primary discovery set.
-1. Recognize the difference between immune-cell identity programs and infection-response activity programs in single-cell PBMC data.
-1. Interpret temporal immune programs using top genes, time-course behavior, broad cell-type context, and subject-level summaries.
-1. Identify evidence for an interferon-stimulated antiviral transcriptional program using top genes, pathway knowledge, time-course behavior, and directionality evidence.
-1. Evaluate whether later time-course patterns may be consistent with adaptive, cytotoxic, or plasmablast-related immune activity without treating those labels as guaranteed findings.
-1. Explain why this analysis is a host-response analysis rather than a direct infected-cell atlas.
-1. Discuss limitations created by small subject numbers, changing cell composition, teaching-subset construction, and model-rank sensitivity.
+1. Describe the experimental DENV-1 PBMC cohort and explain why it is the primary discovery set for this case study.
+1. Explain why this analysis studies host immune response rather than directly identifying infected cells.
+1. Distinguish stable PBMC identity programs, dynamic infection-response activity programs, and mixed programs.
+1. Interpret temporal immune programs using top genes, subject-level trajectories, broad-cell-type context, and model diagnostics.
+1. Evaluate evidence for an interferon-associated late acute response using timing, IFN-score correlation, interferon-stimulated genes, and directionality.
+1. Interpret secondary adaptive, cytotoxic, or plasmablast-related signals cautiously rather than treating those labels as guaranteed findings.
+1. Discuss limitations from small subject numbers, changing cell composition, selected-model sensitivity, standard-path file construction, and public human-data interpretation.

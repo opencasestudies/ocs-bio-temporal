@@ -4,9 +4,9 @@ This post-sweep analysis asks whether the genes defining the selected CoGAPS pat
 
 ## Inputs
 
-- Expression object: `/Users/othomas/Desktop/CS5_sweep_results/cache/gse154386_preprocessed_hvg.h5ad`
-- Selected top genes: `/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/cogaps_r_revised_model_K10_seed2_iter2000/cogaps_K10_seed2_iter2000.top_genes.csv`
-- Pattern summary: `/Users/othomas/Desktop/CASE STUDY 5 SWEEP/GSE154386/cogaps_r_revised_model_K10_seed2_iter2000/cogaps_K10_seed2_iter2000.pattern_summary.csv`
+- Expression object: `/home/rstudio/project/data/external/reproduction_archive/cache/gse154386_preprocessed_hvg.h5ad`
+- Selected top genes: `/home/rstudio/project/data/processed/selected_model_k10/r/cogaps_K10_seed2_iter2000.top_genes.csv`
+- Pattern summary: `/home/rstudio/project/data/processed/selected_model_k10/r/cogaps_K10_seed2_iter2000.pattern_summary.csv`
 - Run stem: `cogaps_K10_seed2_iter2000`
 - Top genes per pattern tested: `25`
 - Baseline timepoint: `D0`

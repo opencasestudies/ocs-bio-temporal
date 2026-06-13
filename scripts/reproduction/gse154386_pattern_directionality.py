@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Iterable
 
 
-DEFAULT_SWEEP_OUTDIR = Path("data/cs5_sweep_results")
+DEFAULT_SWEEP_OUTDIR = Path("data/external/reproduction_archive")
 DEFAULT_RUN_STEM = "cogaps_K10_seed2_iter2000"
 DEFAULT_OUTDIR = Path("GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000")
 
