@@ -1,6 +1,6 @@
 <u>**Data Science/Bioinformatics Learning Objectives:**</u>
 
-1. Import selected-model CoGAPS files, metadata tables, diagnostics, manifests, and rank-selection evidence in R or Python.
+1. Import rank-selection evidence, then import K-selected CoGAPS files, metadata tables, diagnostics, and manifests in R or Python.
 1. Check file inventories, table columns, object dimensions, sample metadata, and analysis units before interpreting model output.
 1. Distinguish standard-path files included with the case study from large full-reproduction files stored outside the repository.
 1. Join CoGAPS cell scores to subject, timepoint, and broad immune-cell-type annotations.

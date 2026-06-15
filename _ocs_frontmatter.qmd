@@ -58,7 +58,7 @@ See the following example from a previous case study (prior to Motivation sectio
 GitHub repository
 ::::
 ::::{.inner_block}
-To access the GitHub repository for this case study see here: {LINK}
+The source files for this case study are available in the [opencasestudies/ocs-bio-temporal GitHub repository](https://github.com/opencasestudies/ocs-bio-temporal){target="_blank"}.
 ::::
 :::
 
@@ -73,10 +73,16 @@ If the data isn't in the main github repository, be sure to describe and link to
 Keywords
 ::::
 ::::{.inner_block}
-* Keyword 1
-* Keyword 2
-* Keyword 3
-* ...Keyword n
+* Dengue virus infection
+* Single-cell RNA-seq
+* Experimental infection cohort
+* Peripheral blood mononuclear cells (PBMCs)
+* Time-course analysis
+* CoGAPS
+* Non-negative matrix factorization
+* Latent expression patterns
+* K selection
+* Reproducible biomedical data science
 
 <!-- Note that keywords should be the types of words that you'd use for a conference abstract or grant submission; focus on the emerging tech or best practice that is being covered as well as the specific part of the task/analysis/visualization that is being shown. Just a quick way to overview what skills/topics are part of the case study -->
 
@@ -95,7 +101,18 @@ Include bioOCSdata package information once ready/applicable
 Prerequisites
 ::::
 ::::{.inner_block}
-Add a list of prerequisites here.
+This case study is designed so most learners can follow the **standard path** without installing R, Python, CoGAPS, or single-cell packages directly on their computer. The standard path uses a Docker image, the case-study GitHub repository, included selected-model files, and precomputed K-selection evidence.
+
+Before you begin, you should have:
+
+- **Docker installed and running.** Install Docker Desktop for your operating system using the official Docker instructions for [Mac](https://docs.docker.com/desktop/setup/install/mac-install/){target="_blank"}, [Windows](https://docs.docker.com/desktop/setup/install/windows-install/){target="_blank"}, or [Linux](https://docs.docker.com/desktop/setup/install/linux/){target="_blank"}. You will use Docker to open the same R and Python environment used by the case study.
+- **Git installed, or another way to download the GitHub repository.** The setup section uses `git clone` so that the case-study files, scripts, figures, and included data are all in one project folder.
+- **A web browser and a Terminal or command prompt.** You will open the case study in one browser tab, open RStudio Server from Docker in another tab, and run a few setup commands in your Terminal.
+- **Basic R or Python familiarity.** You do not need to use both languages. In R, you should be comfortable creating objects with `<-`, calling functions, reading data frames, using pipes, and reading common `dplyr` and `tidyr` verbs such as `select()`, `filter()`, `mutate()`, `group_by()`, `summarize()`, and `pivot_wider()`. In Python, you should be comfortable running short code chunks, creating variables, using `Path`, reading tables with `pandas`, selecting columns with `.loc`, previewing data with `.head()`, and reading common table operations such as `.assign()`, `.groupby().agg()`, `.merge()`, and `.pivot()`.
+- **Basic table and file-path literacy.** You should know how to read rows and columns in a table, recognize CSV and JSON files, follow project-relative paths, and compare long and wide table layouts.
+- **Introductory biology context.** You do not need prior dengue, single-cell RNA-seq, or CoGAPS expertise. It will help to know that gene-expression data measure genes across cells, that PBMCs are mixed blood immune cells, and that models can learn latent patterns that are interpreted only after checking the biological evidence.
+
+The **full reproduction path** is optional. Choose it only if you want to download the larger external reproduction files, mount both the GitHub repository and reproduction archive into Docker, and run complete preprocessing, selected-model, and interpretation scripts. That path requires more comfort with command-line work, large files, Docker volume mounts, and longer-running computations.
 ::::
 :::
 
@@ -109,4 +126,3 @@ or submit a mock computing job within the learnr environment in order to receive
 In essence this section is useful to provide information to learners on how to work with the data and follow along with this case study.
 This section may not be needed for all case studies and can be removed if not
 -->
-

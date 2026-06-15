@@ -799,6 +799,59 @@ Research Question 4 asks which pattern is most consistent with an interferon-ass
 
 The inputs are the pattern annotation table and the pattern-level directionality summary. This step filters and joins tables. First, the annotation table is filtered to candidate IFN patterns. Then the directionality summary is joined in so that the same row contains both CoGAPS-based evidence and expression-change evidence. This lets you read timing, IFN-gene evidence, and up-or-down expression behavior together rather than treating them as disconnected tables.
 
+First, make the gene-identity clue explicit. A learner should not have to recognize every immune gene symbol from memory, so the next code compares the top genes for `Pattern3` with a small interferon-related reference list. This is not the whole interpretation. It only asks whether the genes defining the visual temporal candidate include genes that are useful anchors for an IFN-associated response.
+
+::: {.panel-tabset}
+
+### R
+
+```{r}
+#| label: inspect-ifn-top-genes-r
+pattern3_top_genes <- r_top_genes |>
+  filter(pattern == "Pattern3") |>
+  arrange(rank) |>
+  select(pattern, rank, gene, weight) |>
+  slice_head(n = 15)
+
+ifn_reference_genes <- c(
+  "LY6E", "ISG15", "IFITM1", "IFI6", "MX1", "IRF7",
+  "IFI44L", "IFIT3", "OAS1", "OASL", "IFIT1",
+  "IFIT2", "IFITM3", "ISG20", "TRIM22"
+)
+
+pattern3_top_genes |>
+  mutate(ifn_reference_gene = gene %in% ifn_reference_genes) |>
+  select(rank, gene, weight, ifn_reference_gene) |>
+  knitr::kable(digits = 3)
+```
+
+### Python
+
+```{python}
+#| label: inspect-ifn-top-genes-python
+py_pattern3_top_genes = (
+    py_top_genes
+    .loc[py_top_genes["pattern"].eq("Pattern3"),
+         ["pattern", "rank", "gene", "weight"]]
+    .sort_values("rank")
+    .head(15)
+)
+
+ifn_reference_genes = [
+    "LY6E", "ISG15", "IFITM1", "IFI6", "MX1", "IRF7",
+    "IFI44L", "IFIT3", "OAS1", "OASL", "IFIT1",
+    "IFIT2", "IFITM3", "ISG20", "TRIM22",
+]
+
+py_pattern3_top_genes.assign(
+    ifn_reference_gene=lambda df: df["gene"].isin(ifn_reference_genes)
+)
+```
+
+:::
+
+Several top genes in `Pattern3`, including `LY6E`, `ISG15`, `IFITM1`, `IFI6`, `MX1`, `IRF7`, and `IFI44L`, overlap this interferon-related reference list. That makes the visual temporal candidate biologically plausible, but it does not prove mechanism and it does not show whether the genes are higher or lower than baseline. The next table adds timing, IFN-score correlation, and directionality evidence.
+
 ::: {.panel-tabset}
 
 ### R

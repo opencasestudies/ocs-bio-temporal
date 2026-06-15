@@ -6,9 +6,9 @@ The **standard path** is recommended for most learners. It uses the case-study r
 
 The **full reproduction path** is optional. It uses the same case-study repository and Docker image, but adds the large Zenodo reproduction archive so you can regenerate source-data preparation outputs, rerun the selected CoGAPS model, or rebuild interpretation outputs.
 
-The K-selection sweep is not rerun in either path. You will inspect precomputed rank-selection evidence and selected code excerpts when you evaluate why `K = 10` is used for the main analysis.
+The K-selection sweep is not rerun in either path. At the start of **Data Import**, you will inspect precomputed rank-selection evidence to decide which model rank anchors the standard path. Later, **Data Analysis** revisits that decision while checking diagnostics and biological interpretation.
 
-## What Docker Provides
+## Setup Layers: Software, Repository, and Large Files
 
 Before running commands, keep the setup layers separate:
 
@@ -26,7 +26,8 @@ The Docker image supplies software, not project data. Docker sees your local fil
 |---|---|---|---|
 | Standard path | Complete the main analysis efficiently and learn how the selected model is interpreted. | The cloned GitHub repository. | Copy short R or Python chunks from the case study into RStudio Server. |
 | Full reproduction path | Regenerate major selected-model inputs or outputs after downloading the large files. | The cloned GitHub repository plus the Zenodo reproduction archive. | Run complete scripts inside the same Docker image. |
-| K-selection evidence layer | Understand how the CoGAPS rank was selected. | Included K-selection tables and figures; documented sweep scripts. | Inspect precomputed summaries and selected code excerpts, but do not rerun the sweep. |
+
+Both paths use the same precomputed rank-selection evidence. You will inspect that evidence in **Data Import** before loading the K-selected model files. The sweep scripts are included for provenance, but ordinary learners do not rerun the sweep.
 
 ## Standard Path Setup
 
@@ -61,9 +62,9 @@ Use this path only if your goal is to regenerate large analysis outputs. The ful
 
 First, clone the GitHub repository if you have not already done so. Launch Docker from the repository root. The repository contains the case-study text, scripts, manifests, included analysis files, and output folders.
 
-Second, download and extract the Zenodo reproduction archive into a folder outside the Git repository. Do not commit those files to GitHub. The archive is a large-file layer for full reproduction: it can contain original source files, preprocessed H5AD files, selected-model objects, checkpoint files, and sweep summaries.
+Second, download and extract the Zenodo reproduction archive into a local folder outside the Git repository, such as `$HOME/cs5_reproduction_archive`. Do not commit those files to GitHub.
 
-During draft review, the Zenodo record is listed as DOI pending publication in the front matter. Once the record is public, download the reproduction archive into a local folder such as `$HOME/cs5_reproduction_archive`.
+The archive is a large-file layer for full reproduction: it can contain original source files, preprocessed H5AD files, selected-model objects, checkpoint files, and sweep summaries. If you are using a draft version of the case study before the public Zenodo record is available, use the archive location provided by your instructor or project lead.
 
 Use the following commands from your computer's Terminal. If you already cloned the case-study repository during the standard path setup, you can skip the `git clone` line and use `cd` to move into your existing `ocs-bio-temporal` folder.
 
@@ -122,12 +123,9 @@ The main full-reproduction scripts are grouped by task:
 1. Rerun the selected model:
    `scripts/reproduction/cs5_run_selected_model_r.R` or
    `scripts/reproduction/cs5_run_selected_model_python.py`.
-1. Rebuild interpretation-layer tables:
-   `scripts/reproduction/cs5_build_k10_interpretation_layer.py`.
-1. Rebuild directionality summaries:
-   `scripts/reproduction/gse154386_pattern_directionality.py`.
+1. Rebuild interpretation-layer and directionality summaries from the selected-model outputs.
 
-Choose the R or Python preparation script for step 1; you do not need to run both unless you want to compare the two implementations. The later scripts expect the prepared discovery-set files to exist before CoGAPS or interpretation steps are rerun.
+Choose the R or Python preparation script for step 1; you do not need to run both unless you want to compare the two implementations. The later scripts expect the prepared discovery-set files to exist before CoGAPS or interpretation steps are rerun. Later sections give the exact selected-model and interpretation commands after the rank-selection evidence has been evaluated.
 
 Run R scripts with `Rscript` and Python scripts with the Docker image's Python environment:
 
@@ -138,8 +136,6 @@ Rscript scripts/prepare_gse154386_subset_r.R
 
 Rscript scripts/reproduction/cs5_run_selected_model_r.R
 /opt/cogaps-venv/bin/python scripts/reproduction/cs5_run_selected_model_python.py
-/opt/cogaps-venv/bin/python scripts/reproduction/cs5_build_k10_interpretation_layer.py
-/opt/cogaps-venv/bin/python scripts/reproduction/gse154386_pattern_directionality.py
 ```
 
 The K-selection sweep scripts are also included in `scripts/reproduction` for provenance and teaching. They are not part of the standard path or the full reproduction path described here.
@@ -171,7 +167,7 @@ You can paste short Python examples after the `>>>` prompt. For longer Python ex
 
 ## Load Packages
 
-The Docker image installs the packages used by this case study. The code chunks below load the packages used for the standard path. You may work in R or Python; the two tabs show alternate implementations of the same ideas.
+The Docker image already installs these packages. Load the packages for the language you plan to use; the R and Python tabs support the same standard-path analysis.
 
 ::: {.panel-tabset}
 
@@ -304,13 +300,13 @@ Now check that the mounted project folder contains the standard-path files. If y
 data.frame(
   item = c(
     "case-study manifest",
-    "selected K10 files",
-    "K-selection evidence",
+    "standard-path processed folder",
+    "rank-selection evidence",
     "optional reproduction archive"
   ),
   available = c(
     file.exists(here::here("data", "artifact_manifest.json")),
-    dir.exists(here::here("data", "processed", "selected_model_k10")),
+    dir.exists(here::here("data", "processed")),
     dir.exists(here::here("data", "processed", "k_selection")),
     dir.exists(here::here("data", "external", "reproduction_archive"))
   )
@@ -325,13 +321,13 @@ data.frame(
 pd.DataFrame({
     "item": [
         "case-study manifest",
-        "selected K10 files",
-        "K-selection evidence",
+        "standard-path processed folder",
+        "rank-selection evidence",
         "optional reproduction archive",
     ],
     "available": [
         Path("data/artifact_manifest.json").exists(),
-        Path("data/processed/selected_model_k10").is_dir(),
+        Path("data/processed").is_dir(),
         Path("data/processed/k_selection").is_dir(),
         Path("data/external/reproduction_archive").is_dir(),
     ],
@@ -340,4 +336,6 @@ pd.DataFrame({
 
 :::
 
-When a function is introduced for the first time, the prose uses the `package::function()` form so you can see which package provides it. Next, you will import the small selected-model files that carry the CoGAPS results through the rest of the case study.
+Data Import will check the specific K-selected model folder after you evaluate the rank-selection evidence.
+
+When a function is introduced for the first time, the prose uses the `package::function()` form so you can see which package provides it. Next, you will import the rank-selection evidence, decide which model rank the standard path uses, and then load the K-selected model files for the rest of the case study.

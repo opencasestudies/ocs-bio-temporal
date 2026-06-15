@@ -1,25 +1,53 @@
+10x Genomics files: |
+  Raw single-cell sequencing output from the 10x Genomics platform, usually stored as linked matrix, barcode, and feature files.
+10x triplet: |
+  A matched set of matrix, barcode, and feature files that must be read together to connect expression values to cells and genes.
 Activity program: |
   A coordinated gene-expression pattern that reflects what cells are doing, such as antiviral signaling, inflammation, cytotoxic activity, or antibody-related responses.
+AnnData: |
+  A Python object commonly used for single-cell data that stores an expression matrix together with cell and gene annotations.
 Baseline sample: |
   A starting reference sample collected before later post-infection changes are interpreted.
 Balanced discovery set: |
-  A smaller modeling dataset constructed so each experimental timepoint contributes the same number of cells.
+  A smaller modeling dataset constructed so each experimental sample contributes up to the same number of cells.
 Biological replicate: |
   An independently sampled biological unit, such as a participant, rather than an individual cell from the same participant.
 Biological resolution: |
   The ability of a model to separate biologically meaningful signals, such as immune-cell identity and infection-response activity.
+Boolean mask: |
+  A vector of TRUE/FALSE values in R or True/False values in Python used to keep or remove cells, genes, rows, or columns.
+Cell barcode: |
+  A sequence label used to identify one captured cell or droplet in a single-cell sequencing experiment.
+Cell-by-gene matrix: |
+  A matrix arranged with cells as rows and genes as columns, where each value records expression for one gene in one cell.
+Cell metadata: |
+  Information attached to each cell, such as sample ID, subject, cohort, infection day, or cell type.
 Cell score: |
   A value in the CoGAPS P matrix showing how strongly a cell uses a learned pattern.
 CoGAPS: |
   A Bayesian non-negative matrix factorization method used to learn gene-expression patterns and cell-level pattern scores from genomic data.
 DENV-1: |
   Dengue virus serotype 1, the viral serotype studied in the source experimental and natural primary infection cohorts.
+Decision manifest: |
+  A machine-readable file that records the selected model choice, the rule used to choose it, and the representative run to import.
+Detected gene: |
+  A gene with a nonzero expression count in a cell. QC filters often count how many detected genes a cell has, or how many cells detect a given gene.
+Diagnostic trace: |
+  Saved values tracked during model fitting that can later be used to check whether the selected run behaved as expected.
 Experimental infection cohort: |
   A study group sampled on a planned infection timeline, allowing responses from different participants to be compared at aligned timepoints.
+Feature: |
+  A measured item in a single-cell data matrix, such as a gene-expression feature or another assay feature.
+File manifest: |
+  A structured inventory that records which files are included locally, which files are external, and where they belong in the workflow.
+Gene metadata: |
+  Information attached to each gene or feature, such as gene symbol, gene ID, or feature type.
 Gene loading: |
   A value in the CoGAPS A matrix showing how strongly a gene contributes to a learned pattern.
 Host immune response: |
   The immune reaction of a person or organism to infection, measured here through changes in blood immune-cell gene expression.
+Highly variable genes: |
+  Genes selected because their expression varies enough across cells or samples to help a model learn biological and technical structure.
 IFN-score correlation: |
   A comparison between CoGAPS pattern scores and an interferon-related gene score.
 Immune-cell identity: |
@@ -34,35 +62,83 @@ Latent transcriptional program: |
   An inferred gene-expression pattern shared across many cells, rather than a variable measured directly in the original data table.
 Late acute window: |
   A later post-infection sampling window in which the experimental cohort shows strong immune-response activity.
+Library-size normalization: |
+  A scaling step that makes expression values more comparable by reducing differences caused by cells having different total sequencing counts.
+Log transformation: |
+  A transformation that compresses large expression values so comparisons are less dominated by the most abundant transcripts.
+Long format: |
+  A table layout where each row stores one measurement for one observation, group, or variable combination.
+Manifest: |
+  A small metadata file that records where outputs came from, which parameters were used, and how files relate to one another.
+Marker score: |
+  A gene-set score based on known marker genes, used here as an annotation aid for broad immune-cell identity.
+Matrix orientation: |
+  The choice of what the matrix rows and columns represent, such as features by cells or cells by genes.
+Mitochondrial fraction: |
+  The percentage of a cell's counts assigned to mitochondrial genes. High mitochondrial fraction can indicate stressed, damaged, or dying cells.
 Natural infection cohort: |
   A study group infected outside a planned experimental challenge setting, often with samples collected at less precisely aligned illness stages.
 Non-negative matrix factorization: |
   A matrix decomposition approach that represents a non-negative data matrix as additive combinations of smaller non-negative pattern matrices.
+Pattern label: |
+  A pattern identifier, such as a number or name, used to track a model pattern without assuming it is already a biological interpretation.
 Pattern-by-day summary: |
   A summary of CoGAPS pattern scores grouped by infection day or study timepoint.
 Peripheral blood mononuclear cells: |
   Blood-derived immune cells that include T cells, B cells, natural killer cells, monocytes, and related antigen-presenting cells.
 Primary infection: |
   A first dengue infection in the study framing, interpreted without the same prior dengue immune history expected in secondary infection.
+Program score: |
+  A gene-set score for a biological activity, such as an interferon-associated response, rather than a stable cell identity.
 Projection: |
   A transfer-learning step that scores a new dataset using patterns learned from a discovery dataset.
+Provenance: |
+  Information that records where a file or result came from, how it was produced, and which settings were used.
 Pseudobulk directionality: |
   A summary that aggregates cell-level expression before comparing whether genes tend to increase or decrease relative to a reference condition.
+Quality control: |
+  Filtering and diagnostic checks used to identify cells or genes that are unlikely to support reliable biological interpretation.
 Rank K: |
   The number of latent patterns the model is asked to learn.
 Rank-sweep evidence: |
   Precomputed summaries comparing several candidate values of K before choosing the model used for interpretation.
+Random seed: |
+  A fixed value used to make a random operation reproducible, such as selecting the same balanced subset of cells each time the workflow is rerun.
 Redundancy: |
   Overlap between model patterns that may indicate two patterns are capturing similar biological signal.
+Run metrics: |
+  Saved settings and summary values from a model run, such as rank, seed, iteration count, runtime, and software settings.
+Sample-level 10x files: |
+  Raw 10x Genomics files organized one biological sample at a time, with linked matrix, barcode, and feature files for each sample.
+Sample-specific outlier: |
+  A cell with unusually high counts or detected genes compared with other cells from the same sample. These cells can reflect multiplets or technical extremes.
+Selected-model outputs: |
+  Compact exported files from the chosen model run that are small enough to import and inspect in the standard path.
 Serotype: |
   A subtype of a virus distinguished by how the immune system recognizes it; dengue virus has four major serotypes.
+Single-cell object: |
+  A labeled data container that keeps expression values aligned with cell and gene annotations.
+SingleCellExperiment: |
+  An R Bioconductor object for single-cell data that stores assays together with cell and gene annotations.
+Sparse matrix: |
+  A compact matrix format used when most values are zero, which is common in single-cell RNA-seq count data.
 Stability: |
   Evidence that a pattern or model result is reproducible enough to support interpretation.
+Stability plateau: |
+  A set of candidate ranks with similar enough reproducibility across seeds to be considered stable for further comparison.
 Subject-level trajectory: |
   A view of how a participant's pattern scores change over sampled timepoints.
+Subject-timepoint summary: |
+  A summary for one participant at one sampled timepoint, used here as the evidence unit for temporal comparisons.
 Temporal effect size: |
   A summary of how much a pattern score varies across infection days or study timepoints.
 Temporal immune program: |
   A gene-expression program whose use changes across infection timepoints.
 Top genes: |
   Genes with the largest contributions to a model pattern, used to help interpret what biology the pattern may represent.
+Total counts: |
+  The total number of expression counts observed for one cell before normalization. Low total counts can indicate low RNA recovery or poor-quality cells.
+Transpose: |
+  A matrix operation that flips rows and columns, for example changing a features-by-cells matrix into a cells-by-genes matrix.
+Wide table: |
+  A table layout where related values are spread across columns, often to make comparisons across subjects, timepoints, or groups easier to scan.

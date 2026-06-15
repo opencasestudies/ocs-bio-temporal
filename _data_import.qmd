@@ -5,9 +5,9 @@ In this section, you will import the files that enter the analysis environment. 
 
 A `CSV` file is a rectangular table: rows are observations or summaries, and columns are variables. A `JSON` file stores structured metadata, such as model settings or diagnostic values. In R, the imported files become data frames. In Python, they become tables managed by `pandas`.
 
-This section begins with the first modeling decision you need for the case study: which value of `K`, the number of CoGAPS patterns, should anchor the main analysis? Because the selected-model files were generated from one chosen `K`, you first import precomputed rank-comparison evidence from a K-selection sweep, a planned set of CoGAPS runs that compared candidate ranks, seeds, and iteration counts. After using that evidence to choose the main rank, the **standard path** imports the small K-selected model files included with the case study. The **full reproduction path** also imports the original source 10x Genomics files after downloading the larger Zenodo and GEO files, with later preprocessing decisions covered in **Data Wrangling and Preprocessing**.
+This section begins with the first modeling decision you need for the case study: which value of {{< glossary "Rank K" display="K" >}}, the number of {{< glossary "CoGAPS" >}} patterns, should anchor the main analysis? Because the selected-model files were generated from one chosen `K`, you first import precomputed evidence from a {{< glossary "Rank-sweep evidence" display="K-selection sweep" >}}, a planned set of CoGAPS runs that compared candidate ranks, seeds, and iteration counts. After using that evidence to choose the main rank, the **standard path** imports the small K-selected model files included with the case study. The **full reproduction path** also imports the original source {{< glossary "10x Genomics files" display="10x Genomics files" >}} after downloading the larger Zenodo and GEO files, with later preprocessing decisions covered in **Data Wrangling and Preprocessing**.
 
-This section stops once the K-selection evidence and selected-model files have been read into R or Python and checked for basic file integrity. The biological interpretation comes later in **Data Analysis**, where you will use these prepared files to evaluate model diagnostics, interpret temporal programs, examine top genes, check directionality, and compare sensitivity evidence.
+This section stops once the K-selection evidence and selected-model files have been read into R or Python and checked for basic file integrity. The biological interpretation comes later in **Data Analysis**, where you will use these prepared files to evaluate model diagnostics, interpret {{< glossary "Temporal immune program" display="temporal programs" >}}, examine {{< glossary "Top genes" display="top genes" >}}, check directionality, and compare sensitivity evidence.
 
 The larger files needed to rerun preprocessing or CoGAPS from scratch are intentionally external:
 
@@ -17,17 +17,17 @@ The larger files needed to rerun preprocessing or CoGAPS from scratch are intent
 - RDS model objects
 - checkpoint files
 
-These files are documented in `data/artifact_manifest.json` and are distributed through Zenodo for full reproduction.
+These files are documented in the {{< glossary "File manifest" display="file manifest" >}} `data/artifact_manifest.json` and are distributed through Zenodo for full reproduction.
 
 ## Standard Path: Evaluate K-Selection Evidence Before Importing the Model
 
-Before importing selected-model outputs, you need to answer the first research question: which value of `K` provides an appropriate CoGAPS model for this case-study goal? The standard path does not rerun the full sweep. Instead, it imports precomputed sweep summaries that let you inspect the rank-selection evidence directly.
+Before importing {{< glossary "Selected-model outputs" display="selected-model outputs" >}}, you need to answer the first modeling question from **Main Questions**: which value of `K` provides an appropriate CoGAPS model for this case-study goal? The standard path does not rerun the full sweep. Instead, it imports precomputed sweep summaries that let you inspect the rank-selection evidence directly.
 
-This is still a data-import task because the sweep summaries are files you read into the analysis environment. The interpretation is narrow: decide which model outputs should be imported next. The biological meaning of any numbered pattern still comes later.
+This belongs in Data Import because the sweep summaries are files you read into the analysis environment. The goal is narrow: decide which model outputs should be imported next.
 
-### Step 1: Identify the K-Selection Evidence Files
+### Step 1: Check the File Availability Manifest
 
-Start with the file inventory. The inventory is a `JSON` file that records which small files are included locally and which large files are kept in the Zenodo reproduction archive. This check helps you understand why the standard path can inspect K-selection evidence immediately while the full reproduction path needs the larger external files.
+Start with an availability audit. The file inventory is a `JSON` {{< glossary "File manifest" display="manifest" >}} that records which small files are included locally and which large files are kept in the Zenodo reproduction archive. This check helps you understand why the standard path can inspect K-selection evidence immediately while the full reproduction path needs the larger external files.
 
 Here, you read a structured file and summarize two lists inside it. The list named `copied` contains files included with the case study. The list named `skipped` contains large files that were intentionally left out and documented for Zenodo.
 
@@ -87,9 +87,89 @@ pd.DataFrame({
 
 :::
 
-Read this as a data-availability check, not as a biological result. The standard path starts from the included small files. The full reproduction path adds the large source, model-object, and checkpoint files from Zenodo.
+Read this first table as an availability audit. The standard path starts from the included small files. The full reproduction path adds the large source, model-object, and checkpoint files from Zenodo.
 
-The next checklist focuses on the K-selection files. These are the evidence files you will inspect before choosing which selected-model outputs to import.
+Next, read the {{< glossary "Decision manifest" display="decision manifest" >}}. After the manifest names the selected rank and representative run, you will check the supporting evidence files.
+
+### Step 2: Read the K-Selection Decision Manifest
+
+The decision manifest records the model-rank decision in a machine-readable format. It is useful because it stores the selection rule, the compact stable rank, the selected main rank, and the representative run that the standard path will import.
+
+::: {.panel-tabset}
+
+#### R
+
+```{r}
+#| label: import-k-manifest-r
+k_manifest <- jsonlite::fromJSON(
+  here::here("data", "processed", "k_selection",
+             "revised_k_selection_manifest.json")
+)
+
+compact_stable_k <- k_manifest$previous_chosen_k
+selected_main_k <- k_manifest$revised_chosen_k
+selected_seed <- k_manifest$revised_seed
+selected_iterations <- k_manifest$revised_selected_n_iter
+
+data.frame(
+  item = c(
+    "selection rule",
+    "compact stable K",
+    "selected main K",
+    "selected-run seed",
+    "selected-run iterations"
+  ),
+  value = c(
+    k_manifest$selection_rule,
+    compact_stable_k,
+    selected_main_k,
+    selected_seed,
+    selected_iterations
+  )
+) |>
+  knitr::kable()
+```
+
+#### Python
+
+```{python}
+#| label: import-k-manifest-python
+#| results: asis
+with open(
+    "data/processed/k_selection/revised_k_selection_manifest.json"
+) as f:
+    k_manifest_py = json.load(f)
+
+compact_stable_k_py = k_manifest_py["previous_chosen_k"]
+selected_main_k_py = k_manifest_py["revised_chosen_k"]
+selected_seed_py = k_manifest_py["revised_seed"]
+selected_iterations_py = k_manifest_py["revised_selected_n_iter"]
+
+k_manifest_table_py = pd.DataFrame({
+    "item": [
+        "selection rule",
+        "compact stable K",
+        "selected main K",
+        "selected-run seed",
+        "selected-run iterations",
+    ],
+    "value": [
+        k_manifest_py["selection_rule"],
+        compact_stable_k_py,
+        selected_main_k_py,
+        selected_seed_py,
+        selected_iterations_py,
+    ],
+})
+
+print(k_manifest_table_py.to_markdown(index=False))
+```
+
+:::
+
+The manifest gives you the selected rank, and the next steps show the evidence behind that choice. `K = 5` is the compact stable comparator from a stability-focused rule. `K = 10` is the selected main rank because it adds enough {{< glossary "Biological resolution" display="biological resolution" >}} to support the case-study questions.
+
+Now that the manifest has named the selected rank, make a K-selection evidence checklist. These are the files you will inspect before importing the selected-model outputs.
 
 ::: {.panel-tabset}
 
@@ -97,13 +177,18 @@ The next checklist focuses on the K-selection files. These are the evidence file
 
 ```{r}
 #| label: import-k-evidence-files-r
+selected_pattern_file <- sprintf(
+  "representative_K%s_seed%s_iter%s_patterns.csv",
+  selected_main_k, selected_seed, selected_iterations
+)
+
 k_evidence_files <- data.frame(
   evidence_role = c(
     "decision manifest",
     "stability plateau candidates",
     "all-rank summary",
-    "K = 10 reproducibility",
-    "representative K = 10 pattern evidence",
+    paste("selected K =", selected_main_k, "reproducibility"),
+    paste("selected K =", selected_main_k, "pattern evidence"),
     "K-selection figure"
   ),
   relative_path = c(
@@ -111,14 +196,14 @@ k_evidence_files <- data.frame(
     "data/processed/k_selection/stability_plateau_candidates.csv",
     "data/processed/k_selection/revised_k_selection_summary_by_k.csv",
     "data/processed/k_selection/selected_pairwise_reproducibility.csv",
-    "data/processed/k_selection/representative_K10_seed2_iter2000_patterns.csv",
+    file.path("data", "processed", "k_selection", selected_pattern_file),
     "data/processed/figures/figure_01_k_selection.png"
   ),
   used_for = c(
-    "records the revised K decision",
+    "records the selected K decision",
     "compares stable candidate ranks",
     "shows evidence across the full sweep",
-    "checks the representative K = 10 run across seeds",
+    "checks the representative run across seeds",
     "records pattern-level evidence for the representative run",
     "summarizes K-selection visually"
   )
@@ -137,13 +222,18 @@ k_evidence_files |>
 ```{python}
 #| label: import-k-evidence-files-python
 #| results: asis
+selected_pattern_file_py = (
+    f"representative_K{selected_main_k_py}_"
+    f"seed{selected_seed_py}_iter{selected_iterations_py}_patterns.csv"
+)
+
 k_evidence_files_py = pd.DataFrame({
     "evidence_role": [
         "decision manifest",
         "stability plateau candidates",
         "all-rank summary",
-        "K = 10 reproducibility",
-        "representative K = 10 pattern evidence",
+        f"selected K = {selected_main_k_py} reproducibility",
+        f"selected K = {selected_main_k_py} pattern evidence",
         "K-selection figure",
     ],
     "relative_path": [
@@ -151,14 +241,14 @@ k_evidence_files_py = pd.DataFrame({
         "data/processed/k_selection/stability_plateau_candidates.csv",
         "data/processed/k_selection/revised_k_selection_summary_by_k.csv",
         "data/processed/k_selection/selected_pairwise_reproducibility.csv",
-        "data/processed/k_selection/representative_K10_seed2_iter2000_patterns.csv",
+        str(Path("data/processed/k_selection") / selected_pattern_file_py),
         "data/processed/figures/figure_01_k_selection.png",
     ],
     "used_for": [
-        "records the revised K decision",
+        "records the selected K decision",
         "compares stable candidate ranks",
         "shows evidence across the full sweep",
-        "checks the representative K = 10 run across seeds",
+        "checks the representative run across seeds",
         "records pattern-level evidence for the representative run",
         "summarizes K-selection visually",
     ],
@@ -175,77 +265,9 @@ print(k_evidence_files_py.to_markdown(index=False))
 
 Every `file_exists` value should be `TRUE` in R or `True` in Python. If one is false, stop and resolve the file-path problem before using the selected-model outputs.
 
-### Step 2: Read the K-Selection Decision Manifest
-
-The decision manifest records the revised model-rank decision in a machine-readable format. It is useful because it stores the selection rule, the earlier compact rank, the revised selected rank, and the representative run that the standard path will import.
-
-::: {.panel-tabset}
-
-#### R
-
-```{r}
-#| label: import-k-manifest-r
-k_manifest <- jsonlite::fromJSON(
-  here::here("data", "processed", "k_selection",
-             "revised_k_selection_manifest.json")
-)
-
-data.frame(
-  item = c(
-    "selection rule",
-    "previous compact K",
-    "revised selected K",
-    "representative seed",
-    "representative iterations"
-  ),
-  value = c(
-    k_manifest$selection_rule,
-    k_manifest$previous_chosen_k,
-    k_manifest$revised_chosen_k,
-    k_manifest$revised_seed,
-    k_manifest$revised_selected_n_iter
-  )
-) |>
-  knitr::kable()
-```
-
-#### Python
-
-```{python}
-#| label: import-k-manifest-python
-#| results: asis
-with open(
-    "data/processed/k_selection/revised_k_selection_manifest.json"
-) as f:
-    k_manifest_py = json.load(f)
-
-k_manifest_table_py = pd.DataFrame({
-    "item": [
-        "selection rule",
-        "previous compact K",
-        "revised selected K",
-        "representative seed",
-        "representative iterations",
-    ],
-    "value": [
-        k_manifest_py["selection_rule"],
-        k_manifest_py["previous_chosen_k"],
-        k_manifest_py["revised_chosen_k"],
-        k_manifest_py["revised_seed"],
-        k_manifest_py["revised_selected_n_iter"],
-    ],
-})
-
-print(k_manifest_table_py.to_markdown(index=False))
-```
-
-:::
-
-The manifest tells you the conclusion, but it does not ask you to accept that conclusion blindly. The next steps inspect the evidence behind it. The earlier compact choice, `K = 5`, was selected by a stability-focused rule. The revised choice, `K = 10`, asks for stability plus enough biological resolution to support the case-study questions.
-
 ### Step 3: Understand What the Sweep Tested
 
-The K-selection sweep was a modeling experiment. Instead of fitting one CoGAPS model and treating it as final, the sweep compared candidate ranks, random seeds, and iteration counts. Each run asked whether a particular model setting recovered reproducible patterns that could separate stable PBMC identity from dengue-associated temporal activity.
+The {{< glossary "Rank-sweep evidence" display="K-selection sweep" >}} was a modeling experiment. Instead of fitting one CoGAPS model and treating it as final, the sweep compared candidate ranks, random seeds, and iteration counts. Each run asked whether a particular model setting recovered reproducible patterns that could separate stable {{< glossary "Immune-cell identity" display="PBMC identity" >}} from dengue-associated temporal activity.
 
 | Sweep component | What varied | Why it matters |
 |---|---|---|
@@ -258,7 +280,7 @@ The standard path reads the results of this sweep. It does not rerun hundreds of
 
 ### Step 4: Apply the Stability Gate
 
-A useful model rank should not depend on one lucky random start. The first gate therefore asks which ranks are on the seed-to-seed stability plateau. Stability here summarizes whether runs with the same `K` recover similar patterns across seeds.
+A useful model rank should not depend on one lucky random start. The first gate therefore asks which ranks are on the seed-to-seed {{< glossary "Stability plateau" display="stability plateau" >}}. {{< glossary "Stability" display="Stability" >}} here summarizes whether runs with the same `K` recover similar patterns across seeds.
 
 ::: {.panel-tabset}
 
@@ -280,7 +302,7 @@ k_plateau |>
     `top-gene agreement` = round(mean_matched_top_gene_jaccard, 3),
     `pattern-class agreement` = round(pattern_class_agreement_mean, 3),
     `on plateau` = on_stability_plateau,
-    `earlier compact choice` = chosen_K
+    `compact stable choice` = chosen_K
   ) |>
   knitr::kable()
 ```
@@ -308,12 +330,12 @@ k_plateau_display_py = (
     .rename(columns={
         "selected_n_iter": "iter",
         "on_stability_plateau": "on plateau",
-        "chosen_K": "earlier compact choice",
+        "chosen_K": "compact stable choice",
     })
     .loc[:, [
         "K", "iter", "stability", "top_gene_agreement",
         "pattern_class_agreement", "on plateau",
-        "earlier compact choice",
+        "compact stable choice",
     ]]
 )
 
@@ -322,13 +344,13 @@ print(k_plateau_display_py.to_markdown(index=False))
 
 :::
 
-This table explains why `K = 5` was a reasonable earlier compact choice. It is stable across seeds, and it sits on the stability plateau. If the only goal were to choose the smallest stable model, `K = 5` would be attractive.
+This table explains why `K = 5` is a reasonable compact stable comparator. It is stable across seeds, and it sits on the stability plateau. If the only goal were to choose the smallest stable model, `K = 5` would be attractive.
 
 ### Step 5: Ask Why Stability Alone Is Not Enough
 
-The case-study goal is not only to find a compact stable factorization. The goal is to recover temporal immune programs in a mixed PBMC sample. A low-rank model can be stable because it captures broad immune-cell identity, while still compressing dynamic infection activity into too few patterns.
+The case-study goal is not only to find a compact stable factorization. The goal is to recover {{< glossary "Temporal immune program" display="temporal immune programs" >}} in a mixed PBMC sample. A low-rank model can be stable because it captures broad {{< glossary "Immune-cell identity" display="immune-cell identity" >}}, while still compressing dynamic infection activity into too few patterns.
 
-That is why the revised rule adds a biological-resolution gate. Among stable ranks, the selected model should be small enough to remain interpretable but large enough to resolve at least one activity-like temporal program connected to the dengue-response biology introduced earlier.
+That is why the rank-selection rule adds a {{< glossary "Biological resolution" display="biological-resolution" >}} gate. Among stable ranks, the selected model should be small enough to remain interpretable but large enough to resolve at least one {{< glossary "Activity program" display="activity-like temporal program" >}} connected to the dengue-response biology introduced earlier.
 
 ### Step 6: Apply the Biological-Resolution Gate
 
@@ -349,7 +371,7 @@ k_plateau |>
     `activity-like patterns` = activity_like_pattern_count_mean,
     `goal score` = round(goal_aligned_score, 3),
     decision = ifelse(
-      K == k_manifest$revised_chosen_k,
+      K == selected_main_k,
       "selected main model",
       ""
     )
@@ -369,7 +391,7 @@ k_resolution_display_py = (
         temporal_effect=lambda df: df["max_eta_timepoint"].round(3),
         goal_score=lambda df: df["goal_aligned_score"].round(3),
         decision=lambda df: df["K"].eq(
-            k_manifest_py["revised_chosen_k"]
+            selected_main_k_py
         ).map({True: "selected main model", False: ""}),
     )
     .rename(columns={
@@ -388,24 +410,24 @@ print(k_resolution_display_py.to_markdown(index=False))
 
 :::
 
-The revised decision comes from the combination of columns. `K = 5` is stable, but it has little temporal effect and no IFN-candidate activity-like pattern. `K = 8` and `K = 9` begin to show IFN-candidate signal, but they do not resolve an activity-like candidate by this rule. `K = 10` remains on the stability plateau and is the first plateau rank that resolves an activity-like IFN-candidate temporal program.
+The selected rank comes from the combination of columns. `K = 5` is stable, but it has little {{< glossary "Temporal effect size" display="temporal effect" >}} and no IFN-candidate activity-like pattern. `K = 8` and `K = 9` begin to show {{< glossary "Interferon-associated response" display="IFN-candidate" >}} signal, but they do not resolve an activity-like candidate by this rule. `K = 10` remains on the stability plateau and is the first plateau rank that resolves an activity-like IFN-candidate temporal program.
 
 :::{.definition_box}
 ::::{.definition_box_header}
 Pattern labels are not biological names
 ::::
 ::::{.inner_block}
-Pattern numbers can change across runs, ranks, or implementations. A sweep report may attach one number to an IFN-candidate pattern, while the selected model files you import next may use a different number for the corresponding evidence. For that reason, this K-selection step chooses a model rank. It does not yet assign the final biological label to any numbered pattern.
+{{< glossary "Pattern label" display="Pattern labels" >}} can change across runs, ranks, or implementations. A sweep report may attach one number to an IFN-candidate pattern, while the selected model files you import next may use a different number for the corresponding evidence. For that reason, this K-selection step chooses a model rank rather than naming the final biological role of any numbered pattern.
 ::::
 :::
 
 ### Step 7: Inspect the K-Selection Visual Evidence
 
-The figure below summarizes the same decision visually. The top view asks whether candidate ranks remain stable while resolving temporal structure. The bottom view summarizes the goal-aligned score used for review.
+The figure below summarizes the same decision visually. The top view asks whether candidate ranks remain stable while resolving temporal structure. The bottom view summarizes the goal-aligned score used for this decision.
 
 ![](data/processed/figures/figure_01_k_selection.png){fig-alt="K-selection evidence figure comparing candidate model ranks by stability, temporal resolution, and a goal-aligned score, with K equals 10 selected for the main analysis." width=850 .lightbox}
 
-Read this as a model-selection figure, not as a final biological interpretation. It supports the decision to use `K = 10` for the main analysis. It does not by itself prove which numbered pattern is interferon-associated.
+Read this as a model-selection figure. It supports the decision to use `K = 10` for the main analysis.
 
 ### Step 8: Record the K Decision
 
@@ -418,28 +440,24 @@ Use the `K = 10`, `seed = 2`, `nIterations = 2000` CoGAPS run as the main select
 ::::
 :::
 
-This decision settles which selected-model files you should import next. It does not settle which pattern is biologically meaningful, whether a pattern is identity-like or activity-like, or whether an IFN-associated interpretation is supported. Those claims require the later visualization and analysis evidence chain.
-
-### Step 9: Bridge to the Selected-Model Files
-
-The folder name `selected_model_k10` should now make sense. It contains the standard-path files from the representative `K = 10` model chosen by the sweep assessment you just inspected. The next subsection loads those files so later sections can explore, reshape, visualize, diagnose, and interpret them.
+This decision settles which selected-model files you should import next.
 
 ## Standard Path: Import the K-Selected Model Files
 
-The K-selected files are exported outputs from a CoGAPS model fit to the prepared balanced experimental discovery matrix. The model fit produces two core kinds of information: **gene loadings**, which show which genes help define each pattern, and **cell scores**, which show how strongly each cell uses each pattern. The smaller tables you import here are derived from those outputs so you can inspect the selected model without rerunning CoGAPS.
+The folder name `selected_model_k10` should now make sense. It contains the standard-path {{< glossary "Selected-model outputs" display="selected-model outputs" >}} from the representative `K = 10` model chosen by the K-selection evidence you just inspected. These files are compact exports from a CoGAPS fit to the prepared balanced experimental discovery matrix.
 
-Some files summarize the model fit itself. The pattern summary and top-gene table help you see what patterns were learned and which genes contribute to them. Other files summarize the run and its diagnostics. The metrics file records settings such as `K`, seed, iterations, runtime, and thread count, while the trace file records diagnostic values saved during the run. You will import these diagnostic outputs now so the files are ready, but you will interpret them later in **Data Analysis** before treating any pattern as biological evidence.
+A CoGAPS fit produces two core kinds of information: {{< glossary "Gene loading" display="gene loadings" >}}, which show which genes help define each pattern, and {{< glossary "Cell score" display="cell scores" >}}, which show how strongly each cell uses each pattern. The pattern summary and top-gene table are derived from those model-fit outputs. The {{< glossary "Run metrics" display="metrics" >}} and {{< glossary "Diagnostic trace" display="trace files" >}} record run settings and diagnostic values so the selected run can be checked before you interpret it in **Data Analysis**.
 
-For now, the goal is practical: load the files that belong to the selected `K = 10` run and confirm that they have the expected structure. The biological interpretation comes later, after the model outputs are connected to subject, timepoint, cell-type, top-gene, directionality, and diagnostic evidence.
+For now, the goal is practical: load the files that belong to the selected `K = 10` run and confirm that they have the expected structure.
 
 The standard path imports four K-selected file families:
 
-| File family | Example file | What one row means | Why you import it after K selection |
-|---|---|---|---|
-| Pattern summary | `RQ1_time_varying_patterns.csv` | One CoGAPS pattern. | Provides pattern-level metrics used later for temporal, identity/activity, and IFN evidence. |
-| Top-gene table | `cogaps_K10_seed2_iter2000.top_genes.csv` | One gene-pattern entry. | Provides gene-loading evidence used later to interpret patterns. |
-| Run metrics | `cogaps_K10_seed2_iter2000.metrics.json` | One model run summary. | Confirms `K`, seed, iterations, runtime, and diagnostic settings. |
-| Diagnostic trace | `cogaps_K10_seed2_iter2000.trace.csv` | One saved trace point during the model run. | Supports later convergence-related checks before interpretation. |
+| File family | Example file | What it provides |
+|---|---|---|
+| Pattern summary | `RQ1_time_varying_patterns.csv` | Pattern-level metrics for temporal, identity/activity, and IFN evidence. |
+| Top-gene table | `cogaps_K10_seed2_iter2000.top_genes.csv` | Gene-loading evidence for each pattern. |
+| {{< glossary "Run metrics" display="Run metrics" >}} | `cogaps_K10_seed2_iter2000.metrics.json` | Selected-run settings, runtime, and {{< glossary "Provenance" display="provenance" >}}. |
+| {{< glossary "Diagnostic trace" display="Diagnostic trace" >}} | `cogaps_K10_seed2_iter2000.trace.csv` | Saved trace values for convergence-related checks. |
 
 The code below is split into short steps. Each step teaches one useful habit: build a path, make a file checklist, read files, inspect table shapes, run sanity checks, and preview the pattern summary.
 
@@ -490,9 +508,9 @@ py_selected_dir
 
 The output is the folder path that the next chunks will use. You do not need to type the full path again each time; you can reuse the named object. In R, that object is called `r_selected_dir`. In Python, it is called `py_selected_dir`.
 
-### Step 2: Make a Checklist of Expected Files
+### Step 2: Make a Selected-Output Import Checklist
 
-Before reading files, make a small checklist. This is a good reproducibility habit: it catches missing files, misspelled file names, and working-directory mistakes before you start interpreting results. The checklist also connects each file to its role after the K decision.
+Before reading the selected-model outputs, make a small import checklist. This is a good reproducibility habit: it catches missing files, misspelled file names, and working-directory mistakes before you start interpreting results. The checklist also connects each file to its role after the K decision.
 
 ::: {.panel-tabset}
 
@@ -513,11 +531,11 @@ r_import_plan <- data.frame(
     "cogaps_K10_seed2_iter2000.metrics.json",
     "cogaps_K10_seed2_iter2000.trace.csv"
   ),
-  used_later_in = c(
-    "later sections: pattern-level evidence",
-    "later sections: top-gene evidence",
-    "later sections: selected-run provenance",
-    "later sections: selected-run diagnostics"
+  role_after_import = c(
+    "pattern-level evidence table",
+    "top-gene evidence table",
+    "selected-run settings and provenance",
+    "diagnostic trace for convergence checks"
   )
 )
 
@@ -531,7 +549,7 @@ r_import_plan$file_exists <- file.exists(
 )
 
 r_import_plan |>
-  select(file_role, relative_path, used_later_in, file_exists) |>
+  select(file_role, relative_path, role_after_import, file_exists) |>
   knitr::kable()
 ```
 
@@ -552,11 +570,11 @@ py_import_plan = pd.DataFrame({
         "cogaps_K10_seed2_iter2000.metrics.json",
         "cogaps_K10_seed2_iter2000.trace.csv",
     ],
-    "used_later_in": [
-        "later sections: pattern-level evidence",
-        "later sections: top-gene evidence",
-        "later sections: selected-run provenance",
-        "later sections: selected-run diagnostics",
+    "role_after_import": [
+        "pattern-level evidence table",
+        "top-gene evidence table",
+        "selected-run settings and provenance",
+        "diagnostic trace for convergence checks",
     ],
 })
 
@@ -568,7 +586,7 @@ py_import_plan["file_exists"] = py_import_plan["relative_path"].map(
 )
 
 py_import_plan.loc[:, [
-    "file_role", "relative_path", "used_later_in", "file_exists"
+    "file_role", "relative_path", "role_after_import", "file_exists"
 ]]
 ```
 
@@ -578,9 +596,9 @@ The `file_exists` column should be `TRUE` in R or `True` in Python for every exp
 
 ### Step 3: Read the Files into Memory
 
-Now you can import the files. A `CSV` file becomes a rectangular table. A `JSON` file becomes a structured object that stores run-level settings, such as model rank, iterations, and thread count.
+Now you can create the R or Python objects that later chunks will reuse.
 
-The object names are intentionally descriptive. For example, `r_rq1` and `py_rq1` store the pattern-level summary used for the first research question. The top-gene objects store genes ranked by pattern loading, the metrics objects store run settings, and the trace objects store diagnostic values saved during the run.
+The object names are intentionally descriptive. For example, `r_pattern_summary` and `py_pattern_summary` store the pattern-level summary. The top-gene objects store genes ranked by pattern loading, the metrics objects store run settings, and the trace objects store diagnostic values saved during the run.
 
 ::: {.panel-tabset}
 
@@ -588,7 +606,7 @@ The object names are intentionally descriptive. For example, `r_rq1` and `py_rq1
 
 ```{r}
 #| label: import-selected-r
-r_rq1 <- readr::read_csv(
+r_pattern_summary <- readr::read_csv(
   file.path(r_selected_dir, "RQ1_time_varying_patterns.csv"),
   show_col_types = FALSE
 )
@@ -612,7 +630,9 @@ r_trace <- readr::read_csv(
 
 ```{python}
 #| label: import-selected-python
-py_rq1 = pd.read_csv(py_selected_dir / "RQ1_time_varying_patterns.csv")
+py_pattern_summary = pd.read_csv(
+    py_selected_dir / "RQ1_time_varying_patterns.csv"
+)
 py_top_genes = pd.read_csv(
     py_selected_dir / "cogaps_K10_seed2_iter2000.top_genes.csv"
 )
@@ -638,11 +658,11 @@ After reading files, inspect their shapes. A table's shape tells you how many ro
 ```{r}
 #| label: import-object-shapes-r
 data.frame(
-  imported_object = c("r_rq1", "r_top_genes", "r_trace"),
-  rows = c(nrow(r_rq1), nrow(r_top_genes), nrow(r_trace)),
-  columns = c(ncol(r_rq1), ncol(r_top_genes), ncol(r_trace)),
+  imported_object = c("r_pattern_summary", "r_top_genes", "r_trace"),
+  rows = c(nrow(r_pattern_summary), nrow(r_top_genes), nrow(r_trace)),
+  columns = c(ncol(r_pattern_summary), ncol(r_top_genes), ncol(r_trace)),
   first_columns = c(
-    paste(head(names(r_rq1), 5), collapse = ", "),
+    paste(head(names(r_pattern_summary), 5), collapse = ", "),
     paste(head(names(r_top_genes), 4), collapse = ", "),
     paste(head(names(r_trace), 4), collapse = ", ")
   )
@@ -655,11 +675,15 @@ data.frame(
 ```{python}
 #| label: import-object-shapes-python
 pd.DataFrame({
-    "imported_object": ["py_rq1", "py_top_genes", "py_trace"],
-    "rows": [len(py_rq1), len(py_top_genes), len(py_trace)],
-    "columns": [py_rq1.shape[1], py_top_genes.shape[1], py_trace.shape[1]],
+    "imported_object": ["py_pattern_summary", "py_top_genes", "py_trace"],
+    "rows": [len(py_pattern_summary), len(py_top_genes), len(py_trace)],
+    "columns": [
+        py_pattern_summary.shape[1],
+        py_top_genes.shape[1],
+        py_trace.shape[1],
+    ],
     "first_columns": [
-        ", ".join(py_rq1.columns[:5]),
+        ", ".join(py_pattern_summary.columns[:5]),
         ", ".join(py_top_genes.columns[:4]),
         ", ".join(py_trace.columns[:4]),
     ],
@@ -672,7 +696,7 @@ Read this output as a basic import audit. The row counts tell you how much infor
 
 ### Step 5: Run Sanity Checks on the Selected Model
 
-The next check asks whether the imported files describe the model chosen by the K-selection assessment. These checks do not prove that the model is biologically correct. They only confirm that you imported the expected `K = 10`, `seed = 2`, `nIterations = 2000` run and that the main tables contain all ten patterns.
+The next check asks whether the imported files describe the model chosen by the K-selection evidence. These checks confirm that you imported the expected `K = 10`, `seed = 2`, `nIterations = 2000` run and that the main tables contain all ten patterns.
 
 ::: {.panel-tabset}
 
@@ -695,7 +719,7 @@ data.frame(
     r_model_metrics$seed,
     r_model_metrics$n_iter,
     r_model_metrics$nThreads,
-    nrow(r_rq1),
+    nrow(r_pattern_summary),
     length(unique(r_top_genes$pattern)),
     nrow(r_trace)
   )
@@ -722,7 +746,7 @@ pd.DataFrame({
         py_model_metrics.get("seed", 2),
         py_model_metrics["n_iter"],
         py_model_metrics["cogaps_threads"],
-        len(py_rq1),
+        len(py_pattern_summary),
         py_top_genes["pattern"].nunique(),
         len(py_trace),
     ],
@@ -743,7 +767,7 @@ As a final import check, preview a few columns from the pattern summary. This is
 
 ```{r}
 #| label: import-preview-r
-r_rq1 |>
+r_pattern_summary |>
   select(pattern, eta_timepoint, eta_broad_cell_type, peak_timepoint) |>
   head(5) |>
   knitr::kable(digits = 3)
@@ -753,31 +777,31 @@ r_rq1 |>
 
 ```{python}
 #| label: import-preview-python
-py_rq1.loc[
+py_pattern_summary.loc[
     :, ["pattern", "eta_timepoint", "eta_broad_cell_type", "peak_timepoint"]
 ].head(5)
 ```
 
 :::
 
-By the end of this subsection, the K-selected model files have become named objects in R or Python. You have also checked that they exist, have the expected shapes, and describe the selected `K = 10` model. You have not yet assigned biological meaning to any pattern. The next sections use these imported tables to explore the discovery set and reshape model outputs for interpretation.
+By the end of this subsection, the K-selected model files have become named objects in R or Python. You have also checked that they exist, have the expected shapes, and describe the selected `K = 10` model. The next sections use these imported tables to explore the discovery set and reshape model outputs for interpretation.
 
 ## Full Reproduction Path: Import Source 10x Files
 
-Everything above this point is part of the standard path. You can skip this subsection if you are not running the optional full reproduction path.
+Everything above this point is part of the standard path. If you are following the standard path, continue to **Data Exploration**. You can skip this subsection if you are not running the optional full reproduction path.
 
-This subsection is included so the source of the prepared files is transparent, and so learners who download the large Zenodo/GEO files can see how the raw 10x Genomics files enter the workflow.
+This subsection is included so the source of the prepared files is transparent, and so learners who download the large Zenodo/GEO files can see how the raw {{< glossary "10x Genomics files" display="10x Genomics files" >}} enter the workflow.
 
-The optional import path stops once the source data have become a labeled single-cell object. Quality control, normalization, gene selection, annotation, and discovery-set construction happen later in **Data Wrangling and Preprocessing**.
+The optional import path stops once the source data have become a labeled {{< glossary "Single-cell object" display="single-cell object" >}}. Quality control, normalization, gene selection, annotation, and discovery-set construction happen later in **Data Wrangling and Preprocessing**.
 
 :::{.disclaimer_box}
 ::::{.disclaimer_box_header}
 Full reproduction note
 ::::
 ::::{.inner_block}
-The code chunks in this subsection are excerpts from the complete preparation scripts. They are shown so you can understand how the source 10x files become a labeled single-cell object. They are not intended to be copied and run one chunk at a time.
+The short toy chunks in this subsection are examples you can run to understand the import logic. They use small in-memory objects so you can see how source 10x files become a labeled single-cell object without downloading the full GEO archive.
 
-If you want to run the optional full reproduction workflow, use the complete script shown in **Data Wrangling and Preprocessing**. That one script includes both the import steps in this section and the preprocessing steps in the next section. Keeping those steps in one script makes the workflow easier to rerun because the downloaded files, imported objects, quality-control decisions, and saved outputs are handled in one continuous run.
+If you want to run the optional full reproduction workflow on the real source files, use the complete script shown in **Data Wrangling and Preprocessing**. That one script includes both the import steps in this section and the preprocessing steps in the next section. Keeping those steps in one script makes the workflow easier to rerun because the downloaded files, imported objects, quality-control decisions, and saved outputs are handled in one continuous run. Helper chunks marked with `eval: false` below are script excerpts for transparency, not standalone workflow steps.
 ::::
 :::
 
@@ -801,26 +825,7 @@ flowchart TB
   style S1 fill:#f8fafc,stroke:#cbd5e1,stroke-width:1px,color:#102a43
 ```
 
-:::{.definition_box}
-::::{.definition_box_header}
-Terms to know for optional source-file import
-::::
-::::{.inner_block}
-- **Sample-level 10x files:** Raw 10x Genomics files organized by biological sample. Each sample has linked files for the expression matrix, cell barcodes, and gene or feature names.
-- **10x triplet:** A set of three files that must be read together: `matrix.mtx`, `barcodes.tsv`, and `features.tsv` or `genes.tsv`.
-- **Cell barcode:** A sequence label used to identify one captured cell or droplet in a single-cell sequencing experiment.
-- **Feature:** A measured item in the 10x matrix. In this case study, the import code keeps gene-expression features for the RNA-seq analysis.
-- **Cell-by-gene matrix:** A matrix where rows are cells and columns are genes. Each value records the expression measurement for one gene in one cell.
-- **Sparse matrix:** A compact matrix format used when most values are zero. Single-cell RNA-seq count matrices are usually sparse because most genes are not detected in most cells.
-- **Single-cell object:** A labeled data container, such as `SingleCellExperiment` in R or `AnnData` in Python, that keeps expression values aligned with cell and gene annotations.
-- **`SingleCellExperiment`:** An R/Bioconductor object for single-cell data. It stores expression matrices in assays, cell metadata in `colData()`, and gene metadata in `rowData()`.
-- **`AnnData`:** A Python object commonly used by Scanpy for single-cell data. It stores the expression matrix in `.X`, cell metadata in `.obs`, and gene metadata in `.var`.
-- **Cell metadata:** Information attached to each cell, such as sample ID, subject, cohort, and infection day.
-- **Gene metadata:** Information attached to each gene, such as gene symbol, gene ID, or feature type.
-::::
-:::
-
-Those terms explain why the import code is careful about filenames, matrix orientation, and metadata. A temporal immune-program analysis only works if each expression value is attached to the correct cell, gene, subject, and day.
+The key idea in this diagram is alignment: a raw 10x sample is not one tidy table, but a linked matrix, barcode list, and feature list. In the steps below, you will see how those linked files become a labeled {{< glossary "Single-cell object" display="single-cell object" >}}, with expression values connected to the correct cells, genes, samples, subjects, and infection days. Pay special attention to {{< glossary "Matrix orientation" display="matrix orientation" >}}, because raw 10x matrices are usually stored as features by cells before being converted into the {{< glossary "Cell-by-gene matrix" display="cell-by-gene" >}} view used later.
 
 ### Identify Source Files and Sample Metadata
 
@@ -1110,7 +1115,7 @@ After this step, the workflow has not changed any expression values yet. The imp
 
 ### Build the Cell-by-Gene Data Object
 
-In the previous step, you learned how a sample name becomes metadata. Now you will see how the raw expression files become a labeled cell-by-gene object. The goal is not just to read files; the goal is to preserve the relationship between counts, cells, genes, and sample metadata.
+In the previous step, you learned how a sample name becomes metadata. Now you will see how the raw expression files become a labeled {{< glossary "Cell-by-gene matrix" display="cell-by-gene" >}} object. The goal is not just to read files; the goal is to preserve the relationship between counts, cells, genes, and sample metadata.
 
 Single-cell RNA-seq data do not begin as a tidy table. For each 10x Genomics sample, the data are split into three linked files. None of these files is biologically interpretable on its own.
 
@@ -1127,8 +1132,8 @@ The R and Python workflows use different object classes for the same basic purpo
 | Concept | R `SingleCellExperiment` | Python `AnnData` |
 |---|---|---|
 | Expression matrix | `assays(sce)$counts` | `adata.X` |
-| Cell metadata | `colData(sce)` | `adata.obs` |
-| Gene metadata | `rowData(sce)` | `adata.var` |
+| {{< glossary "Cell metadata" display="Cell metadata" >}} | `colData(sce)` | `adata.obs` |
+| {{< glossary "Gene metadata" display="Gene metadata" >}} | `rowData(sce)` | `adata.var` |
 | Cell names | `colnames(sce)` | `adata.obs_names` |
 | Gene names | `rownames(sce)` | `adata.var_names` |
 
@@ -1211,7 +1216,7 @@ In this toy example, the count matrix has four feature rows and two cell columns
 
 ### Step 2: Check Orientation and Dimensions
 
-Raw 10x matrices are usually stored as features by cells. That means rows match the feature table and columns match the barcode table. Many downstream analyses are described as cell-by-gene analyses, so the workflow needs to know when a transpose is required. A transpose flips a matrix so rows become columns and columns become rows.
+Raw 10x matrices are usually stored as features by cells. That {{< glossary "Matrix orientation" display="matrix orientation" >}} means rows match the feature table and columns match the barcode table. Many downstream analyses are described as cell-by-gene analyses, so the workflow needs to know when a {{< glossary "Transpose" display="transpose" >}} is required. A transpose flips a matrix so rows become columns and columns become rows.
 
 ::: {.panel-tabset}
 
@@ -1351,7 +1356,7 @@ This is where the metadata from the previous subsection starts to matter. The co
 
 ### Step 5: Build a Labeled Cell-by-Gene Representation
 
-The raw 10x matrix is features by cells. For a cell-by-gene view, transpose the retained matrix so cells are rows and genes are columns. The small table below shows what the aligned expression data look like after naming cells and genes.
+The raw 10x matrix is features by cells. For a {{< glossary "Cell-by-gene matrix" display="cell-by-gene" >}} view, transpose the retained matrix so cells are rows and genes are columns. The small table below shows what the aligned expression data look like after naming cells and genes.
 
 ::: {.panel-tabset}
 
@@ -1388,7 +1393,7 @@ toy_cell_by_gene.reset_index().rename(columns={"index": "cell_name"})
 
 :::
 
-In the full workflow, this aligned matrix is stored in a single-cell container rather than as a plain table. In R, the container is `SingleCellExperiment`; in Python, it is `AnnData`. The container keeps the expression matrix, cell metadata, and gene metadata together when later steps filter cells, select genes, score markers, or save outputs.
+In the full workflow, this aligned matrix is stored in a {{< glossary "Single-cell object" display="single-cell container" >}} rather than as a plain table. In R, the container is {{< glossary "SingleCellExperiment" display="SingleCellExperiment" >}}; in Python, it is {{< glossary "AnnData" display="AnnData" >}}. The container keeps the expression matrix, cell metadata, and gene metadata together when later steps filter cells, select genes, score markers, or save outputs.
 
 <details>
 <summary>Optional: construct the full single-cell container</summary>

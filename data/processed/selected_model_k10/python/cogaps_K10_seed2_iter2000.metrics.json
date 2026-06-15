@@ -166,7 +166,7 @@
     4800,
     10
   ],
-  "seed": 0,
+  "seed": 2,
   "snapshotFrequency": 200,
   "snapshotPhase": "all",
   "source_script_path": "/home/rstudio/project/cs5_analysis_workspace/gse154386_sparse_distributed_cogaps.py",

@@ -3,7 +3,7 @@
 
 This case study asks how a coordinated immune response emerges over time after primary DENV-1 exposure. Before you inspect the data, it helps to know what would make a pattern biologically meaningful: the study has an aligned experimental infection timeline, PBMCs contain many immune-cell identities in the same sample, and CoGAPS is designed to separate overlapping gene-expression programs rather than assign each cell to only one group.
 
-The background below builds toward the four research questions you will answer later. First, you will review why DENV-1 infection, PBMC sampling, and the experimental cohort design make temporal immune programs possible to study. Then you will connect that biology to the modeling problem: how latent transcriptional programs are represented, why CoGAPS is useful for this kind of single-cell matrix, and why choosing the rank `K` changes what the model can reveal. By the end of this section, you should be ready to evaluate which model rank is appropriate, which patterns change across infection days, which patterns mostly reflect PBMC identity, and which evidence supports an interferon-associated late acute response.
+The background below builds toward the four research questions you will answer later. First, you will review why DENV-1 infection, PBMC sampling, and the experimental cohort design make temporal immune programs possible to study. Then you will connect that biology to the modeling problem: how latent transcriptional programs are represented, why CoGAPS is useful for this kind of single-cell matrix, and why choosing the rank `K` changes what the model can reveal. By the end of this section, you should understand why the case study first evaluates model rank, then uses the selected model to ask which patterns vary over infection days, which patterns mostly reflect PBMC identity, and which evidence supports an interferon-associated late acute response.
 
 ## DENV-1 Infection and Blood Immune Response
 
@@ -118,7 +118,7 @@ The double bars are a compact way to measure the total reconstruction error acro
 
 {{< glossary "CoGAPS" >}} is the specific NMF-family method used in this case study. It keeps the additive, non-negative structure described above, but fits the model using a Bayesian, sampling-based framework designed for genomic data [@fertig2010cogaps; @johnson2023cogapsProtocol].
 
-That difference matters because single-cell data are noisy, sparse, and high-dimensional. Rather than treating one fitted factorization as automatically meaningful, CoGAPS supports diagnostics that help you decide whether a run is stable enough to interpret. In other words, the model output is a starting point for evidence-based interpretation, not a final answer by itself.
+That difference matters because single-cell data are noisy, sparse, and high-dimensional. Rather than treating one fitted factorization as automatically meaningful, CoGAPS supports diagnostics that help you decide whether a run is stable enough to interpret. Rank-selection evidence helps decide which model to import; diagnostics later help decide whether that selected run behaved sensibly enough to interpret. In other words, the model output is a starting point for evidence-based interpretation, not a final answer by itself.
 
 This case study builds on three related uses of CoGAPS-style analyses: temporal CoGAPS for interpreting time-course transcriptional patterns [@fertig2014temporalCogaps], single-cell CoGAPS for identifying latent programs across cells [@johnson2023cogapsProtocol], and projectR-style projection for asking whether learned patterns appear in another dataset [@steinobrien2019transferLearning; @sharma2020projectR].
 
@@ -126,7 +126,9 @@ This case study builds on three related uses of CoGAPS-style analyses: temporal 
 
 The rank, written as `K`, is the number of patterns CoGAPS is asked to learn. If `K` is too small, different biological signals may be compressed into the same pattern. If `K` is too large, the model may split signal into patterns that are harder to interpret or less stable.
 
-Later in the case study, you will inspect precomputed rank-sweep evidence and decide which value of `K` is appropriate for the main analysis goal. The evidence will include stability, redundancy, temporal signal, interpretability, and biological plausibility. This section does not reveal the selected rank because choosing `K` is one of the research questions you will answer.
+At the start of **Data Import**, you will inspect precomputed rank-sweep evidence and decide which value of `K` is appropriate for the main analysis goal. The evidence will include stability, redundancy, temporal signal, biological resolution, and a goal-aligned score. This section does not reveal the selected rank because choosing `K` is one of the research questions you will answer.
+
+The important idea here is that `K` is goal-dependent: the useful rank is the one that supports the biological question, not a universal property of the dataset.
 
 ## How Pattern Evidence Will Be Interpreted
 
@@ -154,21 +156,14 @@ For this case study, the experimental cohort is the discovery dataset. The natur
 
 :::{.definition_box}
 ::::{.definition_box_header}
-Key terms
+Core distinctions to carry forward
 ::::
 ::::{.inner_block}
-- **DENV-1:** Dengue virus serotype 1, the dengue virus serotype studied in the source experimental and natural infection cohorts.
-- **Serotype:** A subtype of a virus distinguished by how the immune system recognizes it.
-- **PBMC:** Peripheral blood mononuclear cell, a blood-derived immune cell such as a T cell, B cell, natural killer cell, monocyte, or related antigen-presenting cell.
-- **Experimental infection cohort:** A study group sampled on a planned infection timeline, allowing responses to be compared across aligned experimental days.
-- **Natural infection cohort:** A study group infected outside the study setting and sampled during real-world illness or recovery.
-- **Interferon:** An immune signaling protein that helps coordinate antiviral responses.
-- **Interferon-stimulated genes:** Genes whose expression can increase when cells receive interferon signals. These genes often help cells enter an antiviral state.
-- **Latent transcriptional program:** An inferred gene-expression pattern shared across genes and cells, rather than a directly measured variable.
-- **Gene loading:** A value in the CoGAPS `A` matrix that shows how strongly a gene contributes to a pattern.
-- **Cell score:** A value in the CoGAPS `P` matrix that shows how strongly a cell uses a pattern.
-- **Rank `K`:** The number of patterns CoGAPS is asked to learn.
-- **Projection:** A transfer-learning step that scores a new dataset using patterns learned from a discovery dataset.
+- **Experimental infection cohort vs. natural infection cohort:** the experimental cohort has aligned study days and is the discovery setting; the natural cohort is biologically important but belongs to optional projection work.
+- **Immune-cell identity vs. infection activity:** PBMC identity can be stable across time, while infection-response activity can rise or fall during the time course.
+- **Gene loading vs. cell score:** gene loadings describe which genes define a pattern; cell scores describe how strongly each cell uses that pattern.
+- **Rank `K` vs. pattern label:** `K` is the number of patterns requested from the model; pattern labels are run-specific names for the patterns learned by one fitted model.
+- **CoGAPS association vs. expression directionality:** CoGAPS weights show association with a pattern; separate directionality checks ask whether top genes are higher or lower than baseline.
 ::::
 :::
 
