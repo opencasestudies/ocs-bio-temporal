@@ -171,12 +171,14 @@ Preprocess
 preprocessed
 projectR
 Qian
+rebuildable
 Replot
 reproducibility
 Reproducibility
 roadmap
 Rothman
 RQ
+runnable
 Rutvisuttinunt
 rVert
 Sabeti
