@@ -33,7 +33,7 @@ These are individual exercises. Each can be completed by one learner without a g
 
 ## Core Homework
 
-1. Recreate the K-selection table and write a short justification for selecting `K = 10` over `K = 5`.
+1. Recreate the K-selection table and write a short answer to Research Question 1: which value of `K` is appropriate for the main analysis goal, and why?
 1. Choose one identity-like pattern and annotate it using its top genes, dominant broad cell type, and time-course behavior.
 1. Replot the IFN-associated pattern trajectory with one panel per subject.
 1. Use the directionality table to identify which top IFN-associated genes are most consistently up at `D10` and `D14/15`.
@@ -62,12 +62,12 @@ These are individual exercises. Each can be completed by one learner without a g
   <tbody>
     <tr>
       <td><img src="assets/question_icons/rq4_natural_projection.png" alt="Icon showing CoGAPS programs learned from an experimental time course projected into a second cell dataset." width="140"></td>
-      <td><strong>Can programs learned from the experimental infection cohort be projected into natural primary dengue infection samples?</strong><br>This extension is framed as a planning and reproduction exercise. The standard analysis does not claim final natural-cohort projection results because those samples are not aligned to the same experimental clock.</td>
+      <td><strong>Can programs learned from the experimental infection cohort be projected into natural primary dengue infection samples?</strong><br>This extension is framed as a planning and reproduction exercise. Projection is inspired by transfer-learning workflows for learned cellular programs, but the standard analysis does not claim final natural-cohort projection results because those samples are not aligned to the same experimental clock.</td>
     </tr>
   </tbody>
 </table>
 
-1. Draft the projection analysis plan, including the input object, learned gene-loading matrix, projection method, and expected output tables.
+1. Draft the projection analysis plan, including the input object, learned gene-loading matrix, projection method, and expected output tables [@steinobrien2019transferLearning; @sharma2020projectR].
 1. Define what would count as evidence that an experimental IFN-associated program transfers into natural infection.
 1. List at least two limitations that would make the natural-projection interpretation weaker than the experimental time-course interpretation.
 

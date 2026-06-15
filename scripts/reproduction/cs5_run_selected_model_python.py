@@ -41,7 +41,7 @@ from cs5_cogaps_python_utils import (  # noqa: E402
 )
 
 
-DEFAULT_SWEEP_DIR = Path("/home/rstudio/project/data/cs5_sweep_results")
+DEFAULT_SWEEP_DIR = Path("/home/rstudio/project/data/external/reproduction_archive")
 DEFAULT_WORKSPACE_DIR = Path("/home/rstudio/project")
 DEFAULT_OUTDIR = DEFAULT_WORKSPACE_DIR / "GSE154386" / "cogaps_python_revised_model_K10_seed2_iter2000"
 DEFAULT_SOURCE_SCRIPT = SCRIPT_DIR / "gse154386_sparse_distributed_cogaps.py"

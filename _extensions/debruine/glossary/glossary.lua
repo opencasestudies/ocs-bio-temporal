@@ -145,12 +145,13 @@ return {
     local content = "---\n" .. metafile:read("*a") .. "\n---\n"
     metafile:close()
     local glossary = pandoc.read(content, "markdown").meta
+    local glossary_lookup = {}
     for key, value in pairs(glossary) do
-      glossary[string.lower(key)] = value
+      glossary_lookup[string.lower(key)] = value
     end
     -- quarto.log.output()
-    if kwExists(glossary, term) then
-      def = pandoc.utils.stringify(glossary[term])
+    if kwExists(glossary_lookup, term) then
+      def = pandoc.utils.stringify(glossary_lookup[term])
     end
   end
 

@@ -64,6 +64,7 @@ convalescent
 dengue
 factorization
 interferon
+initializations
 log2
 matrix
 monocyte
@@ -74,6 +75,9 @@ plasmablasts
 pseudobulk
 scRNA-seq
 scuttle
+Serotype
+serotype
+serotypes
 timepoint
 timepoints
 transcriptional
@@ -167,12 +171,14 @@ Preprocess
 preprocessed
 projectR
 Qian
+rebuildable
 Replot
 reproducibility
 Reproducibility
 roadmap
 Rothman
 RQ
+runnable
 Rutvisuttinunt
 rVert
 Sabeti
@@ -180,6 +186,7 @@ Sealfon
 Seung
 spearman
 Srikiatkhachorn
+subtype
 subtypes
 Tabrizi
 tabset

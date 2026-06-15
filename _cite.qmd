@@ -3,6 +3,6 @@
 To cite this case study, please use:
 ::::
 ::::{.inner_block}
-Thomas, Oshane O. and Wright, Carrie and Isaacs, Kate. (2026). [https://github.com/opencasestudies/ocs-bio-temporal](https://github.com/opencasestudies/ocs-bio-temporal){target="_blank"}. Discovering Temporal Immune Programs with CoGAPS in Single-Cell Dengue Infection Data (Version 0.1.0).
+Thomas, Oshane O. and Wright, Carrie. (2026). [https://github.com/opencasestudies/ocs-bio-temporal](https://github.com/opencasestudies/ocs-bio-temporal){target="_blank"}. Discovering Temporal Immune Programs with CoGAPS in Single-Cell Dengue Infection Data (Version 0.1.0).
 ::::
 :::

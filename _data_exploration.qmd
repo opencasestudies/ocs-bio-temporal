@@ -1,7 +1,7 @@
 # **Data Exploration**
 ***
 
-Now that you have imported the selected-model files, you should inspect the prepared discovery set and early CoGAPS summaries before interpreting any pattern biologically. A pattern that changes over infection day could reflect a biological response, but it could also reflect a shift in which immune-cell types are present at that day. This section asks a few checks before moving into model interpretation: are the subjects and timepoints represented, what broad cell types dominate the discovery set, and what information is stored in a CoGAPS pattern?
+Now that you have imported the {{< glossary "Selected-model outputs" display="selected-model files" >}}, you should inspect the {{< glossary "Balanced discovery set" display="prepared discovery set" >}} and the selected `K = 10` {{< glossary "CoGAPS" >}} summaries before interpreting any pattern biologically. The model rank has been chosen, but the numbered patterns are still just {{< glossary "Pattern label" display="pattern labels" >}}. This section asks a few checks before moving into interpretation: are the subjects and timepoints represented, what broad cell types dominate the discovery set, and what information is stored in the pattern-evidence tables?
 
 This section uses the small included standard-path tables. If you later run the full reproduction scripts, you can repeat the same checks on the regenerated equivalent tables.
 
@@ -11,11 +11,11 @@ Before asking which CoGAPS patterns change over time, you should check whether t
 
 This check is not about CoGAPS yet. It asks whether the data structure supports the biological question. If one infection day had fewer subjects, many fewer cells, or a missing sample, an apparent temporal pattern could partly reflect sampling coverage rather than infection biology.
 
-The subject-level pattern table is stored in **long format**. In a long table, each row holds one measurement for one group. Here, each row is one subject, one timepoint, and one CoGAPS pattern. Because the selected model has 10 patterns, the same subject-timepoint cell count appears 10 times. To check coverage, you first need one row per subject and timepoint.
+The {{< glossary "Subject-timepoint summary" display="subject-timepoint summary" >}} table is stored in **{{< glossary "Long format" display="long format" >}}**. In a long table, each row holds one measurement for one group. Here, each row is one subject, one timepoint, and one CoGAPS pattern. Because the selected model has 10 patterns, the same subject-timepoint cell count appears 10 times. To check coverage, you first need one row per subject and timepoint.
 
 | Column | Meaning | Why it matters in this check |
 |---|---|---|
-| `subject` | Experimental participant. | Identifies the biological replicate. |
+| `subject` | Experimental participant. | Identifies the {{< glossary "Biological replicate" display="biological replicate" >}}. |
 | `timepoint_merged` | Infection-day label, such as `D0` or `D14/15`. | Names the timepoint being compared. |
 | `day_merged_numeric` | Numeric version of the infection day. | Sorts the timepoints in biological order. |
 | `pattern` | CoGAPS pattern ID. | Explains why subject-timepoint rows are repeated. |
@@ -110,7 +110,7 @@ The row count drops because the repeated pattern rows have been collapsed to one
 
 ### Step 3: Make a Subject-by-Day Coverage Table
 
-A **wide table** places subjects in rows and timepoints in columns. This layout is useful for exploration because missing or uneven coverage becomes visible quickly. The values in the table are discovery cells, not pattern scores.
+A **{{< glossary "Wide table" display="wide table" >}}** places subjects in rows and timepoints in columns. This layout is useful for exploration because missing or uneven coverage becomes visible quickly. The values in the table are discovery cells, not pattern scores.
 
 ::: {.panel-tabset}
 
@@ -141,7 +141,7 @@ subject_time_counts |>
 
 :::
 
-Read across each row. Each subject contributes cells at every infection day used in the main experimental time course. That makes later subject-level trajectories easier to compare because the same three subjects are represented throughout the time course.
+Read across each row. Each subject contributes cells at every infection day used in the main experimental time course. That makes later {{< glossary "Subject-level trajectory" display="subject-level trajectories" >}} easier to compare because the same three subjects are represented throughout the time course.
 
 ### Step 4: Summarize Coverage by Infection Day
 
@@ -203,9 +203,9 @@ The coverage check shows that the discovery set contains three experimental subj
 
 ## Inspect Broad Cell-Type Composition
 
-The previous check showed that each timepoint has the same number of discovery cells. That is useful, but it does not mean the same types of immune cells are present in the same proportions. Because peripheral blood mononuclear cells, or PBMCs, are a mixture of immune-cell types, you should inspect broad cell-type composition before interpreting temporal CoGAPS patterns.
+The previous check showed that each timepoint has the same number of discovery cells. That is useful, but it does not mean the same types of immune cells are present in the same proportions. Because {{< glossary "Peripheral blood mononuclear cells" display="peripheral blood mononuclear cells" >}}, or PBMCs, are a mixture of immune-cell types, you should inspect broad cell-type composition before interpreting temporal CoGAPS patterns.
 
-This check asks whether a later pattern might be influenced by the mixture of broad immune-cell types. A pattern can look temporal because cells are changing their gene-expression activity, because the mixture of immune-cell types changes, or because both are happening at once.
+This check asks whether a later pattern might be influenced by the mixture of broad immune-cell types. A pattern can look temporal because cells are changing their {{< glossary "Activity program" display="gene-expression activity" >}}, because the mixture of immune-cell types changes, or because both are happening at once.
 
 The composition table has one row for each infection day and broad immune-cell type.
 
@@ -404,7 +404,7 @@ py_composition_fraction_table.round(1)
 
 :::
 
-Use this table as a warning label for the later visualization and analysis sections. For example, T cells are common at every timepoint, while monocyte, natural killer cell, and B-cell fractions vary across the time course. Later, when a pattern changes over time, you will ask whether it is tracking infection activity, broad cell identity, or both.
+Use this table as a warning label for the later visualization and analysis sections. For example, T cells are common at every timepoint, while monocyte, natural killer cell, and B-cell fractions vary across the time course. Later, when a pattern changes over time, you will ask whether it is tracking infection activity, broad {{< glossary "Immune-cell identity" display="cell identity" >}}, or both.
 
 :::{.think_question}
 ::::{.think_question_header}
@@ -422,22 +422,24 @@ The average pattern score at `D10` could rise because more cells from the high-s
 ::::
 :::
 
-The composition check does not explain CoGAPS patterns by itself. It gives you a caution: temporal plots must be interpreted alongside cell-type summaries. The next exploration step looks at pattern-associated genes and subject-level pattern scores so you can begin separating identity-like structure from activity-like temporal change.
+The composition check does not explain CoGAPS patterns by itself. It gives you a caution: temporal plots must be interpreted alongside cell-type summaries. The next exploration step checks what the pattern-evidence tables contain without choosing one numbered pattern yet.
 
-## Connect Gene Loadings and Cell Scores
+## Map the CoGAPS Evidence Tables
 
-The composition check helps you avoid one common mistake: treating every temporal pattern as if it must be an infection-response program. The next check uses the top-gene and subject-level pattern tables imported in **Data Import**. If a CoGAPS pattern looks interesting, what gives it biological meaning, and where does that pattern appear in the data?
+The selected model gives you several evidence tables. Before using those tables to name a biological program, inspect what one row means and how the tables fit together. This keeps the exploration step focused on structure: what evidence exists for each pattern, and what later sections will need to combine?
 
-Each CoGAPS pattern has two linked views. **Gene loadings** tell you which genes define the pattern. **Cell scores** tell you which cells, subjects, timepoints, or cell groups use the pattern more strongly. You need both views because top genes can suggest a biological theme, but cell scores show whether that theme appears in the relevant part of the time course.
+Each CoGAPS pattern has two linked views. **{{< glossary "Gene loading" display="Gene loadings" >}}** tell you which genes define the pattern. **{{< glossary "Cell score" display="Cell scores" >}}** tell you which cells, subjects, timepoints, or cell groups use the pattern more strongly. You need both views because {{< glossary "Top genes" display="top genes" >}} can suggest a biological theme, but cell scores show whether that theme appears in the relevant part of the time course.
 
 | Object | What one row means | Key columns | Why you inspect it |
 |---|---|---|---|
-| `r_top_genes` / `py_top_genes` | One gene ranked within one CoGAPS pattern. | `pattern`, `rank`, `gene`, `weight` | Identifies genes that help define a pattern. |
+| `r_top_genes` / `py_top_genes` | One gene in one CoGAPS pattern, ordered by that gene's loading weight. | `pattern`, `rank`, `gene`, `weight` | Identifies genes that help define a pattern. |
 | `subject_pattern_scores` / `py_subject_pattern_scores` | One pattern summarized for one subject at one infection day. | `subject`, `timepoint_merged`, `pattern`, `mean_pattern_score` | Shows where a pattern is used across the time course. |
 
 ### Step 1: Preview the Top-Gene Table
 
-Before filtering to one pattern, look at the table structure. In both R and Python, the code uses column selection: keep only the columns needed to understand the table, then print the first few rows. Here, one row links one gene to one pattern.
+Start with the top-gene table. In both R and Python, the code uses column selection: keep only the columns needed to understand the table, then print the first few rows. Here, one row links one gene to one pattern.
+
+The word `rank` has a different meaning here than it did in K selection. The selected model has `K = 10` patterns, but the `rank` column in this table orders genes within one pattern's sorted loading list. In the preview below, the column is displayed as `gene_rank` to make that distinction visible.
 
 ::: {.panel-tabset}
 
@@ -446,7 +448,7 @@ Before filtering to one pattern, look at the table structure. In both R and Pyth
 ```{r}
 #| label: top-genes-preview-r
 r_top_genes |>
-  select(pattern, rank, gene, weight) |>
+  transmute(pattern, gene_rank = rank, gene, weight) |>
   head(8) |>
   knitr::kable(digits = 3)
 ```
@@ -455,191 +457,187 @@ r_top_genes |>
 
 ```{python}
 #| label: top-genes-preview-python
-py_top_genes.loc[:, ["pattern", "rank", "gene", "weight"]].head(8)
-```
-
-:::
-
-The `rank` column orders genes within a pattern. The `weight` column is the nonnegative CoGAPS loading for that gene in that pattern. Higher weights mean the gene contributes more strongly to that pattern, but weights alone do not tell you whether the gene increased or decreased relative to baseline.
-
-### Step 2: Filter to the Candidate Pattern
-
-The selected `K = 10` model includes a pattern that will later be evaluated as an interferon-associated candidate. At this stage, treat `Pattern3` as a clue rather than a conclusion. The next code filters to `Pattern3`, sorts genes by rank, and keeps the top 15 genes.
-
-::: {.panel-tabset}
-
-#### R
-
-```{r}
-#| label: inspect-ifn-top-genes-r
-pattern3_top_genes <- r_top_genes |>
-  filter(pattern == "Pattern3") |>
-  arrange(rank) |>
-  select(pattern, rank, gene, weight) |>
-  head(15)
-
-pattern3_top_genes |>
-  knitr::kable(digits = 3)
-```
-
-#### Python
-
-```{python}
-#| label: inspect-ifn-top-genes-python
-py_pattern3_top_genes = (
+(
     py_top_genes
-    .loc[py_top_genes["pattern"].eq("Pattern3"),
-         ["pattern", "rank", "gene", "weight"]]
-    .sort_values("rank")
-    .head(15)
+    .loc[:, ["pattern", "rank", "gene", "weight"]]
+    .rename(columns={"rank": "gene_rank"})
+    .head(8)
 )
-
-py_pattern3_top_genes
 ```
 
 :::
 
-Several top genes in `Pattern3`, including `LY6E`, `ISG15`, `IFITM1`, `IFI6`, `MX1`, `IRF7`, `IFI44L`, `IFIT3`, and `OAS1`, are consistent with an interferon-stimulated response. That observation makes `Pattern3` worth following, but it is still only a hypothesis.
+The stored `rank` column orders genes within a pattern, starting with the highest-weighted gene. The `weight` column is the nonnegative CoGAPS loading for that gene in that pattern. Higher weights mean the gene contributes more strongly to that pattern, but weights alone do not tell you whether the gene increased or decreased relative to baseline.
 
-### Step 3: Flag Interferon-Related Genes Transparently
+### Step 2: Count Top-Gene Evidence by Pattern
 
-A learner should not have to recognize every immune gene symbol from memory. The next code creates a small interferon-related reference list and checks which top genes are in that list. In R, `%in%` asks whether each gene is present in the reference vector. In Python, `.isin()` does the same thing for a pandas column.
+Next, check that top-gene evidence exists for every pattern in the selected model. This is a structural check, not a biological ranking. It tells you that each numbered pattern has a comparable top-gene list to inspect later.
 
 ::: {.panel-tabset}
 
 #### R
 
 ```{r}
-#| label: pattern3-ifn-flag-r
-ifn_reference_genes <- c(
-  "LY6E", "ISG15", "IFITM1", "IFI6", "MX1", "IRF7",
-  "IFI44L", "IFIT3", "OAS1", "OASL", "IFIT1",
-  "IFIT2", "IFITM3", "ISG20", "TRIM22"
-)
+#| label: top-genes-pattern-summary-r
+top_gene_pattern_summary <- r_top_genes |>
+  mutate(pattern_number = as.integer(sub("Pattern", "", pattern))) |>
+  group_by(pattern, pattern_number) |>
+  summarize(
+    n_top_genes = n(),
+    first_gene_rank = min(rank),
+    last_gene_rank = max(rank),
+    highest_weight = max(weight),
+    .groups = "drop"
+  ) |>
+  arrange(pattern_number) |>
+  select(-pattern_number)
 
-pattern3_top_genes |>
-  mutate(ifn_reference_gene = gene %in% ifn_reference_genes) |>
-  select(rank, gene, weight, ifn_reference_gene) |>
+top_gene_pattern_summary |>
   knitr::kable(digits = 3)
 ```
 
 #### Python
 
 ```{python}
-#| label: pattern3-ifn-flag-python
-ifn_reference_genes = [
-    "LY6E", "ISG15", "IFITM1", "IFI6", "MX1", "IRF7",
-    "IFI44L", "IFIT3", "OAS1", "OASL", "IFIT1",
-    "IFIT2", "IFITM3", "ISG20", "TRIM22",
-]
-
-py_pattern3_top_genes.assign(
-    ifn_reference_gene=lambda df: df["gene"].isin(ifn_reference_genes)
+#| label: top-genes-pattern-summary-python
+py_top_gene_pattern_summary = (
+    py_top_genes
+    .assign(pattern_number=lambda df: (
+        df["pattern"].str.replace("Pattern", "", regex=False).astype(int)
+    ))
+    .groupby(["pattern", "pattern_number"], as_index=False)
+    .agg(
+        n_top_genes=("gene", "size"),
+        first_gene_rank=("rank", "min"),
+        last_gene_rank=("rank", "max"),
+        highest_weight=("weight", "max"),
+    )
+    .sort_values("pattern_number")
+    .drop(columns="pattern_number")
 )
+
+py_top_gene_pattern_summary
 ```
 
 :::
 
-This check makes the biological clue visible in the table. It does not prove that interferon signaling caused the pattern, and it does not show whether the genes are upregulated or downregulated. It only says that the genes defining this pattern overlap a useful interferon-related reference list.
+Each selected-model pattern has a top-gene list with 50 genes ordered by within-pattern loading weight. Later, the analysis will ask which of those lists support a specific biological interpretation. For now, the important point is that the table has one comparable gene list per pattern.
 
-### Step 4: Preview the Matching Cell-Score Table
+### Step 3: Preview the Subject-Timepoint Score Table
 
-Cell scores provide the second view. Instead of asking which genes define the pattern, they ask how strongly a cell or cell group uses the pattern. The table below filters to `Pattern3` and keeps the long-format subject-timepoint scores. A long table keeps one measurement per row, which is useful for grouping, plotting, and checking the unit of evidence.
+Cell scores provide the second view. Instead of asking which genes define a pattern, they ask how strongly a cell or cell group uses that pattern. The subject-level table summarizes those cell scores by subject, infection day, and pattern. A long table keeps one measurement per row, which is useful for grouping, plotting, and checking the unit of evidence.
 
 ::: {.panel-tabset}
 
 #### R
 
 ```{r}
-#| label: pattern3-subject-long-r
-pattern3_subject_long <- subject_pattern_scores |>
-  filter(pattern == "Pattern3") |>
-  mutate(timepoint_merged = factor(timepoint_merged, levels = timepoint_order)) |>
-  select(subject, timepoint_merged, day_merged_numeric, mean_pattern_score) |>
-  arrange(subject, day_merged_numeric)
-
-pattern3_subject_long |>
-  head(10) |>
+#| label: all-pattern-subject-long-r
+subject_pattern_scores |>
+  mutate(
+    timepoint_merged = factor(timepoint_merged, levels = timepoint_order),
+    pattern_number = as.integer(sub("Pattern", "", pattern))
+  ) |>
+  arrange(subject, day_merged_numeric, pattern_number) |>
+  select(subject, timepoint_merged, pattern, n_cells, mean_pattern_score) |>
+  head(12) |>
   knitr::kable(digits = 3)
 ```
 
 #### Python
 
 ```{python}
-#| label: pattern3-subject-long-python
-py_pattern3_subject_long = (
+#| label: all-pattern-subject-long-python
+(
     py_subject_pattern_scores
-    .loc[py_subject_pattern_scores["pattern"].eq("Pattern3"),
-         ["subject", "timepoint_merged", "day_merged_numeric",
-          "mean_pattern_score"]]
-    .sort_values(["subject", "day_merged_numeric"])
+    .assign(pattern_number=lambda df: (
+        df["pattern"].str.replace("Pattern", "", regex=False).astype(int)
+    ))
+    .sort_values(["subject", "day_merged_numeric", "pattern_number"])
+    .loc[:, ["subject", "timepoint_merged", "pattern",
+             "n_cells", "mean_pattern_score"]]
+    .head(12)
 )
-
-py_pattern3_subject_long.head(10).round(3)
 ```
 
 :::
 
-The important unit here is the subject-timepoint group, not the individual cell. That matters because cells from the same person at the same infection day are related observations. Later analysis will use subject-level summaries so the temporal interpretation is not driven only by the number of cells.
+The important unit here is the subject-timepoint-pattern summary, not the individual cell. That matters because cells from the same person at the same infection day are related observations. Later visualizations and analyses use these subject-level summaries so the temporal interpretation is not driven only by the number of cells.
 
-### Step 5: Reshape Scores for Temporal Comparison
+### Step 4: Summarize Score Coverage Across Patterns
 
-The same `Pattern3` scores are easier to compare when each row is a subject and each column is an infection day. This is another wide table. In R, `pivot_wider()` performs the reshape. In Python, `pivot()` performs the same move.
+Now summarize the score table across all patterns. This check asks whether each selected-model pattern has the same number of subject-timepoint summaries and a comparable score range to inspect later.
 
 ::: {.panel-tabset}
 
 #### R
 
 ```{r}
-#| label: pattern3-subject-scores-r
-pattern3_subject_wide <- pattern3_subject_long |>
-  select(-day_merged_numeric) |>
-  tidyr::pivot_wider(
-    names_from = timepoint_merged,
-    values_from = mean_pattern_score
-  )
+#| label: all-pattern-score-coverage-r
+score_coverage_by_pattern <- subject_pattern_scores |>
+  mutate(pattern_number = as.integer(sub("Pattern", "", pattern))) |>
+  group_by(pattern, pattern_number) |>
+  summarize(
+    n_subject_timepoints = n(),
+    n_subjects = n_distinct(subject),
+    n_timepoints = n_distinct(timepoint_merged),
+    min_score = min(mean_pattern_score),
+    median_score = median(mean_pattern_score),
+    max_score = max(mean_pattern_score),
+    .groups = "drop"
+  ) |>
+  arrange(pattern_number) |>
+  select(-pattern_number)
 
-pattern3_subject_wide |>
+score_coverage_by_pattern |>
   knitr::kable(digits = 3)
 ```
 
 #### Python
 
 ```{python}
-#| label: pattern3-subject-scores-python
-py_pattern3_subject_wide = (
-    py_pattern3_subject_long
-    .pivot(index="subject",
-           columns="timepoint_merged",
-           values="mean_pattern_score")
-    .loc[:, py_timepoint_order]
-    .reset_index()
-    .round(3)
+#| label: all-pattern-score-coverage-python
+py_score_coverage_by_pattern = (
+    py_subject_pattern_scores
+    .assign(pattern_number=lambda df: (
+        df["pattern"].str.replace("Pattern", "", regex=False).astype(int)
+    ))
+    .groupby(["pattern", "pattern_number"], as_index=False)
+    .agg(
+        n_subject_timepoints=("mean_pattern_score", "size"),
+        n_subjects=("subject", "nunique"),
+        n_timepoints=("timepoint_merged", "nunique"),
+        min_score=("mean_pattern_score", "min"),
+        median_score=("mean_pattern_score", "median"),
+        max_score=("mean_pattern_score", "max"),
+    )
+    .sort_values("pattern_number")
+    .drop(columns="pattern_number")
 )
 
-py_pattern3_subject_wide
+py_score_coverage_by_pattern.round(3)
 ```
 
 :::
 
-This preview suggests a late acute increase in `Pattern3`, especially around `D10` and `D14/15`. Keep that as a working hypothesis, not a final result.
+Each pattern has the expected subject-timepoint coverage. The score ranges differ because the model learned different programs, but this table is still not a biological interpretation. It tells you that the evidence is ready for later summaries that compare timing, cell identity, top genes, directionality, and diagnostics.
 
 :::{.think_question}
 ::::{.think_question_header}
 Checkpoint
 ::::
 ::::{.inner_block}
-Why are top genes not enough to call `Pattern3` an interferon-associated temporal program?
+Why are top genes not enough to name a CoGAPS pattern biologically?
 
 <details>
 <summary>Show answer</summary>
 
-Top genes suggest a biological theme, but they do not show timing, subject consistency, cell-type context, model stability, or expression direction. To support the interpretation, later sections check whether `Pattern3` changes across infection days, appears across subjects, can be separated from broad PBMC identity, and has top genes that increase relative to baseline.
+Top genes suggest a biological theme, but they do not show timing, subject consistency, cell-type context, model stability, or expression direction. To support a biological label, later sections connect gene loadings to cell scores, subject-level trajectories, broad cell-type summaries, diagnostics, and directionality relative to baseline.
 
 </details>
 ::::
 :::
 
-This exploration gives you a working hypothesis: `Pattern3` has interferon-like top genes and a late acute increase in subject-level scores. The next section steps back from these included tables to explain the preprocessing decisions that produced the balanced discovery set. After that, the visualization and analysis sections return to the pattern evidence you previewed here.
+This exploration gives you the map of the evidence, not the final interpretation. You now know how to read the coverage, composition, top-gene, and subject-level score tables for the selected `K = 10` model. The next section steps back from these included tables to explain the preprocessing decisions that produced the balanced discovery set. After that, the visualization and analysis sections use these evidence layers to identify and evaluate candidate biological programs.
 
 ***

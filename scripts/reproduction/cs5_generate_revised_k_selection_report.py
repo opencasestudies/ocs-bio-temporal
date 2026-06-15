@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -18,7 +19,12 @@ except ModuleNotFoundError:
     plt = None
 
 
-DEFAULT_SWEEP_DIR = Path("/Users/othomas/Desktop/CS5_sweep_results")
+DEFAULT_SWEEP_DIR = Path(
+    os.environ.get(
+        "CS5_REPRODUCTION_ARCHIVE",
+        "/home/rstudio/project/data/external/reproduction_archive",
+    )
+)
 DEFAULT_OUTDIR = Path("GSE154386/revised_k_selection_K10")
 
 

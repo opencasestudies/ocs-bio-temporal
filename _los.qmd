@@ -1,11 +1,11 @@
 # **Learning Objectives**
 ***
 
-By the end of this case study, you will be able to analyze longitudinal single-cell RNA-seq data from experimental dengue virus infection using CoGAPS, a Bayesian non-negative matrix factorization method.
+By the end of this case study, you will be able to evaluate precomputed CoGAPS rank-selection evidence, use that decision to import the K-selected model files, rebuild core summaries, and interpret temporal immune programs from longitudinal single-cell RNA-seq data collected during experimental dengue virus infection.
 
-You may work through the analysis in R or Python. The standard path uses precomputed teaching files, so the focus is on importing, summarizing, visualizing, and interpreting the selected model rather than waiting for a full CoGAPS run. If you want to reproduce the full model run, you can download the large reproduction files from the Zenodo record and run the provided scripts inside the case-study Docker image.
+You may work through the standard path in R or Python. The standard path uses included analysis files, precomputed rank-selection evidence, and K-selected model outputs so that you can focus on evidence checking, visualization, interpretation, and reproducible summaries rather than waiting for a full CoGAPS run. The full-reproduction path is available separately for learners who want to download the large reproduction files from Zenodo and rerun the selected-model workflow inside the case-study Docker image.
 
-The objectives are organized into data science/bioinformatics, statistical/modeling, and biological/topical goals.
+The objectives are organized into data science/bioinformatics, statistical/modeling, and biological/topical goals. Together, they prepare you to answer the four research questions: choosing an appropriate CoGAPS rank, identifying temporal immune programs, distinguishing PBMC identity from dynamic infection activity, and evaluating evidence for an interferon-associated late acute response.
 
 {{< include _data_science_los.qmd >}}
 
@@ -19,14 +19,17 @@ The objectives are organized into data science/bioinformatics, statistical/model
 
 ## Objectives Map
 
-| Objective area | You will practice this by... | Main section |
+This map shows how the learning objectives come together across the case study. The detailed objectives above name the skills; the map below shows where those skills are introduced, practiced, and used for interpretation.
+
+| Learning goal | What this helps you do | Where it appears |
 |---|---|---|
-| Data import and artifacts | Importing selected-model tables, diagnostics, and manifest files in R or Python | Data Import |
-| Pattern summaries | Joining cell scores to metadata and summarizing patterns by timepoint, subject, and broad cell type | Data Wrangling and Preprocessing |
-| Rank selection | Evaluating why `K = 10` is used for the main model while `K = 5` remains a sensitivity comparison | Data Visualization; Data Analysis |
-| Diagnostics | Reading convergence, stability, runtime, and trace summaries before interpreting model output | Data Analysis |
-| Temporal biology | Interpreting which programs vary over the dengue time course and which appear identity-like, activity-like, or mixed | Data Analysis |
-| IFN evidence | Combining top genes, IFN-score correlation, trajectory, and directionality evidence for the late acute response | Data Analysis |
-| Limitations and extensions | Distinguishing confirmed results, sensitivity comparisons, and optional natural-cohort projection plans | Summary; Suggested Homework or Further Exploration |
+| Understand the biological setting | Explain why an experimental DENV-1 PBMC time course can be used to study host immune response over time | Motivation; Context and Background; What Are the Data? |
+| Navigate the two analysis paths | Distinguish the standard path, which uses included files, from the full-reproduction path, which adds large external files and longer scripts | Packages and Setup; What Are the Data?; Data Import |
+| Evaluate the CoGAPS rank decision | Use precomputed rank-sweep evidence to decide which K-selected model files the standard path should import | Main Questions; Data Import; Data Analysis |
+| Import and check model evidence | Load manifests, rank-selection evidence, selected-model outputs, diagnostics, and metadata before interpretation | Data Import; Data Exploration |
+| Understand preprocessing and discovery-set construction | Explain how filtering, balancing, matrix orientation, and CoGAPS-ready inputs shape what the selected model can reveal | Data Wrangling and Preprocessing; Limitations |
+| Rebuild analysis-ready summaries | Join pattern scores to subject, timepoint, and broad PBMC identity metadata, then summarize patterns across biological units | Data Exploration; Data Wrangling and Preprocessing |
+| Visualize temporal and identity structure | Compare temporal patterns, broad-cell-type structure, subject-level trajectories, and top-gene evidence | Data Visualization; Data Analysis |
+| Interpret evidence and limitations | Evaluate interferon-associated response evidence, model diagnostics, K = 5 sensitivity, and limits of the standard-path analysis | Data Analysis; Limitations; Summary; Suggested Homework |
 
 ***

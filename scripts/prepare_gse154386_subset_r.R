@@ -337,7 +337,15 @@ main <- function() {
     experimental_discovery_shape = c(cells = ncol(sce_discovery), genes = nrow(sce_discovery)),
     natural_projection_shape = c(cells = ncol(sce_nat), genes = nrow(sce_nat)),
     max_cells_per_sample = args$max_cells_per_sample,
-    seed = args$seed
+    seed = args$seed,
+    outputs = list(
+      preprocessed_hvg = file.path(workdir, "gse154386_preprocessed_hvg.rds"),
+      discovery_genes_x_cells = file.path(workdir, "gse154386_experimental_discovery_genes_x_cells.rds"),
+      natural_projection_target = file.path(workdir, "gse154386_natural_projection_target.rds"),
+      preprocessed_hvg_h5ad = file.path(workdir, "gse154386_preprocessed_hvg.h5ad"),
+      discovery_genes_x_cells_h5ad = file.path(workdir, "gse154386_experimental_discovery_genes_x_cells.h5ad"),
+      natural_projection_target_h5ad = file.path(workdir, "gse154386_natural_projection_target.h5ad")
+    )
   )
   write_json(manifest, file.path(results_dir, "preprocessing_manifest.json"), pretty = TRUE, auto_unbox = TRUE)
 }

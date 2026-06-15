@@ -281,7 +281,7 @@ table_count <- function(tab, label) {
 }
 
 option_list <- list(
-  make_option("--discovery-h5ad", type = "character", dest = "discovery_h5ad", default = "/home/rstudio/project/data/cs5_sweep_results/cache/gse154386_experimental_discovery_cells_x_genes.h5ad", help = "Cells x genes discovery AnnData for R CoGAPS"),
+  make_option("--discovery-h5ad", type = "character", dest = "discovery_h5ad", default = "/home/rstudio/project/data/external/reproduction_archive/cache/gse154386_experimental_discovery_cells_x_genes.h5ad", help = "Cells x genes discovery AnnData for R CoGAPS"),
   make_option("--outdir", type = "character", default = "/home/rstudio/project/GSE154386/cogaps_r_revised_model_K10_seed2_iter2000", help = "Output directory"),
   make_option("--k", type = "integer", default = 10, help = "Selected CoGAPS K"),
   make_option("--seed", type = "integer", default = 2, help = "Selected CoGAPS seed"),

@@ -22,6 +22,8 @@ SOURCE_DIR = FIG_DIR / "source_tables"
 
 OUT_PNG = FIG_DIR / "figure_00_opening_summary.png"
 OUT_SVG = FIG_DIR / "figure_00_opening_summary.svg"
+DISPLAY_PNG = FIG_DIR / "figure_00_opening_summary_spoiler_light.png"
+DISPLAY_SVG = FIG_DIR / "figure_00_opening_summary_spoiler_light.svg"
 
 TIMEPOINTS = ["D0", "D2", "D4", "D6", "D8", "D10", "D14/15", "D28"]
 CELL_TYPE_ORDER = ["T_cell", "NK_cell", "Monocyte", "B_cell", "Neutrophil", "Plasmablast"]
@@ -200,7 +202,7 @@ def draw_composition_panel(ax: plt.Axes, composition: pd.DataFrame) -> None:
 
 def draw_k_temporal_resolution_panel(ax: plt.Axes, k_summary: pd.DataFrame) -> None:
     ax.set_title(
-        "C1. K=10 is stable and temporal",
+        "C1. Rank evidence preview",
         loc="left",
         fontsize=fs(12.0),
         fontweight="bold",
@@ -232,7 +234,7 @@ def draw_k_temporal_resolution_panel(ax: plt.Axes, k_summary: pd.DataFrame) -> N
     if len(selected) == 1:
         row = selected.iloc[0]
         ax.annotate(
-            "K=10:\nstable + temporal",
+            "Candidate rank:\nstable + temporal",
             xy=(row["stability_core"], row["max_eta_timepoint"]),
             xytext=(row["stability_core"] - 0.032, row["max_eta_timepoint"] - 0.13),
             arrowprops=dict(arrowstyle="->", color="#9f2f20", lw=1.0),
@@ -243,21 +245,12 @@ def draw_k_temporal_resolution_panel(ax: plt.Axes, k_summary: pd.DataFrame) -> N
     if len(compact) == 1:
         row = compact.iloc[0]
         ax.annotate(
-            "K=5:\nstable, compact",
+            "Compact rank:\nstable",
             xy=(row["stability_core"], row["max_eta_timepoint"]),
             xytext=(row["stability_core"] - 0.032, row["max_eta_timepoint"] + 0.17),
             arrowprops=dict(arrowstyle="->", color="#4c72b0", lw=1.0),
             fontsize=fs(8.0),
             color="#2f5f9f",
-        )
-
-    for _, row in k_summary.iterrows():
-        ax.text(
-            row["stability_core"] + 0.002,
-            row["max_eta_timepoint"] + 0.004,
-            f"K={int(row['K'])}",
-            fontsize=fs(7.4),
-            color="#263238",
         )
 
     ax.set_xlabel("Seed-to-seed stability core", fontsize=fs(9.5))
@@ -271,7 +264,7 @@ def draw_k_temporal_resolution_panel(ax: plt.Axes, k_summary: pd.DataFrame) -> N
 
 def draw_k_ranking_panel(ax: plt.Axes, k_summary: pd.DataFrame) -> None:
     ax.set_title(
-        "C2. Revised K ranking",
+        "C2. Goal-aligned rank evidence",
         loc="left",
         fontsize=fs(12.0),
         fontweight="bold",
@@ -279,13 +272,14 @@ def draw_k_ranking_panel(ax: plt.Axes, k_summary: pd.DataFrame) -> None:
     )
     k_summary = k_summary.sort_values("K").reset_index(drop=True)
     selected = k_summary["selected_for_case_study"].astype(bool)
-    colors = ["#c44e52" if x else "#55a868" for x in selected]
+    colors = ["#486581" if x else "#55a868" for x in selected]
     x = range(len(k_summary))
 
     ax.bar(x, k_summary["goal_aligned_score"], color=colors, edgecolor="white", linewidth=0.8)
     ax.set_ylabel("Goal-aligned score", fontsize=fs(9.5))
-    ax.set_xticks(list(x))
-    ax.set_xticklabels([f"K={int(k)}" for k in k_summary["K"]], rotation=70, ha="right", fontsize=fs(8))
+    ax.set_xticks([0, len(k_summary) - 1])
+    ax.set_xticklabels(["lower ranks", "higher ranks"], fontsize=fs(8))
+    ax.set_xlabel("Candidate model ranks", fontsize=fs(9.5))
     ax.tick_params(axis="y", labelsize=fs(8))
     ax.set_ylim(0, max(k_summary["goal_aligned_score"]) * 1.12)
     ax.grid(axis="y", color="#e6edf3", linewidth=0.8)
@@ -297,7 +291,7 @@ def draw_k_ranking_panel(ax: plt.Axes, k_summary: pd.DataFrame) -> None:
         ax.text(
             selected_idx,
             selected_score + 0.02,
-            "selected",
+            "highlighted",
             ha="center",
             va="bottom",
             fontsize=fs(8),
@@ -329,7 +323,7 @@ def draw_heatmap_panel(
     ax.set_xticklabels(matrix.columns, rotation=45, ha="right", fontsize=fs(8.5))
     ax.set_yticks(range(matrix.shape[0]))
     y_labels = [
-        "Pattern3\n(IFN)" if pattern == "Pattern3" else pattern
+        "candidate\nresponse" if pattern == "Pattern3" else pattern
         for pattern in matrix.index.tolist()
     ]
     ax.set_yticklabels(y_labels, fontsize=fs(8.5))
@@ -359,7 +353,7 @@ def draw_ifn_panel(
     subjects: pd.DataFrame,
 ) -> None:
     ax.set_title(
-        "E. Pattern 3 IFN-like peak",
+        "E. Candidate late acute response pattern",
         loc="left",
         fontsize=fs(12.0),
         fontweight="bold",
@@ -409,7 +403,7 @@ def draw_ifn_panel(
     ax.set_xticks(days)
     ax.set_xticklabels(labels, rotation=45, ha="right", fontsize=fs(8.5))
     ax.set_xlabel("Experimental day", fontsize=fs(10))
-    ax.set_ylabel("Pattern 3 mean score", fontsize=fs(10))
+    ax.set_ylabel("Candidate pattern mean score", fontsize=fs(10))
     ax.grid(axis="y", color="#d9e2ec", lw=0.8)
     ax.legend(frameon=False, fontsize=fs(8), loc="upper left")
     _clean_axis(ax)
@@ -459,7 +453,7 @@ def main() -> None:
     fig.text(
         0.5,
         0.925,
-        "Roadmap: teaching dataset -> discovery composition -> K sweep and stability -> temporal patterns -> IFN-associated peak.",
+        "How do infection timing, cell composition, and model evidence help reveal temporal immune programs?",
         ha="center",
         fontsize=fs(10.8),
         color="#486581",
@@ -481,7 +475,7 @@ def main() -> None:
     draw_heatmap_panel(
         ax_d,
         pattern_by_time,
-        title="D. K=10 pattern usage across infection days",
+        title="D. Selected-model pattern usage across infection days",
         xlabel="Experimental day",
     )
     draw_ifn_panel(ax_e, ifn_summary, ifn_subjects)
@@ -489,17 +483,21 @@ def main() -> None:
     fig.text(
         0.075,
         0.026,
-        "PBMC = peripheral blood mononuclear cell. IFN = interferon.",
+        "PBMC = peripheral blood mononuclear cell.",
         fontsize=fs(8.4),
         color="#627d98",
     )
 
     FIG_DIR.mkdir(parents=True, exist_ok=True)
-    fig.savefig(OUT_PNG, dpi=190, bbox_inches="tight")
-    fig.savefig(OUT_SVG, bbox_inches="tight")
+    for png_path in (OUT_PNG, DISPLAY_PNG):
+        fig.savefig(png_path, dpi=190, bbox_inches="tight")
+    for svg_path in (OUT_SVG, DISPLAY_SVG):
+        fig.savefig(svg_path, bbox_inches="tight")
     plt.close(fig)
     print(f"Wrote {OUT_PNG}")
     print(f"Wrote {OUT_SVG}")
+    print(f"Wrote {DISPLAY_PNG}")
+    print(f"Wrote {DISPLAY_SVG}")
 
 
 if __name__ == "__main__":
