@@ -1,7 +1,7 @@
 # **Main Questions**
 ***
 
-You will answer four connected research questions about the experimental dengue infection time course. The first is a modeling question: which value of {{< glossary "Rank K" display="K" >}}, the number of {{< glossary "CoGAPS" >}} patterns, should anchor the main analysis? You answer that question early, at the start of **Data Import**, because the selected-model files depend on the rank decision. The remaining questions use that selected model to evaluate temporal immune programs, distinguish PBMC identity from dynamic infection activity, and assess evidence for an interferon-associated late acute response.
+The Motivation section introduced the central puzzle: temporal dengue response is mixed with PBMC identity, subject variation, and modeling choices. The questions below turn that puzzle into an evidence chain. You will first decide which {{< glossary "Rank K" display="CoGAPS rank" >}} should anchor the analysis, then use the selected model to evaluate temporal programs, identity versus activity, and interferon-associated response evidence.
 
 :::{.main_question}
 ::::{.main_question_header}
@@ -11,56 +11,53 @@ Our main questions
 1. Which value of {{< glossary "Rank K" display="K" >}} provides an appropriate CoGAPS model for this case-study goal?
 2. Which temporal immune programs appear across the experimental dengue time course?
 3. Which programs reflect PBMC identity, dynamic infection activity, or both?
-4. Which evidence supports an interferon-associated late acute response?
+4. What evidence supports interpreting one program as an interferon-associated late acute response?
 ::::
 :::
 
-<table>
-  <colgroup>
-    <col style="width: 150px;">
-    <col>
-    <col>
-  </colgroup>
-  <thead>
-    <tr>
-      <th></th>
-      <th>Research question</th>
-      <th>Evidence you will inspect</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><img src="assets/question_icons/rq1_k_selection.png" alt="Icon showing candidate CoGAPS model ranks being compared with a magnifying glass over rank evidence." width="140"></td>
-      <td><strong>Question 1</strong><br>Which value of {{< glossary "Rank K" display="K" >}} provides an appropriate CoGAPS model for this case-study goal?</td>
-      <td>You will answer this first by importing and inspecting precomputed {{< glossary "Rank-sweep evidence" display="rank-sweep evidence" >}}, including {{< glossary "Stability" display="stability" >}}, {{< glossary "Redundancy" display="redundancy" >}}, temporal signal, {{< glossary "Biological resolution" display="biological resolution" >}}, and a goal-aligned score. **Data Analysis** later revisits the decision while checking diagnostics and sensitivity evidence.</td>
-    </tr>
-    <tr>
-      <td><img src="assets/question_icons/rq1_temporal_programs.png" alt="Icon showing immune cells, a pattern heatmap, and temporal trajectories." width="140"></td>
-      <td><strong>Question 2</strong><br>Which {{< glossary "Temporal immune program" display="temporal immune programs" >}} appear across the experimental dengue time course?</td>
-      <td>You will answer this by using selected-model pattern summaries, {{< glossary "Pattern-by-day summary" display="pattern-by-day tables" >}}, {{< glossary "Subject-level trajectory" display="subject-level trajectories" >}}, and temporal effect-size rankings.</td>
-    </tr>
-    <tr>
-      <td><img src="assets/question_icons/rq2_identity_activity.png" alt="Icon showing multiple immune-cell identities and dynamic response trajectories." width="140"></td>
-      <td><strong>Question 3</strong><br>Which programs reflect {{< glossary "Immune-cell identity" display="PBMC identity" >}}, {{< glossary "Activity program" display="dynamic infection activity" >}}, or both?</td>
-      <td>You will compare timepoint-associated variation with broad-cell-type-associated variation, then inspect identity/activity summaries, {{< glossary "Top genes" display="top genes" >}}, and pattern-use heatmaps.</td>
-    </tr>
-    <tr>
-      <td><img src="assets/question_icons/rq3_interferon_response.png" alt="Icon showing antiviral signaling, immune cells, and a peak in a temporal trajectory." width="140"></td>
-      <td><strong>Question 4</strong><br>Which evidence supports an {{< glossary "Interferon-associated response" display="interferon-associated late acute response" >}}?</td>
-      <td>You will combine {{< glossary "IFN-score correlation" display="IFN-score correlation" >}}, {{< glossary "Interferon-stimulated genes" display="interferon-stimulated top genes" >}}, day 10 and day 14/15 trajectories, and {{< glossary "Pseudobulk directionality" display="pseudobulk directionality" >}} relative to baseline.</td>
-    </tr>
-  </tbody>
+<table style="min-width: 900px; border-collapse: separate; border-spacing: 0 0.85rem;">
+<colgroup>
+<col style="width: 150px;">
+<col style="width: 28%;">
+<col style="width: 32%;">
+<col style="width: 28%;">
+</colgroup>
+<thead>
+<tr style="vertical-align: top;">
+<th></th>
+<th>Research question</th>
+<th>Where it is answered</th>
+<th>Expected takeaway</th>
+</tr>
+</thead>
+<tbody>
+<tr style="vertical-align: top;">
+<td><img src="assets/question_icons/rq1_k_selection.png" alt="Icon showing candidate CoGAPS model ranks being compared with a magnifying glass over rank evidence." width="130"></td>
+<td><strong>Question 1</strong><br>Which value of {{< glossary "Rank K" display="K" >}} provides an appropriate CoGAPS model for this case-study goal?</td>
+<td><strong>Data Import</strong> introduces the precomputed {{< glossary "Rank-sweep evidence" display="rank-sweep evidence" >}} before selected model outputs are loaded. <strong>Data Analysis</strong> revisits the decision with diagnostics and sensitivity evidence.</td>
+<td>Explain why the selected rank is appropriate for this analysis goal, and why choosing `K` does not yet tell you what any numbered pattern means.</td>
+</tr>
+<tr style="vertical-align: top;">
+<td><img src="assets/question_icons/rq1_temporal_programs.png" alt="Icon showing immune cells, a pattern heatmap, and temporal trajectories." width="130"></td>
+<td><strong>Question 2</strong><br>Which {{< glossary "Temporal immune program" display="temporal immune programs" >}} appear across the experimental dengue time course?</td>
+<td><strong>Data Exploration</strong> and <strong>Data Visualization</strong> introduce {{< glossary "Pattern-by-day summary" display="pattern-by-day tables" >}}, {{< glossary "Subject-level trajectory" display="subject-level trajectories" >}}, and pattern trajectories. <strong>Data Analysis</strong> ranks the temporal evidence.</td>
+<td>Identify which programs vary across infection days and describe the time windows where their scores are highest.</td>
+</tr>
+<tr style="vertical-align: top;">
+<td><img src="assets/question_icons/rq2_identity_activity.png" alt="Icon showing multiple immune-cell identities and dynamic response trajectories." width="130"></td>
+<td><strong>Question 3</strong><br>Which programs reflect {{< glossary "Immune-cell identity" display="PBMC identity" >}}, {{< glossary "Activity program" display="dynamic infection activity" >}}, or both?</td>
+<td><strong>Data Wrangling and Preprocessing</strong> prepares the identity/activity summary table. <strong>Data Visualization</strong> and <strong>Data Analysis</strong> compare timepoint variation, broad-cell-type variation, {{< glossary "Top genes" display="top genes" >}}, and pattern-use heatmaps.</td>
+<td>Distinguish patterns that look mostly identity-like, mostly activity-like, or mixed, and explain why that distinction matters for PBMC data.</td>
+</tr>
+<tr>
+<td><img src="assets/question_icons/rq3_interferon_response.png" alt="Icon showing antiviral signaling, immune cells, and a peak in a temporal trajectory." width="130"></td>
+<td><strong>Question 4</strong><br>What evidence supports interpreting one program as an {{< glossary "Interferon-associated response" display="interferon-associated late acute response" >}}?</td>
+<td><strong>Data Visualization</strong> treats figures as visual triage. <strong>Data Analysis</strong> combines {{< glossary "IFN-score correlation" display="IFN-score correlation" >}}, {{< glossary "Interferon-stimulated genes" display="interferon-stimulated top genes" >}}, late acute trajectories, and {{< glossary "Pseudobulk directionality" display="pseudobulk directionality" >}} relative to baseline.</td>
+<td>State what supports the interferon-associated interpretation and what remains bounded by the data, model, and teaching subset.</td>
+</tr>
+</tbody>
 </table>
 
-The first question should be answered before treating any individual CoGAPS pattern as biology. Choosing `K` settles which selected-model files the standard path uses; it does not yet settle what any numbered pattern means. The remaining questions build that biological interpretation step by step.
-
-Use this evidence map as a guide as you move through the analysis:
-
-| Question | Main evidence | Where it appears |
-|---|---|---|
-| Question 1: model rank | Rank-sweep manifest, stability plateau, redundancy, {{< glossary "Temporal effect size" display="temporal effect size" >}}, biological resolution, goal-aligned score, and sensitivity comparator | Data Import; Data Analysis |
-| Question 2: temporal programs | Pattern-by-day summaries, subject-level summaries, temporal effect sizes, and pattern trajectories | Data Exploration; Data Visualization; Data Analysis |
-| Question 3: identity versus activity | Broad-cell-type effect sizes, timepoint effect sizes, top genes, identity/activity summaries, and pattern heatmaps | Data Wrangling and Preprocessing; Data Visualization; Data Analysis |
-| Question 4: IFN-associated response | IFN-score correlation, IFN-stimulated top genes, late acute trajectory, and pseudobulk directionality | Data Visualization; Data Analysis |
+The first question comes before biological interpretation because every later pattern summary comes from the selected model. Choosing `K` does not tell you what a pattern means; it only defines which model you are ready to inspect. The remaining questions build the biological interpretation step by step.
 
 ***

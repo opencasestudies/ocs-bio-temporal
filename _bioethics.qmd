@@ -14,4 +14,6 @@ Important cautions:
 
 For clinical care, learners should use medical and public-health guidance rather than this teaching case study [@cdc2026dengueClinicalCare].
 
+With those interpretive boundaries in place, the next section sets up the software environment you will use before importing evidence files.
+
 ***

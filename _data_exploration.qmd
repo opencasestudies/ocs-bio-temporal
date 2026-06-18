@@ -1,15 +1,21 @@
 # **Data Exploration**
 ***
 
-Now that you have imported the {{< glossary "Selected-model outputs" display="selected-model files" >}}, you should inspect the {{< glossary "Balanced discovery set" display="prepared discovery set" >}} and the selected `K = 10` {{< glossary "CoGAPS" >}} summaries before interpreting any pattern biologically. The model rank has been chosen, but the numbered patterns are still just {{< glossary "Pattern label" display="pattern labels" >}}. This section asks a few checks before moving into interpretation: are the subjects and timepoints represented, what broad cell types dominate the discovery set, and what information is stored in the pattern-evidence tables?
+Data Import selected the `K = 10` {{< glossary "CoGAPS" >}} model and loaded its compact {{< glossary "Selected-model outputs" display="selected-model files" >}}. Before you use any numbered {{< glossary "Pattern label" display="pattern label" >}} as biological evidence, pause to check what those files can support. In this section, you will inspect the {{< glossary "Balanced discovery set" display="prepared discovery set" >}}, the broad PBMC mixture, and the model-evidence tables that later sections use to evaluate candidate temporal programs.
 
-This section uses the small included standard-path tables. If you later run the full reproduction scripts, you can repeat the same checks on the regenerated equivalent tables.
+These checks use the small included tables created for the main lesson. They do not rerun CoGAPS and they do not assign final biological names to patterns. Instead, they prepare you to ask later whether a candidate pattern reflects infection-response activity, broad immune-cell identity, or both.
 
-## Check Subject and Timepoint Coverage
+| Before interpretation, check... | What you ask | Why it matters later |
+|---|---|---|
+| Subject and timepoint coverage | Are the same subjects and similar numbers of discovery cells represented across infection days? | Temporal trajectories are easier to interpret when coverage is not missing or strongly uneven. |
+| Broad PBMC composition | Does the {{< glossary "Cell composition" display="cell composition" >}} of the balanced discovery set vary across days? | A pattern can look temporal if the mixture of immune-cell types changes over time. |
+| CoGAPS evidence tables | What do gene loadings, top genes, and subject-timepoint scores each tell you? | Later sections need both gene evidence and score evidence before naming a biological program. |
 
-Before asking which CoGAPS patterns change over time, you should check whether the discovery set is balanced across subjects and infection days. This check uses the subject-level pattern summary imported in **Data Import**. A temporal comparison is easier to interpret when the same subjects and similar numbers of cells are represented at each timepoint.
+## Check 1: Subject and Timepoint Coverage
 
-This check is not about CoGAPS yet. It asks whether the data structure supports the biological question. If one infection day had fewer subjects, many fewer cells, or a missing sample, an apparent temporal pattern could partly reflect sampling coverage rather than infection biology.
+Before asking which CoGAPS patterns change over time, check whether the discovery set is balanced across subjects and infection days. This check uses the subject-level pattern summary imported in **Data Import**. A temporal comparison is easier to interpret when the same subjects and similar numbers of cells are represented at each timepoint.
+
+This first check is not about naming a CoGAPS pattern. It asks whether the data structure supports the biological question. If one infection day had fewer subjects, many fewer cells, or a missing sample, an apparent temporal pattern could partly reflect sampling coverage rather than infection biology.
 
 The {{< glossary "Subject-timepoint summary" display="subject-timepoint summary" >}} table is stored in **{{< glossary "Long format" display="long format" >}}**. In a long table, each row holds one measurement for one group. Here, each row is one subject, one timepoint, and one CoGAPS pattern. Because the selected model has 10 patterns, the same subject-timepoint cell count appears 10 times. To check coverage, you first need one row per subject and timepoint.
 
@@ -21,9 +27,11 @@ The {{< glossary "Subject-timepoint summary" display="subject-timepoint summary"
 | `pattern` | CoGAPS pattern ID. | Explains why subject-timepoint rows are repeated. |
 | `n_cells` | Number of discovery cells in the subject-timepoint summary. | Measures coverage before pattern interpretation. |
 
-### Step 1: Import the Subject-Level Long Table
+### Step 1: Read the Subject-Timepoint Pattern Summary
 
 Begin by reading the table and inspecting the columns that define coverage. In both R and Python, the imported object is a table. The preview below shows why this file is called "long": `Subject2` at `D0` appears once for each pattern.
+
+**What this code does:** read the subject-level long table and preview the columns that identify subject, infection day, pattern, and cell count.
 
 ::: {.panel-tabset}
 
@@ -69,6 +77,8 @@ The first rows show repeated coverage information because the table is organized
 
 Next, remove repeated coverage rows. In R, `dplyr::distinct()` keeps unique combinations of selected columns. In Python, `drop_duplicates()` does the same job. This is not filtering cells out of the dataset; it is reducing repeated summary rows so the coverage check counts each subject-timepoint once.
 
+**What this code does:** collapse repeated pattern rows so the coverage table counts each subject at each infection day once.
+
 ::: {.panel-tabset}
 
 #### R
@@ -106,11 +116,13 @@ pd.DataFrame({
 
 :::
 
-The row count drops because the repeated pattern rows have been collapsed to one row per subject-timepoint. This prepares the data for a coverage table where subjects and days can be inspected directly.
+The row count drops because the repeated pattern rows have been collapsed to one row per subject-timepoint. This prepares the data for a coverage table where subjects and days can be inspected directly. The important unit for this check is now one participant at one infection day, not one row in the long pattern table.
 
 ### Step 3: Make a Subject-by-Day Coverage Table
 
 A **{{< glossary "Wide table" display="wide table" >}}** places subjects in rows and timepoints in columns. This layout is useful for exploration because missing or uneven coverage becomes visible quickly. The values in the table are discovery cells, not pattern scores.
+
+**What this code does:** reshape the subject-timepoint counts so you can scan subjects across infection days.
 
 ::: {.panel-tabset}
 
@@ -146,6 +158,8 @@ Read across each row. Each subject contributes cells at every infection day used
 ### Step 4: Summarize Coverage by Infection Day
 
 The final coverage check groups rows by timepoint. In R, `group_by()` and `summarize()` create a grouped summary. In Python, `groupby()` and `agg()` do the same thing. The `n_subjects` column checks whether all three subjects appear at each day. The `discovery_cells` column checks the total number of cells represented at each day.
+
+**What this code does:** summarize the coverage table by infection day so each day can be checked for subject coverage and total discovery-cell count.
 
 ::: {.panel-tabset}
 
@@ -188,12 +202,12 @@ subject_time_counts |>
 Checkpoint
 ::::
 ::::{.inner_block}
-Why should you not count the rows of `subject_pattern_scores` directly to estimate the number of subject-timepoint observations?
+Why should you not count the rows of `subject_pattern_scores` directly to estimate the number of subject-timepoint observations? What unit is safer for a temporal claim?
 
 <details>
 <summary>Show answer</summary>
 
-Each subject-timepoint appears once for each CoGAPS pattern. Counting rows in the long pattern table would multiply the coverage by the number of patterns and would overstate the number of biological subject-timepoint observations.
+Each subject-timepoint appears once for each CoGAPS pattern. Counting rows in the long pattern table would multiply the coverage by the number of patterns and would overstate the number of subject-timepoint observations. For temporal interpretation, the safer unit is the subject-timepoint summary: one participant at one infection day. Single cells still help describe the model, but cells from the same participant are not independent people.
 
 </details>
 ::::
@@ -201,9 +215,9 @@ Each subject-timepoint appears once for each CoGAPS pattern. Counting rows in th
 
 The coverage check shows that the discovery set contains three experimental subjects at each infection timepoint. Each subject contributes 200 discovery cells per timepoint, for 600 cells per timepoint. This means the main temporal comparisons are not driven by a missing subject or a major difference in total discovery-set size across days. However, balanced cell counts do not guarantee that the mixture of immune-cell types is identical across days, so the next exploration step checks broad immune-cell composition.
 
-## Inspect Broad Cell-Type Composition
+## Check 2: Inspect Broad PBMC Composition
 
-The previous check showed that each timepoint has the same number of discovery cells. That is useful, but it does not mean the same types of immune cells are present in the same proportions. Because {{< glossary "Peripheral blood mononuclear cells" display="peripheral blood mononuclear cells" >}}, or PBMCs, are a mixture of immune-cell types, you should inspect broad cell-type composition before interpreting temporal CoGAPS patterns.
+The previous check showed that each timepoint has the same number of discovery cells. That is useful, but it does not mean the same types of immune cells are present in the same proportions. Because {{< glossary "Peripheral blood mononuclear cells" display="peripheral blood mononuclear cells" >}}, or PBMCs, are a mixture of immune-cell types, you should inspect broad {{< glossary "Cell composition" display="cell composition" >}} before interpreting temporal CoGAPS patterns.
 
 This check asks whether a later pattern might be influenced by the mixture of broad immune-cell types. A pattern can look temporal because cells are changing their {{< glossary "Activity program" display="gene-expression activity" >}}, because the mixture of immune-cell types changes, or because both are happening at once.
 
@@ -220,6 +234,8 @@ The composition table has one row for each infection day and broad immune-cell t
 ### Step 1: Preview the Composition Table
 
 Start by inspecting the rows you are about to summarize. In this table, one row represents one broad cell type at one infection day. The `fraction` column is already scaled within each timepoint, so the fractions across cell types for one day add up to 1.
+
+**What this code does:** read the composition source table and preview how infection day, broad cell type, cell count, and fraction are stored.
 
 ::: {.panel-tabset}
 
@@ -268,6 +284,81 @@ The stacked bar chart shows the same idea visually. Each bar is one infection da
 
 ![](data/processed/figures/figure_02_discovery_set_composition.png){fig-alt="Stacked bar chart showing broad immune-cell composition across experimental dengue infection timepoints." width=850 .lightbox}
 
+<details>
+<summary>Optional: see how the composition figure was created</summary>
+
+The figure is built from the prepared discovery-set cell metadata, not from a new CoGAPS run. The plotting code first counts cells by infection day and broad immune-cell type, then saves that count table as the source table you previewed in Step 1.
+
+```python
+comp = (
+    cells.groupby(
+        ["timepoint_merged", "day_merged_numeric", "broad_cell_type"],
+        dropna=False
+    )
+    .size()
+    .rename("n_cells")
+    .reset_index()
+)
+
+comp["fraction"] = (
+    comp["n_cells"] /
+    comp.groupby("timepoint_merged")["n_cells"].transform("sum")
+)
+
+comp.to_csv(
+    source_dir / "figure_02_discovery_set_composition_source.csv",
+    index=False
+)
+```
+
+Next, the code reshapes the table so each row is one infection day and each column is one broad immune-cell type. This is the matrix that the stacked bars use.
+
+```python
+matrix = (
+    comp.pivot_table(
+        index="timepoint_merged",
+        columns="broad_cell_type",
+        values="n_cells",
+        aggfunc="sum",
+        fill_value=0
+    )
+    .reindex(times)
+    .reindex(columns=cell_types, fill_value=0)
+)
+```
+
+The plotting loop draws one colored segment for each broad immune-cell type. The `bottom` values keep track of where the next segment should start, which is what makes the bars stack instead of overlap.
+
+```python
+fig, ax = plt.subplots(figsize=(8.5, 4.6))
+palette = sns.color_palette("Set2", n_colors=len(cell_types))
+bottom = np.zeros(len(matrix))
+x = np.arange(len(matrix.index))
+
+for color, cell_type in zip(palette, cell_types):
+    values = matrix[cell_type].to_numpy()
+    ax.bar(x, values, bottom=bottom, label=cell_type,
+           color=color, width=0.72)
+    bottom += values
+```
+
+Finally, the code labels the axes, places the legend below the plot, and saves the same figure as both `PNG` and `SVG` files for the case study.
+
+```python
+ax.set_xticks(x)
+ax.set_xticklabels(matrix.index)
+ax.set_ylabel("Discovery cells")
+ax.set_xlabel("Timepoint")
+ax.set_title("Discovery set composition by timepoint")
+ax.legend(ncol=3, loc="upper center", bbox_to_anchor=(0.5, -0.18))
+ax.grid(axis="y", alpha=0.25)
+fig.tight_layout()
+
+save_figure(fig, outdir, "figure_02_discovery_set_composition", written)
+```
+
+</details>
+
 The first thing to notice is that each timepoint is close to 600 discovery cells. This agrees with the coverage check above: later timepoint comparisons are not driven simply by one day having many more cells than another.
 
 The second thing to notice is that the bars are not identical. T cells are the largest broad cell-type group at every timepoint, while monocytes, natural killer cells, B cells, neutrophils, and plasmablasts vary across days. These counts describe the balanced discovery set, not the original abundance of each cell type in the full source study.
@@ -277,6 +368,8 @@ The second thing to notice is that the bars are not identical. T cells are the l
 Now make a grouped summary. A grouped summary splits the table into groups, calculates one row of results per group, and then puts those rows back together. In R, `group_by()` creates the groups and `summarize()` calculates the totals. In Python, `groupby()` and `agg()` do the same job.
 
 Here, the groups are broad cell types. The summary totals the number of discovery cells and calculates the average fraction across timepoints.
+
+**What this code does:** summarize which broad PBMC groups contribute the most cells to the balanced discovery set.
 
 ::: {.panel-tabset}
 
@@ -311,54 +404,11 @@ composition |>
 
 The discovery set is dominated by T cells, with monocytes and natural killer cells also contributing substantial numbers of cells. That matters because a pattern with high scores in T cells might appear across many timepoints simply because T cells are common.
 
-### Step 4: Convert Fractions to Percentages
+### Step 4: Make a Percent Composition Table by Timepoint
 
-Fractions are convenient for computation, but percentages are often easier to read. A fraction of `0.25` means 25 percent of the discovery cells at that timepoint are in that broad cell type. In R, `mutate()` creates a new column. In Python, `assign()` does the same kind of column creation.
+Fractions are convenient for computation, but percentages are often easier to read. A fraction of `0.25` means 25 percent of the discovery cells at that timepoint are in that broad cell type. For temporal interpretation, it is useful to show those percentages in a **wide table**, with infection days in rows and broad immune-cell types in columns.
 
-::: {.panel-tabset}
-
-#### R
-
-```{r}
-#| label: composition-percent-r
-composition_percent <- composition |>
-  mutate(
-    timepoint_merged = factor(timepoint_merged, levels = timepoint_order),
-    fraction_percent = 100 * fraction
-  )
-
-composition_percent |>
-  arrange(day_merged_numeric, desc(fraction_percent)) |>
-  select(timepoint_merged, broad_cell_type, fraction_percent) |>
-  head(10) |>
-  knitr::kable(digits = 1)
-```
-
-#### Python
-
-```{python}
-#| label: composition-percent-python
-py_composition_percent = composition_py.assign(
-    fraction_percent=lambda df: 100 * df["fraction"]
-)
-
-(
-    py_composition_percent
-    .sort_values(["day_merged_numeric", "fraction_percent"],
-                 ascending=[True, False])
-    .loc[:, ["timepoint_merged", "broad_cell_type", "fraction_percent"]]
-    .head(10)
-    .round({"fraction_percent": 1})
-)
-```
-
-:::
-
-This step does not change the underlying biological information. It changes the display scale so the next table is easier to read.
-
-### Step 5: Make a Timepoint-by-Cell-Type Table
-
-For temporal interpretation, it is useful to reshape the composition table so each row is an infection day and each column is a broad immune-cell type. This is a **wide table**. In R, `tidyr::pivot_wider()` creates this layout. In Python, `pivot_table()` does the same kind of reshape.
+**What this code does:** convert fractions to percentages and reshape the composition table so each infection day can be scanned across broad PBMC identities.
 
 ::: {.panel-tabset}
 
@@ -366,6 +416,12 @@ For temporal interpretation, it is useful to reshape the composition table so ea
 
 ```{r}
 #| label: composition-wide-r
+composition_percent <- composition |>
+  mutate(
+    timepoint_merged = factor(timepoint_merged, levels = timepoint_order),
+    fraction_percent = 100 * fraction
+  )
+
 composition_fraction_table <- composition_percent |>
   select(timepoint_merged, day_merged_numeric,
          broad_cell_type, fraction_percent) |>
@@ -385,6 +441,10 @@ composition_fraction_table |>
 
 ```{python}
 #| label: composition-wide-python
+py_composition_percent = composition_py.assign(
+    fraction_percent=lambda df: 100 * df["fraction"]
+)
+
 py_composition_fraction_table = (
     py_composition_percent
     .pivot_table(
@@ -404,19 +464,19 @@ py_composition_fraction_table.round(1)
 
 :::
 
-Use this table as a warning label for the later visualization and analysis sections. For example, T cells are common at every timepoint, while monocyte, natural killer cell, and B-cell fractions vary across the time course. Later, when a pattern changes over time, you will ask whether it is tracking infection activity, broad {{< glossary "Immune-cell identity" display="cell identity" >}}, or both.
+Use this table as a warning label for the later visualization and analysis sections. For example, T cells are common at every timepoint, while monocyte, natural killer cell, and B-cell fractions vary across the time course. These values describe the balanced discovery set used for modeling, not the original abundance of each immune-cell type in the source study. Later, when a pattern changes over time, you will ask whether it is tracking infection activity, broad {{< glossary "Immune-cell identity" display="cell identity" >}}, or both.
 
 :::{.think_question}
 ::::{.think_question_header}
 Checkpoint
 ::::
 ::::{.inner_block}
-Suppose a CoGAPS pattern is strongest in a broad cell type that becomes more common at `D10`. Why might that pattern look temporal even if cells in that cell type are not changing their gene-expression activity?
+Why should you not use this composition table as an estimate of true PBMC abundance in the original source study? How could composition still affect temporal pattern interpretation?
 
 <details>
 <summary>Show answer</summary>
 
-The average pattern score at `D10` could rise because more cells from the high-scoring cell type are present. That would make the pattern look temporal at the sample level, even if individual cells in that cell type did not increase the program. To separate these explanations, you will later inspect pattern scores by cell type, subject-level trajectories, top genes, and directionality.
+The table describes a balanced discovery set, not the full source study. The preprocessing workflow intentionally selected a tractable modeling subset, so these counts should not be used to estimate original immune-cell abundance. Composition still matters for interpretation because the average pattern score at `D10` could rise if more cells from a high-scoring broad cell type are present. To separate composition from changing activity, later sections inspect pattern scores by cell type, subject-level trajectories, top genes, and directionality.
 
 </details>
 ::::
@@ -424,11 +484,18 @@ The average pattern score at `D10` could rise because more cells from the high-s
 
 The composition check does not explain CoGAPS patterns by itself. It gives you a caution: temporal plots must be interpreted alongside cell-type summaries. The next exploration step checks what the pattern-evidence tables contain without choosing one numbered pattern yet.
 
-## Map the CoGAPS Evidence Tables
+## Check 3: Map the CoGAPS Evidence Tables
 
 The selected model gives you several evidence tables. Before using those tables to name a biological program, inspect what one row means and how the tables fit together. This keeps the exploration step focused on structure: what evidence exists for each pattern, and what later sections will need to combine?
 
 Each CoGAPS pattern has two linked views. **{{< glossary "Gene loading" display="Gene loadings" >}}** tell you which genes define the pattern. **{{< glossary "Cell score" display="Cell scores" >}}** tell you which cells, subjects, timepoints, or cell groups use the pattern more strongly. You need both views because {{< glossary "Top genes" display="top genes" >}} can suggest a biological theme, but cell scores show whether that theme appears in the relevant part of the time course.
+
+| Evidence view | Can help answer | Cannot answer by itself |
+|---|---|---|
+| Top-gene table | Which genes have high loading weights in each pattern. | Whether those genes increase or decrease after infection, or whether a pattern is temporal. |
+| Subject-timepoint score table | Where each pattern is used across subjects and infection days. | Which genes define the pattern, or whether the pattern is driven by broad cell identity. |
+| Cell-composition table | Whether the PBMC mixture could shape pattern summaries. | Whether a pattern reflects changing activity within a cell type. |
+| Later identity/activity and directionality tables | Whether a candidate pattern survives biological interpretation checks. | Those checks have not been completed in Data Exploration. |
 
 | Object | What one row means | Key columns | Why you inspect it |
 |---|---|---|---|
@@ -440,6 +507,8 @@ Each CoGAPS pattern has two linked views. **{{< glossary "Gene loading" display=
 Start with the top-gene table. In both R and Python, the code uses column selection: keep only the columns needed to understand the table, then print the first few rows. Here, one row links one gene to one pattern.
 
 The word `rank` has a different meaning here than it did in K selection. The selected model has `K = 10` patterns, but the `rank` column in this table orders genes within one pattern's sorted loading list. In the preview below, the column is displayed as `gene_rank` to make that distinction visible.
+
+**What this code does:** preview the top-gene table while renaming the within-pattern gene order to `gene_rank`.
 
 ::: {.panel-tabset}
 
@@ -472,6 +541,8 @@ The stored `rank` column orders genes within a pattern, starting with the highes
 ### Step 2: Count Top-Gene Evidence by Pattern
 
 Next, check that top-gene evidence exists for every pattern in the selected model. This is a structural check, not a biological ranking. It tells you that each numbered pattern has a comparable top-gene list to inspect later.
+
+**What this code does:** count the top-gene rows for each pattern and confirm that the ranked gene lists have the expected coverage.
 
 ::: {.panel-tabset}
 
@@ -527,6 +598,8 @@ Each selected-model pattern has a top-gene list with 50 genes ordered by within-
 
 Cell scores provide the second view. Instead of asking which genes define a pattern, they ask how strongly a cell or cell group uses that pattern. The subject-level table summarizes those cell scores by subject, infection day, and pattern. A long table keeps one measurement per row, which is useful for grouping, plotting, and checking the unit of evidence.
 
+**What this code does:** preview one row per subject, infection day, and pattern so the score table's evidence unit is visible.
+
 ::: {.panel-tabset}
 
 #### R
@@ -567,6 +640,8 @@ The important unit here is the subject-timepoint-pattern summary, not the indivi
 ### Step 4: Summarize Score Coverage Across Patterns
 
 Now summarize the score table across all patterns. This check asks whether each selected-model pattern has the same number of subject-timepoint summaries and a comparable score range to inspect later.
+
+**What this code does:** confirm that each selected-model pattern has subject-timepoint summaries for the expected subjects and infection days.
 
 ::: {.panel-tabset}
 
@@ -638,6 +713,35 @@ Top genes suggest a biological theme, but they do not show timing, subject consi
 ::::
 :::
 
-This exploration gives you the map of the evidence, not the final interpretation. You now know how to read the coverage, composition, top-gene, and subject-level score tables for the selected `K = 10` model. The next section steps back from these included tables to explain the preprocessing decisions that produced the balanced discovery set. After that, the visualization and analysis sections use these evidence layers to identify and evaluate candidate biological programs.
+This exploration gives you the map of the evidence, not the final interpretation. You now know how to read the coverage, composition, top-gene, and subject-level score tables for the selected `K = 10` model.
+
+| Evidence collected | Why it matters next |
+|---|---|
+| Subject-timepoint coverage | Later temporal trajectory comparisons are easier to interpret because the same subjects are represented across infection days. |
+| Broad PBMC composition | Temporal-looking summaries must be checked against broad cell identity and PBMC mixture. |
+| Top-gene lists | Gene loadings provide biological clues, but they need timing, cell-type context, and directionality before a program is named. |
+| Subject-timepoint score summaries | These summaries give a safer temporal evidence unit than treating every cell as an independent replicate. |
+
+:::{.think_question}
+::::{.think_question_header}
+Synthesis checkpoint
+::::
+::::{.inner_block}
+Before moving on, answer these in your own words:
+
+1. Which unit of evidence should carry the temporal claim, and why?
+2. How could cell composition make a pattern look temporal?
+3. Why are top genes useful but not sufficient for naming a CoGAPS pattern?
+
+<details>
+<summary>Show answer</summary>
+
+Subject-timepoint summaries should carry the temporal claim because they keep repeated cells connected to the participant and infection day they came from. Cell composition can make a pattern look temporal when a high-scoring cell type becomes more or less common across days. Top genes are useful because they suggest biological themes, but they do not show timing, subject consistency, cell-type context, diagnostics, or expression direction by themselves.
+
+</details>
+::::
+:::
+
+The next section steps back from these included tables to explain the preprocessing decisions that produced the balanced discovery set. After that, the visualization and analysis sections use these evidence layers to identify and evaluate candidate biological programs.
 
 ***

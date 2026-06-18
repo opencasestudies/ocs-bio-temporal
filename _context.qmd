@@ -1,9 +1,9 @@
-# **Context and Background**
+# **Context**
 ***
 
-This case study asks how a coordinated immune response emerges over time after primary DENV-1 exposure. Before you inspect the data, it helps to know what would make a pattern biologically meaningful: the study has an aligned experimental infection timeline, PBMCs contain many immune-cell identities in the same sample, and CoGAPS is designed to separate overlapping gene-expression programs rather than assign each cell to only one group.
+This section gives you the conceptual toolkit for interpreting CoGAPS pattern evidence. The central problem is that dengue infection changes immune activity over time, while PBMC single-cell data also carry stable immune-cell identity signals. Before you import model outputs, you need to know how those biological signals can appear in the data, how CoGAPS represents them as latent programs, and why rank `K` affects what the selected model can separate.
 
-The background below builds toward the four research questions you will answer later. First, you will review why DENV-1 infection, PBMC sampling, and the experimental cohort design make temporal immune programs possible to study. Then you will connect that biology to the modeling problem: how latent transcriptional programs are represented, why CoGAPS is useful for this kind of single-cell matrix, and why choosing the rank `K` changes what the model can reveal. By the end of this section, you should understand why the case study first evaluates model rank, then uses the selected model to ask which patterns vary over infection days, which patterns mostly reflect PBMC identity, and which evidence supports an interferon-associated late acute response.
+Carry one question through this section: when a CoGAPS pattern changes over the infection timeline, what evidence would tell you whether it reflects PBMC identity, infection-related activity, or a mixture of both?
 
 ## DENV-1 Infection and Blood Immune Response
 
@@ -25,29 +25,155 @@ A cell can carry more than one interpretable signal. A monocyte can remain ident
 
 This is the biological reason the case study focuses on latent transcriptional programs rather than only on cell clusters. A useful model should help you ask whether a signal looks like stable immune-cell identity, dynamic infection activity, or a mixture of both.
 
+:::{.think_question}
+::::{.think_question_header}
+Prediction
+::::
+::::{.inner_block}
+If a pattern is high in monocytes at every infection day, what would that suggest? If a pattern rises across several broad cell types after infection, what would look different?
+
+<details>
+<summary>Show answer</summary>
+
+A pattern that is high in monocytes at every infection day would look more **identity-like**: it may be capturing a stable monocyte program rather than an infection-timed response. A pattern that rises after infection across several broad cell types would look more **activity-like**: it may be capturing a coordinated response program that different immune cells use during the time course. A mixed pattern could show both signals, such as higher scores in one cell type and a clear increase at particular infection days.
+
+</details>
+::::
+:::
+
 ## Experimental and Natural Primary DENV-1 Infection
 
-The primary discovery data come from an {{< glossary "Experimental infection cohort" display="experimental infection cohort" >}}. In this setting, participants are enrolled and sampled on a planned study timeline, so the same post-exposure days can be compared across people. That shared clock is the key advantage for this case study: it lets you ask whether a transcriptional program rises, peaks, or returns toward baseline at specific experimental days.
+The primary discovery data come from an {{< glossary "Experimental infection cohort" display="experimental infection cohort" >}}, specifically a DENV-1 human challenge model. In the source study, participants in an approved phase 1 open-label Dengue Virus-1 Live Virus Human Challenge study were pre-screened to confirm the absence of preexisting dengue immunity and then received a controlled dose (`3.25 x 10^3 PFU`) of the `45AZ5` DENV-1 challenge strain [@waickman2021denv1Pbmc]. Because exposure occurred on a known study day and samples were collected on a planned schedule, the same post-exposure days can be compared across people. That shared clock is the key advantage for this case study: it lets you ask whether a transcriptional program rises, peaks, or returns toward baseline at specific experimental days.
 
-This is different from a {{< glossary "Natural infection cohort" display="natural infection cohort" >}}. Natural infection samples are collected from people who became infected outside the study setting, often at less precisely aligned stages of illness. Those samples are still valuable for asking whether a learned program appears in real-world infection, but they are harder to use as the primary discovery set for a day-by-day temporal model.
+This is different from a {{< glossary "Natural infection cohort" display="natural infection cohort" >}}. Natural infection samples are collected from people who became infected outside the study setting after mosquito exposure, often at less precisely aligned stages of illness. The source paper also notes that the route and method of exposure differ: the challenge model used subcutaneous needle administration, whereas natural dengue infection occurs through mosquito bite [@waickman2021denv1Pbmc]. Those samples are still biologically important, but they are harder to use as the primary discovery set for a day-by-day temporal model.
 
-The distinction between experimental and natural infection will come back later. The experimental cohort is the main discovery set. The natural infection cohort is biologically important context and a possible projection target, but it is not the main required analysis.
+The distinction between experimental and natural infection will come back as a data-design boundary. The experimental cohort is the main discovery set because it has aligned study days. The natural infection cohort remains useful context for understanding the source study, but it is not part of the main required analysis.
 
-## What the Source Study Found
+## Source-Study Findings to Carry Forward
 
 The data come from the source study by Waickman and colleagues [@waickman2021denv1Pbmc], who profiled PBMCs from experimental and natural primary DENV-1 infections using single-cell RNA sequencing. The source study captured 171,208 high-quality cells and annotated major leukocyte populations across both study arms.
 
-Several source-study findings are important background for this case study:
+The findings below are not final answers for this case study. They are expectations you will check against the CoGAPS evidence later:
 
-- the experimental infection cohort was sampled at aligned study days `D0`, `D2`, `D4`, `D6`, `D8`, `D10`, `D14/15`, and `D28`
-- a consistent experimental transcriptional response became strongest at `D10`, especially in monocytes, a broad class of immune cells that often respond strongly to inflammation
-- among monocytes, the source study highlighted conventional monocytes and `CD16hi` monocytes; `CD16hi` means the cells have high expression of `CD16`, a molecular label on the cell surface that is often used to distinguish monocyte subtypes
-- many genes that increased during the `D10` to `D14/15` window were interferon-stimulated or inflammation-associated genes; in plain language, these are genes turned on as part of antiviral signaling and immune alarm responses
-- examples of these antiviral or inflammatory genes included `IFITM1`, `IFI6`, `ISG15`, `MX1`, `TRIM22`, and `LY6E`
-- activated T-cell and plasmablast-like B-cell populations expanded in the experimental cohort around `D14/15`; this means the source study observed later changes in immune cells associated with lymphocyte activation and antibody-producing B-cell states
-- no cell-associated DENV-1 RNA was detected in PBMCs in either the experimental or natural infection samples
+- **Aligned experimental days:** the experimental infection cohort was sampled at `D0`, `D2`, `D4`, `D6`, `D8`, `D10`, `D14/15`, and `D28`. This aligned timeline is what makes day-by-day temporal pattern interpretation possible.
+- **A strong late acute transcriptional response:** the source study reported that the experimental transcriptional response became strongest at `D10`, especially in monocytes, a broad class of immune cells that often respond strongly to inflammation.
+- **Monocyte subtype context:** among monocytes, the source study highlighted conventional monocytes and `CD16hi` monocytes. `CD16hi` means the cells have high expression of `CD16`, a molecular label on the cell surface that is often used to distinguish monocyte subtypes.
+- **Interferon and inflammation genes:** many genes that increased during the `D10` to `D14/15` window were interferon-stimulated or inflammation-associated genes. In plain language, these are genes turned on as part of antiviral signaling and immune alarm responses.
+- **Example antiviral or inflammatory genes:** examples included `IFITM1`, `IFI6`, `ISG15`, `MX1`, `TRIM22`, and `LY6E`. These genes give you concrete biological handles when later sections inspect top genes and directionality.
+- **Broader immune response:** activated T-cell and plasmablast-like B-cell populations expanded in the experimental cohort around `D14/15`. This matters because the host response is broader than one pathway or one cell type.
+- **Host response rather than viral tropism:** no cell-associated DENV-1 RNA was detected in PBMCs in either the experimental or natural infection samples. The case-study interpretation therefore concerns host immune programs, not direct identification of infected cells.
 
-These points should not be read as a complete immunology review. They are the source-study facts that make the later modeling questions biologically meaningful. The aligned days let you ask temporal questions. The PBMC annotations let you separate cell identity from activity. The monocyte, interferon, T-cell, and plasmablast-like findings give you biological expectations to check against the CoGAPS patterns.
+These points keep the later modeling questions biologically grounded. The aligned days let you ask temporal questions. The PBMC annotations let you separate cell identity from activity. The monocyte, interferon, T-cell, and plasmablast-like findings give you biological expectations to check against the CoGAPS patterns without assuming the model must reproduce them exactly.
+
+## How These Ideas Become an Evidence Chain
+
+The figure below shows how the biological context becomes the evidence chain you will follow later. It is not a workflow for running code. It is a map of how the main ideas in this section connect to the questions you will answer.
+
+<div class="context-evidence-map" role="img" aria-label="Evidence chain map from DENV-1 time course to PBMC mixture, CoGAPS latent programs, rank K checkpoint, temporal and identity evidence, and response interpretation.">
+<div class="context-map-step context-map-biology">
+<div class="context-map-label">Biology</div>
+<div class="context-map-title">DENV-1 time course</div>
+<div class="context-map-text">Immune response changes over experimental infection days.</div>
+</div>
+<div class="context-map-arrow" aria-hidden="true">↓</div>
+<div class="context-map-step context-map-challenge">
+<div class="context-map-label">Data challenge</div>
+<div class="context-map-title">PBMC mixture</div>
+<div class="context-map-text">Stable immune-cell identity and dynamic infection activity appear in the same cells.</div>
+</div>
+<div class="context-map-arrow" aria-hidden="true">↓</div>
+<div class="context-map-step context-map-model">
+<div class="context-map-label">Model idea</div>
+<div class="context-map-title">CoGAPS latent programs</div>
+<div class="context-map-text">Gene loadings describe what defines a program; cell scores describe how strongly cells use it.</div>
+</div>
+<div class="context-map-arrow" aria-hidden="true">↓</div>
+<div class="context-map-step context-map-model">
+<div class="context-map-label">Model checkpoint</div>
+<div class="context-map-title">Rank K</div>
+<div class="context-map-text">Choose the model resolution before assigning biological meaning to any pattern.</div>
+</div>
+<div class="context-map-split" aria-hidden="true">↓</div>
+<div class="context-map-branches">
+<div class="context-map-step context-map-evidence">
+<div class="context-map-label">Temporal evidence</div>
+<div class="context-map-title">Pattern scores over days</div>
+<div class="context-map-text">Ask whether a program rises, peaks, persists, or returns toward baseline.</div>
+</div>
+<div class="context-map-step context-map-evidence">
+<div class="context-map-label">Identity/activity evidence</div>
+<div class="context-map-title">Cell type, subject, and top genes</div>
+<div class="context-map-text">Ask whether a program looks identity-like, activity-like, or mixed.</div>
+</div>
+</div>
+<div class="context-map-arrow" aria-hidden="true">↓</div>
+<div class="context-map-step context-map-interpretation">
+<div class="context-map-label">Interpretation</div>
+<div class="context-map-title">Response evidence</div>
+<div class="context-map-text">Combine IFN association, directionality, diagnostics, and sensitivity checks before making a claim.</div>
+</div>
+</div>
+
+<style>
+.context-evidence-map {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin: 1.1rem 0 1.4rem 0;
+  max-width: 780px;
+}
+.context-map-step {
+  border: 2px solid #6b7c8f;
+  border-left-width: 8px;
+  border-radius: 6px;
+  padding: 0.75rem 0.9rem;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(16, 42, 67, 0.08);
+}
+.context-map-label {
+  color: #52616f;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin-bottom: 0.15rem;
+}
+.context-map-title {
+  color: #102a43;
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.context-map-text {
+  color: #334e68;
+  font-size: 0.95rem;
+  line-height: 1.35;
+  margin-top: 0.25rem;
+}
+.context-map-arrow,
+.context-map-split {
+  color: #486581;
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+}
+.context-map-branches {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+.context-map-biology { border-color: #2d6da3; background: #eaf3ff; }
+.context-map-challenge { border-color: #b36b00; background: #fff4df; }
+.context-map-model { border-color: #6b46c1; background: #f3eefc; }
+.context-map-evidence { border-color: #2f855a; background: #e9f7ef; }
+.context-map-interpretation { border-color: #176b54; background: #e3f8f0; }
+@media (max-width: 760px) {
+  .context-map-branches {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
 
 ## From Cell Clusters to Latent Programs
 
@@ -69,6 +195,8 @@ Single-cell RNA-seq data are often organized as a matrix. In this case study, th
 observed expression matrix ≈ gene loadings × cell scores
 ```
 
+This sentence is the core mathematical idea. The observed matrix is large because it has many genes and many cells. NMF asks whether a smaller number of patterns can explain much of that structure. Each pattern has two linked pieces: genes that define the pattern and cells that use the pattern strongly.
+
 More formally:
 
 $$
@@ -84,6 +212,11 @@ Here, `D` is the observed expression matrix, `A` is a gene-by-pattern matrix, an
 | `P` matrix | patterns | cells | {{< glossary "Cell score" display="Cell scores" >}}. Large values indicate cells that strongly use a pattern. |
 | {{< glossary "Rank K" display="Rank K" >}} | model setting | number of patterns | The number of latent programs the model is asked to learn. |
 
+The word **non-negative** matters. The entries in `A` and `P` are constrained to be zero or positive. This means patterns add together rather than cancel each other out. That additive structure fits the PBMC setting: a cell can carry a stable immune-cell identity signal and a dynamic infection-response signal at the same time.
+
+<details>
+<summary>Deep dive: how the matrix approximation adds up</summary>
+
 If `D` has `G` genes and `C` cells, and the model is asked to learn `K` patterns, then `A` has `G` rows and `K` columns, while `P` has `K` rows and `C` columns. For one gene `g` and one cell `c`, the approximation can be read as:
 
 ```text
@@ -97,8 +230,6 @@ D_{g,c} \approx \sum_{k=1}^{K} A_{g,k} P_{k,c}
 $$
 
 In plain language, this says that the expression of a gene in a cell is approximated by adding up that gene's contribution to each pattern multiplied by how strongly that cell uses each pattern.
-
-The word **non-negative** matters. The entries in `A` and `P` are constrained to be zero or positive. This means patterns add together rather than cancel each other out. That additive structure fits the PBMC setting: a cell can carry a stable immune-cell identity signal and a dynamic infection-response signal at the same time.
 
 Many NMF methods are framed as finding non-negative matrices that reconstruct the observed data with small error. At the intuition level, the fitting goal is:
 
@@ -114,21 +245,29 @@ $$
 
 The double bars are a compact way to measure the total reconstruction error across all genes and cells. You do not need to compute this objective by hand. The important idea is that the model is balancing compression and reconstruction: it tries to summarize a large expression matrix with a smaller set of patterns while still preserving meaningful structure in the data.
 
+</details>
+
 ## How CoGAPS Extends Vanilla NMF
 
 {{< glossary "CoGAPS" >}} is the specific NMF-family method used in this case study. It keeps the additive, non-negative structure described above, but fits the model using a Bayesian, sampling-based framework designed for genomic data [@fertig2010cogaps; @johnson2023cogapsProtocol].
 
-That difference matters because single-cell data are noisy, sparse, and high-dimensional. Rather than treating one fitted factorization as automatically meaningful, CoGAPS supports diagnostics that help you decide whether a run is stable enough to interpret. Rank-selection evidence helps decide which model to import; diagnostics later help decide whether that selected run behaved sensibly enough to interpret. In other words, the model output is a starting point for evidence-based interpretation, not a final answer by itself.
+That difference matters because single-cell data are noisy, sparse, and high-dimensional. Rather than treating one fitted factorization as automatically meaningful, CoGAPS supports diagnostics and model-comparison evidence that help you decide whether a result is stable enough to interpret. In other words, the model output is a starting point for evidence-based interpretation, not a final answer by itself.
 
-This case study builds on three related uses of CoGAPS-style analyses: temporal CoGAPS for interpreting time-course transcriptional patterns [@fertig2014temporalCogaps], single-cell CoGAPS for identifying latent programs across cells [@johnson2023cogapsProtocol], and projectR-style projection for asking whether learned patterns appear in another dataset [@steinobrien2019transferLearning; @sharma2020projectR].
+This case study builds on CoGAPS-style uses that are directly relevant here: temporal CoGAPS for interpreting time-course transcriptional patterns [@fertig2014temporalCogaps] and single-cell CoGAPS for identifying latent programs across cells [@johnson2023cogapsProtocol].
 
 ## What Choosing K Means
 
-The rank, written as `K`, is the number of patterns CoGAPS is asked to learn. If `K` is too small, different biological signals may be compressed into the same pattern. If `K` is too large, the model may split signal into patterns that are harder to interpret or less stable.
+The {{< glossary "Rank K" display="rank" >}}, written as `K`, is the number of patterns CoGAPS is asked to learn. This choice shapes the kind of biological structure the model can separate. If `K` is too small, distinct signals, such as immune-cell identity and infection-response activity, may be compressed into the same pattern. If `K` is too large, the model may split signal into patterns that are harder to interpret or less stable.
 
-At the start of **Data Import**, you will inspect precomputed rank-sweep evidence and decide which value of `K` is appropriate for the main analysis goal. The evidence will include stability, redundancy, temporal signal, biological resolution, and a goal-aligned score. This section does not reveal the selected rank because choosing `K` is one of the research questions you will answer.
+The important idea is that `K` is goal-dependent. A useful rank is not a universal property of the dataset; it is the rank that gives enough resolution to answer the biological question while still producing patterns that are stable enough to trust.
 
-The important idea here is that `K` is goal-dependent: the useful rank is the one that supports the biological question, not a universal property of the dataset.
+## Why Run a Rank Sweep?
+
+Because `K` affects what the model can reveal, the case study does not rely on one arbitrary CoGAPS run. Instead, the analysis used a {{< glossary "Rank-sweep evidence" display="rank sweep" >}}: a planned set of model runs across several candidate values of `K`, random seeds, and iteration counts.
+
+The sweep asks two linked questions. First, which ranks produce patterns that are stable enough to inspect? Second, among those stable ranks, which one gives enough {{< glossary "Biological resolution" display="biological resolution" >}} to study temporal dengue-response activity rather than only broad PBMC identity?
+
+You will not rerun that sweep in the main lesson. In **Data Import**, you will read summarized {{< glossary "Rank-sweep evidence" display="rank-selection evidence" >}} and use it to decide which precomputed model output should anchor the rest of the case study.
 
 ## How Pattern Evidence Will Be Interpreted
 
@@ -148,18 +287,12 @@ You will see three interpretation categories later in the analysis:
 
 These labels are interpretation aids, not ground truth. They help you decide what evidence to inspect next: cell-type summaries, pattern-by-day trajectories, top genes, and directionality relative to baseline.
 
-## Projection as an Optional Extension
-
-Once a set of patterns has been learned in one dataset, a transfer-learning workflow can ask whether those patterns are also detectable in another dataset. This idea appears in single-cell CoGAPS and projectR-style analyses: learn patterns in a discovery dataset, then project or score related samples against those learned patterns [@steinobrien2019transferLearning; @sharma2020projectR].
-
-For this case study, the experimental cohort is the discovery dataset. The natural infection cohort is reserved for optional {{< glossary "Projection" display="projection" >}} material because it asks a different question: whether programs learned from the aligned experimental time course appear in naturally acquired infection.
-
 :::{.definition_box}
 ::::{.definition_box_header}
 Core distinctions to carry forward
 ::::
 ::::{.inner_block}
-- **Experimental infection cohort vs. natural infection cohort:** the experimental cohort has aligned study days and is the discovery setting; the natural cohort is biologically important but belongs to optional projection work.
+- **Experimental infection cohort vs. natural infection cohort:** the experimental cohort has aligned study days and is the discovery setting; the natural cohort is useful context from the source study but is not part of the main required analysis.
 - **Immune-cell identity vs. infection activity:** PBMC identity can be stable across time, while infection-response activity can rise or fall during the time course.
 - **Gene loading vs. cell score:** gene loadings describe which genes define a pattern; cell scores describe how strongly each cell uses that pattern.
 - **Rank `K` vs. pattern label:** `K` is the number of patterns requested from the model; pattern labels are run-specific names for the patterns learned by one fitted model.

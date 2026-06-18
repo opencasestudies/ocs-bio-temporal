@@ -1,9 +1,6 @@
 <u>**Biological/Topical Learning Objectives:**</u>
 
-1. Describe the experimental DENV-1 PBMC cohort and explain why it is the primary discovery set for this case study.
-1. Explain why this analysis studies host immune response rather than directly identifying infected cells.
+1. Describe the experimental DENV-1 PBMC cohort and explain why it can be used to study host immune response over infection days.
 1. Distinguish stable PBMC identity programs, dynamic infection-response activity programs, and mixed programs.
-1. Interpret temporal immune programs using top genes, subject-level trajectories, broad-cell-type context, and model diagnostics.
-1. Evaluate evidence for an interferon-associated late acute response using timing, IFN-score correlation, interferon-stimulated genes, and directionality.
-1. Interpret secondary adaptive, cytotoxic, or plasmablast-related signals cautiously rather than treating those labels as guaranteed findings.
-1. Discuss limitations from small subject numbers, changing cell composition, selected-model sensitivity, standard-path file construction, and public human-data interpretation.
+1. Evaluate evidence for an interferon-associated late acute response using timing, IFN-score correlation, interferon-stimulated genes, subject-level trajectories, and directionality.
+1. Discuss limitations from small subject numbers, changing cell composition, selected-model sensitivity, teaching-data construction, and public human-data interpretation.

@@ -1,37 +1,24 @@
 # **Packages and Setup**
 
-This section helps you set up the working environment for the case study. The main decision is which path you want to follow.
+This section gets your computer ready for the main lesson. You will use a Docker container so R, Python, and the required packages are already installed. The repository already includes the small evidence files used in **Data Import**, so you can begin the analysis without downloading raw GEO files or rerunning CoGAPS.
 
-The **standard path** is recommended for most learners. It uses the case-study repository, included analysis files, selected-model outputs, and precomputed rank-selection evidence. You will import, summarize, visualize, diagnose, and interpret the selected model without waiting for a full CoGAPS run.
+If your goal is to rebuild large files, rerun selected models, or check how the included files were produced, see [Advanced Reproduction Setup](#advanced-reproduction-setup) in **Additional Information**. You do not need those larger files to complete the main lesson.
 
-The **full reproduction path** is optional. It uses the same case-study repository and Docker image, but adds the large Zenodo reproduction archive so you can regenerate source-data preparation outputs, rerun the selected CoGAPS model, or rebuild interpretation outputs.
+## What the Setup Provides
 
-The K-selection sweep is not rerun in either path. At the start of **Data Import**, you will inspect precomputed rank-selection evidence to decide which model rank anchors the standard path. Later, **Data Analysis** revisits that decision while checking diagnostics and biological interpretation.
+Think of setup as three pieces:
 
-## Setup Layers: Software, Repository, and Large Files
-
-Before running commands, keep the setup layers separate:
-
-| Setup layer | What it provides | Used in |
+| Setup piece | What it provides | When you need it |
 |---|---|---|
-| Docker image | R, Python, CoGAPS, PyCoGAPS, and the other packages used by the case study. | Standard path and full reproduction path |
-| GitHub repository | The case-study pages, scripts, included analysis files, figures, and manifests. | Standard path and full reproduction path |
-| Zenodo reproduction archive | Large source, preprocessed, model-object, checkpoint, selected-model, and sweep-summary files that are too large for GitHub. | Full reproduction path only |
+| Docker image | R, Python, CoGAPS, PyCoGAPS, and the other software used by the case study. | Use this for the main lesson. |
+| GitHub repository | The case-study pages, scripts, included analysis files, figures, and manifests. | Use this for the main lesson. |
+| External reproduction archive | Large source, preprocessed, model-object, checkpoint, selected-model, and sweep-summary files that are too large for GitHub. | Use this only if you want to rebuild large workflow outputs. |
 
-The Docker image supplies software, not project data. Docker sees your local files only when you mount folders into the container with `-v`. In the commands below, the cloned GitHub repository is mounted at `/home/rstudio/project`. If you use the full reproduction path, the Zenodo reproduction archive is also mounted at `/home/rstudio/project/data/external/reproduction_archive`.
+The Docker image supplies software, not project data. Docker sees your local project files only when you mount the repository into the container. In the command below, your local repository is mounted at `/home/rstudio/project`.
 
-## Choose Your Working Path
+## Main Lesson Setup
 
-| Path | Use it when you want to... | Files you need | How you run code |
-|---|---|---|---|
-| Standard path | Complete the main analysis efficiently and learn how the selected model is interpreted. | The cloned GitHub repository. | Copy short R or Python chunks from the case study into RStudio Server. |
-| Full reproduction path | Regenerate major selected-model inputs or outputs after downloading the large files. | The cloned GitHub repository plus the Zenodo reproduction archive. | Run complete scripts inside the same Docker image. |
-
-Both paths use the same precomputed rank-selection evidence. You will inspect that evidence in **Data Import** before loading the K-selected model files. The sweep scripts are included for provenance, but ordinary learners do not rerun the sweep.
-
-## Standard Path Setup
-
-Start here unless you specifically want to regenerate large files. First clone the case-study repository and move into the repository root on your computer:
+Start by cloning the case-study repository and moving into the repository root on your computer:
 
 ```bash
 git clone https://github.com/opencasestudies/ocs-bio-temporal.git
@@ -50,101 +37,13 @@ docker run --platform linux/amd64 --rm -it \
   othomas2/cs5-cogaps-runtime:0.1.0
 ```
 
-This command mounts the cloned GitHub repository into the container at `/home/rstudio/project`. The mount is writable (`rw`) so any small outputs you create in the project folder are saved back to your local clone.
+This command starts RStudio Server inside the container. It also mounts the cloned repository at `/home/rstudio/project`. The mount is writable (`rw`), so small outputs you create in the project folder are saved back to your local clone.
 
-Before you run analysis chunks, use the shared [Use RStudio Server](#use-rstudio-server) section below to open RStudio Server, confirm your working folder, and learn where R and Python output appears. Once RStudio Server is open, the standard path usually means running one short R or Python tabbed chunk at a time and inspecting the output before moving on.
+## Open RStudio Server
 
-The R and Python tabs are alternate implementations. Choose one language unless you specifically want to compare how the same task looks in both languages.
+After Docker starts, open [http://localhost:8787](http://localhost:8787){target="_blank"} and sign in with username `rstudio` and password `Password12`. Keep the online case-study page open in one browser tab and RStudio Server open in another.
 
-## Full Reproduction Setup
-
-Use this path only if your goal is to regenerate large analysis outputs. The full reproduction path needs two local folders before Docker starts.
-
-First, clone the GitHub repository if you have not already done so. Launch Docker from the repository root. The repository contains the case-study text, scripts, manifests, included analysis files, and output folders.
-
-Second, download and extract the Zenodo reproduction archive into a local folder outside the Git repository, such as `$HOME/cs5_reproduction_archive`. Do not commit those files to GitHub.
-
-The archive is a large-file layer for full reproduction: it can contain original source files, preprocessed H5AD files, selected-model objects, checkpoint files, and sweep summaries. If you are using a draft version of the case study before the public Zenodo record is available, use the archive location provided by your instructor or project lead.
-
-Use the following commands from your computer's Terminal. If you already cloned the case-study repository during the standard path setup, you can skip the `git clone` line and use `cd` to move into your existing `ocs-bio-temporal` folder.
-
-```bash
-# Get the case-study repository.
-git clone https://github.com/opencasestudies/ocs-bio-temporal.git
-cd ocs-bio-temporal
-
-# Point to the downloaded Zenodo reproduction archive.
-mkdir -p "$HOME/cs5_reproduction_archive"
-
-# Download the Zenodo reproduction archive into this folder.
-# If Zenodo provides a zip or tar archive, extract it here before launching Docker.
-export CS5_REPRODUCTION_ARCHIVE="$HOME/cs5_reproduction_archive"
-
-# Launch Docker with both local folders mounted.
-docker run --platform linux/amd64 --rm -it \
-  -p 8787:8787 \
-  -e PASSWORD="Password12" \
-  -v "$PWD":/home/rstudio/project:rw \
-  -v "$CS5_REPRODUCTION_ARCHIVE":/home/rstudio/project/data/external/reproduction_archive:ro \
-  othomas2/cs5-cogaps-runtime:0.1.0
-```
-
-This command has two important mounts. The first `-v` mount sends the cloned GitHub repository, represented by `$PWD`, into the container at `/home/rstudio/project`. The second `-v` mount sends the downloaded Zenodo reproduction archive into the container at `/home/rstudio/project/data/external/reproduction_archive`. The archive mount is read-only (`ro`) so the original downloaded files are not modified. Later full-reproduction scripts should write regenerated outputs to a writable project folder, such as `/home/rstudio/project/GSE154386`, unless you intentionally mount another output folder.
-
-For the full reproduction path, use complete scripts rather than pasting every code chunk by hand. The workflow begins with the preparation script that downloads or reuses the GEO source archive, imports the 10x files, applies preprocessing decisions, and constructs the balanced discovery set. After that, the selected-model and interpretation scripts use those prepared inputs.
-
-The repository also includes an optional launcher script that wraps the Docker command. Use it only after you understand the two folder layers above. For the standard path, run it from the repository root:
-
-```bash
-bash scripts/run_cs5_runtime.sh
-```
-
-For the full reproduction path, point the launcher to your downloaded Zenodo reproduction archive first:
-
-```bash
-export CS5_REPRODUCTION_ARCHIVE="$HOME/cs5_reproduction_archive"
-bash scripts/run_cs5_runtime.sh
-```
-
-After Docker starts, open the Terminal pane in RStudio Server and inspect the script folders:
-
-```bash
-cd /home/rstudio/project
-ls scripts
-ls scripts/reproduction
-cat scripts/reproduction/README.md
-```
-
-The main full-reproduction scripts are grouped by task:
-
-1. Prepare the source data and construct the discovery set:
-   `scripts/prepare_gse154386_subset_r.R` or
-   `scripts/prepare_gse154386_subset_python.py`.
-1. Rerun the selected model:
-   `scripts/reproduction/cs5_run_selected_model_r.R` or
-   `scripts/reproduction/cs5_run_selected_model_python.py`.
-1. Rebuild interpretation-layer and directionality summaries from the selected-model outputs.
-
-Choose the R or Python preparation script for step 1; you do not need to run both unless you want to compare the two implementations. The later scripts expect the prepared discovery-set files to exist before CoGAPS or interpretation steps are rerun. Later sections give the exact selected-model and interpretation commands after the rank-selection evidence has been evaluated.
-
-Run R scripts with `Rscript` and Python scripts with the Docker image's Python environment:
-
-```bash
-Rscript scripts/prepare_gse154386_subset_r.R
-# or:
-/opt/cogaps-venv/bin/python scripts/prepare_gse154386_subset_python.py
-
-Rscript scripts/reproduction/cs5_run_selected_model_r.R
-/opt/cogaps-venv/bin/python scripts/reproduction/cs5_run_selected_model_python.py
-```
-
-The K-selection sweep scripts are also included in `scripts/reproduction` for provenance and teaching. They are not part of the standard path or the full reproduction path described here.
-
-## Use RStudio Server
-
-Both ready-to-run paths use RStudio Server inside the Docker image. After Docker starts, open [http://localhost:8787](http://localhost:8787){target="_blank"} and sign in with username `rstudio` and password `Password12`. Keep the online case-study page open in one browser tab and RStudio Server open in another.
-
-In RStudio Server, work from `/home/rstudio/project`. That folder is the copy of the case-study repository that you mounted with Docker. If you are unsure where you are, run `getwd()` in the R Console or `pwd` in the Terminal.
+In RStudio Server, work from `/home/rstudio/project`. If you are unsure where you are, run `getwd()` in the R Console or `pwd` in the Terminal.
 
 The schematic below labels the main panes you will use while working through the case study.
 
@@ -154,7 +53,6 @@ The schematic below labels the main panes you will use while working through the
 |---|---|---|
 | Short R chunks from an R tab | R Console, or an R script in the Source pane | Console output, Plots pane, and saved files in the Files pane |
 | Short Python chunks from a Python tab | Terminal pane using `/opt/cogaps-venv/bin/python`, or a small `.py` script | Terminal output and saved files in the Files pane |
-| Full reproduction scripts | Terminal pane from `/home/rstudio/project` | Terminal progress messages, logs, and regenerated output folders |
 
 For R chunks, a common workflow is to open `File > New File > R Script`, paste the code, highlight the lines you want to run, and click **Run**. You can also paste short chunks directly into the R Console. For Python chunks, use the Terminal pane so you are running Python inside the Docker environment:
 
@@ -165,9 +63,11 @@ cd /home/rstudio/project
 
 You can paste short Python examples after the `>>>` prompt. For longer Python examples, save the code in a small `.py` file and run it from the Terminal.
 
+The R and Python tabs show alternate ways to complete the same conceptual checks. Choose one language for the main lesson unless you specifically want to compare implementations. The explanations before and after the code apply to both tabs.
+
 ## Load Packages
 
-The Docker image already installs these packages. Load the packages for the language you plan to use; the R and Python tabs support the same standard-path analysis.
+The Docker image already installs the packages used below. Load the packages for the language you plan to use.
 
 ::: {.panel-tabset}
 
@@ -203,28 +103,27 @@ import matplotlib.pyplot as plt
 
 :::
 
-The R and Python tabs are alternate ways to complete the same analysis. You do not need to run both languages unless you want to inspect both examples.
+These are the main packages you will use while importing, checking, summarizing, and plotting the included files:
 
-Package | Language | Role | Use
---- | --- | --- | ---
-[`here`](https://here.r-lib.org/){target="_blank"} | R | Standard path | Build project-relative paths.
-[`readr`](https://readr.tidyverse.org/){target="_blank"} | R | Standard path | Read CSV tables used by the R code.
-[`dplyr`](https://dplyr.tidyverse.org/){target="_blank"} | R | Standard path | Select, filter, summarize, and arrange analysis tables.
-[`tidyr`](https://tidyr.tidyverse.org/){target="_blank"} | R | Standard path | Reshape pattern summaries into long and wide forms.
-[`ggplot2`](https://ggplot2.tidyverse.org/){target="_blank"} | R | Standard path | Build visualizations from tidy tables.
-[`knitr`](https://yihui.org/knitr/){target="_blank"} | R | Standard path | Render tables in the case-study document.
-[`jsonlite`](https://jeroen.r-universe.dev/jsonlite){target="_blank"} | R | Standard path | Read run manifests and diagnostic JSON files.
-[`reticulate`](https://rstudio.github.io/reticulate/){target="_blank"} | R | Optional bridge | Connect R to the Python environment inside the Docker image.
-[`pandas`](https://pandas.pydata.org/){target="_blank"} | Python | Standard path | Read, filter, and summarize CSV tables.
-[`matplotlib`](https://matplotlib.org/){target="_blank"} | Python | Standard path | Build Python visualizations.
-[`CoGAPS`](https://bioconductor.org/packages/CoGAPS){target="_blank"} | R | Optional full reproduction | Run the R implementation of CoGAPS.
-[`PyCoGAPS`](https://github.com/FertigLab/pycogaps){target="_blank"} | Python | Optional full reproduction | Run the Python implementation of CoGAPS.
-[`scanpy`](https://scanpy.readthedocs.io/){target="_blank"} | Python | Optional full reproduction | Preprocess and inspect single-cell objects.
-[`anndata`](https://anndata.readthedocs.io/){target="_blank"} | Python | Optional full reproduction | Read and write H5AD single-cell objects.
+::: {.table-responsive}
+Package | Language | What you will use it for
+--- | --- | ---
+[`here`](https://here.r-lib.org/){target="_blank"} | R | Build project-relative paths.
+[`readr`](https://readr.tidyverse.org/){target="_blank"} | R | Read CSV tables used by the R code.
+[`dplyr`](https://dplyr.tidyverse.org/){target="_blank"} | R | Select, filter, summarize, and arrange analysis tables.
+[`tidyr`](https://tidyr.tidyverse.org/){target="_blank"} | R | Reshape pattern summaries into long and wide forms.
+[`ggplot2`](https://ggplot2.tidyverse.org/){target="_blank"} | R | Build visualizations from tidy tables.
+[`knitr`](https://yihui.org/knitr/){target="_blank"} | R | Render tables in the case-study document.
+[`jsonlite`](https://jeroen.r-universe.dev/jsonlite){target="_blank"} | R | Read run manifests and diagnostic JSON files.
+[`pandas`](https://pandas.pydata.org/){target="_blank"} | Python | Read, filter, and summarize CSV tables.
+[`matplotlib`](https://matplotlib.org/){target="_blank"} | Python | Build Python visualizations.
+:::
 
-## Check the Runtime
+A fuller software list for rebuilding larger workflow outputs is included in [Advanced Software Reference](#advanced-software-reference).
 
-These checks confirm that the standard-path packages are available in the language you choose. They also report whether optional full-reproduction packages are installed in the Docker image.
+## Readiness Check
+
+These checks confirm that the main-lesson packages are available in the language you choose.
 
 ::: {.panel-tabset}
 
@@ -243,12 +142,11 @@ r_versions <- vapply(
 )
 
 data.frame(
-  item = c("R", r_required, "reticulate_available", "CoGAPS_available"),
+  item = c("R", r_required, "reticulate_available"),
   value = c(
     R.version.string,
     unname(r_versions),
-    as.character(requireNamespace("reticulate", quietly = TRUE)),
-    as.character(requireNamespace("CoGAPS", quietly = TRUE))
+    as.character(requireNamespace("reticulate", quietly = TRUE))
   )
 ) |>
   knitr::kable()
@@ -258,10 +156,10 @@ data.frame(
 
 ```{python}
 #| label: runtime-check-python
-import importlib.util
 import sys
 
 import matplotlib
+import pandas as pd
 
 pd.DataFrame(
     {
@@ -269,17 +167,11 @@ pd.DataFrame(
             "Python",
             "pandas",
             "matplotlib",
-            "PyCoGAPS_available",
-            "scanpy_available",
-            "anndata_available",
         ],
         "value": [
             sys.version.split()[0],
             pd.__version__,
             matplotlib.__version__,
-            str(importlib.util.find_spec("PyCoGAPS") is not None),
-            str(importlib.util.find_spec("scanpy") is not None),
-            str(importlib.util.find_spec("anndata") is not None),
         ],
     }
 )
@@ -287,7 +179,7 @@ pd.DataFrame(
 
 :::
 
-Now check that the mounted project folder contains the standard-path files. If you mounted the Zenodo reproduction archive, the optional archive check should also return `TRUE`. If you are following the standard path, it is fine for the archive check to return `FALSE`.
+Now check that the mounted project folder contains the included files used at the start of the case study.
 
 ::: {.panel-tabset}
 
@@ -300,15 +192,13 @@ Now check that the mounted project folder contains the standard-path files. If y
 data.frame(
   item = c(
     "case-study manifest",
-    "standard-path processed folder",
-    "rank-selection evidence",
-    "optional reproduction archive"
+    "included processed folder",
+    "rank-selection evidence"
   ),
   available = c(
     file.exists(here::here("data", "artifact_manifest.json")),
     dir.exists(here::here("data", "processed")),
-    dir.exists(here::here("data", "processed", "k_selection")),
-    dir.exists(here::here("data", "external", "reproduction_archive"))
+    dir.exists(here::here("data", "processed", "k_selection"))
   )
 ) |>
   knitr::kable()
@@ -318,24 +208,26 @@ data.frame(
 
 ```{python}
 #| label: runtime-check-files-python
+from pathlib import Path
+
+import pandas as pd
+
 pd.DataFrame({
     "item": [
         "case-study manifest",
-        "standard-path processed folder",
+        "included processed folder",
         "rank-selection evidence",
-        "optional reproduction archive",
     ],
     "available": [
         Path("data/artifact_manifest.json").exists(),
         Path("data/processed").is_dir(),
         Path("data/processed/k_selection").is_dir(),
-        Path("data/external/reproduction_archive").is_dir(),
     ],
 })
 ```
 
 :::
 
-Data Import will check the specific K-selected model folder after you evaluate the rank-selection evidence.
+Data Import will check the specific selected-model folder after you evaluate the rank-selection evidence.
 
-When a function is introduced for the first time, the prose uses the `package::function()` form so you can see which package provides it. Next, you will import the rank-selection evidence, decide which model rank the standard path uses, and then load the K-selected model files for the rest of the case study.
+When a function is introduced for the first time, the prose uses the `package::function()` form so you can see which package provides it. Next, you will import the rank-selection evidence, use it to choose which CoGAPS model is worth inspecting, and then load the selected-model files used through the rest of the case study.

@@ -1,8 +1,6 @@
 <u>**Data Science/Bioinformatics Learning Objectives:**</u>
 
-1. Import rank-selection evidence, then import K-selected CoGAPS files, metadata tables, diagnostics, and manifests in R or Python.
-1. Check file inventories, table columns, object dimensions, sample metadata, and analysis units before interpreting model output.
-1. Distinguish standard-path files included with the case study from large full-reproduction files stored outside the repository.
-1. Join CoGAPS cell scores to subject, timepoint, and broad immune-cell-type annotations.
-1. Reshape and summarize pattern scores by infection day, subject, and broad PBMC identity.
-1. Create reproducible visual summaries from included analysis files while keeping R as the default path and Python as a first-class alternate.
+1. Import rank-selection evidence, selected CoGAPS outputs, metadata tables, diagnostics, and manifests in R or Python.
+1. Check file inventories, table columns, object dimensions, subject/timepoint coverage, and analysis units before interpreting model output.
+1. Join and summarize CoGAPS pattern scores by subject, infection day, and broad PBMC identity to support temporal and identity/activity comparisons.
+1. Trace where included analysis files came from and when advanced reproduction notes or scripts would be used to audit their provenance.
