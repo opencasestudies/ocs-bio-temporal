@@ -98,12 +98,12 @@ Include bioOCSdata package information once ready/applicable
 
 :::{.prereq_box}
 ::::{.prereq_box_header}
-Prerequisites
+How to use this case study
 ::::
 ::::{.inner_block}
-This case study is designed so most learners can follow the **standard path** without installing R, Python, CoGAPS, or single-cell packages directly on their computer. The standard path uses a Docker image, the case-study GitHub repository, included selected-model files, and precomputed K-selection evidence.
+This case study has one main route: the **Core learner path**. In that path, you will inspect precomputed rank-selection evidence, load selected CoGAPS model outputs, run lightweight checks and summaries, and interpret the biological evidence chain. You do not need to regenerate the raw data, rerun the full K-selection sweep, or refit CoGAPS to complete the core learning goals.
 
-Before you begin, you should have:
+Before you begin the Core learner path, you should have:
 
 - **Docker installed and running.** Install Docker Desktop for your operating system using the official Docker instructions for [Mac](https://docs.docker.com/desktop/setup/install/mac-install/){target="_blank"}, [Windows](https://docs.docker.com/desktop/setup/install/windows-install/){target="_blank"}, or [Linux](https://docs.docker.com/desktop/setup/install/linux/){target="_blank"}. You will use Docker to open the same R and Python environment used by the case study.
 - **Git installed, or another way to download the GitHub repository.** The setup section uses `git clone` so that the case-study files, scripts, figures, and included data are all in one project folder.
@@ -112,7 +112,7 @@ Before you begin, you should have:
 - **Basic table and file-path literacy.** You should know how to read rows and columns in a table, recognize CSV and JSON files, follow project-relative paths, and compare long and wide table layouts.
 - **Introductory biology context.** You do not need prior dengue, single-cell RNA-seq, or CoGAPS expertise. It will help to know that gene-expression data measure genes across cells, that PBMCs are mixed blood immune cells, and that models can learn latent patterns that are interpreted only after checking the biological evidence.
 
-The **full reproduction path** is optional. Choose it only if you want to download the larger external reproduction files, mount both the GitHub repository and reproduction archive into Docker, and run complete preprocessing, selected-model, and interpretation scripts. That path requires more comfort with command-line work, large files, Docker volume mounts, and longer-running computations.
+The case study is still reproducible. **Advanced reproduction** notes and scripts are available for learners, instructors, or reviewers who want to regenerate large artifacts, audit file provenance, rerun selected-model workflows, or teach a full reproduction module. Those steps require more comfort with large files, Docker volume mounts, command-line work, and longer-running computations, but they are not required for the Core learner path.
 ::::
 :::
 

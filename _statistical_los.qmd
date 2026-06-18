@@ -1,9 +1,6 @@
 <u>**Statistical and Modeling Learning Objectives:**</u>
 
 1. Explain CoGAPS as linked non-negative matrices: gene loadings that define patterns and cell scores that measure pattern use.
-1. Evaluate candidate values of K using rank-sweep evidence, including stability, redundancy, temporal signal, biological resolution, and goal-aligned evidence.
-1. Justify why one CoGAPS rank is used for the main analysis while a lower-rank model remains useful as a sensitivity comparison.
-1. Read convergence, stability, runtime, and trace diagnostics before treating selected-model output as interpretable.
-1. Distinguish high non-negative pattern scores or gene loadings from gene-expression direction.
-1. Use pseudobulk directionality to ask whether top pattern genes increase or decrease relative to baseline.
-1. Explain why subject-level summaries are important when interpreting temporal patterns in single-cell data.
+1. Evaluate candidate values of `K` using precomputed rank-selection evidence, including stability, redundancy, temporal signal, biological resolution, and sensitivity comparison.
+1. Read model diagnostics before treating selected-model outputs as interpretable evidence.
+1. Distinguish non-negative pattern scores or gene loadings from gene-expression direction, then use pseudobulk directionality to ask whether top pattern genes increase or decrease relative to baseline.

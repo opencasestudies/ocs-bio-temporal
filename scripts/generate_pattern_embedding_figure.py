@@ -44,9 +44,9 @@ MANIFEST = FIG_DIR / "figure_manifest.json"
 
 PATTERN_COLUMNS = [f"Pattern{i}" for i in range(1, 11)]
 PLOT_PATTERNS = [
-    ("Pattern3", "Pattern3\nIFN-associated activity"),
+    ("Pattern3", "Pattern3\nLeading temporal candidate"),
     ("Pattern7", "Pattern7\nT-cell identity"),
-    ("Pattern10", "Pattern10\nB-cell identity"),
+    ("Pattern10", "Pattern10\nB-cell/plasmablast identity"),
 ]
 TIMEPOINT_ORDER = ["D0", "D2", "D4", "D6", "D8", "D10", "D14/15", "D28"]
 CELL_TYPE_ORDER = ["T_cell", "NK_cell", "Monocyte", "B_cell", "Neutrophil", "Plasmablast"]
@@ -201,7 +201,7 @@ def make_figure(table: pd.DataFrame, embedding_label: str) -> None:
     ax0.set_title("Broad PBMC identity", loc="left", fontsize=12.5, fontweight="bold")
     _scatter_base(ax0, table)
     handles = [
-        Line2D([0], [0], marker="o", color="w", label=ct, markerfacecolor=CELL_TYPE_COLORS[ct], markersize=7)
+        Line2D([0], [0], marker="o", color="w", label=ct, markerfacecolor=CELL_TYPE_COLORS[ct], markersize=10)
         for ct in CELL_TYPE_ORDER
     ]
     ax0.legend(

@@ -1,49 +1,36 @@
 # **Data Visualization**
 ***
 
-The previous sections showed where the data came from, how the prepared discovery set was created, and how selected-model evidence tables are organized. In this section, you will use figures as a visual triage step. The goal is not to prove the biological interpretation yet. The goal is to decide which patterns deserve closer analysis and which alternative explanations still need to be checked.
+Data Import has already established why the case study follows the selected `K = 10` model. Data Exploration checked coverage, composition, and model-evidence tables. Data Wrangling and Preprocessing then connected the selected-model outputs to subject-timepoint summaries and identity/activity evidence.
 
-The figures are built from small source tables in `data/processed/figures/source_tables/`. Saved images are shown first so you can read the evidence quickly. The R and Python code then show how the same source tables become the plots, so you can modify or recreate the figures without rerunning CoGAPS.
+This section asks what the selected model looks like when you turn those summaries into figures. The figures are not final proof. They help you notice which patterns look temporal, which patterns look tied to broad PBMC identity, and which visual impressions need to survive closer analysis.
 
-| Figure | Source table | What it shows | Research question | What it cannot prove |
-|---|---|---|---|---|
-| K-selection figure | `figure_01_k_selection_source.csv` | How candidate model ranks balance stability, temporal resolution, and goal-aligned evidence. | Which value of `K` provides an appropriate CoGAPS model for this case-study goal? | It does not identify a biological program by itself. |
-| Pattern usage across time | `figure_03_pattern_usage_by_time_matrix.csv` | Mean pattern usage trajectories and heatmap summaries for each CoGAPS pattern across infection days. | Which temporal programs appear across the experimental time course? | It does not tell whether a pattern is driven by cell identity, subject effects, or gene-direction changes. |
-| Pattern usage by broad cell type | `figure_04_pattern_usage_by_cell_type_matrix.csv` | Mean pattern usage across broad PBMC identities. | Which programs reflect PBMC identity, dynamic infection activity, or both? | It does not show whether a pattern changes over time within the same cell type. |
-| Pattern scores on transcriptome UMAP | `figure_08_transcriptome_umap_pattern_scores_source.csv` | Cell-level pattern scores over a transcriptome embedding. | Where do selected patterns appear in cell-state space? | It is a context view, not a statistical test or a replacement for subject-level summaries. |
-| IFN pattern trajectory | `figure_05_ifn_pattern_subject_trajectory_source.csv`; `figure_05_ifn_pattern_summary_trajectory_source.csv` | Subject-level trajectory for the candidate IFN-associated pattern. | Does the candidate IFN program peak in the late acute window? | It does not show whether top genes are higher or lower than baseline. |
-| Directionality heatmap | `figure_06_ifn_top_gene_directionality_matrix.csv` | Log2 fold-change direction for top genes in the IFN-associated pattern. | Do top genes support an upregulated late acute response? | It does not replace the CoGAPS model; it adds direction to the non-negative pattern interpretation. |
+The saved images appear before the code so you can read the visual evidence first. The R and Python chunks remain part of the lesson because making a figure is an analytic decision: the code shows how the source tables are ordered, reshaped, highlighted, and color-scaled. You should be able to explain both what a figure suggests and how the plotting choices make that suggestion visible.
+
+The visual chain begins with pattern usage across infection days, then checks broad PBMC identity, transcriptome context, {{< glossary "Subject-level trajectory" display="subject-level trajectories" >}}, and top-gene directionality. By the end of the section, you will have a short list of visual hypotheses for Data Analysis to test.
 
 :::{.definition_box}
 ::::{.definition_box_header}
 How to read the figures in this section
 ::::
 ::::{.inner_block}
-A CoGAPS heatmap cell is a mean pattern score, not an upregulated or downregulated gene. Pattern names such as `Pattern3` are model labels until they are connected to timing, cell identity, top genes, directionality, and diagnostics. UMAP plots provide cell-level context, while subject-level trajectories provide stronger evidence for temporal claims.
+A CoGAPS {{< glossary "Heatmap" display="heatmap" >}} cell is a {{< glossary "Cell score" display="mean pattern score" >}}, not an upregulated or downregulated gene. Pattern names such as `Pattern3` are {{< glossary "Pattern label" display="model labels" >}} until they are connected to timing, cell identity, top genes, directionality, and diagnostics. {{< glossary "UMAP" display="UMAP plots" >}} provide cell-level context, while subject-level trajectories provide stronger evidence for temporal claims.
 ::::
 :::
-
-## K Selection Visualization
-
-![](data/processed/figures/figure_01_k_selection.png){fig-alt="K-selection figure with stability and temporal resolution above a revised goal-aligned K-ranking panel." width=850 .lightbox}
-
-This figure is a visual reminder of the model-rank decision introduced in Data Import. The top panel asks whether a model rank is stable across seeds while still resolving temporal structure. The bottom panel summarizes a goal-aligned score that combines stability, low redundancy, temporal signal, and IFN-candidate evidence.
-
-Use this plot to compare `K = 5` and `K = 10`. `K = 5` is useful because it is stable and compact, but compact models can compress several biological signals into fewer patterns. `K = 10` stays in a stable region while separating a late acute IFN-associated program more clearly. This is why `K = 10` is used for the main model and `K = 5` remains a sensitivity comparison.
 
 ## Pattern Usage Across Time
 
 ![](data/processed/figures/figure_03_pattern_usage_by_time_small_multiples.png){fig-alt="Small-multiple line plots of mean CoGAPS pattern usage across experimental infection days for each selected K=10 pattern." width=850 .lightbox}
 
-This source table is the first visual pass at Research Question 2. Because temporal structure can be hard to see in a heatmap alone, you will inspect the same pattern-by-time table in two ways. The line-panel view emphasizes the shape of each pattern over time. The heatmap view emphasizes the relative magnitude of all pattern-day combinations in one compact display.
+The first visual question is simple: do any selected-model patterns rise and fall with infection day? A {{< glossary "Small-multiple plot" display="small-multiple line plot" >}} is useful here because it gives each pattern its own panel while keeping the same y-axis across panels. That shared scale matters; it lets a sharp temporal rise stand out from smaller day-to-day movement.
 
-Start with the line panels. Each panel uses the same y-axis, so a sharp rise in one pattern can be compared with smaller changes in other patterns. In this visual pass, `Pattern3` emerges as the strongest temporal candidate: it rises sharply at `D10`, remains elevated at `D14/15`, and returns toward baseline at `D28`. Other patterns also show temporal structure, but their changes are more modest. For example, `Pattern9` increases toward `D14/15` and then decreases at `D28`, making it a secondary visual candidate to carry forward rather than a pattern to ignore.
+In this view, `Pattern3` becomes the strongest {{< glossary "Visual candidate" display="visual temporal candidate" >}}. Its mean score is low near baseline, rises sharply at `D10`, remains elevated at `D14/15`, and returns closer to baseline by `D28`. `Pattern9` shows a smaller rise toward `D14/15`, so it remains worth carrying forward as a secondary temporal candidate rather than disappearing from the story.
 
 ![](data/processed/figures/figure_03_pattern_usage_by_time_heatmap.png){fig-alt="Heatmap of mean CoGAPS pattern usage across experimental timepoints for the selected K=10 model." width=850 .lightbox}
 
-Now use the heatmap as a magnitude check. A line plot can make modest changes easy to notice, but the heatmap helps you compare how large each mean pattern score is relative to the rest of the model. Together, these views support a better first question: not "which single pattern changes?", but "which patterns show temporal structure strong enough to analyze more carefully?"
+The {{< glossary "Heatmap" display="heatmap" >}} changes the reading task. Instead of following one pattern at a time, you can compare all pattern-day combinations in one grid. A line plot can make a modest shape easy to notice; the heatmap helps you ask whether that shape is large relative to the rest of the selected model.
 
-This figure starts with a reshape. The source table is stored in a wide form, with one row per pattern and one column per infection day. To draw either figure, you convert that table to long form so each row represents one pattern, one day, and one mean usage value. The line panels then map day to the x-axis and mean usage to the y-axis; the heatmap maps day, pattern, and mean usage to a grid of colored tiles.
+The code below is part of the visual lesson. It starts from the same source table for both figures, then reshapes the data so each plotted value has a pattern, a day, and a mean usage score. The line panels use that long table to show temporal shape; the heatmap reuses it to show relative magnitude.
 
 ::: {.panel-tabset}
 
@@ -188,15 +175,15 @@ plt.show()
 
 :::
 
-Before moving on, ask which patterns change most visibly over time and which merely have high average usage. `Pattern3` is the strongest visual candidate because it is low near baseline and higher during the late acute window. `Pattern9` has a smaller rise toward `D14/15`, so it should be treated as a secondary temporal pattern to inspect later. These observations are hypotheses at this point; the Data Analysis section will connect them to subject-level summaries, top genes, directionality, and model diagnostics.
+At this point, the visual evidence has nominated candidates rather than settled a claim. `Pattern3` is the leading temporal candidate, and `Pattern9` is a weaker secondary candidate. The next question is whether those shapes reflect infection activity, broad PBMC identity, subject structure, or some mixture of those explanations.
 
 ## Pattern Usage by Broad Cell Type
 
 ![](data/processed/figures/figure_04_pattern_usage_by_broad_cell_type_heatmap.png){fig-alt="Heatmap of mean CoGAPS pattern usage by broad immune-cell type." width=850 .lightbox}
 
-This figure connects back to Data Exploration. PBMC samples contain a mixture of immune-cell identities, and that mixture can affect how a pattern looks over time. A pattern can look temporal because cells changed their gene-expression activity, because the mix of cell types changed, or because both happened.
+Temporal shape is only one part of the story. PBMC samples contain a mixture of immune-cell identities, and that mixture can make a pattern look important for reasons that have little to do with infection timing. A pattern can look temporal because cell activity changed, because the mix of cell types changed, or because activity and identity are layered together.
 
-The source table has the same structure as the time heatmap, but the columns are broad PBMC identities instead of infection days. This change in columns changes the biological question. You are no longer asking "when does the pattern appear?" You are asking "which immune-cell identities use this pattern most strongly?"
+This heatmap asks a different visual question from the time plot. Infection days are replaced by broad PBMC identities, so the display shifts from "when does the pattern appear?" to "which immune-cell groups carry high scores for this pattern?"
 
 ::: {.panel-tabset}
 
@@ -265,15 +252,19 @@ plt.show()
 
 :::
 
-Use this heatmap to separate visual hypotheses. Patterns that are strongest in T cells, B cells, or plasmablasts may be useful identity or composition patterns. A pattern should not be called an infection-response program from this plot alone. For `Pattern3`, the important observation is that it has a temporal signal and is also visible in monocyte-rich regions of the PBMC mixture. That makes it worth testing more formally in Data Analysis.
+Patterns that are strongest in T cells, B cells, or plasmablasts may be useful identity or composition patterns. `Pattern3` remains interesting because it has a strong temporal shape and is also visible in monocyte-rich parts of the PBMC mixture. That combination is exactly why the analysis cannot stop here: Data Analysis still has to ask whether `Pattern3` is mostly {{< glossary "Activity-like pattern" display="activity-like" >}}, mostly {{< glossary "Identity-like pattern" display="identity-like" >}}, or {{< glossary "Mixed pattern" display="mixed" >}}.
 
 ## Pattern Scores on a Transcriptome UMAP
 
-![](data/processed/figures/figure_08_pattern_scores_on_transcriptome_umap.png){fig-alt="Transcriptome UMAP of discovery cells colored by broad PBMC identity and selected K=10 CoGAPS pattern scores for Pattern3, Pattern7, and Pattern10." width=850 .lightbox}
+![](data/processed/figures/figure_08_pattern_scores_on_transcriptome_umap.png){fig-alt="Transcriptome UMAP of discovery cells. One panel colors broad PBMC identity, and three panels show selected K=10 CoGAPS scores for Pattern3, Pattern7, and Pattern10." width=850 .lightbox}
 
-This cell-level context view shows where selected CoGAPS pattern scores appear in transcriptome space. The coordinates come from the transcriptome UMAP stored in the full preprocessed H5AD object. The small source table included here stores only the discovery-cell coordinates, metadata, and selected-model pattern scores.
+The {{< glossary "UMAP" display="UMAP" >}} gives one more context view before the section moves to subject-level trajectories. Each point is a discovery-set cell, and the same coordinates are reused in all four panels. The broad PBMC identity panel is the reference map: it shows where T cells, NK cells, monocytes, B cells, neutrophils, and plasmablasts fall in the transcriptome embedding. The other panels color the same cells by selected-model CoGAPS scores.
 
-Do not treat a UMAP as proof. Nearby points are useful for visual context, but the axes are not biological units, and the display can change with preprocessing and embedding parameters. The reason to include this view is narrower: it helps you see that identity-like patterns concentrate in broad cell-state regions, while the candidate IFN-associated pattern appears as a pattern score over cells in those same transcriptome neighborhoods.
+These three patterns are displayed because they create a useful contrast. `Pattern7` is an {{< glossary "Identity anchor" display="identity anchor" >}}: its scores are concentrated in T-cell neighborhoods. `Pattern10` is another identity anchor: it is strongest in B-cell and plasmablast neighborhoods. `Pattern3` is included for a different reason. The time-course plots nominated it as the leading temporal candidate, and this UMAP shows that its scores are most visible in monocyte-rich regions rather than spread evenly across all PBMCs.
+
+Do not treat a UMAP as proof. Nearby points are useful for visual context, but the axes are not biological units, and the display can change with preprocessing and embedding parameters. The important reading here is the combination: `Pattern3` has a temporal trajectory, but it also has a cell-context pattern. That is why the next checks move from cell-level context to subject-level timing and top-gene directionality.
+
+The code recreates the four-panel structure of the saved figure. It first draws the broad-cell-type reference panel, then uses the same UMAP coordinates to draw the three selected pattern-score panels.
 
 ::: {.panel-tabset}
 
@@ -281,129 +272,206 @@ Do not treat a UMAP as proof. Nearby points are useful for visual context, but t
 
 ```{r}
 #| label: viz-pattern-umap-r
+cell_type_order <- c(
+  "T_cell", "NK_cell", "Monocyte", "B_cell", "Neutrophil", "Plasmablast"
+)
+
+cell_type_colors <- c(
+  T_cell = "#66c2a5",
+  NK_cell = "#fc8d62",
+  Monocyte = "#8da0cb",
+  B_cell = "#e78ac3",
+  Neutrophil = "#a6d854",
+  Plasmablast = "#ffd92f"
+)
+
 # Read the small UMAP table. It contains coordinates, cell metadata, and pattern scores.
 embedding_scores <- readr::read_csv(
   here::here("data", "processed", "figures", "source_tables",
              "figure_08_transcriptome_umap_pattern_scores_source.csv"),
   show_col_types = FALSE
-)
+) |>
+  dplyr::mutate(
+    broad_cell_type = factor(broad_cell_type, levels = cell_type_order)
+  )
 
-# Plot only a small set of patterns so the figure remains interpretable.
-selected_patterns <- c(
-  Pattern3 = "Pattern3: candidate IFN activity",
-  Pattern7 = "Pattern7: T-cell identity",
-  Pattern10 = "Pattern10: B-cell identity"
-)
-
-# Convert selected pattern columns into one long cell-score column for faceting.
-embedding_long <- embedding_scores |>
-  dplyr::select(cell_id, umap_1, umap_2, dplyr::all_of(names(selected_patterns))) |>
-  tidyr::pivot_longer(
-    cols = dplyr::all_of(names(selected_patterns)),
-    names_to = "pattern",
-    values_to = "cell_score"
-  ) |>
-  dplyr::mutate(pattern_label = selected_patterns[pattern])
-
-ggplot(embedding_long, aes(x = umap_1, y = umap_2, color = cell_score)) +
+# Panel 1: a broad PBMC identity map provides the reference for the score panels.
+identity_panel <- ggplot(
+  embedding_scores,
+  aes(x = umap_1, y = umap_2, color = broad_cell_type)
+) +
   geom_point(size = 0.35, alpha = 0.75) +
-  facet_wrap(~ pattern_label, ncol = 3) +
-  scale_color_viridis_c(option = "C") +
-  labs(x = "UMAP 1", y = "UMAP 2", color = "Cell score") +
+  scale_color_manual(values = cell_type_colors, drop = FALSE) +
+  guides(color = guide_legend(override.aes = list(size = 3.2, alpha = 1))) +
+  labs(title = "Broad PBMC identity", x = "UMAP 1", y = "UMAP 2", color = "Identity") +
   theme_minimal(base_size = 10) +
-  theme(panel.grid = element_blank())
+  theme(
+    panel.grid = element_blank(),
+    legend.key.size = grid::unit(0.55, "cm")
+  )
+
+# Panels 2-4: selected pattern scores are drawn on the same coordinates.
+selected_patterns <- c(
+  Pattern3 = "Pattern3: leading temporal candidate",
+  Pattern7 = "Pattern7: T-cell identity",
+  Pattern10 = "Pattern10: B-cell/plasmablast identity"
+)
+
+score_panel <- function(pattern_name, pattern_title) {
+  upper_limit <- stats::quantile(embedding_scores[[pattern_name]], 0.99, na.rm = TRUE)
+
+  ggplot(embedding_scores, aes(x = umap_1, y = umap_2, color = .data[[pattern_name]])) +
+    geom_point(size = 0.35, alpha = 0.75) +
+    scale_color_viridis_c(
+      option = "C",
+      limits = c(0, upper_limit),
+      oob = scales::squish
+    ) +
+    labs(title = pattern_title, x = "UMAP 1", y = "UMAP 2", color = "Cell score") +
+    theme_minimal(base_size = 10) +
+    theme(panel.grid = element_blank())
+}
+
+pattern_panels <- Map(score_panel, names(selected_patterns), selected_patterns)
+patchwork::wrap_plots(c(list(identity_panel), pattern_panels), ncol = 2)
 ```
 
 ### Python
 
 ```{python}
 #| label: viz-pattern-umap-python
+import numpy as np
+from matplotlib.lines import Line2D
+
+cell_type_order = ["T_cell", "NK_cell", "Monocyte", "B_cell", "Neutrophil", "Plasmablast"]
+cell_type_colors = {
+    "T_cell": "#66c2a5",
+    "NK_cell": "#fc8d62",
+    "Monocyte": "#8da0cb",
+    "B_cell": "#e78ac3",
+    "Neutrophil": "#a6d854",
+    "Plasmablast": "#ffd92f",
+}
+
 # Read the small UMAP table. It contains coordinates, cell metadata, and pattern scores.
 embedding_scores = pd.read_csv(
     "data/processed/figures/source_tables/"
     "figure_08_transcriptome_umap_pattern_scores_source.csv"
 )
 
-# Plot a selected set of patterns rather than all ten panels.
+# Panel 1: a broad PBMC identity map provides the reference for the score panels.
+# Panels 2-4: selected pattern scores are drawn on the same coordinates.
 selected_patterns = {
-    "Pattern3": "Pattern3: candidate IFN activity",
+    "Pattern3": "Pattern3: leading temporal candidate",
     "Pattern7": "Pattern7: T-cell identity",
-    "Pattern10": "Pattern10: B-cell identity",
+    "Pattern10": "Pattern10: B-cell/plasmablast identity",
 }
 
-fig, axes = plt.subplots(1, 3, figsize=(11, 3.6), sharex=True, sharey=True)
-for ax, (pattern, title) in zip(axes, selected_patterns.items()):
+fig, axes = plt.subplots(2, 2, figsize=(11, 8.4), sharex=True, sharey=True)
+axes = axes.ravel()
+
+identity_ax = axes[0]
+for cell_type in cell_type_order:
+    cell_df = embedding_scores.loc[embedding_scores["broad_cell_type"].eq(cell_type)]
+    identity_ax.scatter(
+        cell_df["umap_1"],
+        cell_df["umap_2"],
+        s=2,
+        alpha=0.75,
+        color=cell_type_colors[cell_type],
+    )
+identity_ax.set_title("Broad PBMC identity")
+identity_ax.legend(
+    handles=[
+        Line2D([0], [0], marker="o", color="w",
+               markerfacecolor=cell_type_colors[cell_type],
+               label=cell_type, markersize=9)
+        for cell_type in cell_type_order
+    ],
+    frameon=False,
+    fontsize=8,
+    loc="upper right",
+)
+
+for ax, (pattern, title) in zip(axes[1:], selected_patterns.items()):
+    upper_limit = np.nanquantile(embedding_scores[pattern], 0.99)
     image = ax.scatter(
         embedding_scores["umap_1"],
         embedding_scores["umap_2"],
         c=embedding_scores[pattern],
         s=2,
         alpha=0.75,
+        vmin=0,
+        vmax=upper_limit,
     )
     ax.set_title(title)
+    fig.colorbar(image, ax=ax, label="Cell score")
+
+for ax in axes:
     ax.set_xlabel("UMAP 1")
     ax.set_ylabel("UMAP 2")
     ax.set_xticks([])
     ax.set_yticks([])
-fig.colorbar(image, ax=axes.ravel().tolist(), label="Cell score")
+
+fig.tight_layout()
 plt.show()
 ```
 
 :::
 
-Read the UMAP together with the heatmaps. If a pattern is concentrated in one broad transcriptome neighborhood, it may be identity-like. If a pattern has a clear temporal trajectory but is still visible within recognizable cell-state regions, it may represent activity layered onto PBMC identity.
+The UMAP reading agrees with the previous heatmaps. `Pattern7` and `Pattern10` look like identity patterns because their high-score cells occupy recognizable T-cell and B-cell or plasmablast regions. `Pattern3` is different: its temporal rise makes it worth following, while its monocyte-rich location reminds you that infection activity and PBMC identity can be layered together. The {{< glossary "Subject-level trajectory" display="subject-level trajectory" >}} below checks whether that temporal signal is still visible after summarizing by participant and infection day.
 
-## Candidate IFN Pattern Trajectory
+## Pattern3 Subject-Level Trajectory
 
-![](data/processed/figures/figure_05_ifn_pattern_trajectory.png){fig-alt="Subject-level trajectory for the candidate IFN-associated CoGAPS pattern, showing a rise at day 10 and day 14 or 15." width=850 .lightbox}
+![](data/processed/figures/figure_05_pattern3_subject_trajectory.png){fig-alt="Subject-level trajectory for Pattern3, showing a rise at day 10 and day 14 or 15." width=850 .lightbox}
 
-This trajectory is the main visual evidence for the late acute timing of the candidate IFN-associated program. Gray lines show subject-level means. The red line shows the mean across subjects with standard error. The shaded region marks the late acute window.
+The time and cell-type figures nominate `Pattern3` as the leading temporal candidate. The trajectory now asks whether that signal is shared across subjects or driven by one unusually strong subject-timepoint. Gray lines show subject-level means, the red line shows the mean across subjects with {{< glossary "Standard error" display="standard error" >}}, and the shaded region marks the late acute window.
 
-This figure uses subject-timepoint summaries rather than treating every cell as an independent biological replicate. That choice matters because cells from the same subject and day are related measurements. The plotting strategy is to draw one line per subject, then overlay the across-subject mean.
+This figure uses {{< glossary "Subject-timepoint summary" display="subject-timepoint summaries" >}} rather than treating every cell as an independent {{< glossary "Biological replicate" display="biological replicate" >}}. Cells from the same subject and day are related measurements, so the plot draws one line per subject and then overlays the across-subject mean.
 
 ::: {.panel-tabset}
 
 ### R
 
 ```{r}
-#| label: viz-ifn-trajectory-r
+#| label: viz-pattern3-trajectory-r
 # Subject table: one mean Pattern3 score per subject and timepoint.
-ifn_subjects <- readr::read_csv(
+pattern3_subjects <- readr::read_csv(
   here::here("data", "processed", "figures", "source_tables",
-             "figure_05_ifn_pattern_subject_trajectory_source.csv"),
+             "figure_05_pattern3_subject_trajectory_source.csv"),
   show_col_types = FALSE
 )
 
 # Summary table: across-subject mean and standard error at each timepoint.
-ifn_summary <- readr::read_csv(
+pattern3_summary <- readr::read_csv(
   here::here("data", "processed", "figures", "source_tables",
-             "figure_05_ifn_pattern_summary_trajectory_source.csv"),
+             "figure_05_pattern3_summary_trajectory_source.csv"),
   show_col_types = FALSE
 )
 
 ggplot() +
   annotate("rect", xmin = 9.3, xmax = 15.2, ymin = -Inf, ymax = Inf,
            fill = "#fee2e2", alpha = 0.7) +
-  geom_line(data = ifn_subjects,
+  geom_line(data = pattern3_subjects,
             aes(x = day_merged_numeric, y = mean_pattern_score, group = subject),
             color = "#7b8794", alpha = 0.65) +
-  geom_point(data = ifn_subjects,
+  geom_point(data = pattern3_subjects,
              aes(x = day_merged_numeric, y = mean_pattern_score),
              color = "#7b8794", alpha = 0.65, size = 1.6) +
-  geom_errorbar(data = ifn_summary,
+  geom_errorbar(data = pattern3_summary,
                 aes(x = day_merged_numeric,
                     ymin = mean_subject_score - se_subject_score,
                     ymax = mean_subject_score + se_subject_score),
                 color = "#c23b22", width = 0.35) +
-  geom_line(data = ifn_summary,
+  geom_line(data = pattern3_summary,
             aes(x = day_merged_numeric, y = mean_subject_score),
             color = "#c23b22", linewidth = 1.1) +
-  geom_point(data = ifn_summary,
+  geom_point(data = pattern3_summary,
              aes(x = day_merged_numeric, y = mean_subject_score),
              color = "#c23b22", size = 2) +
   scale_x_continuous(
-    breaks = ifn_summary$day_merged_numeric,
-    labels = ifn_summary$timepoint_merged
+    breaks = pattern3_summary$day_merged_numeric,
+    labels = pattern3_summary$timepoint_merged
   ) +
   labs(x = "Experimental day", y = "Pattern3 subject mean score") +
   theme_minimal(base_size = 11) +
@@ -413,23 +481,23 @@ ggplot() +
 ### Python
 
 ```{python}
-#| label: viz-ifn-trajectory-python
+#| label: viz-pattern3-trajectory-python
 # Subject table: one mean Pattern3 score per subject and timepoint.
-ifn_subjects = pd.read_csv(
+pattern3_subjects = pd.read_csv(
     "data/processed/figures/source_tables/"
-    "figure_05_ifn_pattern_subject_trajectory_source.csv"
+    "figure_05_pattern3_subject_trajectory_source.csv"
 )
 
 # Summary table: across-subject mean and standard error at each timepoint.
-ifn_summary = pd.read_csv(
+pattern3_summary = pd.read_csv(
     "data/processed/figures/source_tables/"
-    "figure_05_ifn_pattern_summary_trajectory_source.csv"
+    "figure_05_pattern3_summary_trajectory_source.csv"
 ).sort_values("day_merged_numeric")
 
 fig, ax = plt.subplots(figsize=(8, 4.2))
 ax.axvspan(9.3, 15.2, color="#fee2e2", alpha=0.7)
 
-for subject, subject_df in ifn_subjects.groupby("subject"):
+for subject, subject_df in pattern3_subjects.groupby("subject"):
     subject_df = subject_df.sort_values("day_merged_numeric")
     ax.plot(
         subject_df["day_merged_numeric"],
@@ -441,16 +509,16 @@ for subject, subject_df in ifn_subjects.groupby("subject"):
     )
 
 ax.errorbar(
-    ifn_summary["day_merged_numeric"],
-    ifn_summary["mean_subject_score"],
-    yerr=ifn_summary["se_subject_score"],
+    pattern3_summary["day_merged_numeric"],
+    pattern3_summary["mean_subject_score"],
+    yerr=pattern3_summary["se_subject_score"],
     color="#c23b22",
     marker="o",
     linewidth=2,
     capsize=3,
 )
-ax.set_xticks(ifn_summary["day_merged_numeric"])
-ax.set_xticklabels(ifn_summary["timepoint_merged"], rotation=45, ha="right")
+ax.set_xticks(pattern3_summary["day_merged_numeric"])
+ax.set_xticklabels(pattern3_summary["timepoint_merged"], rotation=45, ha="right")
 ax.set_xlabel("Experimental day")
 ax.set_ylabel("Pattern3 subject mean score")
 fig.tight_layout()
@@ -459,13 +527,13 @@ plt.show()
 
 :::
 
-This plot supports the visual hypothesis that `Pattern3` rises during the late acute window and returns closer to baseline by `D28`. It still does not show whether the genes associated with the pattern increase relative to baseline. That is why the next visualization checks directionality.
+The subject-level view strengthens the visual nomination because the late acute rise appears across subject summaries rather than only in pooled cell-level averages. It still does not show whether the genes associated with the pattern increase relative to baseline. That is why the next visualization checks directionality.
 
-## Directionality Heatmap
+## Top-Gene Directionality Heatmap
 
-![](data/processed/figures/figure_06_ifn_top_gene_directionality_heatmap.png){fig-alt="Heatmap showing log2 fold-change directionality for top IFN-associated pattern genes across timepoints." width=850 .lightbox}
+![](data/processed/figures/figure_06_pattern3_top_gene_directionality_heatmap.png){fig-alt="Heatmap showing log2 fold-change directionality for top Pattern3 genes across timepoints." width=850 .lightbox}
 
-The directionality heatmap comes after the trajectory for a reason. CoGAPS scores are non-negative, so a high pattern score tells you that a cell or group uses a pattern more strongly, but it does not tell you whether the top genes are higher or lower than baseline. This heatmap adds that missing direction by showing pseudobulk log2 fold changes for top genes in the candidate IFN-associated pattern.
+The {{< glossary "Pseudobulk directionality" display="directionality" >}} heatmap belongs here because a high CoGAPS score still has no direction. A cell or group can use a pattern more strongly, but the score alone does not tell you whether the pattern's top genes are higher or lower than baseline. For the leading visual candidate, this heatmap adds that missing direction by showing pseudobulk {{< glossary "Log2 fold-change" display="log2 fold changes" >}} for top `Pattern3` genes.
 
 The important plotting choice here is a diverging color scale centered at zero. Values above zero indicate higher expression relative to baseline; values below zero indicate lower expression relative to baseline. Centering the color scale prevents a small negative value and a large positive value from being read as the same kind of evidence.
 
@@ -478,7 +546,7 @@ The important plotting choice here is a diverging color scale centered at zero. 
 # Rows are top Pattern3 genes; columns are post-baseline timepoints.
 direction_matrix <- readr::read_csv(
   here::here("data", "processed", "figures", "source_tables",
-             "figure_06_ifn_top_gene_directionality_matrix.csv"),
+             "figure_06_pattern3_top_gene_directionality_matrix.csv"),
   show_col_types = FALSE
 )
 
@@ -516,7 +584,7 @@ import matplotlib.colors as mcolors
 # Rows are top Pattern3 genes; columns are post-baseline timepoints.
 direction_matrix = pd.read_csv(
     "data/processed/figures/source_tables/"
-    "figure_06_ifn_top_gene_directionality_matrix.csv"
+    "figure_06_pattern3_top_gene_directionality_matrix.csv"
 )
 
 direction_pivot = direction_matrix.set_index("gene_label")
@@ -538,6 +606,20 @@ plt.show()
 
 :::
 
-Use this figure as a final visualization check before Data Analysis. If the trajectory rises at `D10` and `D14/15`, and the top genes are also mostly higher than baseline at those timepoints, the IFN-associated interpretation becomes more convincing. The next section turns these visual hypotheses into research-question tables, model diagnostics, and sensitivity checks.
+This directionality view makes the `Pattern3` visual hypothesis more biologically plausible, but it is still not the formal claim. Data Analysis will connect visual timing, identity and activity evidence, top genes, IFN-score correlation, directionality summaries, diagnostics, and the compact `K = 5` comparator.
+
+:::{.definition_box}
+::::{.definition_box_header}
+Visual hypotheses to carry into Data Analysis
+::::
+::::{.inner_block}
+- `Pattern3` is the leading visual candidate for a late acute temporal program.
+- `Pattern9` shows a weaker late rise and remains a secondary temporal candidate.
+- Several patterns are stronger in broad PBMC identities, so identity and activity still need to be separated.
+- Top `Pattern3` genes appear higher than baseline during late acute timepoints, but the next section must evaluate that impression with directionality summaries and gene-level evidence.
+::::
+:::
+
+The next section turns this visual reading into evidence-bounded analysis. It asks which parts of the story are supported by the selected model, which parts remain cautious interpretation, and how much of the reading survives sensitivity checks.
 
 ***
