@@ -14,6 +14,10 @@ Think of setup as three pieces:
 | GitHub repository | The case-study pages, scripts, included analysis files, figures, and manifests. | Use this for the main lesson. |
 | External reproduction archive | Large source, preprocessed, model-object, checkpoint, selected-model, and sweep-summary files that are too large for GitHub. | Use this only if you want to rebuild large workflow outputs. |
 
+The workflow map below shows why setup matters before the case study begins. The top band separates the three resources you are setting up: the Docker image for software, the GitHub repository for the main teaching files, and the external archive for advanced reproduction. Follow the left panel from source-file import to final figures, then use the numbered labels on the right to see which pieces of evidence will help you answer each question later.
+
+![Setup sources and evidence-building path for the CoGAPS case study. The top band distinguishes the Docker image, GitHub repository, and external archive. The left panel follows the work from source-file import through figures and tables, and the right panel uses numbered labels to show which evidence supports each case-study question or objective.](img/packages_setup_workflow_map.png){#fig-packages-setup-workflow-map width="100%"}
+
 The Docker image supplies software, not project data. Docker sees your local project files only when you mount the repository into the container. In the command below, your local repository is mounted at `/home/rstudio/project`.
 
 ## Main Lesson Setup

@@ -1469,6 +1469,17 @@ Show answer
 </tr>
 </tbody>
 </table>
+<p>The workflow map below shows why setup matters before the case study begins. The top band separates the three resources you are setting up: the Docker image for software, the GitHub repository for the main teaching files, and the external archive for advanced reproduction. Follow the left panel from source-file import to final figures, then use the numbered labels on the right to see which pieces of evidence will help you answer each question later.</p>
+<div id="fig-packages-setup-workflow-map" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-packages-setup-workflow-map-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/packages_setup_workflow_map.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-packages-setup-workflow-map-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Setup sources and evidence-building path for the CoGAPS case study. The top band distinguishes the Docker image, GitHub repository, and external archive. The left panel follows the work from source-file import through figures and tables, and the right panel uses numbered labels to show which evidence supports each case-study question or objective.
+</figcaption>
+</figure>
+</div>
 <p>The Docker image supplies software, not project data. Docker sees your local project files only when you mount the repository into the container. In the command below, your local repository is mounted at <code>/home/rstudio/project</code>.</p>
 </section>
 <section id="main-lesson-setup" class="level2">
@@ -1497,7 +1508,7 @@ Show answer
 <img src="assets/rstudio_server_labeled.svg" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rstudio-server-labeled-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: A labeled RStudio Server window showing where to paste R code, run selected lines, use the Terminal for Python or full scripts, and find output files.
+Figure&nbsp;2: A labeled RStudio Server window showing where to paste R code, run selected lines, use the Terminal for Python or full scripts, and find output files.
 </figcaption>
 </figure>
 </div>
@@ -3251,7 +3262,7 @@ Optional: remake the figure from the included table
 <span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>r_selected_dir</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "/home/data/processed/selected_model_k10/r"</code></pre>
+<pre><code>[1] "/home/rstudio/project/data/processed/selected_model_k10/r"</code></pre>
 </div>
 </div>
 </div>
@@ -6538,26 +6549,26 @@ Show answer
 <span id="cb108-38"><a href="#cb108-38" aria-hidden="true" tabindex="-1"></a>    _ <span class="op">=</span> ax.set_ylim(<span class="dv">0</span>, <span class="fl">0.31</span>)</span>
 <span id="cb108-39"><a href="#cb108-39" aria-hidden="true" tabindex="-1"></a>    _ <span class="op">=</span> ax.grid(axis<span class="op">=</span><span class="st">"y"</span>, alpha<span class="op">=</span><span class="fl">0.25</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>&lt;matplotlib.patches.Polygon object at 0x7f59346673d0&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7f5934667e80&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7f59346024d0&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7f59346ac0d0&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7f593689c640&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7f59346670d0&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7f5934667850&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7f59346ac670&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7f5934667ca0&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7f59346acc70&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7f59347368f0&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7f59346ad2a0&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7f5934767250&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7f59346ad8d0&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7f593479baf0&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7f59346adf00&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7f59347c3f40&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7f59346ae530&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7f59346039a0&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7f59346aeb60&gt;]</code></pre>
+<pre><code>&lt;matplotlib.patches.Polygon object at 0x7fffc92f3790&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc92b9150&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fffc97e29b0&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc92f36d0&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fffc958b5b0&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc92f2a40&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fffc95bad40&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc92f2290&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fffc97e03d0&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc92f19f0&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fffc93b0b20&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc92f25f0&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fffc93ed3f0&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc9338070&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fffc92f31f0&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc9338520&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fffc92f1960&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc9338b50&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fffc9286bc0&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc9339180&gt;]</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb110"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax <span class="kw">in</span> axes:</span>
 <span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a>    _ <span class="op">=</span> ax.set_xticks(<span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(timepoint_order) <span class="op">+</span> <span class="dv">1</span>))</span>
@@ -14543,7 +14554,7 @@ Wright, Carrie, Qing Meng, Michael R. Breshock, Laura Atta, Margaret A. Taub, Le
  collate  en_US.UTF-8
  ctype    en_US.UTF-8
  tz       Etc/UTC
- date     2026-06-18
+ date     2026-06-20
  pandoc   3.1.1 @ /usr/local/bin/ (via rmarkdown)
 
 ─ Packages ───────────────────────────────────────────────────────────────────
@@ -15073,7 +15084,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"loop":false,"selector":".lightbox","descPosition":"bottom","closeEffect":"zoom","openEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","closeEffect":"zoom","loop":false,"descPosition":"bottom","selector":".lightbox"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {
