@@ -3262,7 +3262,7 @@ Optional: remake the figure from the included table
 <span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>r_selected_dir</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "/home/rstudio/project/data/processed/selected_model_k10/r"</code></pre>
+<pre><code>[1] "/home/data/processed/selected_model_k10/r"</code></pre>
 </div>
 </div>
 </div>
@@ -6549,26 +6549,26 @@ Show answer
 <span id="cb108-38"><a href="#cb108-38" aria-hidden="true" tabindex="-1"></a>    _ <span class="op">=</span> ax.set_ylim(<span class="dv">0</span>, <span class="fl">0.31</span>)</span>
 <span id="cb108-39"><a href="#cb108-39" aria-hidden="true" tabindex="-1"></a>    _ <span class="op">=</span> ax.grid(axis<span class="op">=</span><span class="st">"y"</span>, alpha<span class="op">=</span><span class="fl">0.25</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>&lt;matplotlib.patches.Polygon object at 0x7fffc92f3790&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7fffc92b9150&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7fffc97e29b0&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7fffc92f36d0&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7fffc958b5b0&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7fffc92f2a40&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7fffc95bad40&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7fffc92f2290&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7fffc97e03d0&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7fffc92f19f0&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7fffc93b0b20&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7fffc92f25f0&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7fffc93ed3f0&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7fffc9338070&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7fffc92f31f0&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7fffc9338520&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7fffc92f1960&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7fffc9338b50&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7fffc9286bc0&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7fffc9339180&gt;]</code></pre>
+<pre><code>&lt;matplotlib.patches.Polygon object at 0x7fafc43bf9a0&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fafc43bff10&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fafc43bf2e0&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fafc4404100&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fafc43565f0&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fafc4404340&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fafc43bf970&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fafc4404790&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fafc43bfdf0&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fafc4404d90&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fafc448aa10&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fafc44053c0&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fafc44bb370&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fafc44059f0&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fafc44efc10&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fafc4406020&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fafc43540a0&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fafc4406650&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fafc4357a00&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fafc4406c80&gt;]</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb110"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax <span class="kw">in</span> axes:</span>
 <span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a>    _ <span class="op">=</span> ax.set_xticks(<span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(timepoint_order) <span class="op">+</span> <span class="dv">1</span>))</span>
@@ -15084,7 +15084,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","closeEffect":"zoom","loop":false,"descPosition":"bottom","selector":".lightbox"});
+<script>var lightboxQuarto = GLightbox({"selector":".lightbox","loop":false,"descPosition":"bottom","openEffect":"zoom","closeEffect":"zoom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {
