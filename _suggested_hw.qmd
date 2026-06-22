@@ -3,10 +3,10 @@
 
 :::{.next_steps_box}
 ::::{.next_steps_box_header}
-Common Next Steps
+Where to go next
 ::::
 ::::{.inner_block}
-Discuss common next steps for this type of an analysis in this box. Is there a specific number of steps that you need to do before a specific step? Is a "next step" more of an alternate step?
+Use these activities to practice one piece of the evidence chain at a time. Some focus on interpretation with the included files, while others ask you to plan or rerun parts of the larger workflow. You do not need to complete them in order.
 ::::
 :::
 
@@ -19,15 +19,19 @@ Uncomment this section if you're suggesting an exercise that reiterates a large 
 
 ## Advancement Exercises
 
-Use this section to suggest different levels of exercises that build upon topics from the case study ... next steps, tangential skills, diving deeper into a side quest, etc.
-
-Perhaps explain how the suggested exercises relate to the common next steps.
+These exercises extend the case study without changing the main conclusions. Choose the level that matches the amount of coding, interpretation, or reproduction practice you want.
 
 ### Beginner
 
+Start with the included tables and figures. Recreate one summary or plot, then write a short interpretation that names the evidence and the limitation.
+
 ### Intermediate
 
+Modify one analysis choice, such as a visualization scale or an identity-versus-activity cutoff. Compare the result with the original and explain whether the biological interpretation changes.
+
 ### Advanced
+
+Use the advanced reproduction materials to rerun or audit one larger step. Focus on whether the regenerated output matches the expected shape, parameters, and interpretation boundary.
 
 These are individual exercises. Each can be completed by one learner without a group project.
 

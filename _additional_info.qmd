@@ -105,83 +105,17 @@ Display figures | Included figures and figure source tables are regenerated from
 
 The scripts below are included so you can rebuild or inspect how the included files were produced. You do not need to run them to complete the main lesson. R is the primary reproduction route where an R route is available; Python is included as an alternate route and for steps that are implemented only in Python.
 
-<div class="table-responsive">
-<table class="caption-top table" style="table-layout: fixed;">
-<colgroup>
-<col style="width: 24%;">
-<col style="width: 44%;">
-<col style="width: 32%;">
-</colgroup>
-<thead>
-<tr>
-<th scope="col" style="vertical-align: top;">Stage</th>
-<th scope="col" style="vertical-align: top;">Scripts to inspect or run</th>
-<th scope="col" style="vertical-align: top;">What they are for</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="vertical-align: top;">Source import and preprocessing</td>
-<td style="vertical-align: top;">
-<div><code style="white-space: normal; overflow-wrap: anywhere;">scripts/prepare_gse154386_subset_r.R</code></div>
-<div><code style="white-space: normal; overflow-wrap: anywhere;">scripts/prepare_gse154386_subset_python.py</code></div>
-</td>
-<td style="vertical-align: top;">Download the GEO archive into a writable work folder, import 10x files, apply preprocessing decisions, and save prepared discovery-set files.</td>
-</tr>
-<tr>
-<td style="vertical-align: top;">Rank sweep and K evidence</td>
-<td style="vertical-align: top;">
-<div><code style="white-space: normal; overflow-wrap: anywhere;">scripts/reproduction/gse154386_make_cogaps_jobs_tsv.py</code></div>
-<div><code style="white-space: normal; overflow-wrap: anywhere;">scripts/reproduction/gse154386_cogaps_sweep_array_singleprocess_rhino_light.sbatch</code></div>
-<div><code style="white-space: normal; overflow-wrap: anywhere;">scripts/reproduction/gse154386_aggregate_results.py</code></div>
-<div><code style="white-space: normal; overflow-wrap: anywhere;">scripts/reproduction/cs5_generate_revised_k_selection_report.py</code></div>
-</td>
-<td style="vertical-align: top;">Document the sweep setup, summarize candidate ranks, and create rank-selection summaries.</td>
-</tr>
-<tr>
-<td style="vertical-align: top;">Selected-model rerun</td>
-<td style="vertical-align: top;">
-<div><code style="white-space: normal; overflow-wrap: anywhere;">scripts/reproduction/cs5_run_selected_model_r.R</code></div>
-<div><code style="white-space: normal; overflow-wrap: anywhere;">scripts/reproduction/cs5_run_selected_model_python.py</code></div>
-</td>
-<td style="vertical-align: top;">Refit the selected CoGAPS model with the archived prepared input files.</td>
-</tr>
-<tr>
-<td style="vertical-align: top;">Interpretation tables</td>
-<td style="vertical-align: top;">
-<div><code style="white-space: normal; overflow-wrap: anywhere;">scripts/reproduction/cs5_build_k10_interpretation_layer.py</code></div>
-</td>
-<td style="vertical-align: top;">Recreate the subject-timepoint, cell-type, top-gene, and evidence tables used later in the case study.</td>
-</tr>
-<tr>
-<td style="vertical-align: top;">Directionality evidence</td>
-<td style="vertical-align: top;">
-<div><code style="white-space: normal; overflow-wrap: anywhere;">scripts/reproduction/gse154386_pattern_directionality.py</code></div>
-</td>
-<td style="vertical-align: top;">Estimate whether selected pattern genes are higher or lower relative to baseline.</td>
-</tr>
-<tr>
-<td style="vertical-align: top;">Display figures</td>
-<td style="vertical-align: top;">
-<div><code style="white-space: normal; overflow-wrap: anywhere;">scripts/generate_k_selection_figure.R</code></div>
-<div><code style="white-space: normal; overflow-wrap: anywhere;">scripts/generate_pattern_time_small_multiples.R</code></div>
-<div><code style="white-space: normal; overflow-wrap: anywhere;">scripts/generate_pattern_embedding_figure.py</code></div>
-<div><code style="white-space: normal; overflow-wrap: anywhere;">scripts/generate_opening_figure.py</code></div>
-</td>
-<td style="vertical-align: top;">Regenerate figures from included or regenerated source tables.</td>
-</tr>
-<tr>
-<td style="vertical-align: top;">Development-history audit</td>
-<td style="vertical-align: top;">
-<div><code style="white-space: normal; overflow-wrap: anywhere;">scripts/reproduction/gse154386_sparse_distributed_cogaps.py</code></div>
-<div><code style="white-space: normal; overflow-wrap: anywhere;">scripts/reproduction/gse154386_cogaps_prep_cache.py</code></div>
-<div><code style="white-space: normal; overflow-wrap: anywhere;">scripts/reproduction/gse154386_run_one_singleprocess.py</code></div>
-</td>
-<td style="vertical-align: top;">Inspect older or shared workflow code. Use these as audit references unless you intentionally confirm their parameters match the current case-study route.</td>
-</tr>
-</tbody>
-</table>
-</div>
+::: {.table-responsive}
+Stage | Scripts to inspect or run | What they are for
+--- | --- | ---
+Source import and preprocessing | `scripts/prepare_gse154386_subset_r.R`<br>`scripts/prepare_gse154386_subset_python.py` | Download the GEO archive into a writable work folder, import 10x files, apply preprocessing decisions, and save prepared discovery-set files.
+Rank sweep and K evidence | `scripts/reproduction/gse154386_make_cogaps_jobs_tsv.py`<br>`scripts/reproduction/gse154386_cogaps_sweep_array_singleprocess_rhino_light.sbatch`<br>`scripts/reproduction/gse154386_aggregate_results.py`<br>`scripts/reproduction/cs5_generate_revised_k_selection_report.py` | Document the sweep setup, summarize candidate ranks, and create rank-selection summaries.
+Selected-model rerun | `scripts/reproduction/cs5_run_selected_model_r.R`<br>`scripts/reproduction/cs5_run_selected_model_python.py` | Refit the selected CoGAPS model with the archived prepared input files.
+Interpretation tables | `scripts/reproduction/cs5_build_k10_interpretation_layer.py` | Recreate the subject-timepoint, cell-type, top-gene, and evidence tables used later in the case study.
+Directionality evidence | `scripts/reproduction/gse154386_pattern_directionality.py` | Estimate whether selected pattern genes are higher or lower relative to baseline.
+Display figures | `scripts/generate_k_selection_figure.R`<br>`scripts/generate_pattern_time_small_multiples.R`<br>`scripts/generate_pattern_embedding_figure.py`<br>`scripts/generate_opening_figure.py` | Regenerate figures from included or regenerated source tables.
+Development-history audit | `scripts/reproduction/gse154386_sparse_distributed_cogaps.py`<br>`scripts/reproduction/gse154386_cogaps_prep_cache.py`<br>`scripts/reproduction/gse154386_run_one_singleprocess.py` | Inspect older or shared workflow code. Use these as audit references unless you intentionally confirm their parameters match the current case-study route.
+:::
 
 Some script names preserve development history. In particular, `gse154386_sparse_distributed_cogaps.py` contains non-distributed Case Study 5 workflow code even though its filename includes `distributed`.
 

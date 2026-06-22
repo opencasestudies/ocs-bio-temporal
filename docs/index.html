@@ -371,6 +371,37 @@ window.Quarto = {
   <li><a href="#optional-runtime-launcher" id="toc-optional-runtime-launcher" class="nav-link" data-scroll-target="#optional-runtime-launcher">Optional Runtime Launcher</a></li>
   <li><a href="#full-reproduction-route-map" id="toc-full-reproduction-route-map" class="nav-link" data-scroll-target="#full-reproduction-route-map">Full Reproduction Route Map</a></li>
   <li><a href="#advanced-reproduction-script-map" id="toc-advanced-reproduction-script-map" class="nav-link" data-scroll-target="#advanced-reproduction-script-map">Advanced Reproduction Script Map</a></li>
+  <li><a href="#rebuild-source-import-preprocessing-and-discovery-inputs" id="toc-rebuild-source-import-preprocessing-and-discovery-inputs" class="nav-link" data-scroll-target="#rebuild-source-import-preprocessing-and-discovery-inputs">Rebuild Source Import, Preprocessing, and Discovery Inputs</a></li>
+  <li><a href="#advanced-audit-full-preprocessing-decision-reference" id="toc-advanced-audit-full-preprocessing-decision-reference" class="nav-link" data-scroll-target="#advanced-audit-full-preprocessing-decision-reference">Advanced Audit: Full Preprocessing Decision Reference</a></li>
+  <li><a href="#advanced-reproduction-source-import-code-examples" id="toc-advanced-reproduction-source-import-code-examples" class="nav-link" data-scroll-target="#advanced-reproduction-source-import-code-examples">Advanced Reproduction: Source-Import Code Examples</a>
+  <ul class="collapse">
+  <li><a href="#identify-source-files-and-sample-metadata" id="toc-identify-source-files-and-sample-metadata" class="nav-link" data-scroll-target="#identify-source-files-and-sample-metadata">Identify Source Files and Sample Metadata</a></li>
+  <li><a href="#step-1-record-where-the-raw-archive-comes-from" id="toc-step-1-record-where-the-raw-archive-comes-from" class="nav-link" data-scroll-target="#step-1-record-where-the-raw-archive-comes-from">Step 1: Record Where the Raw Archive Comes From</a></li>
+  <li><a href="#step-2-inspect-the-structure-of-one-sample-name" id="toc-step-2-inspect-the-structure-of-one-sample-name" class="nav-link" data-scroll-target="#step-2-inspect-the-structure-of-one-sample-name">Step 2: Inspect the Structure of One Sample Name</a></li>
+  <li><a href="#step-3-write-a-function-that-parses-a-sample-name" id="toc-step-3-write-a-function-that-parses-a-sample-name" class="nav-link" data-scroll-target="#step-3-write-a-function-that-parses-a-sample-name">Step 3: Write a Function That Parses a Sample Name</a></li>
+  <li><a href="#step-4-test-the-function-on-two-sample-names" id="toc-step-4-test-the-function-on-two-sample-names" class="nav-link" data-scroll-target="#step-4-test-the-function-on-two-sample-names">Step 4: Test the Function on Two Sample Names</a></li>
+  <li><a href="#build-the-cell-by-gene-data-object" id="toc-build-the-cell-by-gene-data-object" class="nav-link" data-scroll-target="#build-the-cell-by-gene-data-object">Build the Cell-by-Gene Data Object</a></li>
+  <li><a href="#step-1-represent-the-three-linked-10x-pieces" id="toc-step-1-represent-the-three-linked-10x-pieces" class="nav-link" data-scroll-target="#step-1-represent-the-three-linked-10x-pieces">Step 1: Represent the Three Linked 10x Pieces</a></li>
+  <li><a href="#step-2-check-orientation-and-dimensions" id="toc-step-2-check-orientation-and-dimensions" class="nav-link" data-scroll-target="#step-2-check-orientation-and-dimensions">Step 2: Check Orientation and Dimensions</a></li>
+  <li><a href="#step-3-keep-the-gene-expression-rows" id="toc-step-3-keep-the-gene-expression-rows" class="nav-link" data-scroll-target="#step-3-keep-the-gene-expression-rows">Step 3: Keep the Gene-Expression Rows</a></li>
+  <li><a href="#step-4-name-cells-and-genes-before-constructing-the-object" id="toc-step-4-name-cells-and-genes-before-constructing-the-object" class="nav-link" data-scroll-target="#step-4-name-cells-and-genes-before-constructing-the-object">Step 4: Name Cells and Genes Before Constructing the Object</a></li>
+  <li><a href="#step-5-build-a-labeled-cell-by-gene-representation" id="toc-step-5-build-a-labeled-cell-by-gene-representation" class="nav-link" data-scroll-target="#step-5-build-a-labeled-cell-by-gene-representation">Step 5: Build a Labeled Cell-by-Gene Representation</a></li>
+  </ul></li>
+  <li><a href="#advanced-reproduction-cogaps-model-and-analysis-commands" id="toc-advanced-reproduction-cogaps-model-and-analysis-commands" class="nav-link" data-scroll-target="#advanced-reproduction-cogaps-model-and-analysis-commands">Advanced Reproduction: CoGAPS Model and Analysis Commands</a>
+  <ul class="collapse">
+  <li><a href="#review-or-rerun-the-rank-sweep" id="toc-review-or-rerun-the-rank-sweep" class="nav-link" data-scroll-target="#review-or-rerun-the-rank-sweep">Review or Rerun the Rank Sweep</a></li>
+  <li><a href="#rerun-the-selected-model" id="toc-rerun-the-selected-model" class="nav-link" data-scroll-target="#rerun-the-selected-model">Rerun the Selected Model</a></li>
+  <li><a href="#rebuild-interpretation-tables" id="toc-rebuild-interpretation-tables" class="nav-link" data-scroll-target="#rebuild-interpretation-tables">Rebuild Interpretation Tables</a></li>
+  <li><a href="#rebuild-directionality-evidence" id="toc-rebuild-directionality-evidence" class="nav-link" data-scroll-target="#rebuild-directionality-evidence">Rebuild Directionality Evidence</a></li>
+  <li><a href="#optional-regenerate-display-figures" id="toc-optional-regenerate-display-figures" class="nav-link" data-scroll-target="#optional-regenerate-display-figures">Optional: Regenerate Display Figures</a></li>
+  <li><a href="#inspect-full-analysis-reproduction-scripts" id="toc-inspect-full-analysis-reproduction-scripts" class="nav-link" data-scroll-target="#inspect-full-analysis-reproduction-scripts">Inspect Full Analysis Reproduction Scripts</a></li>
+  </ul></li>
+  <li><a href="#advanced-software-reference" id="toc-advanced-software-reference" class="nav-link" data-scroll-target="#advanced-software-reference">Advanced Software Reference</a></li>
+  <li><a href="#setup-troubleshooting" id="toc-setup-troubleshooting" class="nav-link" data-scroll-target="#setup-troubleshooting">Setup Troubleshooting</a></li>
+  <li><a href="#glossary" id="toc-glossary" class="nav-link" data-scroll-target="#glossary">Glossary</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  <li><a href="#session-info" id="toc-session-info" class="nav-link" data-scroll-target="#session-info"><strong>Session Info</strong></a></li>
+  <li><a href="#acknowledgments" id="toc-acknowledgments" class="nav-link" data-scroll-target="#acknowledgments"><strong>Acknowledgments</strong></a></li>
   </ul></li>
   </ul>
 </nav>
@@ -1239,17 +1270,20 @@ Show answer
 <section id="ethical-considerations" class="level1">
 <h1><strong>Ethical Considerations</strong></h1>
 <hr>
-<p>This case study uses publicly available human single-cell RNA-seq data from GEO, originally generated by Waickman and colleagues <span class="citation" data-cites="waickman2021denv1Pbmc">(<a href="#ref-waickman2021denv1Pbmc" role="doc-biblioref">Waickman et al. 2021</a>)</span>. Learners should still treat the data as human-subjects-derived research data and interpret results with care.</p>
-<p>Important cautions:</p>
+<p>This case study does not enroll new participants or collect new specimens. It reuses publicly available human single-cell RNA-seq data from GEO, originally generated by Waickman and colleagues <span class="citation" data-cites="waickman2021denv1Pbmc">(<a href="#ref-waickman2021denv1Pbmc" role="doc-biblioref">Waickman et al. 2021</a>)</span>. That distinction matters, but it does not make the ethical questions disappear. These are still human-subjects-derived data, and the topic is infectious disease, where scientific claims can quickly become connected to public trust, policy decisions, stigma, and access to care.</p>
+<p>The pandemic that began in 2019 made that connection especially visible. Uncertainty about infection severity, transmission, vaccination, and public-health policy shaped how many people understood scientific evidence and how governments acted on it. Dengue is a different disease, and this case study is not a policy model. The lesson is narrower but still important: analyses of infectious-disease data should be interpreted carefully because they can sound more clinically or socially decisive than the evidence allows.</p>
+<p>Walker and colleagues describe infectious-disease genetics research as an area where public-health goals and individual protections can come into tension <span class="citation" data-cites="walker2021infectiousDiseaseEthics">(<a href="#ref-walker2021infectiousDiseaseEthics" role="doc-biblioref">Walker et al. 2021</a>)</span>. Their review highlights issues such as privacy, reporting to authorities, return of individual research results, resource allocation, equity, and justice. Most of those issues are not directly acted on in this teaching case because you are working with public data whose identifying details have been removed, along with precomputed analysis artifacts. Still, they provide a useful lens for reading the results. A CoGAPS pattern is not a diagnosis, a treatment recommendation, or a policy rule. It is a statistical summary that can support a biological interpretation when several kinds of evidence point in the same direction.</p>
+<p>As you work through the case study, keep these boundaries visible:</p>
 <ol type="1">
-<li>The case study should not be used to make clinical decisions or policy claims.</li>
-<li>The discovery set is a teaching subset and does not capture all possible variation in the full study.</li>
-<li>Patterns are latent statistical summaries, not direct measurements of immune pathways.</li>
-<li>A pattern annotated as interferon-associated is supported by top genes, correlation with an IFN score, timing, and directionality, but it is still an interpretation.</li>
-<li>Subject-level variation should be shown whenever possible so that learners do not confuse large numbers of cells with large numbers of independent people.</li>
-<li>Public data reuse should cite the original study, the GEO accession, and any software used in the analysis.</li>
+<li>Do not use this analysis to make clinical decisions or public-health policy claims.</li>
+<li>Treat the discovery set as a teaching subset, not a complete representation of all dengue infections or all immune responses.</li>
+<li>Remember that CoGAPS patterns are latent statistical summaries, not direct measurements of immune pathways.</li>
+<li>Read an interferon-associated interpretation only after checking timing, top genes, interferon-related scores, directionality, and sensitivity evidence together.</li>
+<li>Keep subject-level variation visible wherever possible. A dataset with many cells is not the same as a dataset with many independent people.</li>
+<li>Cite the original study, the GEO accession, the analysis software, and the case-study repository or archive when reusing the data or teaching materials.</li>
 </ol>
-<p>For clinical care, learners should use medical and public-health guidance rather than this teaching case study <span class="citation" data-cites="cdc2026dengueClinicalCare">(<a href="#ref-cdc2026dengueClinicalCare" role="doc-biblioref">Centers for Disease Control and Prevention 2026</a>)</span>.</p>
+<p>Reproducibility is also part of responsible interpretation. The case study separates the Core learner path from the advanced reproduction materials so that you can inspect the evidence without rerunning every expensive step, while still seeing how the larger artifacts can be rebuilt or audited. The Fred Hutch Data Science Lab reproducibility guide frames reproducibility as a continuum: an analysis can become more transparent and easier to rerun over time, even if no workflow is perfectly reproducible in every future setting <span class="citation" data-cites="fredHutchReproducibilityContinuum">(<a href="#ref-fredHutchReproducibilityContinuum" role="doc-biblioref">Fred Hutch Data Science Lab, n.d.</a>)</span>. Just as important, reproducible does not automatically mean correct. It means the work is traceable enough for someone else to check the code, data, assumptions, and interpretation.</p>
+<p>For clinical care, use medical and public-health guidance rather than this teaching case study <span class="citation" data-cites="cdc2026dengueClinicalCare">(<a href="#ref-cdc2026dengueClinicalCare" role="doc-biblioref">Centers for Disease Control and Prevention 2026</a>)</span>.</p>
 <p>With those interpretive boundaries in place, the next section sets up the software environment you will use before importing evidence files.</p>
 <hr>
 </section>
@@ -3084,7 +3118,7 @@ Optional: remake the figure from the included table
 <span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>r_selected_dir</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "/home/data/processed/selected_model_k10/r"</code></pre>
+<pre><code>[1] "/home/rstudio/project/data/processed/selected_model_k10/r"</code></pre>
 </div>
 </div>
 </div>
@@ -6371,26 +6405,26 @@ Show answer
 <span id="cb108-38"><a href="#cb108-38" aria-hidden="true" tabindex="-1"></a>    _ <span class="op">=</span> ax.set_ylim(<span class="dv">0</span>, <span class="fl">0.31</span>)</span>
 <span id="cb108-39"><a href="#cb108-39" aria-hidden="true" tabindex="-1"></a>    _ <span class="op">=</span> ax.grid(axis<span class="op">=</span><span class="st">"y"</span>, alpha<span class="op">=</span><span class="fl">0.25</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>&lt;matplotlib.patches.Polygon object at 0x7f1516cf7910&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7f1516cf7ee0&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7f1516cc70d0&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7f1516d40070&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7f1517f886d0&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7f1516d400a0&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7f1516cf78e0&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7f1516d40700&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7f1516cf6e90&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7f1516d40d00&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7f1516dc6980&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7f1516d41330&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7f1516df72e0&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7f1516d41960&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7f1516e27b80&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7f1516d41f90&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7f1516e53fd0&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7f1516d425c0&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7f1516c93a60&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7f1516d42bf0&gt;]</code></pre>
+<pre><code>&lt;matplotlib.patches.Polygon object at 0x7fffc92f3640&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc92bd000&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fffc97e6800&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc92f3580&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fffc958f460&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc92f28f0&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fffc95bebf0&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc92f2140&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fffc97e6680&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc92f18a0&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fffc93b89d0&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc92f21d0&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fffc93ed2a0&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc92f2d70&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fffc92f2fb0&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc93343d0&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fffc92f2170&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc9334a00&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fffc9286a70&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc9335030&gt;]</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb110"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax <span class="kw">in</span> axes:</span>
 <span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a>    _ <span class="op">=</span> ax.set_xticks(<span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(timepoint_order) <span class="op">+</span> <span class="dv">1</span>))</span>
@@ -8339,10 +8373,10 @@ Show answer
 <hr>
 <div class="next_steps_box">
 <div class="next_steps_box_header">
-<p>Common Next Steps</p>
+<p>Where to go next</p>
 </div>
 <div class="inner_block">
-<p>Discuss common next steps for this type of an analysis in this box. Is there a specific number of steps that you need to do before a specific step? Is a “next step” more of an alternate step?</p>
+<p>Use these activities to practice one piece of the evidence chain at a time. Some focus on interpretation with the included files, while others ask you to plan or rerun parts of the larger workflow. You do not need to complete them in order.</p>
 </div>
 </div>
 <!--
@@ -8352,16 +8386,18 @@ Uncomment this section if you're suggesting an exercise that reiterates a large 
 -->
 <section id="advancement-exercises" class="level2">
 <h2 class="anchored" data-anchor-id="advancement-exercises">Advancement Exercises</h2>
-<p>Use this section to suggest different levels of exercises that build upon topics from the case study … next steps, tangential skills, diving deeper into a side quest, etc.</p>
-<p>Perhaps explain how the suggested exercises relate to the common next steps.</p>
+<p>These exercises extend the case study without changing the main conclusions. Choose the level that matches the amount of coding, interpretation, or reproduction practice you want.</p>
 <section id="beginner" class="level3">
 <h3 class="anchored" data-anchor-id="beginner">Beginner</h3>
+<p>Start with the included tables and figures. Recreate one summary or plot, then write a short interpretation that names the evidence and the limitation.</p>
 </section>
 <section id="intermediate" class="level3">
 <h3 class="anchored" data-anchor-id="intermediate">Intermediate</h3>
+<p>Modify one analysis choice, such as a visualization scale or an identity-versus-activity cutoff. Compare the result with the original and explain whether the biological interpretation changes.</p>
 </section>
 <section id="advanced" class="level3">
 <h3 class="anchored" data-anchor-id="advanced">Advanced</h3>
+<p>Use the advanced reproduction materials to rerun or audit one larger step. Focus on whether the regenerated output matches the expected shape, parameters, and interpretation boundary.</p>
 <p>These are individual exercises. Each can be completed by one learner without a group project.</p>
 </section>
 </section>
@@ -8573,151 +8609,60 @@ Optional extension
 <h2 class="anchored" data-anchor-id="advanced-reproduction-script-map">Advanced Reproduction Script Map</h2>
 <p>The scripts below are included so you can rebuild or inspect how the included files were produced. You do not need to run them to complete the main lesson. R is the primary reproduction route where an R route is available; Python is included as an alternate route and for steps that are implemented only in Python.</p>
 <div class="table-responsive">
-<table class="caption-top table" style="table-layout: fixed;">
+<table class="caption-top table">
 <colgroup>
-<col style="width: 24%;">
-<col style="width: 44%;">
-<col style="width: 32%;">
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
 <thead>
-<tr>
-<th scope="col" style="vertical-align: top;">
-Stage
-</th>
-<th scope="col" style="vertical-align: top;">
-Scripts to inspect or run
-</th>
-<th scope="col" style="vertical-align: top;">
-What they are for
-</th>
+<tr class="header">
+<th>Stage</th>
+<th>Scripts to inspect or run</th>
+<th>What they are for</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td style="vertical-align: top;">
-Source import and preprocessing
-</td>
-<td style="vertical-align: top;">
-<div>
-<code style="white-space: normal; overflow-wrap: anywhere;">scripts/prepare_gse154386_subset_r.R</code>
-</div>
-<div>
-<code style="white-space: normal; overflow-wrap: anywhere;">scripts/prepare_gse154386_subset_python.py</code>
-</div>
-</td>
-<td style="vertical-align: top;">
-Download the GEO archive into a writable work folder, import 10x files, apply preprocessing decisions, and save prepared discovery-set files.
-</td>
+<tr class="odd">
+<td>Source import and preprocessing</td>
+<td><code>scripts/prepare_gse154386_subset_r.R</code><br><code>scripts/prepare_gse154386_subset_python.py</code></td>
+<td>Download the GEO archive into a writable work folder, import 10x files, apply preprocessing decisions, and save prepared discovery-set files.</td>
 </tr>
-<tr>
-<td style="vertical-align: top;">
-Rank sweep and K evidence
-</td>
-<td style="vertical-align: top;">
-<div>
-<code style="white-space: normal; overflow-wrap: anywhere;">scripts/reproduction/gse154386_make_cogaps_jobs_tsv.py</code>
-</div>
-<div>
-<code style="white-space: normal; overflow-wrap: anywhere;">scripts/reproduction/gse154386_cogaps_sweep_array_singleprocess_rhino_light.sbatch</code>
-</div>
-<div>
-<code style="white-space: normal; overflow-wrap: anywhere;">scripts/reproduction/gse154386_aggregate_results.py</code>
-</div>
-<div>
-<code style="white-space: normal; overflow-wrap: anywhere;">scripts/reproduction/cs5_generate_revised_k_selection_report.py</code>
-</div>
-</td>
-<td style="vertical-align: top;">
-Document the sweep setup, summarize candidate ranks, and create rank-selection summaries.
-</td>
+<tr class="even">
+<td>Rank sweep and K evidence</td>
+<td><code>scripts/reproduction/gse154386_make_cogaps_jobs_tsv.py</code><br><code>scripts/reproduction/gse154386_cogaps_sweep_array_singleprocess_rhino_light.sbatch</code><br><code>scripts/reproduction/gse154386_aggregate_results.py</code><br><code>scripts/reproduction/cs5_generate_revised_k_selection_report.py</code></td>
+<td>Document the sweep setup, summarize candidate ranks, and create rank-selection summaries.</td>
 </tr>
-<tr>
-<td style="vertical-align: top;">
-Selected-model rerun
-</td>
-<td style="vertical-align: top;">
-<div>
-<code style="white-space: normal; overflow-wrap: anywhere;">scripts/reproduction/cs5_run_selected_model_r.R</code>
-</div>
-<div>
-<code style="white-space: normal; overflow-wrap: anywhere;">scripts/reproduction/cs5_run_selected_model_python.py</code>
-</div>
-</td>
-<td style="vertical-align: top;">
-Refit the selected CoGAPS model with the archived prepared input files.
-</td>
+<tr class="odd">
+<td>Selected-model rerun</td>
+<td><code>scripts/reproduction/cs5_run_selected_model_r.R</code><br><code>scripts/reproduction/cs5_run_selected_model_python.py</code></td>
+<td>Refit the selected CoGAPS model with the archived prepared input files.</td>
 </tr>
-<tr>
-<td style="vertical-align: top;">
-Interpretation tables
-</td>
-<td style="vertical-align: top;">
-<div>
-<code style="white-space: normal; overflow-wrap: anywhere;">scripts/reproduction/cs5_build_k10_interpretation_layer.py</code>
-</div>
-</td>
-<td style="vertical-align: top;">
-Recreate the subject-timepoint, cell-type, top-gene, and evidence tables used later in the case study.
-</td>
+<tr class="even">
+<td>Interpretation tables</td>
+<td><code>scripts/reproduction/cs5_build_k10_interpretation_layer.py</code></td>
+<td>Recreate the subject-timepoint, cell-type, top-gene, and evidence tables used later in the case study.</td>
 </tr>
-<tr>
-<td style="vertical-align: top;">
-Directionality evidence
-</td>
-<td style="vertical-align: top;">
-<div>
-<code style="white-space: normal; overflow-wrap: anywhere;">scripts/reproduction/gse154386_pattern_directionality.py</code>
-</div>
-</td>
-<td style="vertical-align: top;">
-Estimate whether selected pattern genes are higher or lower relative to baseline.
-</td>
+<tr class="odd">
+<td>Directionality evidence</td>
+<td><code>scripts/reproduction/gse154386_pattern_directionality.py</code></td>
+<td>Estimate whether selected pattern genes are higher or lower relative to baseline.</td>
 </tr>
-<tr>
-<td style="vertical-align: top;">
-Display figures
-</td>
-<td style="vertical-align: top;">
-<div>
-<code style="white-space: normal; overflow-wrap: anywhere;">scripts/generate_k_selection_figure.R</code>
-</div>
-<div>
-<code style="white-space: normal; overflow-wrap: anywhere;">scripts/generate_pattern_time_small_multiples.R</code>
-</div>
-<div>
-<code style="white-space: normal; overflow-wrap: anywhere;">scripts/generate_pattern_embedding_figure.py</code>
-</div>
-<div>
-<code style="white-space: normal; overflow-wrap: anywhere;">scripts/generate_opening_figure.py</code>
-</div>
-</td>
-<td style="vertical-align: top;">
-Regenerate figures from included or regenerated source tables.
-</td>
+<tr class="even">
+<td>Display figures</td>
+<td><code>scripts/generate_k_selection_figure.R</code><br><code>scripts/generate_pattern_time_small_multiples.R</code><br><code>scripts/generate_pattern_embedding_figure.py</code><br><code>scripts/generate_opening_figure.py</code></td>
+<td>Regenerate figures from included or regenerated source tables.</td>
 </tr>
-<tr>
-<td style="vertical-align: top;">
-Development-history audit
-</td>
-<td style="vertical-align: top;">
-<div>
-<code style="white-space: normal; overflow-wrap: anywhere;">scripts/reproduction/gse154386_sparse_distributed_cogaps.py</code>
-</div>
-<div>
-<code style="white-space: normal; overflow-wrap: anywhere;">scripts/reproduction/gse154386_cogaps_prep_cache.py</code>
-</div>
-<div>
-<code style="white-space: normal; overflow-wrap: anywhere;">scripts/reproduction/gse154386_run_one_singleprocess.py</code>
-</div>
-</td>
-<td style="vertical-align: top;">
-Inspect older or shared workflow code. Use these as audit references unless you intentionally confirm their parameters match the current case-study route.
-</td>
+<tr class="odd">
+<td>Development-history audit</td>
+<td><code>scripts/reproduction/gse154386_sparse_distributed_cogaps.py</code><br><code>scripts/reproduction/gse154386_cogaps_prep_cache.py</code><br><code>scripts/reproduction/gse154386_run_one_singleprocess.py</code></td>
+<td>Inspect older or shared workflow code. Use these as audit references unless you intentionally confirm their parameters match the current case-study route.</td>
 </tr>
 </tbody>
 </table>
 </div>
 <p>Some script names preserve development history. In particular, <code>gse154386_sparse_distributed_cogaps.py</code> contains non-distributed Case Study 5 workflow code even though its filename includes <code>distributed</code>.</p>
+</section>
 <section id="rebuild-source-import-preprocessing-and-discovery-inputs" class="level2">
 <h2 class="anchored" data-anchor-id="rebuild-source-import-preprocessing-and-discovery-inputs">Rebuild Source Import, Preprocessing, and Discovery Inputs</h2>
 <p>Use this stage when you want to rebuild the large source and preprocessing artifacts from GEO. The preparation script downloads <code>GSE154386_RAW.tar</code> into the writable <code>--workdir</code>, extracts the sample-level 10x files, parses sample labels, applies preprocessing decisions, constructs the experimental discovery set, and writes a preprocessing manifest.</p>
@@ -13180,6 +13125,9 @@ Fertig, Elana J., Jie Ding, Alexander V. Favorov, Giovanni Parmigiani, and Micha
 <div id="ref-fertig2014temporalCogaps" class="csl-entry" role="listitem">
 Fertig, Elana J., Genevieve Stein-O’Brien, Andrew Jaffe, and Carlo Colantuoni. 2014. <span>“Pattern Identification in Time-Course Gene Expression Data with the <span>CoGAPS</span> Matrix Factorization.”</span> In <em>Gene Function Analysis</em>, edited by Michael F. Ochs, 1101:87–112. Methods in Molecular Biology. Humana Press. <a href="https://doi.org/10.1007/978-1-62703-721-1_6">https://doi.org/10.1007/978-1-62703-721-1_6</a>.
 </div>
+<div id="ref-fredHutchReproducibilityContinuum" class="csl-entry" role="listitem">
+Fred Hutch Data Science Lab. n.d. <span>“Defining Reproducibility.”</span> Proactive Data Management and Sharing. <a href="https://hutchdatascience.org/Proactive_Data_Management_and_Sharing/defining-reproducibility.html">https://hutchdatascience.org/Proactive_Data_Management_and_Sharing/defining-reproducibility.html</a>.
+</div>
 <div id="ref-johnson2023cogapsProtocol" class="csl-entry" role="listitem">
 Johnson, James A. I., Ann P. Tsang, Joshua T. Mitchel, David L. Zhou, John Bowden, Emily Davis-Marcisak, Thomas Sherman, et al. 2023. <span>“Inferring Cellular and Molecular Processes in Single-Cell Data with Non-Negative Matrix Factorization Using Python, <span>R</span> and <span>GenePattern Notebook</span> Implementations of <span>CoGAPS</span>.”</span> <em>Nature Protocols</em> 18: 3690–3731. <a href="https://doi.org/10.1038/s41596-023-00892-x">https://doi.org/10.1038/s41596-023-00892-x</a>.
 </div>
@@ -13200,6 +13148,9 @@ Stein-O’Brien, Genevieve L., Brian S. Clark, Thomas Sherman, Cintia Zibetti, Q
 </div>
 <div id="ref-waickman2021denv1Pbmc" class="csl-entry" role="listitem">
 Waickman, Adam T., Heather Friberg, Gregory D. Gromowski, Wiriya Rutvisuttinunt, Tao Li, Heather Siegfried, Kyle Victor, et al. 2021. <span>“Temporally Integrated Single Cell <span>RNA</span> Sequencing Analysis of <span>PBMC</span> from Experimental and Natural Primary Human <span>DENV-1</span> Infections.”</span> <em>PLOS Pathogens</em> 17 (1): e1009240. <a href="https://doi.org/10.1371/journal.ppat.1009240">https://doi.org/10.1371/journal.ppat.1009240</a>.
+</div>
+<div id="ref-walker2021infectiousDiseaseEthics" class="csl-entry" role="listitem">
+Walker, Rebecca L., Vence L. Bonham, Alison Boyce, Ellen Wright Clayton, Dana Garcia, Sara Johnson, Oliver Laeyendecker, et al. 2021. <span>“Ethical Issues in Genetics and Infectious Diseases Research: An Interdisciplinary Expert Review.”</span> <em>Ethics, Medicine and Public Health</em> 18: 100684. <a href="https://doi.org/10.1016/j.jemep.2021.100684">https://doi.org/10.1016/j.jemep.2021.100684</a>.
 </div>
 <div id="ref-who2025dengueFactSheet" class="csl-entry" role="listitem">
 World Health Organization. 2025a. <span>“Dengue and Severe Dengue.”</span> <a href="https://www.who.int/news-room/fact-sheets/detail/dengue-and-severe-dengue">https://www.who.int/news-room/fact-sheets/detail/dengue-and-severe-dengue</a>.
@@ -13311,18 +13262,15 @@ Wright, Carrie, Qing Meng, Michael R. Breshock, Laura Atta, Margaret A. Taub, Le
 <h2 class="anchored" data-anchor-id="acknowledgments"><strong>Acknowledgments</strong></h2>
 <hr>
 <p>We acknowledge Waickman et al.&nbsp;for generating and sharing the dengue single-cell RNA-seq data used in this case study through GEO accession GSE154386.</p>
-<p>We acknowledge Waickman et al.&nbsp;for generating and sharing the dengue single-cell RNA-seq data used in this case study through GEO accession GSE154386.</p>
 <p>We also acknowledge the CoGAPS, PyCoGAPS, Bioconductor, Scanpy, AnnData, Quarto, and Open Case Studies communities whose tools and templates make this teaching workflow possible.</p>
 <p>We would also like to acknowledge the National Institute of General Medical Sciences for funding this work (1R25GM160622).</p>
 <p>Icons are from <a href="https://www.iconpacks.net/">iconpacks</a>.</p>
 
 
 </section>
-</section></section><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></div></div></section></div></main></div>
+</section>
 
-
-
- <!-- /main -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -13743,7 +13691,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
- <!-- /content -->
+</div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
@@ -13764,7 +13712,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"descPosition":"bottom","openEffect":"zoom","selector":".lightbox","closeEffect":"zoom","loop":false});
+<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","closeEffect":"zoom","loop":false,"selector":".lightbox","descPosition":"bottom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {
