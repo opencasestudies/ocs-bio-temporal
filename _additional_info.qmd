@@ -39,7 +39,7 @@ The Core learner path does not require these steps. Full reproduction is a separ
 
 ## Advanced Reproduction Setup
 
-Full reproduction uses the same Docker image as the main lesson, but it adds larger files and longer-running scripts. The external reproduction archive will be published through Zenodo at DOI [`10.5281/zenodo.20432369`](https://doi.org/10.5281/zenodo.20432369){target="_blank"}. The archive is used for large prepared inputs, selected-model files, and sweep summaries that are not stored in GitHub. Source preprocessing can also be rebuilt directly from the GEO archive; in that route, the preparation script downloads the raw GEO archive into a writable work folder.
+Full reproduction uses the same Docker image as the main lesson, but it adds larger files and longer-running scripts. The external reproduction archive will be published through Zenodo; the final DOI will be added here after the Zenodo record is public. The archive is used for large prepared inputs, selected-model files, and sweep summaries that are not stored in GitHub. Source preprocessing can also be rebuilt directly from the GEO archive; in that route, the preparation script downloads the raw GEO archive into a writable work folder.
 
 Before running commands, keep three local folder roles separate:
 
