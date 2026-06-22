@@ -1,7 +1,7 @@
 # **Data Visualization**
 ***
 
-Data Import has already established why the case study follows the selected `K = 10` model. Data Exploration checked coverage, composition, and model-evidence tables. Data Wrangling and Preprocessing then connected the selected-model outputs to subject-timepoint summaries and identity/activity evidence.
+Data Import has already established why the case study follows the selected `K = 10` model. Data Exploration checked coverage, composition, and model-evidence tables. Data Wrangling then connected the selected-model outputs to subject-timepoint summaries and identity/activity evidence.
 
 This section asks what the selected model looks like when you turn those summaries into figures. The figures are not final proof. They help you notice which patterns look temporal, which patterns look tied to broad PBMC identity, and which visual impressions need to survive closer analysis.
 

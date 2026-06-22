@@ -1,4 +1,4 @@
-# **Data Wrangling and Preprocessing**
+# **Data Wrangling**
 ***
 
 Data Import selected the `K = 10` model for the core analysis and loaded the compact selected-model files. Data Exploration checked what those files contain: subjects, infection days, broad cell types, gene information, and pattern-score summaries. This section asks a different question: why are those files safe enough to interpret?

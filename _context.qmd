@@ -19,7 +19,9 @@ One response you will return to later is the interferon-associated antiviral res
 
 ## PBMCs as a Mixed Immune-Cell System
 
-{{< glossary "Peripheral blood mononuclear cells" display="Peripheral blood mononuclear cells" >}}, or `PBMCs`, are a mixed population of immune cells isolated from blood. They include T cells, B cells, natural killer cells, monocytes, and related antigen-presenting cells. That mixture is useful for studying a systemic immune response, but it also creates the central modeling challenge in this case study.
+{{< glossary "Peripheral blood mononuclear cells" display="Peripheral blood mononuclear cells" >}}, or `PBMCs`, are a mixed population of immune cells isolated from blood. They include T cells, B cells, natural killer cells, monocytes, and related antigen-presenting cells. The broad source annotations used later also keep plasmablast and neutrophil labels visible, so the figure below orients you to the immune-cell identities you will see in composition summaries and pattern evidence. That mixture is useful for studying a systemic immune response, but it also creates the central modeling challenge in this case study.
+
+![Blood-derived immune-cell identities used to orient this case study, including T cells, B cells, natural killer cells, monocytes, neutrophils, plasmablasts, and antigen-presenting dendritic cells. These broad labels help you notice whether later CoGAPS patterns look identity-like, activity-like, or mixed. AI-generated educational illustration. Disclosure: generative-AI systems may be trained on human-made artwork and scientific images; no specific source artist is identifiable from this generated file, and any identifiable source artist or source image should be credited when known.](img/pbmc_mixed_immune_cell_system_ai.png){fig-alt="AI-generated educational illustration titled Blood-derived immune cells. The image shows labeled stylized examples of a T cell, B cell, natural killer cell, monocyte, neutrophil, plasmablast, and antigen-presenting dendritic cell, each with a short functional description." width="900"}
 
 A cell can carry more than one interpretable signal. A monocyte can remain identifiable as a monocyte while also activating {{< glossary "Interferon-stimulated genes" display="interferon-stimulated genes" >}}. A T cell or natural killer cell can retain its lineage markers while also showing activation or cytotoxic activity. A B-cell population can shift toward plasmablast-like states as part of an antibody-related response.
 
@@ -64,116 +66,6 @@ The findings below are not final answers for this case study. They are expectati
 - **Host response rather than viral tropism:** no cell-associated DENV-1 RNA was detected in PBMCs in either the experimental or natural infection samples. The case-study interpretation therefore concerns host immune programs, not direct identification of infected cells.
 
 These points keep the later modeling questions biologically grounded. The aligned days let you ask temporal questions. The PBMC annotations let you separate cell identity from activity. The monocyte, interferon, T-cell, and plasmablast-like findings give you biological expectations to check against the CoGAPS patterns without assuming the model must reproduce them exactly.
-
-## How These Ideas Become an Evidence Chain
-
-The figure below shows how the biological context becomes the evidence chain you will follow later. It is not a workflow for running code. It is a map of how the main ideas in this section connect to the questions you will answer.
-
-<div class="context-evidence-map" role="img" aria-label="Evidence chain map from DENV-1 time course to PBMC mixture, CoGAPS latent programs, rank K checkpoint, temporal and identity evidence, and response interpretation.">
-<div class="context-map-step context-map-biology">
-<div class="context-map-label">Biology</div>
-<div class="context-map-title">DENV-1 time course</div>
-<div class="context-map-text">Immune response changes over experimental infection days.</div>
-</div>
-<div class="context-map-arrow" aria-hidden="true">↓</div>
-<div class="context-map-step context-map-challenge">
-<div class="context-map-label">Data challenge</div>
-<div class="context-map-title">PBMC mixture</div>
-<div class="context-map-text">Stable immune-cell identity and dynamic infection activity appear in the same cells.</div>
-</div>
-<div class="context-map-arrow" aria-hidden="true">↓</div>
-<div class="context-map-step context-map-model">
-<div class="context-map-label">Model idea</div>
-<div class="context-map-title">CoGAPS latent programs</div>
-<div class="context-map-text">Gene loadings describe what defines a program; cell scores describe how strongly cells use it.</div>
-</div>
-<div class="context-map-arrow" aria-hidden="true">↓</div>
-<div class="context-map-step context-map-model">
-<div class="context-map-label">Model checkpoint</div>
-<div class="context-map-title">Rank K</div>
-<div class="context-map-text">Choose the model resolution before assigning biological meaning to any pattern.</div>
-</div>
-<div class="context-map-split" aria-hidden="true">↓</div>
-<div class="context-map-branches">
-<div class="context-map-step context-map-evidence">
-<div class="context-map-label">Temporal evidence</div>
-<div class="context-map-title">Pattern scores over days</div>
-<div class="context-map-text">Ask whether a program rises, peaks, persists, or returns toward baseline.</div>
-</div>
-<div class="context-map-step context-map-evidence">
-<div class="context-map-label">Identity/activity evidence</div>
-<div class="context-map-title">Cell type, subject, and top genes</div>
-<div class="context-map-text">Ask whether a program looks identity-like, activity-like, or mixed.</div>
-</div>
-</div>
-<div class="context-map-arrow" aria-hidden="true">↓</div>
-<div class="context-map-step context-map-interpretation">
-<div class="context-map-label">Interpretation</div>
-<div class="context-map-title">Response evidence</div>
-<div class="context-map-text">Combine IFN association, directionality, diagnostics, and sensitivity checks before making a claim.</div>
-</div>
-</div>
-
-<style>
-.context-evidence-map {
-  display: flex;
-  flex-direction: column;
-  gap: 0.45rem;
-  margin: 1.1rem 0 1.4rem 0;
-  max-width: 780px;
-}
-.context-map-step {
-  border: 2px solid #6b7c8f;
-  border-left-width: 8px;
-  border-radius: 6px;
-  padding: 0.75rem 0.9rem;
-  background: #ffffff;
-  box-shadow: 0 1px 2px rgba(16, 42, 67, 0.08);
-}
-.context-map-label {
-  color: #52616f;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  margin-bottom: 0.15rem;
-}
-.context-map-title {
-  color: #102a43;
-  font-size: 1.05rem;
-  font-weight: 700;
-  line-height: 1.2;
-}
-.context-map-text {
-  color: #334e68;
-  font-size: 0.95rem;
-  line-height: 1.35;
-  margin-top: 0.25rem;
-}
-.context-map-arrow,
-.context-map-split {
-  color: #486581;
-  font-size: 1.35rem;
-  font-weight: 700;
-  line-height: 1;
-  text-align: center;
-}
-.context-map-branches {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.75rem;
-}
-.context-map-biology { border-color: #2d6da3; background: #eaf3ff; }
-.context-map-challenge { border-color: #b36b00; background: #fff4df; }
-.context-map-model { border-color: #6b46c1; background: #f3eefc; }
-.context-map-evidence { border-color: #2f855a; background: #e9f7ef; }
-.context-map-interpretation { border-color: #176b54; background: #e3f8f0; }
-@media (max-width: 760px) {
-  .context-map-branches {
-    grid-template-columns: 1fr;
-  }
-}
-</style>
 
 ## From Cell Clusters to Latent Programs
 
@@ -286,6 +178,20 @@ You will see three interpretation categories later in the analysis:
 - **Mixed programs:** patterns where both cell identity and timepoint contribute to the signal.
 
 These labels are interpretation aids, not ground truth. They help you decide what evidence to inspect next: cell-type summaries, pattern-by-day trajectories, top genes, and directionality relative to baseline.
+
+## Putting the Context to Work
+
+You now have the main pieces needed to read the analysis that follows. The experimental cohort gives you aligned infection days. The PBMC samples give you a mixed immune-cell system where stable identity and changing activity can appear together. CoGAPS turns the expression matrix into linked pattern evidence: {{< glossary "Gene loading" display="gene loadings" >}} describe which genes define a pattern, and {{< glossary "Cell score" display="cell scores" >}} describe which cells use that pattern strongly.
+
+Those model outputs are useful, but they are not biological conclusions by themselves. A numbered pattern is only a handle for tracking one model output. It becomes interpretable only when you can connect that output to the data design, the infection timeline, broad PBMC identity, top genes, and checks against simpler or misleading explanations.
+
+The first task in the analysis is therefore a model-resolution check. In **Data Import**, you will read summarized {{< glossary "Rank-sweep evidence" display="rank-selection evidence" >}} rather than rerun the full sweep. That evidence asks whether the selected value of `K` is stable enough to inspect and detailed enough to separate temporal infection activity from broad PBMC identity. This step keeps the case study from assigning biology to a model that was chosen only because it was convenient.
+
+After the selected model is loaded, interpretation proceeds by comparing the same pattern from several angles. A temporal summary asks whether a pattern rises, peaks, persists, or returns toward baseline. A cell-context summary asks whether that pattern is concentrated in one broad PBMC identity or appears across several identities. A top-gene summary asks what biology could plausibly explain the signal, including whether interferon-associated genes are involved.
+
+The later directionality and sensitivity checks add restraint. CoGAPS can tell you which genes and cells are associated with a pattern, but a separate expression comparison is needed to ask whether selected genes are higher or lower than baseline. Sensitivity checks ask whether the interpretation depends too heavily on one modeling choice. Together, these checks help you decide whether a pattern supports a clear activity-like interpretation, a mostly identity-like interpretation, or a mixed interpretation that needs more caution.
+
+Carry this reading strategy into the data sections. The goal is not to memorize every model term before you begin. The goal is to keep asking what each table, plot, and diagnostic contributes to the interpretation, and what it cannot show on its own.
 
 :::{.definition_box}
 ::::{.definition_box_header}

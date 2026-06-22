@@ -1,4 +1,4 @@
-# **Main Questions**
+# **Main Question**
 ***
 
 The Motivation section introduced the central puzzle: temporal dengue response is mixed with PBMC identity, subject variation, and modeling choices. The questions below turn that puzzle into an evidence chain. You will first decide which {{< glossary "Rank K" display="CoGAPS rank" >}} should anchor the analysis, then use the selected model to evaluate temporal programs, identity versus activity, and interferon-associated response evidence.
@@ -46,7 +46,7 @@ Our main questions
 <tr style="vertical-align: top;">
 <td><img src="assets/question_icons/rq2_identity_activity.png" alt="Icon showing multiple immune-cell identities and dynamic response trajectories." width="130"></td>
 <td><strong>Question 3</strong><br>Which programs reflect {{< glossary "Immune-cell identity" display="PBMC identity" >}}, {{< glossary "Activity program" display="dynamic infection activity" >}}, or both?</td>
-<td><strong>Data Wrangling and Preprocessing</strong> prepares the identity/activity summary table. <strong>Data Visualization</strong> and <strong>Data Analysis</strong> compare timepoint variation, broad-cell-type variation, {{< glossary "Top genes" display="top genes" >}}, and pattern-use heatmaps.</td>
+<td><strong>Data Wrangling</strong> prepares the identity/activity summary table. <strong>Data Visualization</strong> and <strong>Data Analysis</strong> compare timepoint variation, broad-cell-type variation, {{< glossary "Top genes" display="top genes" >}}, and pattern-use heatmaps.</td>
 <td>Distinguish patterns that look mostly identity-like, mostly activity-like, or mixed, and explain why that distinction matters for PBMC data.</td>
 </tr>
 <tr>

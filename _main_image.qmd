@@ -1,6 +1,6 @@
 #### {.outline }
 
-![](data/processed/figures/figure_00_opening_summary_spoiler_light.png){fig-alt="Five-panel opening roadmap figure. Panel A shows the experimental PBMC discovery time course from D0 through D28 with the late acute D10 to D14 or D15 window highlighted. Panel B shows discovery set composition by timepoint as stacked bars of broad PBMC cell identities. Panel C previews model-rank evidence using stability, temporal structure, and goal-aligned summaries, with one candidate rank highlighted for later evaluation. Panel D previews selected-model pattern usage across infection days. Panel E previews a candidate response-pattern trajectory with a late acute peak." width=1100 .lightbox}
+![](data/processed/figures/figure_00_opening_question_roadmap.png){fig-alt="Opening roadmap showing how the case study turns PBMC data into CoGAPS evidence. The top panel anchors the analysis in infection day, broad PBMC identity, and the late acute D10 to D14 or D15 window. Four question panels preview the evidence used later to choose a model resolution, find programs that change over time, separate identity from activity, and evaluate a response claim." width=1100 .lightbox}
 
 ####
 

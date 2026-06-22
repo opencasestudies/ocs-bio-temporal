@@ -19,31 +19,36 @@
   "external_placeholders": [
     {
       "artifact": "GSE154386_RAW.tar",
-      "status": "external_host_tbd",
+      "status": "geo_download_or_zenodo_archive",
+      "zenodo_doi": "10.5281/zenodo.20432369",
       "expected_local_source": "GSE154386/GSE154386_RAW.tar or GEO download",
       "notes": "Full GEO raw download. Not committed to GitHub."
     },
     {
       "artifact": "gse154386_preprocessed_hvg.h5ad",
-      "status": "external_host_tbd",
+      "status": "zenodo_doi_reserved",
+      "zenodo_doi": "10.5281/zenodo.20432369",
       "expected_local_source": "/Users/othomas/Desktop/CS5_sweep_results/cache/gse154386_preprocessed_hvg.h5ad",
       "notes": "Large optional preprocessing cache. Not required for GitHub render."
     },
     {
       "artifact": "gse154386_experimental_discovery_cells_x_genes.h5ad",
-      "status": "external_host_tbd",
+      "status": "zenodo_doi_reserved",
+      "zenodo_doi": "10.5281/zenodo.20432369",
       "expected_local_source": "/Users/othomas/Desktop/CS5_sweep_results/cache/gse154386_experimental_discovery_cells_x_genes.h5ad",
       "notes": "Primary R selected-model input for optional local rerun."
     },
     {
       "artifact": "gse154386_experimental_discovery_genes_x_cells.h5ad",
-      "status": "external_host_tbd",
+      "status": "zenodo_doi_reserved",
+      "zenodo_doi": "10.5281/zenodo.20432369",
       "expected_local_source": "/Users/othomas/Desktop/CS5_sweep_results/cache/gse154386_experimental_discovery_genes_x_cells.h5ad",
       "notes": "Primary Python selected-model input for optional local rerun."
     },
     {
       "artifact": "gse154386_natural_projection_target_cells_x_genes.h5ad",
-      "status": "external_host_tbd",
+      "status": "zenodo_doi_reserved",
+      "zenodo_doi": "10.5281/zenodo.20432369",
       "expected_local_source": "/Users/othomas/Desktop/CS5_sweep_results/cache/gse154386_natural_projection_target_cells_x_genes.h5ad",
       "notes": "Optional natural projection target; placeholder until projection is regenerated and validated."
     }

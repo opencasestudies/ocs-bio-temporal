@@ -15,15 +15,6 @@ The main discovery data come from an {{< glossary "Experimental infection cohort
 
 The challenge is that PBMC single-cell data do not contain one signal at a time. Each cell has a relatively stable {{< glossary "Immune-cell identity" display="immune-cell identity" >}}: a T cell is still a T cell, and a monocyte is still a monocyte. At the same time, infection can turn on {{< glossary "Activity program" display="activity programs" >}} such as antiviral signaling, inflammation, cytotoxic activity, or antibody-related responses. A later blood sample may therefore differ from baseline because the mixture of cell types changed, because the same cell types changed their activity, because subjects differ from one another, or because several of these processes happen together.
 
-:::{.think_question}
-::::{.think_question_header}
-Prediction
-::::
-::::{.inner_block}
-If dengue infection mainly changes which cell types are present, what would you expect a model pattern to track? If infection activates an immune program across many cells, what would look different?
-::::
-:::
-
 This is why the case study focuses on {{< glossary "Latent transcriptional program" display="latent transcriptional programs" >}} rather than only on cell clusters. Clustering can help identify groups of similar cells, but it tends to assign each cell to one group. Dengue host response is more layered than that: a monocyte can remain a monocyte while also expressing an interferon-stimulated antiviral program.
 
 You will use {{< glossary "CoGAPS" >}}, a Bayesian {{< glossary "Non-negative matrix factorization" display="non-negative matrix factorization" >}} method, to represent cells as additive mixtures of latent programs [@fertig2010cogaps; @johnson2023cogapsProtocol]. In plain language, CoGAPS helps ask which gene-expression patterns define the data and how strongly each cell uses each pattern. The model can therefore support a more careful question than "which cells are present?": which patterns look like stable PBMC identity, which look like dynamic infection activity, and which look mixed?
