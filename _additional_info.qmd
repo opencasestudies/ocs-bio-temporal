@@ -27,16 +27,25 @@ The Open Case Studies teaching approach is described in the OCS model paper [@wr
 - R and Python reproducibility
 - included analysis files for the main lesson
 
+## Full Reproduction Companion Guide
+
+The main lesson uses included evidence files so you can focus on interpretation. Use this part of **Additional Information** when you want to audit or rebuild the files behind that evidence. You can use it at three depths:
+
+1. read the route map to understand provenance;
+1. rerun one stage to check a handoff file;
+1. attempt the full workflow from source files through the selected model and interpretation tables.
+
+The Core learner path does not require these steps. Full reproduction is a separate audit path for learners, instructors, or reviewers who want to look behind the included files.
+
 ## Advanced Reproduction Setup
 
-The main lesson uses small included files so you can focus on the biological and modeling evidence. You only need the setup below if you want to rebuild large source-data, preprocessing, model, or sweep outputs.
+Full reproduction uses the same Docker image as the main lesson, but it adds larger files and longer-running scripts. The external reproduction archive will be published through Zenodo; the final DOI will be added here after the Zenodo record is public. The archive is used for large prepared inputs, selected-model files, and sweep summaries that are not stored in GitHub. Source preprocessing can also be rebuilt directly from the GEO archive; in that route, the preparation script downloads the raw GEO archive into a writable work folder.
 
-Advanced reproduction needs two local folders:
+Before running commands, keep three local folder roles separate:
 
-1. the cloned case-study repository
-1. an external reproduction archive containing large files that are not stored in GitHub
-
-Download and extract the external archive into a folder outside the Git repository, such as `$HOME/cs5_reproduction_archive`. Keeping those large files outside the repository helps prevent accidental commits of raw or bulky analysis artifacts.
+- **Repository folder:** the GitHub clone that contains the case-study pages, scripts, included tables, figures, and manifests.
+- **Writable reproduction work folder:** a local output area for downloaded GEO files, regenerated single-cell objects, model outputs, and logs. In the examples below, this is a `GSE154386/` folder inside the repository clone; that folder is ignored by Git.
+- **External reproduction archive:** the larger Zenodo archive. Mount it read-only when you want to rerun downstream model, directionality, or audit steps without rebuilding every source artifact.
 
 Use the following commands from your computer's Terminal:
 
@@ -45,11 +54,14 @@ Use the following commands from your computer's Terminal:
 git clone https://github.com/opencasestudies/ocs-bio-temporal.git
 cd ocs-bio-temporal
 
-# Point to the downloaded external reproduction archive.
+# Point to the downloaded Zenodo reproduction archive.
 mkdir -p "$HOME/cs5_reproduction_archive"
 export CS5_REPRODUCTION_ARCHIVE="$HOME/cs5_reproduction_archive"
 
-# Launch Docker with both local folders mounted.
+# Create a writable local output folder for regenerated artifacts.
+mkdir -p "$PWD/GSE154386"
+
+# Launch Docker with the repository writable and the archive read-only.
 docker run --platform linux/amd64 --rm -it \
   -p 8787:8787 \
   -e PASSWORD="Password12" \
@@ -58,9 +70,7 @@ docker run --platform linux/amd64 --rm -it \
   othomas2/cs5-cogaps-runtime:0.1.0
 ```
 
-The first mount sends your cloned repository into the container at `/home/rstudio/project`. The second mount sends the external archive into the container at `/home/rstudio/project/data/external/reproduction_archive`. The archive is mounted read-only (`ro`) so the original downloaded files are not modified.
-
-Regenerated outputs should be written to a writable project folder, such as `/home/rstudio/project/GSE154386`, unless you intentionally mount another output folder.
+Inside Docker, the repository appears at `/home/rstudio/project`. The Zenodo archive appears at `/home/rstudio/project/data/external/reproduction_archive`. The archive mount is read-only (`ro`) so the downloaded files are not modified. Regenerated outputs should go to a writable folder such as `/home/rstudio/project/GSE154386`.
 
 ## Optional Runtime Launcher
 
@@ -75,235 +85,141 @@ bash scripts/run_cs5_runtime.sh
 
 The launcher creates expected output folders, mounts the repository, and mounts the external archive when `CS5_REPRODUCTION_ARCHIVE` points to an existing folder.
 
-## Advanced Reproduction Script Map
+## Full Reproduction Route Map
 
-The scripts below are included so you can rebuild or inspect how the included files were produced. You do not need to run them to complete the main lesson.
+Read this map as a staged audit trail. The first stages explain how source files become prepared CoGAPS inputs. The later stages explain how the model outputs, interpretation tables, and optional display figures are rebuilt. A successful full reproduction should at minimum rebuild the selected-model outputs and interpretation tables; regenerating figures is useful for display checks but is not the main proof that the analysis was reproduced.
 
 ::: {.table-responsive}
-Rebuild goal | Scripts to inspect or run | What they are for
---- | --- | ---
-Prepare source data and construct the discovery set | `scripts/prepare_gse154386_subset_r.R`; `scripts/prepare_gse154386_subset_python.py` | Download or reuse source files, import 10x data, apply preprocessing decisions, and save prepared discovery-set files.
-Review rank-selection evidence | `scripts/reproduction/gse154386_make_cogaps_jobs_tsv.py`; `scripts/reproduction/gse154386_cogaps_sweep_array_singleprocess_rhino_light.sbatch`; `scripts/reproduction/gse154386_aggregate_results.py`; `scripts/reproduction/cs5_generate_revised_k_selection_report.py` | Document the sweep setup, summarize candidate ranks, and create rank-selection summaries.
-Rerun the selected model | `scripts/reproduction/cs5_run_selected_model_r.R`; `scripts/reproduction/cs5_run_selected_model_python.py` | Refit the selected CoGAPS model with the external prepared input files.
-Rebuild interpretation tables | `scripts/reproduction/cs5_build_k10_interpretation_layer.py` | Recreate the subject-timepoint, cell-type, top-gene, and related interpretation tables used later in the case study.
-Rebuild directionality evidence | `scripts/reproduction/gse154386_pattern_directionality.py` | Estimate whether selected pattern genes are higher or lower relative to baseline.
-Inspect the combined source workflow | `scripts/reproduction/gse154386_sparse_distributed_cogaps.py` | Review the longer script that connects several source-data, model, and summary steps.
+Stage | What you are rebuilding or auditing | Run surface | Handoff checks
+--- | --- | --- | ---
+Source import and metadata | Raw GEO/10x files become labeled single-cell objects with counts tied to cells, genes, samples, subjects, cohorts, and infection days. | Docker; local workstation may be enough, but storage matters. | Sample parsing works, matrix/barcode/feature dimensions match, cell names are unique, and the GEO archive path is recorded.
+Preprocessing and discovery-set construction | QC filters, normalization, HVG selection, PBMC context, the experimental discovery cohort, the `D14/15` merge, and balanced sampling create CoGAPS-ready inputs. | Docker; writes large local objects. | `preprocessing_manifest.json` exists; cell and gene counts are recorded; discovery input orientation is documented; max `600` cells per sample and `seed = 42` are recorded.
+Rank sweep and K evidence | Candidate ranks, seeds, and iteration counts are compared before interpreting a selected model. | HPC/SLURM. | `jobs.tsv` has `300` tasks; per-run outputs exist; aggregation writes the K-selection summary tables read in Data Import.
+Selected-model rerun | The prepared input is fit with the selected rank, seed, iteration count, checkpointing, snapshots, and sparse optimization. | Docker; moderate local compute. | Cell scores, gene loadings, top genes, diagnostics, trace, metrics, and selected-model summaries are written.
+Interpretation-layer tables | Model outputs are summarized by subject, infection day, and broad PBMC identity so the case study can ask biological questions. | Docker; lightweight table rebuild. | Subject-timepoint summaries, cell-type summaries, top-gene summaries, and evidence tables are written.
+Directionality evidence | Top pattern genes are compared against each subject's `D0` baseline to ask whether genes tend to increase or decrease after infection. | Docker; uses the preprocessed expression object and selected top genes. | Group expression, gene-level directionality, pattern-level directionality, and stratified heatmaps are written.
+Display figures | Included figures and figure source tables are regenerated from processed evidence files. | Docker; lightweight figure scripts. | Figure PNG/SVG outputs update, but CoGAPS is not rerun by figure scripts.
 :::
 
-The script names preserve some development history. In particular, `gse154386_sparse_distributed_cogaps.py` contains a non-distributed Case Study 5 workflow even though its filename includes `distributed`.
+## Advanced Reproduction Script Map
 
-## Advanced Reproduction: CoGAPS Model and Analysis Commands
+The scripts below are included so you can rebuild or inspect how the included files were produced. You do not need to run them to complete the main lesson. R is the primary reproduction route where an R route is available; Python is included as an alternate route and for steps that are implemented only in Python.
 
-The **Data Analysis** section shows the selected CoGAPS model call in a compact reproducibility box. Use the commands below only if you want to rebuild the larger modeling and analysis artifacts from the external reproduction archive. They are not required for the main lesson.
+<div class="table-responsive">
+<table class="caption-top table" style="table-layout: fixed;">
+<colgroup>
+<col style="width: 24%;">
+<col style="width: 44%;">
+<col style="width: 32%;">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" style="vertical-align: top;">Stage</th>
+<th scope="col" style="vertical-align: top;">Scripts to inspect or run</th>
+<th scope="col" style="vertical-align: top;">What they are for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="vertical-align: top;">Source import and preprocessing</td>
+<td style="vertical-align: top;">
+<div><code style="white-space: normal; overflow-wrap: anywhere;">scripts/prepare_gse154386_subset_r.R</code></div>
+<div><code style="white-space: normal; overflow-wrap: anywhere;">scripts/prepare_gse154386_subset_python.py</code></div>
+</td>
+<td style="vertical-align: top;">Download the GEO archive into a writable work folder, import 10x files, apply preprocessing decisions, and save prepared discovery-set files.</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">Rank sweep and K evidence</td>
+<td style="vertical-align: top;">
+<div><code style="white-space: normal; overflow-wrap: anywhere;">scripts/reproduction/gse154386_make_cogaps_jobs_tsv.py</code></div>
+<div><code style="white-space: normal; overflow-wrap: anywhere;">scripts/reproduction/gse154386_cogaps_sweep_array_singleprocess_rhino_light.sbatch</code></div>
+<div><code style="white-space: normal; overflow-wrap: anywhere;">scripts/reproduction/gse154386_aggregate_results.py</code></div>
+<div><code style="white-space: normal; overflow-wrap: anywhere;">scripts/reproduction/cs5_generate_revised_k_selection_report.py</code></div>
+</td>
+<td style="vertical-align: top;">Document the sweep setup, summarize candidate ranks, and create rank-selection summaries.</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">Selected-model rerun</td>
+<td style="vertical-align: top;">
+<div><code style="white-space: normal; overflow-wrap: anywhere;">scripts/reproduction/cs5_run_selected_model_r.R</code></div>
+<div><code style="white-space: normal; overflow-wrap: anywhere;">scripts/reproduction/cs5_run_selected_model_python.py</code></div>
+</td>
+<td style="vertical-align: top;">Refit the selected CoGAPS model with the archived prepared input files.</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">Interpretation tables</td>
+<td style="vertical-align: top;">
+<div><code style="white-space: normal; overflow-wrap: anywhere;">scripts/reproduction/cs5_build_k10_interpretation_layer.py</code></div>
+</td>
+<td style="vertical-align: top;">Recreate the subject-timepoint, cell-type, top-gene, and evidence tables used later in the case study.</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">Directionality evidence</td>
+<td style="vertical-align: top;">
+<div><code style="white-space: normal; overflow-wrap: anywhere;">scripts/reproduction/gse154386_pattern_directionality.py</code></div>
+</td>
+<td style="vertical-align: top;">Estimate whether selected pattern genes are higher or lower relative to baseline.</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">Display figures</td>
+<td style="vertical-align: top;">
+<div><code style="white-space: normal; overflow-wrap: anywhere;">scripts/generate_k_selection_figure.R</code></div>
+<div><code style="white-space: normal; overflow-wrap: anywhere;">scripts/generate_pattern_time_small_multiples.R</code></div>
+<div><code style="white-space: normal; overflow-wrap: anywhere;">scripts/generate_pattern_embedding_figure.py</code></div>
+<div><code style="white-space: normal; overflow-wrap: anywhere;">scripts/generate_opening_figure.py</code></div>
+</td>
+<td style="vertical-align: top;">Regenerate figures from included or regenerated source tables.</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">Development-history audit</td>
+<td style="vertical-align: top;">
+<div><code style="white-space: normal; overflow-wrap: anywhere;">scripts/reproduction/gse154386_sparse_distributed_cogaps.py</code></div>
+<div><code style="white-space: normal; overflow-wrap: anywhere;">scripts/reproduction/gse154386_cogaps_prep_cache.py</code></div>
+<div><code style="white-space: normal; overflow-wrap: anywhere;">scripts/reproduction/gse154386_run_one_singleprocess.py</code></div>
+</td>
+<td style="vertical-align: top;">Inspect older or shared workflow code. Use these as audit references unless you intentionally confirm their parameters match the current case-study route.</td>
+</tr>
+</tbody>
+</table>
+</div>
 
-### Review or Rerun the Rank Sweep
+Some script names preserve development history. In particular, `gse154386_sparse_distributed_cogaps.py` contains non-distributed Case Study 5 workflow code even though its filename includes `distributed`.
 
-The rank sweep was used to compare candidate values of `K`, random seeds, and iteration counts before the selected `K = 10` model was interpreted. The main case-study path reads the summarized rank-selection evidence in **Data Import**. The commands below show how the sweep job table and HPC launcher were organized during advanced reproduction.
+## Rebuild Source Import, Preprocessing, and Discovery Inputs
 
-```{bash}
-#| eval: false
-python scripts/reproduction/gse154386_make_cogaps_jobs_tsv.py \
-  --k-grid 5,6,7,8,9,10,11,12,16,20,24,28,32,36,40 \
-  --seeds 1,2,3,4,5 \
-  --iters 2000,4000,6000,8000 \
-  --out GSE154386/cogaps_sweep_singleprocess_hpc/jobs.tsv
-```
+Use this stage when you want to rebuild the large source and preprocessing artifacts from GEO. The preparation script downloads `GSE154386_RAW.tar` into the writable `--workdir`, extracts the sample-level 10x files, parses sample labels, applies preprocessing decisions, constructs the experimental discovery set, and writes a preprocessing manifest.
 
-```{bash}
-#| eval: false
-sbatch --array=1-300%15 \
-  scripts/reproduction/gse154386_cogaps_sweep_array_singleprocess_rhino_light.sbatch
-```
-
-After the sweep finishes, the aggregation and revised K-selection scripts collect the run summaries and write the evidence tables used by the case study.
-
-```{bash}
-#| eval: false
-python scripts/reproduction/gse154386_aggregate_results.py \
-  --outdir GSE154386/cogaps_sweep_singleprocess_hpc \
-  --k-grid 5,6,7,8,9,10,11,12,16,20,24,28,32,36,40 \
-  --seeds 1,2,3,4,5 \
-  --iters 2000,4000,6000,8000
-
-python scripts/reproduction/cs5_generate_revised_k_selection_report.py \
-  --sweep-dir GSE154386/cogaps_sweep_singleprocess_hpc \
-  --outdir GSE154386/revised_k_selection_K10 \
-  --chosen-k 10 \
-  --chosen-seed 2
-```
-
-### Rerun the Selected `K = 10` Model
-
-The selected model can be rerun from the prepared CoGAPS-ready inputs in the external archive. R and Python use the same selected rank, seed, and iteration count. The R script reads the cells-by-genes discovery object. The Python script reads the genes-by-cells CoGAPS input with `transposeData = False` and also reads the discovery object for metadata and orientation checks.
+Run these commands inside Docker from `/home/rstudio/project`. The R command is the primary route; the Python command is an alternate route that also writes the two H5AD orientations used by downstream Python tooling.
 
 ::: {.panel-tabset}
 
-#### R
+### R
 
 ```{bash}
 #| eval: false
-export CS5_REPRODUCTION_ARCHIVE="/path/to/downloaded/reproduction_archive"
-
-docker run --platform linux/amd64 --rm \
-  -v "$PWD":/home/rstudio/project:rw \
-  -v "$CS5_REPRODUCTION_ARCHIVE":/home/rstudio/project/data/external/reproduction_archive:ro \
-  -w /home/rstudio/project \
-  othomas2/cs5-cogaps-runtime:0.1.0 \
-  Rscript scripts/reproduction/cs5_run_selected_model_r.R \
-    --discovery-h5ad /home/rstudio/project/data/external/reproduction_archive/cache/gse154386_experimental_discovery_cells_x_genes.h5ad \
-    --outdir /home/rstudio/project/GSE154386/cogaps_r_revised_model_K10_seed2_iter2000 \
-    --k 10 \
-    --seed 2 \
-    --n-iter 2000 \
-    --cogaps-threads 4 \
-    --blas-threads 1 \
-    --output-frequency 100 \
-    --checkpoint-interval 500 \
-    --n-snapshots 10 \
-    --snapshot-phase all \
-    --take-pump-samples \
-    --use-sparse-opt
+Rscript scripts/prepare_gse154386_subset_r.R \
+  --workdir /home/rstudio/project/GSE154386/source_preprocessing_r \
+  --max-cells-per-sample 600 \
+  --n-hvgs 5000 \
+  --seed 42
 ```
 
-#### Python
+### Python
 
 ```{bash}
 #| eval: false
-export CS5_REPRODUCTION_ARCHIVE="/path/to/downloaded/reproduction_archive"
-
-docker run --platform linux/amd64 --rm \
-  -v "$PWD":/home/rstudio/project:rw \
-  -v "$CS5_REPRODUCTION_ARCHIVE":/home/rstudio/project/data/external/reproduction_archive:ro \
-  -w /home/rstudio/project \
-  othomas2/cs5-cogaps-runtime:0.1.0 \
-  python scripts/reproduction/cs5_run_selected_model_python.py \
-    --cogaps-input-h5ad /home/rstudio/project/data/external/reproduction_archive/cache/gse154386_experimental_discovery_genes_x_cells.h5ad \
-    --discovery-h5ad /home/rstudio/project/data/external/reproduction_archive/cache/gse154386_experimental_discovery_cells_x_genes.h5ad \
-    --source-script /home/rstudio/project/scripts/reproduction/gse154386_sparse_distributed_cogaps.py \
-    --outdir /home/rstudio/project/GSE154386/cogaps_python_revised_model_K10_seed2_iter2000 \
-    --k 10 \
-    --seed 2 \
-    --n-iter 2000 \
-    --cogaps-threads 4 \
-    --blas-threads 1 \
-    --output-frequency 100 \
-    --checkpoint-interval 500 \
-    --n-snapshots 10 \
-    --snapshot-phase all \
-    --take-pump-samples \
-    --use-sparse-opt
+python scripts/prepare_gse154386_subset_python.py \
+  --workdir /home/rstudio/project/GSE154386/source_preprocessing_python \
+  --max-cells-per-sample 600 \
+  --n-hvgs 5000 \
+  --seed 42
 ```
 
 :::
 
-### Rebuild the Directionality Evidence from Counts
+After the preparation stage, check the generated `results/preprocessing_manifest.json` in the work folder you chose. That manifest should record the source accession, number of samples, retained cell and gene counts, discovery-set shape, `max_cells_per_sample`, `seed`, and output paths. Also check the prepared single-cell objects before moving on: one should preserve a cell-by-gene view for biological metadata and summaries, and one should preserve the genes-by-cells orientation used by PyCoGAPS with `transposeData = False`.
 
-Directionality is rebuilt after the selected model outputs are available. This script asks a different question from CoGAPS: after a pattern has been identified, are the top genes for that pattern higher or lower relative to each subject's `D0` baseline?
-
-The **Data Analysis** section shows the main idea and a compact command excerpt. The full Docker command below is for advanced reproduction, where the large preprocessed expression object is available through the external reproduction archive.
-
-| Argument | Value used here | What it controls |
-|---|---:|---|
-| `--top-n` | `25` | Tests the top 25 genes from each selected CoGAPS pattern. |
-| `--baseline-timepoint` | `D0` | Uses each subject's baseline sample as the matched reference. |
-| `--cohort` | `experimental` | Restricts the directionality analysis to the experimental discovery cohort. |
-| `--layer` | `counts` | Uses raw counts for pseudobulk expression before CPM and log2 transformation. |
-| `--min-cells` | `10` | Requires enough cells in both baseline and contrast groups before computing a contrast. |
-| `--log2fc-threshold` | `0.25` | Labels a contrast as up or down only when the absolute log2 fold-change reaches this threshold. |
-
-```{bash}
-#| eval: false
-export CS5_REPRODUCTION_ARCHIVE="/path/to/downloaded/reproduction_archive"
-
-docker run --platform linux/amd64 --rm \
-  -v "$PWD":/home/rstudio/project:rw \
-  -v "$CS5_REPRODUCTION_ARCHIVE":/home/rstudio/project/data/external/reproduction_archive:ro \
-  -w /home/rstudio/project \
-  othomas2/cs5-cogaps-runtime:0.1.0 \
-  python scripts/reproduction/gse154386_pattern_directionality.py \
-    --sweep-outdir /home/rstudio/project/data/external/reproduction_archive \
-    --run-stem cogaps_K10_seed2_iter2000 \
-    --outdir /home/rstudio/project/GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000 \
-    --top-n 25 \
-    --baseline-timepoint D0 \
-    --cohort experimental \
-    --layer counts \
-    --min-cells 10 \
-    --log2fc-threshold 0.25
-```
-
-The script writes several outputs, each with a different use in the case study:
-
-| Output | Role |
-|---|---|
-| `group_expression_log2cpm.csv` | Pseudobulk expression summaries by group before contrast summaries are collapsed. |
-| `gene_directionality_by_subject.csv` | Subject-level log2 fold-change contrasts for each selected top gene. |
-| `gene_directionality_summary.csv` | Gene-level summaries across subjects, including `median_log2fc` and `frac_up`. |
-| `pattern_directionality_summary.csv` | Pattern-level summaries across tested top genes, used for the compact Pattern3 evidence row in Data Analysis. |
-| `figures/` | SVG heatmaps for all-pattern and cell-type-stratified directionality checks. |
-
-### Inspect Full Analysis Reproduction Scripts
-
-The script map and command blocks above are usually enough. If you want to audit the script bodies inside the rendered case study, open the collapsed blocks below. They are kept here so the core Data Analysis section can stay focused on interpretation.
-
-```{r}
-#| label: additional-info-analysis-reproduction-scripts
-#| echo: false
-#| results: asis
-emit_script_detail <- function(path, title, language) {
-  full_path <- here::here(path)
-  cat("<details><summary>", title, "</summary>\n\n", sep = "")
-  cat("```", language, "\n", sep = "")
-  cat(readLines(full_path), sep = "\n")
-  cat("\n```\n\n</details>\n\n")
-}
-
-emit_script_detail(
-  "scripts/reproduction/gse154386_make_cogaps_jobs_tsv.py",
-  "Sweep job-table generator",
-  "python"
-)
-emit_script_detail(
-  "scripts/reproduction/gse154386_cogaps_sweep_array_singleprocess_rhino_light.sbatch",
-  "SLURM array sweep launcher",
-  "bash"
-)
-emit_script_detail(
-  "scripts/reproduction/gse154386_run_one_singleprocess.py",
-  "One-run PyCoGAPS sweep runner",
-  "python"
-)
-emit_script_detail(
-  "scripts/reproduction/gse154386_aggregate_results.py",
-  "Sweep aggregation script",
-  "python"
-)
-emit_script_detail(
-  "scripts/reproduction/cs5_generate_revised_k_selection_report.py",
-  "Revised K-selection report generator",
-  "python"
-)
-emit_script_detail(
-  "scripts/reproduction/cs5_build_k10_interpretation_layer.py",
-  "K = 10 interpretation-layer table builder",
-  "python"
-)
-emit_script_detail(
-  "scripts/reproduction/cs5_run_selected_model_r.R",
-  "Selected K = 10 R CoGAPS runner",
-  "r"
-)
-emit_script_detail(
-  "scripts/reproduction/cs5_run_selected_model_python.py",
-  "Selected K = 10 Python CoGAPS runner",
-  "python"
-)
-emit_script_detail(
-  "scripts/reproduction/gse154386_pattern_directionality.py",
-  "Directionality analysis script",
-  "python"
-)
-```
+The selected-model commands later in this guide read the archived prepared inputs from the Zenodo reproduction archive. That keeps the model rerun tied to the same handoff files used by the case study. If you rebuild preprocessing yourself, compare your regenerated manifest and object shapes with the archived handoff files before replacing downstream inputs.
 
 ## Advanced Audit: Full Preprocessing Decision Reference
 
@@ -330,7 +246,7 @@ Natural cohort | Reserved as an optional projection target | Keeps the primary l
 
 ## Advanced Reproduction: Source-Import Code Examples
 
-**Data Wrangling and Preprocessing** now shows the connected map from raw {{< glossary "10x Genomics files" display="10x Genomics files" >}} to a labeled {{< glossary "Single-cell object" display="single-cell object" >}}, then from that object to CoGAPS-ready inputs and included interpretation tables. This advanced reproduction note keeps the optional code examples for the first part of that map: source-file import.
+The source/preprocessing commands above are the executable route for rebuilding the large prepared artifacts. This subsection is a conceptual primer for the first part of that route: how raw {{< glossary "10x Genomics files" display="10x Genomics files" >}} become a labeled {{< glossary "Single-cell object" display="single-cell object" >}} before preprocessing begins.
 
 You do not need these steps for the main lesson. Use them if you want to audit or rebuild how raw source files become a labeled single-cell object before preprocessing begins.
 
@@ -341,7 +257,7 @@ Advanced reproduction note
 ::::{.inner_block}
 The short toy chunks in this subsection are examples you can run to understand the import logic. They use small in-memory objects so you can see how source 10x files become a labeled single-cell object without downloading the full GEO archive.
 
-If you want to run the advanced reproduction workflow on the real source files, use the preparation scripts listed in the **Advanced Reproduction Script Map** above. Those scripts include both the import steps in this section and the preprocessing steps summarized in Data Wrangling and Preprocessing. Keeping those steps in executable scripts makes the workflow easier to rerun because the downloaded files, imported objects, quality-control decisions, and saved outputs are handled in one continuous run. Helper chunks marked with `eval: false` below are script excerpts for transparency, not standalone workflow steps.
+If you want to run the advanced reproduction workflow on the real source files, use the preparation scripts listed in the **Advanced Reproduction Script Map** above. Those scripts include both the import steps in this section and the preprocessing steps summarized in Data Wrangling. Keeping those steps in executable scripts makes the workflow easier to rerun because the downloaded files, imported objects, quality-control decisions, and saved outputs are handled in one continuous run. Helper chunks marked with `eval: false` below are script excerpts for transparency, not standalone workflow steps.
 ::::
 :::
 
@@ -1052,6 +968,186 @@ def read_mtx(path):
 
 The Data Wrangling section connects this source-import step to preprocessing decisions, CoGAPS-ready model inputs, and the small interpretation tables used in the core path. The complete executable preparation scripts are listed in the **Advanced Reproduction Script Map** above.
 
+## Advanced Reproduction: CoGAPS Model and Analysis Commands
+
+The source/preprocessing stage creates the files that CoGAPS can read. The commands below pick up from those prepared inputs and rebuild the selected-model outputs, interpretation tables, directionality evidence, and optional display figures.
+
+You do not need to run these commands for the main lesson. If you are doing a full reproduction audit, treat the selected-model outputs and interpretation tables as the minimum target. Figures are useful display checks, but they are not the main evidence that the analysis itself was reproduced.
+
+### Review or Rerun the Rank Sweep
+
+The rank sweep asks a setup question before any biological interpretation begins: how many patterns should be inspected for this case-study goal? The sweep is the most compute-heavy part of the workflow. It was designed for a SLURM high-performance-computing environment, not for a typical laptop or the local Docker session.
+
+Most readers should inspect the included sweep evidence rather than rerun the full sweep. If you have access to a compatible SLURM cluster, the workflow starts by writing the task list, runs one task per array job, and then aggregates the completed runs.
+
+```bash
+python scripts/reproduction/gse154386_make_cogaps_jobs_tsv.py \
+  --k-grid 5,6,7,8,9,10,11,12,16,20,24,28,32,36,40 \
+  --seeds 1,2,3,4,5 \
+  --iters 2000,4000,6000,8000 \
+  --out GSE154386/cogaps_sweep_singleprocess_hpc/jobs.tsv
+```
+
+```bash
+sbatch --array=1-300%15 \
+  scripts/reproduction/gse154386_cogaps_sweep_array_singleprocess_rhino_light.sbatch
+```
+
+```bash
+python scripts/reproduction/gse154386_aggregate_results.py \
+  --outdir GSE154386/cogaps_sweep_singleprocess_hpc \
+  --k-grid 5,6,7,8,9,10,11,12,16,20,24,28,32,36,40 \
+  --seeds 1,2,3,4,5 \
+  --iters 2000,4000,6000,8000
+```
+
+The key handoff is the aggregated rank evidence, not the existence of hundreds of individual run folders. The case study uses the included rank summaries so the main lesson can move directly from model choice evidence to biological interpretation.
+
+### Rerun the Selected Model
+
+Once the rank has been chosen, the selected-model rerun produces the files that later sections read: cell scores, gene loadings, top genes, diagnostics, traces, and model summaries. The R command is the primary reproduction route. The Python command is an alternate route and a useful orientation check because it reads the genes-by-cells CoGAPS input while preserving the cell metadata from the cells-by-genes object.
+
+Run these commands inside Docker from `/home/rstudio/project`.
+
+::: {.panel-tabset}
+
+#### R
+
+```{bash}
+#| eval: false
+Rscript scripts/reproduction/cs5_run_selected_model_r.R \
+  --discovery-h5ad /home/rstudio/project/data/external/reproduction_archive/cache/gse154386_experimental_discovery_cells_x_genes.h5ad \
+  --outdir /home/rstudio/project/GSE154386/cogaps_r_revised_model_K10_seed2_iter2000 \
+  --k 10 \
+  --seed 2 \
+  --n-iter 2000 \
+  --top-genes 50 \
+  --cogaps-threads 4 \
+  --blas-threads 1
+```
+
+#### Python
+
+```{bash}
+#| eval: false
+python scripts/reproduction/cs5_run_selected_model_python.py \
+  --cogaps-input-h5ad /home/rstudio/project/data/external/reproduction_archive/cache/gse154386_experimental_discovery_genes_x_cells.h5ad \
+  --discovery-h5ad /home/rstudio/project/data/external/reproduction_archive/cache/gse154386_experimental_discovery_cells_x_genes.h5ad \
+  --outdir /home/rstudio/project/GSE154386/cogaps_python_revised_model_K10_seed2_iter2000 \
+  --k 10 \
+  --seed 2 \
+  --n-iter 2000 \
+  --top-genes 50 \
+  --cogaps-threads 4 \
+  --blas-threads 1
+```
+
+:::
+
+After either run, check that the output folder contains the run stem `cogaps_K10_seed2_iter2000` in the exported filenames. The most important files for downstream interpretation are `*.cell_scores.csv`, `*.gene_loadings.csv`, `*.top_genes.csv`, `*.pattern_summary.csv`, `*.diagnostics.json`, and `*.metrics.json`.
+
+### Rebuild Interpretation Tables
+
+The selected model is still a model output, not yet a teaching table. The interpretation-layer builder turns cell scores, pattern summaries, rank evidence, language-comparison summaries, and directionality evidence into the subject-timepoint and research-question tables used in the learner-facing analysis.
+
+This command rebuilds those interpretation tables from the selected R model outputs and the included evidence files:
+
+```{bash}
+#| eval: false
+python scripts/reproduction/cs5_build_k10_interpretation_layer.py \
+  --model-outdir /home/rstudio/project/GSE154386/cogaps_r_revised_model_K10_seed2_iter2000 \
+  --comparison-outdir /home/rstudio/project/data/processed/r_python_comparison \
+  --k-selection-outdir /home/rstudio/project/data/processed/k_selection \
+  --directionality-dir /home/rstudio/project/data/processed/directionality \
+  --outdir /home/rstudio/project/GSE154386/interpretation_rebuilt \
+  --run-stem cogaps_K10_seed2_iter2000
+```
+
+If you also rebuild directionality evidence, rerun this table builder afterward with `--directionality-dir` pointing to your regenerated directionality folder. That keeps the interpretation tables synchronized with the evidence you actually audited.
+
+### Rebuild Directionality Evidence
+
+CoGAPS connects genes to patterns, but the model scores do not by themselves say whether a gene is higher or lower after infection. The directionality script makes that comparison separately by grouping cells by subject, timepoint, and broad PBMC identity, then comparing post-baseline expression with the same subject's `D0` baseline when enough cells are available.
+
+```{bash}
+#| eval: false
+python scripts/reproduction/gse154386_pattern_directionality.py \
+  --sweep-outdir /home/rstudio/project/data/external/reproduction_archive \
+  --run-stem cogaps_K10_seed2_iter2000 \
+  --expression-h5ad /home/rstudio/project/data/external/reproduction_archive/cache/gse154386_preprocessed_hvg.h5ad \
+  --top-genes-csv /home/rstudio/project/GSE154386/cogaps_r_revised_model_K10_seed2_iter2000/cogaps_K10_seed2_iter2000.top_genes.csv \
+  --pattern-summary-csv /home/rstudio/project/GSE154386/cogaps_r_revised_model_K10_seed2_iter2000/cogaps_K10_seed2_iter2000.pattern_summary.csv \
+  --outdir /home/rstudio/project/GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000 \
+  --top-n 25 \
+  --baseline-timepoint D0 \
+  --cohort experimental \
+  --layer counts \
+  --min-cells 10 \
+  --log2fc-threshold 0.25
+```
+
+The useful audit checks are the directionality manifest, `tables/pattern_directionality_summary.csv`, `tables/gene_directionality_summary.csv`, and `tables/group_expression_log2cpm.csv`. Together they show which genes were tested, which subject-timepoint groups contributed enough cells, and whether each pattern's top genes were mostly higher, lower, or mixed after infection.
+
+### Optional: Regenerate Display Figures
+
+Figure scripts use included or regenerated evidence tables. They do not rerun CoGAPS.
+
+```bash
+Rscript scripts/generate_k_selection_figure.R
+Rscript scripts/generate_pattern_time_small_multiples.R
+python scripts/generate_pattern_embedding_figure.py
+python scripts/generate_opening_figure.py
+```
+
+Use figure regeneration as a final display check: the plots should update from the same tables you inspected, and the captions in the main lesson should still match the evidence shown.
+
+### Inspect Full Analysis Reproduction Scripts
+
+The table above names the scripts by stage. The expandable list below prints selected script excerpts inside the rendered page so you can inspect the available command-line options and file paths without leaving the case study.
+
+```{r}
+#| label: additional-info-analysis-reproduction-scripts
+#| echo: false
+#| results: asis
+script_paths <- c(
+  "scripts/prepare_gse154386_subset_r.R",
+  "scripts/prepare_gse154386_subset_python.py",
+  "scripts/reproduction/gse154386_make_cogaps_jobs_tsv.py",
+  "scripts/reproduction/gse154386_cogaps_sweep_array_singleprocess_rhino_light.sbatch",
+  "scripts/reproduction/gse154386_aggregate_results.py",
+  "scripts/reproduction/cs5_generate_revised_k_selection_report.py",
+  "scripts/reproduction/cs5_run_selected_model_r.R",
+  "scripts/reproduction/cs5_run_selected_model_python.py",
+  "scripts/reproduction/cs5_build_k10_interpretation_layer.py",
+  "scripts/reproduction/gse154386_pattern_directionality.py",
+  "scripts/generate_k_selection_figure.R",
+  "scripts/generate_pattern_time_small_multiples.R",
+  "scripts/generate_pattern_embedding_figure.py",
+  "scripts/generate_opening_figure.py"
+)
+
+emit_script_detail <- function(path) {
+  if (!file.exists(path)) {
+    cat("<details><summary>", path, " (missing)</summary>\n\n")
+    cat("This script is not present in the current checkout.\n\n</details>\n\n")
+    return(invisible(NULL))
+  }
+  ext <- tools::file_ext(path)
+  lang <- switch(ext, R = "r", r = "r", py = "python", sh = "bash", sbatch = "bash", "text")
+  lines <- readLines(path, warn = FALSE)
+  max_lines <- min(length(lines), 220)
+  cat("<details><summary>", path, "</summary>\n\n")
+  cat("```", lang, "\n", sep = "")
+  cat(lines[seq_len(max_lines)], sep = "\n")
+  if (length(lines) > max_lines) {
+    cat("\n# ... truncated in rendered guide; see the repository file for the complete script.\n")
+  }
+  cat("\n```\n\n</details>\n\n")
+}
+
+invisible(lapply(script_paths, emit_script_detail))
+```
+
 ## Advanced Software Reference
 
 The main setup section lists the packages used for the small included files. The table below adds software used when rebuilding larger workflow outputs.
@@ -1088,6 +1184,11 @@ Docker command is not found | Docker is not installed or Docker Desktop is not r
 RStudio Server opens but project files are missing | The repository may not have been mounted from the repository root. | Stop Docker, `cd` into the cloned `ocs-bio-temporal` folder, and relaunch Docker.
 The readiness check cannot find `data/processed` | The repository may be incomplete or you may be in the wrong folder. | Confirm that `/home/rstudio/project` contains `index.qmd`, `data/`, and `scripts/`.
 The external archive is not visible | This matters only for advanced reproduction. The archive folder may not be mounted. | Set `CS5_REPRODUCTION_ARCHIVE` to the extracted archive folder and relaunch Docker with the two-mount command.
+A source-preprocessing script tries to write into a read-only folder | The Zenodo archive mount is read-only by design. Source preprocessing needs a writable work folder. | Use a workdir such as `/home/rstudio/project/GSE154386/source_preprocessing_r`, not `/home/rstudio/project/data/external/reproduction_archive`.
+`sbatch` is not found | The rank sweep requires a SLURM cluster. A local Docker session does not provide the scheduler. | Inspect the included sweep evidence in the main lesson, or rerun the sweep only on a compatible high-performance-computing system.
+Selected-model rerun cannot find prepared H5AD inputs | The selected-model scripts read prepared input files from the Zenodo archive unless you pass regenerated file paths. | Mount the Zenodo archive, or point `--discovery-h5ad` and `--cogaps-input-h5ad` to regenerated files after checking matrix orientation.
+Directionality output is empty or missing groups | The directionality step requires a baseline group, enough cells in each comparison group, and selected top-gene inputs. | Check the `D0` baseline labels, `--cohort`, `--min-cells`, and the selected model's `*.top_genes.csv`.
+Figure regeneration fails | Figure scripts expect the processed evidence tables to exist first. | Rebuild or restore the required `data/processed` tables, then rerun the figure script. Figures do not rerun CoGAPS.
 A package is missing outside Docker | The case study is designed to use the Docker image. | Run the code inside Docker rather than trying to install all packages locally.
 :::
 

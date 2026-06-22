@@ -19,11 +19,11 @@ This map shows how the learning objectives come together across the case study. 
 
 | Learning goal | What this helps you do | Where it appears |
 |---|---|---|
-| Understand the biological setting | Explain why an experimental DENV-1 PBMC time course can be used to study host immune response over time | Motivation; Context; What Are the Data? |
-| Trace the core evidence files | Use included model outputs while recognizing where advanced reproduction materials document provenance | Prerequisites; What Are the Data?; Packages and Setup; Data Import |
-| Evaluate the CoGAPS rank decision | Use precomputed rank-selection evidence to explain which selected model the core analysis inspects | Main Questions; Data Import; Data Analysis |
+| Understand the biological setting | Explain why an experimental DENV-1 PBMC time course can be used to study host immune response over time | Motivation; Context; What are the data? |
+| Trace the core evidence files | Use included model outputs while recognizing where advanced reproduction materials document provenance | Prerequisites; What are the data?; Packages and Setup; Data Import |
+| Evaluate the CoGAPS rank decision | Use precomputed rank-selection evidence to explain which selected model the core analysis inspects | Main Question; Data Import; Data Analysis |
 | Check model evidence before interpretation | Load manifests, selected-model outputs, diagnostics, metadata, and coverage summaries before assigning biological meaning | Data Import; Data Exploration |
-| Summarize temporal and identity structure | Join pattern scores to subject, infection-day, and broad PBMC identity metadata, then compare temporal and identity/activity evidence | Data Exploration; Data Wrangling and Preprocessing; Data Visualization |
+| Summarize temporal and identity structure | Join pattern scores to subject, infection-day, and broad PBMC identity metadata, then compare temporal and identity/activity evidence | Data Exploration; Data Wrangling; Data Visualization |
 | Evaluate the interferon-response interpretation | Combine timing, IFN association, top genes, directionality, diagnostics, and sensitivity evidence | Data Visualization; Data Analysis |
 | State limitations and provenance | Explain what the precomputed evidence can support, where it came from, and which claims remain bounded | Limitations; Data Analysis; Summary; Additional Information |
 

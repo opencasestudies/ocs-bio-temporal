@@ -15,6 +15,8 @@ GitHub
 Github
 github
 glyphicons
+handoff
+Handoff
 HTTPS
 hw
 iconpacks
@@ -154,6 +156,7 @@ mononuclear
 Moniuszko
 Muschelli
 multiplets
+neutrophil
 neutrophils
 NK
 NMF
@@ -198,6 +201,7 @@ Tsang
 UMAP
 underset
 unfractionated
+workdir
 upregulated
 upregulation
 Veres

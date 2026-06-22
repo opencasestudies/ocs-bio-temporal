@@ -1,4 +1,4 @@
-# **What Are the Data?**
+# **What are the data?**
 ***
 
 Before you read any files into R or Python, pause to ask what each file represents. Some files describe the original public study, some describe the balanced set of cells used for CoGAPS, and some are summaries from models that have already been run. Knowing the difference will help you avoid common mistakes, such as treating every cell as a separate participant, using a balanced modeling set to estimate original cell abundance, or reading CoGAPS weights as up- or down-regulation.
@@ -66,7 +66,7 @@ The CoGAPS model in the main lesson was fit to a balanced discovery set. Balance
 
 In this case study, the discovery set contains 4,800 cells and 5,000 highly variable genes, with 600 cells contributing to each experimental timepoint. This makes temporal pattern comparison easier, but it also means these files should not be used to estimate the true abundance of PBMC populations in the full source study.
 
-You will inspect the discovery-set composition in **Data Exploration**, then return to the preprocessing decisions that created the discovery set in **Data Wrangling and Preprocessing**.
+You will inspect the discovery-set composition in **Data Exploration**, then return to the preprocessing decisions that created the discovery set in **Data Wrangling**.
 
 ## Columns You Will See Often
 
