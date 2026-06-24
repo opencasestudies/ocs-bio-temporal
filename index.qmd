@@ -67,6 +67,8 @@ execute:
 
 {{< include _suggested_hw.qmd >}}
 
+{{< include _full_reproduction.qmd >}}
+
 {{< include _additional_info.qmd >}}
 
 {{< include _glossary_table.qmd >}}

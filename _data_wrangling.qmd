@@ -14,7 +14,7 @@ How to use this section
 ::::{.inner_block}
 - **Core path:** read the preprocessing guide, then run the small table-wrangling chunks under **Build Interpretation-Ready Summary Tables**.
 - **Reproducibility notes:** use the visible thresholds, matrix-orientation notes, manifest descriptions, and runnable rebuild commands to understand where the included files came from.
-- **Additional Information:** use the advanced reproduction map and code explanations there if you want to rebuild or inspect the large preprocessing artifacts in more detail.
+- **Full Reproduction Guide:** use the reproduction map and code explanations there if you want to rebuild or inspect the large preprocessing files in more detail.
 ::::
 :::
 
@@ -23,7 +23,7 @@ How to use this section
 Preprocessing vocabulary
 ::::
 ::::{.inner_block}
-- {{< glossary "Preprocessing" display="Preprocessing" >}} turns imported single-cell data into a model-ready object whose cells, genes, metadata, and file provenance can be interpreted together.
+- {{< glossary "Preprocessing" display="Preprocessing" >}} turns imported single-cell data into a model-ready object whose cells, genes, metadata, and file origins can be interpreted together.
 - {{< glossary "Quality control" display="Quality control" >}} asks which cells and genes are reliable enough to keep.
 - {{< glossary "Library-size normalization" display="Library-size normalization" >}} and {{< glossary "Log transformation" display="log transformation" >}} put expression values on a more comparable scale.
 - {{< glossary "Highly variable genes" display="Highly variable gene" >}} selection and the {{< glossary "Balanced discovery set" display="balanced discovery subset" >}} define what CoGAPS learns from.
@@ -32,7 +32,7 @@ Preprocessing vocabulary
 ::::
 :::
 
-Together, these ideas explain why this section spends time on filtering, scaling, gene selection, metadata, and sample balance before showing any new figures. A temporal immune-program analysis only works if the model is learning biological structure rather than technical artifacts or sampling imbalance.
+Together, these ideas explain why this section spends time on filtering, scaling, gene selection, metadata, and sample balance before showing any new figures. A temporal immune-program analysis only works if the model is learning biological structure rather than technical noise or sampling imbalance.
 
 ## Preprocessing Decisions as Interpretation Safeguards
 
@@ -62,13 +62,13 @@ Different interpretations point back to different safeguards. A pattern that mai
 ::::
 :::
 
-For the full parameter-level reference, see the preprocessing decision reference in **Additional Information**. The shorter explanation here is the part you need to carry forward: these choices do not prove a biological program, but they define the evidence that can be interpreted later.
+For the full parameter-level reference, see [Advanced Audit: Full Preprocessing Decision Reference](#advanced-audit-full-preprocessing-decision-reference) in the Full Reproduction Guide. The shorter explanation here is the part you need to carry forward: these choices do not prove a biological program, but they define the evidence that can be interpreted later.
 
 ## From Source Files to CoGAPS-Ready Discovery Input
 
 The safeguards above become the workflow below. The first part of the workflow is source-file import: raw 10x files from GEO are read together with sample names so expression counts can be connected to cells, genes, subjects, cohorts, and infection days. That import step creates a labeled {{< glossary "Single-cell object" display="single-cell object" >}}, which then becomes the starting point for quality control, normalization, gene selection, annotation, discovery-set construction, and CoGAPS input saving.
 
-This map is provenance for the included files. You do not need to download the raw GEO archive or rebuild the large single-cell objects for the core path. The purpose here is to see how the small tables used later can be traced back to source files, preprocessing decisions, and a saved manifest.
+This map shows where the included files came from. You do not need to download the raw GEO archive or rebuild the large single-cell objects for the core path. The purpose here is to see how the small tables used later can be traced back to source files, preprocessing decisions, and a saved manifest.
 
 Read the diagram from top to bottom as a connected evidence chain. At each step, ask what biological comparison would be affected if that step were missing or mislabeled.
 
@@ -158,14 +158,14 @@ flowchart TB
 
 ## Preprocessing Guide: How the Discovery Input Is Created
 
-This guide summarizes how the included CoGAPS-ready artifacts were prepared. You do not need to run these preparation steps for the core path. They are here so the small tables you use later have a visible origin: each file came from a labeled single-cell object, a documented set of preprocessing decisions, and a saved manifest.
+This guide summarizes how the included CoGAPS-ready files were prepared. You do not need to run these preparation steps for the core path. They are here so the small tables you use later have a visible origin: each file came from a labeled single-cell object, a documented set of preprocessing decisions, and a saved manifest.
 
 :::{.reproducibility_box}
 ::::{.reproducibility_box_header}
 Reproducibility note
 ::::
 ::::{.inner_block}
-The complete preparation scripts live in the repository and are listed in **Additional Information -> Advanced Reproduction Script Map**. Use that map if you want to rebuild the large preprocessing artifacts from source files. Additional Information also includes code explanations for the preprocessing steps, so the main lesson can stay focused on what the prepared inputs mean.
+The complete preparation scripts live in the repository and are listed in [Advanced Reproduction Script Map](#advanced-reproduction-script-map) in the Full Reproduction Guide. Use that map if you want to rebuild the large preprocessing files from source files. The guide also includes code explanations for the preprocessing steps, so the main lesson can stay focused on what the prepared inputs mean.
 
 These scripts download or reuse the GEO source archive, import the 10x files into a labeled single-cell object, apply the preprocessing decisions summarized below, construct the balanced experimental discovery set, and save orientation-specific matrices plus `preprocessing_manifest.json`. They prepare the inputs needed before a selected CoGAPS model can be run. They do not run CoGAPS itself, and they do not rerun the rank sweep assessed in Data Import.
 
@@ -205,7 +205,7 @@ The CoGAPS input is built from normalized, log-transformed expression values and
 
 ### Marker and Program Scores Add Biological Guideposts
 
-CoGAPS learns patterns from the expression matrix, but numbered patterns do not explain themselves. Marker and program scores add biological guideposts before you interpret the model. A {{< glossary "Marker score" display="marker score" >}} asks whether each cell expresses genes associated with broad PBMC identities, such as T cells, monocytes, natural killer cells, B cells, plasmablasts, dendritic cells, or neutrophils. A {{< glossary "Program score" display="program score" >}} uses the same scoring idea for biological activity, such as interferon-associated response.
+CoGAPS learns patterns from the expression matrix, but numbered patterns do not explain themselves. The marker and program genes introduced in [Context](#marker-and-program-genes-as-biological-guideposts) become scores here, giving you biological guideposts before you interpret the model. A {{< glossary "Marker score" display="marker score" >}} asks whether each cell expresses genes associated with broad PBMC identities, such as T cells, monocytes, natural killer cells, B cells, plasmablasts, dendritic cells, or neutrophils. A {{< glossary "Program score" display="program score" >}} uses the same scoring idea for biological activity, such as interferon-associated response.
 
 These scores are useful precisely because they are modest. A high `T_cell_score` or `Monocyte_score` can suggest a broad immune identity, but it is still an annotation aid rather than a definitive cell-type call. A high `ifn_program_score` can flag antiviral-response activity, but it does not prove that a CoGAPS pattern is caused by interferon signaling. Later sections use the scores as guideposts beside CoGAPS cell scores, top genes, subject trajectories, and model diagnostics.
 

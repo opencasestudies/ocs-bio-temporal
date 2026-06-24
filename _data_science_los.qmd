@@ -3,4 +3,4 @@
 1. Import rank-selection evidence, selected CoGAPS outputs, metadata tables, diagnostics, and manifests in R or Python.
 1. Check file inventories, table columns, object dimensions, subject/timepoint coverage, and analysis units before interpreting model output.
 1. Join and summarize CoGAPS pattern scores by subject, infection day, and broad PBMC identity to support temporal and identity/activity comparisons.
-1. Trace where included analysis files came from and when advanced reproduction notes or scripts would be used to audit their provenance.
+1. Trace where included analysis files came from and when the Full Reproduction Guide would be used to audit or rebuild them.

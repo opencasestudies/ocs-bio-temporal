@@ -21,11 +21,11 @@ One response you will return to later is the interferon-associated antiviral res
 
 {{< glossary "Peripheral blood mononuclear cells" display="Peripheral blood mononuclear cells" >}}, or `PBMCs`, are a mixed population of immune cells isolated from blood. They include T cells, B cells, natural killer cells, monocytes, and related antigen-presenting cells. The broad source annotations used later also keep plasmablast and neutrophil labels visible, so the figure below orients you to the immune-cell identities you will see in composition summaries and pattern evidence. That mixture is useful for studying a systemic immune response, but it also creates the central modeling challenge in this case study.
 
-![Blood-derived immune-cell identities used to orient this case study, including T cells, B cells, natural killer cells, monocytes, neutrophils, plasmablasts, and antigen-presenting dendritic cells. These broad labels help you notice whether later CoGAPS patterns look identity-like, activity-like, or mixed. AI-generated educational illustration. Disclosure: generative-AI systems may be trained on human-made artwork and scientific images; no specific source artist is identifiable from this generated file, and any identifiable source artist or source image should be credited when known.](img/pbmc_mixed_immune_cell_system_ai.png){fig-alt="AI-generated educational illustration titled Blood-derived immune cells. The image shows labeled stylized examples of a T cell, B cell, natural killer cell, monocyte, neutrophil, plasmablast, and antigen-presenting dendritic cell, each with a short functional description." width="900"}
+![Blood-derived immune-cell identities used to orient this case study, including T cells, B cells, natural killer cells, monocytes, neutrophils, plasmablasts, and antigen-presenting dendritic cells. These broad labels help you notice whether later CoGAPS patterns look identity-like, activity-like, or mixed. AI-generated educational illustration created with ChatGPT Images 2.0. Disclosure: generative-AI systems may be trained on human-made artwork and scientific images; no specific source artist is identifiable from this generated file, and any identifiable source artist or source image should be credited when known.](img/pbmc_mixed_immune_cell_system_ai.png){fig-alt="AI-generated educational illustration titled Blood-derived immune cells. The image shows labeled stylized examples of a T cell, B cell, natural killer cell, monocyte, neutrophil, plasmablast, and antigen-presenting dendritic cell, each with a short functional description." width="900"}
 
 A cell can carry more than one interpretable signal. A monocyte can remain identifiable as a monocyte while also activating {{< glossary "Interferon-stimulated genes" display="interferon-stimulated genes" >}}. A T cell or natural killer cell can retain its lineage markers while also showing activation or cytotoxic activity. A B-cell population can shift toward plasmablast-like states as part of an antibody-related response.
 
-This is the biological reason the case study focuses on latent transcriptional programs rather than only on cell clusters. A useful model should help you ask whether a signal looks like stable immune-cell identity, dynamic infection activity, or a mixture of both.
+This is the biological reason the case study focuses on latent transcriptional programs rather than only on {{< glossary "Cell cluster" display="cell clusters" >}}. A useful model should help you ask whether a signal looks like stable immune-cell identity, dynamic infection activity, or a mixture of both.
 
 :::{.think_question}
 ::::{.think_question_header}
@@ -66,6 +66,14 @@ The findings below are not final answers for this case study. They are expectati
 - **Host response rather than viral tropism:** no cell-associated DENV-1 RNA was detected in PBMCs in either the experimental or natural infection samples. The case-study interpretation therefore concerns host immune programs, not direct identification of infected cells.
 
 These points keep the later modeling questions biologically grounded. The aligned days let you ask temporal questions. The PBMC annotations let you separate cell identity from activity. The monocyte, interferon, T-cell, and plasmablast-like findings give you biological expectations to check against the CoGAPS patterns without assuming the model must reproduce them exactly.
+
+## Marker and Program Genes as Biological Guideposts
+
+The source-study findings above give you two kinds of biological clues. Some genes help recognize **what kind of immune cell** you may be looking at. These are {{< glossary "Marker gene" display="marker genes" >}}: genes whose expression is associated with broad PBMC identities such as T cells, monocytes, natural killer cells, B cells, plasmablasts, dendritic cells, or neutrophils.
+
+Other genes help recognize **what a cell is doing**. These are {{< glossary "Program gene" display="program genes" >}}: genes chosen as guideposts for a biological activity or cell state, such as interferon signaling, antibody-related activity, translation, or mitochondrial signal. For example, the interferon-related genes highlighted above, including `IFITM1`, `IFI6`, `ISG15`, `MX1`, `TRIM22`, and `LY6E`, become useful guideposts for asking whether a CoGAPS pattern is connected to an antiviral response.
+
+Later, the preprocessing workflow turns these gene lists into {{< glossary "Marker score" display="marker scores" >}} and {{< glossary "Program score" display="program scores" >}}. A marker score asks whether a cell expresses genes associated with a broad immune-cell identity. A program score asks whether a cell expresses genes associated with a biological activity. These scores do not decide the interpretation by themselves. They give you evidence to compare with timing, top genes, directionality, and model diagnostics.
 
 ## From Cell Clusters to Latent Programs
 
@@ -141,9 +149,23 @@ The double bars are a compact way to measure the total reconstruction error acro
 
 ## How CoGAPS Extends Vanilla NMF
 
-{{< glossary "CoGAPS" >}} is the specific NMF-family method used in this case study. It keeps the additive, non-negative structure described above, but fits the model using a Bayesian, sampling-based framework designed for genomic data [@fertig2010cogaps; @johnson2023cogapsProtocol].
+{{< glossary "CoGAPS" >}} is the NMF-family method used throughout this case study, and it is also software for applying that method to biological data. The official [CoGAPS User Guide](https://fertiglab.github.io/CoGAPSGuide/){target="_blank"} introduces CoGAPS workflows for both R and Python users. In this case study, the main lesson uses saved CoGAPS results, while the Full Reproduction Guide shows how the selected model can be rerun in the included Docker environment.
 
-That difference matters because single-cell data are noisy, sparse, and high-dimensional. Rather than treating one fitted factorization as automatically meaningful, CoGAPS supports diagnostics and model-comparison evidence that help you decide whether a result is stable enough to interpret. In other words, the model output is a starting point for evidence-based interpretation, not a final answer by itself.
+:::: {.columns}
+::: {.column width="22%"}
+![](img/cogaps_logo_small.png){fig-alt="CoGAPS logo showing a stylized bird beside the letters A and P, the two CoGAPS output matrices." width="130"}
+:::
+
+::: {.column width="78%"}
+![](img/cogaps_matrix_patterns_schematic.png){fig-alt="Schematic from the CoGAPS User Guide showing an input matrix represented by pattern matrices and corresponding pattern profiles." width="100%"}
+:::
+::::
+
+*Image credit: CoGAPS logo and schematic from the [Fertig Lab CoGAPS User Guide](https://fertiglab.github.io/CoGAPSGuide/){target="_blank"}.*
+
+The schematic above shows the same idea introduced in the NMF section: a large gene-expression matrix is represented by a smaller set of patterns. CoGAPS keeps the additive, non-negative structure of NMF, but fits the model using a Bayesian, sampling-based framework designed for genomic data [@fertig2010cogaps; @johnson2023cogapsProtocol]. In practical terms, CoGAPS does not give each cell only one cluster assignment. It estimates {{< glossary "Gene loading" display="gene loadings" >}} and {{< glossary "Cell score" display="cell scores" >}}, so a cell can show evidence for more than one pattern.
+
+That difference matters for PBMC dengue data. A cell may carry a stable immune-cell identity signal and a changing antiviral-response signal at the same time. CoGAPS gives you pattern-level evidence that can be compared with timing, marker scores, program scores, top genes, directionality, and diagnostics. The model output is therefore not a final biological answer. It is the structured evidence you will inspect to decide whether a pattern looks identity-like, activity-like, or mixed.
 
 This case study builds on CoGAPS-style uses that are directly relevant here: temporal CoGAPS for interpreting time-course transcriptional patterns [@fertig2014temporalCogaps] and single-cell CoGAPS for identifying latent programs across cells [@johnson2023cogapsProtocol].
 
@@ -206,6 +228,6 @@ Core distinctions to carry forward
 ::::
 :::
 
-With these concepts in place, the next section describes the actual data objects used in the case study: where the source data came from, which cohort is used for discovery, and which precomputed artifacts carry the model evidence through the analysis.
+With these concepts in place, the next section describes the actual data objects used in the case study: where the source data came from, which cohort is used for discovery, and which precomputed files carry the model evidence through the analysis.
 
 ***

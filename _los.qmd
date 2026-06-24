@@ -3,7 +3,7 @@
 
 By the end of this case study, you will be able to explain an evidence chain for temporal immune response in experimental dengue infection. You will inspect precomputed CoGAPS rank-selection evidence, load selected model outputs, run lightweight checks and summaries, and evaluate whether one latent program is best interpreted as an interferon-associated late acute activity program rather than a PBMC identity pattern.
 
-The Core learner path is designed so you can complete the scientific interpretation without rerunning large CoGAPS models or rebuilding raw 10x Genomics files. Advanced reproduction notes remain available for auditing provenance, regenerating large artifacts, or teaching a full reproduction module.
+The Core learner path is designed so you can complete the scientific interpretation without rerunning large CoGAPS models or rebuilding raw 10x Genomics files. The Full Reproduction Guide remains available if you want to check where the included files came from or regenerate larger files and model results.
 
 The objectives are organized into data science/bioinformatics, statistical/modeling, and biological/topical goals. Together, they prepare you to answer the four research questions: choosing an appropriate CoGAPS rank, identifying temporal immune programs, distinguishing PBMC identity from dynamic infection activity, and evaluating evidence for an interferon-associated late acute response.
 
@@ -13,18 +13,19 @@ The objectives are organized into data science/bioinformatics, statistical/model
 
 {{< include _biological_los.qmd >}}
 
-## Objectives Map
+:::{.callout-note collapse="true" title="Objectives Map: where each skill is used"}
 
 This map shows how the learning objectives come together across the case study. The detailed objectives above name the skills; the map below shows where those skills are introduced, practiced, and used for interpretation.
 
 | Learning goal | What this helps you do | Where it appears |
 |---|---|---|
-| Understand the biological setting | Explain why an experimental DENV-1 PBMC time course can be used to study host immune response over time | Motivation; Context; What are the data? |
-| Trace the core evidence files | Use included model outputs while recognizing where advanced reproduction materials document provenance | Prerequisites; What are the data?; Packages and Setup; Data Import |
-| Evaluate the CoGAPS rank decision | Use precomputed rank-selection evidence to explain which selected model the core analysis inspects | Main Question; Data Import; Data Analysis |
-| Check model evidence before interpretation | Load manifests, selected-model outputs, diagnostics, metadata, and coverage summaries before assigning biological meaning | Data Import; Data Exploration |
-| Summarize temporal and identity structure | Join pattern scores to subject, infection-day, and broad PBMC identity metadata, then compare temporal and identity/activity evidence | Data Exploration; Data Wrangling; Data Visualization |
-| Evaluate the interferon-response interpretation | Combine timing, IFN association, top genes, directionality, diagnostics, and sensitivity evidence | Data Visualization; Data Analysis |
-| State limitations and provenance | Explain what the precomputed evidence can support, where it came from, and which claims remain bounded | Limitations; Data Analysis; Summary; Additional Information |
+| Understand the biological setting | Explain why an experimental DENV-1 PBMC time course can be used to study host immune response over time | [Motivation](#motivation); [Context](#context); [What are the data?](#what-are-the-data) |
+| Trace the core evidence files | Use included model outputs while recognizing how the Full Reproduction Guide shows where those files came from | [Prerequisites](#prerequisites); [What are the data?](#what-are-the-data); [Packages and Setup](#packages-and-setup); [Data Import](#data-import) |
+| Evaluate the CoGAPS rank decision | Use precomputed rank-selection evidence to explain which selected model the core analysis inspects | [Main Question](#main-question); [Data Import](#data-import); [Data Analysis](#data-analysis) |
+| Check model evidence before interpretation | Load manifests, selected-model outputs, diagnostics, metadata, and coverage summaries before assigning biological meaning | [Data Import](#data-import); [Data Exploration](#data-exploration) |
+| Summarize temporal and identity structure | Join pattern scores to subject, infection-day, and broad PBMC identity metadata, then compare temporal and identity/activity evidence | [Data Exploration](#data-exploration); [Data Wrangling](#data-wrangling); [Data Visualization](#data-visualization) |
+| Evaluate the interferon-response interpretation | Combine timing, IFN association, top genes, directionality, diagnostics, and sensitivity evidence | [Data Visualization](#data-visualization); [Data Analysis](#data-analysis) |
+| State limitations and evidence origins | Explain what the precomputed evidence can support, where it came from, and which claims remain bounded | [Limitations](#limitations); [Data Analysis](#data-analysis); [Summary](#summary); [Full Reproduction Guide](#full-reproduction-guide) |
+:::
 
 ***

@@ -225,16 +225,14 @@ window.Quarto = {
   <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link active" data-scroll-target="#prerequisites">Prerequisites</a></li>
   <li><a href="#motivation" id="toc-motivation" class="nav-link" data-scroll-target="#motivation"><strong>Motivation</strong></a></li>
   <li><a href="#main-question" id="toc-main-question" class="nav-link" data-scroll-target="#main-question"><strong>Main Question</strong></a></li>
-  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives"><strong>Learning Objectives</strong></a>
-  <ul class="collapse">
-  <li><a href="#objectives-map" id="toc-objectives-map" class="nav-link" data-scroll-target="#objectives-map">Objectives Map</a></li>
-  </ul></li>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives"><strong>Learning Objectives</strong></a></li>
   <li><a href="#context" id="toc-context" class="nav-link" data-scroll-target="#context"><strong>Context</strong></a>
   <ul class="collapse">
   <li><a href="#denv-1-infection-and-blood-immune-response" id="toc-denv-1-infection-and-blood-immune-response" class="nav-link" data-scroll-target="#denv-1-infection-and-blood-immune-response">DENV-1 Infection and Blood Immune Response</a></li>
   <li><a href="#pbmcs-as-a-mixed-immune-cell-system" id="toc-pbmcs-as-a-mixed-immune-cell-system" class="nav-link" data-scroll-target="#pbmcs-as-a-mixed-immune-cell-system">PBMCs as a Mixed Immune-Cell System</a></li>
   <li><a href="#experimental-and-natural-primary-denv-1-infection" id="toc-experimental-and-natural-primary-denv-1-infection" class="nav-link" data-scroll-target="#experimental-and-natural-primary-denv-1-infection">Experimental and Natural Primary DENV-1 Infection</a></li>
   <li><a href="#source-study-findings-to-carry-forward" id="toc-source-study-findings-to-carry-forward" class="nav-link" data-scroll-target="#source-study-findings-to-carry-forward">Source-Study Findings to Carry Forward</a></li>
+  <li><a href="#marker-and-program-genes-as-biological-guideposts" id="toc-marker-and-program-genes-as-biological-guideposts" class="nav-link" data-scroll-target="#marker-and-program-genes-as-biological-guideposts">Marker and Program Genes as Biological Guideposts</a></li>
   <li><a href="#from-cell-clusters-to-latent-programs" id="toc-from-cell-clusters-to-latent-programs" class="nav-link" data-scroll-target="#from-cell-clusters-to-latent-programs">From Cell Clusters to Latent Programs</a></li>
   <li><a href="#nmf-the-mathematical-shape-of-the-problem" id="toc-nmf-the-mathematical-shape-of-the-problem" class="nav-link" data-scroll-target="#nmf-the-mathematical-shape-of-the-problem">NMF: The Mathematical Shape of the Problem</a></li>
   <li><a href="#how-cogaps-extends-vanilla-nmf" id="toc-how-cogaps-extends-vanilla-nmf" class="nav-link" data-scroll-target="#how-cogaps-extends-vanilla-nmf">How CoGAPS Extends Vanilla NMF</a></li>
@@ -362,11 +360,8 @@ window.Quarto = {
   <li><a href="#optional-natural-infection-projection" id="toc-optional-natural-infection-projection" class="nav-link" data-scroll-target="#optional-natural-infection-projection">Optional Natural Infection Projection</a></li>
   <li><a href="#challenge-extension" id="toc-challenge-extension" class="nav-link" data-scroll-target="#challenge-extension">Challenge Extension</a></li>
   </ul></li>
-  <li><a href="#additional-information" id="toc-additional-information" class="nav-link" data-scroll-target="#additional-information"><strong>Additional Information</strong></a>
+  <li><a href="#full-reproduction-guide" id="toc-full-reproduction-guide" class="nav-link" data-scroll-target="#full-reproduction-guide"><strong>Full Reproduction Guide</strong></a>
   <ul class="collapse">
-  <li><a href="#helpful-links" id="toc-helpful-links" class="nav-link" data-scroll-target="#helpful-links">Helpful Links</a></li>
-  <li><a href="#concepts-covered" id="toc-concepts-covered" class="nav-link" data-scroll-target="#concepts-covered">Concepts Covered</a></li>
-  <li><a href="#full-reproduction-companion-guide" id="toc-full-reproduction-companion-guide" class="nav-link" data-scroll-target="#full-reproduction-companion-guide">Full Reproduction Companion Guide</a></li>
   <li><a href="#advanced-reproduction-setup" id="toc-advanced-reproduction-setup" class="nav-link" data-scroll-target="#advanced-reproduction-setup">Advanced Reproduction Setup</a></li>
   <li><a href="#optional-runtime-launcher" id="toc-optional-runtime-launcher" class="nav-link" data-scroll-target="#optional-runtime-launcher">Optional Runtime Launcher</a></li>
   <li><a href="#full-reproduction-route-map" id="toc-full-reproduction-route-map" class="nav-link" data-scroll-target="#full-reproduction-route-map">Full Reproduction Route Map</a></li>
@@ -398,6 +393,11 @@ window.Quarto = {
   </ul></li>
   <li><a href="#advanced-software-reference" id="toc-advanced-software-reference" class="nav-link" data-scroll-target="#advanced-software-reference">Advanced Software Reference</a></li>
   <li><a href="#setup-troubleshooting" id="toc-setup-troubleshooting" class="nav-link" data-scroll-target="#setup-troubleshooting">Setup Troubleshooting</a></li>
+  </ul></li>
+  <li><a href="#additional-information" id="toc-additional-information" class="nav-link" data-scroll-target="#additional-information"><strong>Additional Information</strong></a>
+  <ul class="collapse">
+  <li><a href="#helpful-links" id="toc-helpful-links" class="nav-link" data-scroll-target="#helpful-links">Helpful Links</a></li>
+  <li><a href="#concepts-covered" id="toc-concepts-covered" class="nav-link" data-scroll-target="#concepts-covered">Concepts Covered</a></li>
   <li><a href="#glossary" id="toc-glossary" class="nav-link" data-scroll-target="#glossary">Glossary</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   <li><a href="#session-info" id="toc-session-info" class="nav-link" data-scroll-target="#session-info"><strong>Session Info</strong></a></li>
@@ -444,9 +444,11 @@ window.Quarto = {
 </div>
 <div class="inner_block">
 <ul>
-<li><strong>PBMCs:</strong> Peripheral blood mononuclear cells, a mixed population of immune cells isolated from blood. PBMCs include lymphocytes such as T cells, B cells, and natural killer cells, as well as monocytes and related antigen-presenting cells.</li>
-<li><strong>PBMC identity:</strong> The relatively stable immune-cell identity of a cell, such as T cell, B cell, natural killer cell, or monocyte. A T cell remains a T cell across the infection time course, even though its gene-expression activity can change.</li>
-<li><strong>IFN:</strong> Interferon, an antiviral signaling system that helps coordinate host responses to viral infection.</li>
+<li><strong>PBMCs:</strong> Peripheral blood mononuclear cells, a mixed immune-cell sample from blood. In this case study, PBMCs provide both infection-day timing and immune-cell identity context.</li>
+<li><strong>CoGAPS pattern:</strong> A gene-expression pattern learned from the single-cell data. Each pattern has genes that help define it and cell scores that show where the pattern is strongest.</li>
+<li><strong>Model resolution (<code>K</code>):</strong> The number of patterns CoGAPS is asked to learn. Choosing <code>K</code> shapes how much detail the model can separate before any pattern is named biologically.</li>
+<li><strong>Temporal program:</strong> A pattern whose cell scores change across infection days, such as rising, peaking, or fading after infection.</li>
+<li><strong>Identity-like vs.&nbsp;activity-like signal:</strong> An identity-like signal mostly follows broad PBMC cell types, while an activity-like signal changes with infection timing within or across those cell types.</li>
 </ul>
 </div>
 </div>
@@ -559,12 +561,12 @@ Include bioOCSdata package information once ready/applicable
 <li><strong>Docker installed and running.</strong> Install Docker Desktop for your operating system using the official Docker instructions for <a href="https://docs.docker.com/desktop/setup/install/mac-install/" target="_blank">Mac</a>, <a href="https://docs.docker.com/desktop/setup/install/windows-install/" target="_blank">Windows</a>, or <a href="https://docs.docker.com/desktop/setup/install/linux/" target="_blank">Linux</a>. Docker opens the same R and Python environment used to build the case study, so you do not need to install all of the analysis packages by hand.</li>
 <li><strong>A way to download the GitHub repository.</strong> The setup section uses <code>git clone</code>, but you can also download the repository another way if you do not normally use Git. The goal is simply to put the case-study pages, scripts, figures, and included data in one project folder.</li>
 <li><strong>A web browser and a Terminal or command prompt.</strong> You will keep the case study open in one browser tab, open RStudio Server from Docker in another tab, and run a few setup commands in your Terminal.</li>
-<li><strong>Storage and compute that match the route you choose.</strong> Most learners only need the Core learner path, which is designed for a laptop or desktop running Docker. The GitHub checkout is small, with about <code>29 MB</code> of included case-study data; the Docker image is the main download and is about <code>4 GB</code>. The core path reads included evidence files and runs lightweight R or Python summaries. Full reproduction is optional and needs more room: the external materials omitted from GitHub are about <code>316 MB</code>, and a complete working area can grow to several GB as source files, <code>.h5ad</code> objects, model outputs, logs, and regenerated figures accumulate. Rerunning the selected CoGAPS model can take tens of minutes to about an hour. The full rank sweep belongs on a high-performance computing cluster; in the recorded workflow, it ran as a SLURM array with <code>300</code> tasks, up to <code>15</code> running at once, and <code>4</code> CPUs, <code>32 GB</code> memory, and <code>36</code> hours requested per task.</li>
+<li><strong>Storage and compute that match the route you choose.</strong> Most learners only need the Core learner path, which is designed for a laptop or desktop running Docker. The cloned GitHub repository is small, with about <code>29 MB</code> of included case-study data; the Docker image is the main download and is about <code>4 GB</code>. The core path reads included evidence files and runs lightweight R or Python summaries. Full reproduction is optional and needs more room: the external materials omitted from GitHub are about <code>316 MB</code>, and a complete working area can grow to several GB as source files, <code>.h5ad</code> objects, model outputs, logs, and regenerated figures accumulate. Rerunning the selected CoGAPS model can take tens of minutes to about an hour. The full rank sweep belongs on a high-performance computing cluster; in the recorded workflow, it ran as a SLURM array with <code>300</code> tasks, up to <code>15</code> running at once, and <code>4</code> CPUs, <code>32 GB</code> memory, and <code>36</code> hours requested per task.</li>
 <li><strong>Some comfort reading either R or Python.</strong> You do not need to use both languages, and you do not need to be fluent in either one. It is enough to follow short code chunks and recognize common table operations. In R, it helps to recognize objects created with <code>&lt;-</code>, function calls, data frames, pipes, and common <code>dplyr</code> and <code>tidyr</code> verbs such as <code>select()</code>, <code>filter()</code>, <code>mutate()</code>, <code>group_by()</code>, <code>summarize()</code>, and <code>pivot_wider()</code>. In Python, it helps to recognize variables, <code>Path</code>, <code>pandas</code> tables, column selection with <code>.loc</code>, previews with <code>.head()</code>, and common operations such as <code>.assign()</code>, <code>.groupby().agg()</code>, <code>.merge()</code>, and <code>.pivot()</code>.</li>
 <li><strong>Basic table and file-path literacy.</strong> You should be able to read rows and columns in a table, recognize CSV and JSON files, follow project-relative paths, and notice when a table has changed from long to wide format.</li>
 <li><strong>A little biology context to build from.</strong> You do not need prior dengue, single-cell RNA-seq, or CoGAPS expertise. The case study will introduce the key ideas as they appear. It helps to start with three simple ideas: gene-expression data measure genes across cells, PBMCs are mixed blood immune cells, and model patterns need biological evidence before they can be interpreted.</li>
 </ul>
-<p>The case study remains reproducible, but full reproduction is separate from the Core learner path. Use the advanced reproduction notes when you want to audit or regenerate the larger source-data, preprocessing, selected-model, directionality, or sweep artifacts.</p>
+<p>The case study remains reproducible, but full reproduction is separate from the Core learner path. Use the Full Reproduction Guide when you want to audit or regenerate the larger source-data, preprocessing, selected-model, directionality, or sweep files.</p>
 </div>
 </div>
 <!--
@@ -588,10 +590,10 @@ This section may not be needed for all case studies and can be removed if not
 </div>
 <p><em>Image source: <a href="https://www.cbsnews.com/news/dengue-fever-map-what-to-know-global-case-surge/" target="_blank">CBS News, “Maps show dengue fever risk areas as CDC warns of global case surge”</a>.</em></p>
 <p>Case counts explain why dengue matters, but this case study focuses on a more specific timing problem. Dengue infection, immune activation, warning signs, and recovery do not all happen at once. Because there is no dengue-specific antiviral treatment, clinical care depends on supportive management and close monitoring as infection unfolds <span class="citation" data-cites="cdc2026dengueClinicalCare">(<a href="#ref-cdc2026dengueClinicalCare" role="doc-biblioref">Centers for Disease Control and Prevention 2026</a>)</span>. For researchers, that same timing raises a biological question: how does the <button class="glossary"><span class="def">The immune reaction of a person or organism to infection, measured here through changes in blood immune-cell gene expression.</span>host immune response</button> change across infection days?</p>
-<p>Single-cell data can help answer that question, but only if you keep the biological puzzle in view. The source study profiled <button class="glossary"><span class="def">Blood-derived immune cells that include T cells, B cells, natural killer cells, monocytes, and related antigen-presenting cells.</span>peripheral blood mononuclear cells</button>, or PBMCs, during primary dengue virus type 1 infection <span class="citation" data-cites="waickman2021denv1Pbmc">(<a href="#ref-waickman2021denv1Pbmc" role="doc-biblioref">Waickman et al. 2021</a>)</span>. PBMCs are blood-derived immune cells, including T cells, B cells, natural killer cells, monocytes, and related antigen-presenting cells. They are useful here because blood is one place where a systemic host response can be observed over time.</p>
+<p>Single-cell data can help answer that question, but only if you keep the biological puzzle in view. This case study uses public data from the source study by Waickman and colleagues, who measured blood-derived immune cells during <button class="glossary"><span class="def">A first dengue infection in the study framing, interpreted without the same prior dengue immune history expected in secondary infection.</span>primary</button> <button class="glossary"><span class="def">Dengue virus serotype 1, the viral serotype studied in the source experimental and natural primary infection cohorts.</span>dengue virus type 1 infection</button> with <button class="glossary"><span class="def">A sequencing method that measures gene expression in many individual cells, making it possible to study cell-to-cell differences instead of only an average signal from a mixed sample.</span>single-cell RNA sequencing</button> <span class="citation" data-cites="waickman2021denv1Pbmc">(<a href="#ref-waickman2021denv1Pbmc" role="doc-biblioref">Waickman et al. 2021</a>)</span>. Because the <button class="glossary"><span class="def">A study group sampled on a planned infection timeline, allowing responses from different participants to be compared at aligned timepoints.</span>experimental cohort</button> was sampled across planned infection days, the data can support a <button class="glossary"><span class="def">An analysis that compares measurements collected at ordered timepoints so you can ask how a signal rises, peaks, persists, or fades over time.</span>time-course analysis</button> of immune activity. The profiled cells were <button class="glossary"><span class="def">Blood-derived immune cells that include T cells, B cells, natural killer cells, monocytes, and related antigen-presenting cells.</span>peripheral blood mononuclear cells</button>, or PBMCs: blood-derived immune cells including T cells, B cells, natural killer cells, monocytes, and related antigen-presenting cells. They are useful here because blood is one place where a systemic host response can be observed over time.</p>
 <p>The main discovery data come from an <button class="glossary"><span class="def">A study group sampled on a planned infection timeline, allowing responses from different participants to be compared at aligned timepoints.</span>experimental infection cohort</button>. Participants were sampled on a planned schedule, so later post-infection samples can be compared with a shared <button class="glossary"><span class="def">A starting reference sample collected before later post-infection changes are interpreted.</span>baseline</button> and with one another along an aligned timeline. That design lets you ask a focused temporal question: which immune programs rise, peak, persist, or fade during infection and recovery?</p>
 <p>The challenge is that PBMC single-cell data do not contain one signal at a time. Each cell has a relatively stable <button class="glossary"><span class="def">The relatively stable cell type assigned to an immune cell, such as T cell, B cell, natural killer cell, or monocyte.</span>immune-cell identity</button>: a T cell is still a T cell, and a monocyte is still a monocyte. At the same time, infection can turn on <button class="glossary"><span class="def">A coordinated gene-expression pattern that reflects what cells are doing, such as antiviral signaling, inflammation, cytotoxic activity, or antibody-related responses.</span>activity programs</button> such as antiviral signaling, inflammation, cytotoxic activity, or antibody-related responses. A later blood sample may therefore differ from baseline because the mixture of cell types changed, because the same cell types changed their activity, because subjects differ from one another, or because several of these processes happen together.</p>
-<p>This is why the case study focuses on <button class="glossary"><span class="def">An inferred gene-expression pattern shared across many cells, rather than a variable measured directly in the original data table.</span>latent transcriptional programs</button> rather than only on cell clusters. Clustering can help identify groups of similar cells, but it tends to assign each cell to one group. Dengue host response is more layered than that: a monocyte can remain a monocyte while also expressing an interferon-stimulated antiviral program.</p>
+<p>This is why the case study focuses on <button class="glossary"><span class="def">An inferred gene-expression pattern shared across many cells, rather than a variable measured directly in the original data table.</span>latent transcriptional programs</button> rather than only on <button class="glossary"><span class="def">A group of cells with similar overall gene-expression profiles, often used to recognize broad cell neighborhoods or cell types in single-cell data.</span>cell clusters</button>. In single-cell analysis, a cluster is a group of cells with similar overall gene-expression profiles. Clustering is useful for finding broad cell neighborhoods, but it usually treats each cell as belonging to one main group. Dengue host response is more layered than that: a monocyte can remain a monocyte while also expressing an interferon-stimulated antiviral program.</p>
 <p>You will use <button class="glossary"><span class="def">A Bayesian non-negative matrix factorization method used to learn gene-expression patterns and cell-level pattern scores from genomic data.</span>CoGAPS</button>, a Bayesian <button class="glossary"><span class="def">A matrix decomposition approach that represents a non-negative data matrix as additive combinations of smaller non-negative pattern matrices.</span>non-negative matrix factorization</button> method, to represent cells as additive mixtures of latent programs <span class="citation" data-cites="fertig2010cogaps johnson2023cogapsProtocol">(<a href="#ref-fertig2010cogaps" role="doc-biblioref">Fertig et al. 2010</a>; <a href="#ref-johnson2023cogapsProtocol" role="doc-biblioref">Johnson et al. 2023</a>)</span>. In plain language, CoGAPS helps ask which gene-expression patterns define the data and how strongly each cell uses each pattern. The model can therefore support a more careful question than “which cells are present?”: which patterns look like stable PBMC identity, which look like dynamic infection activity, and which look mixed?</p>
 <p>A key modeling choice is how many patterns to ask CoGAPS to learn. That number is called the <button class="glossary"><span class="def">The number of latent patterns the model is asked to learn.</span>rank</button>, or <code>K</code>. If <code>K</code> is too small, distinct biological signals may be compressed into the same pattern. If <code>K</code> is too large, the model may split signal into patterns that are harder to interpret. Choosing <code>K</code> is therefore not just a technical setting; it shapes what biological questions the selected model can answer.</p>
 <p>By the end of this case study, you should be able to explain why one CoGAPS pattern is interpreted as a late acute, interferon-associated activity program rather than simply a cell-identity pattern. You should also be able to name the evidence that supports that interpretation and the limits that keep the claim cautious.</p>
@@ -703,14 +705,14 @@ State what supports the interferon-associated interpretation and what remains bo
 <h1><strong>Learning Objectives</strong></h1>
 <hr>
 <p>By the end of this case study, you will be able to explain an evidence chain for temporal immune response in experimental dengue infection. You will inspect precomputed CoGAPS rank-selection evidence, load selected model outputs, run lightweight checks and summaries, and evaluate whether one latent program is best interpreted as an interferon-associated late acute activity program rather than a PBMC identity pattern.</p>
-<p>The Core learner path is designed so you can complete the scientific interpretation without rerunning large CoGAPS models or rebuilding raw 10x Genomics files. Advanced reproduction notes remain available for auditing provenance, regenerating large artifacts, or teaching a full reproduction module.</p>
+<p>The Core learner path is designed so you can complete the scientific interpretation without rerunning large CoGAPS models or rebuilding raw 10x Genomics files. The Full Reproduction Guide remains available if you want to check where the included files came from or regenerate larger files and model results.</p>
 <p>The objectives are organized into data science/bioinformatics, statistical/modeling, and biological/topical goals. Together, they prepare you to answer the four research questions: choosing an appropriate CoGAPS rank, identifying temporal immune programs, distinguishing PBMC identity from dynamic infection activity, and evaluating evidence for an interferon-associated late acute response.</p>
 <p><u><strong>Data Science/Bioinformatics Learning Objectives:</strong></u></p>
 <ol type="1">
 <li>Import rank-selection evidence, selected CoGAPS outputs, metadata tables, diagnostics, and manifests in R or Python.</li>
 <li>Check file inventories, table columns, object dimensions, subject/timepoint coverage, and analysis units before interpreting model output.</li>
 <li>Join and summarize CoGAPS pattern scores by subject, infection day, and broad PBMC identity to support temporal and identity/activity comparisons.</li>
-<li>Trace where included analysis files came from and when advanced reproduction notes or scripts would be used to audit their provenance.</li>
+<li>Trace where included analysis files came from and when the Full Reproduction Guide would be used to audit or rebuild them.</li>
 </ol>
 <p><u><strong>Statistical and Modeling Learning Objectives:</strong></u></p>
 <ol type="1">
@@ -726,15 +728,20 @@ State what supports the interferon-associated interpretation and what remains bo
 <li>Evaluate evidence for an interferon-associated late acute response using timing, IFN-score correlation, interferon-stimulated genes, subject-level trajectories, and directionality.</li>
 <li>Discuss limitations from small subject numbers, changing cell composition, selected-model sensitivity, teaching-data construction, and public human-data interpretation.</li>
 </ol>
-<section id="objectives-map" class="level2">
-<h2 class="anchored" data-anchor-id="objectives-map">Objectives Map</h2>
+<div class="callout callout-style-default callout-note callout-titled" title="Objectives Map: where each skill is used">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Objectives Map: where each skill is used
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <p>This map shows how the learning objectives come together across the case study. The detailed objectives above name the skills; the map below shows where those skills are introduced, practiced, and used for interpretation.</p>
 <table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>Learning goal</th>
@@ -746,42 +753,44 @@ State what supports the interferon-associated interpretation and what remains bo
 <tr class="odd">
 <td>Understand the biological setting</td>
 <td>Explain why an experimental DENV-1 PBMC time course can be used to study host immune response over time</td>
-<td>Motivation; Context; What are the data?</td>
+<td><a href="#motivation">Motivation</a>; <a href="#context">Context</a>; <a href="#what-are-the-data">What are the data?</a></td>
 </tr>
 <tr class="even">
 <td>Trace the core evidence files</td>
-<td>Use included model outputs while recognizing where advanced reproduction materials document provenance</td>
-<td>Prerequisites; What are the data?; Packages and Setup; Data Import</td>
+<td>Use included model outputs while recognizing how the Full Reproduction Guide shows where those files came from</td>
+<td><a href="#prerequisites">Prerequisites</a>; <a href="#what-are-the-data">What are the data?</a>; <a href="#packages-and-setup">Packages and Setup</a>; <a href="#data-import">Data Import</a></td>
 </tr>
 <tr class="odd">
 <td>Evaluate the CoGAPS rank decision</td>
 <td>Use precomputed rank-selection evidence to explain which selected model the core analysis inspects</td>
-<td>Main Question; Data Import; Data Analysis</td>
+<td><a href="#main-question">Main Question</a>; <a href="#data-import">Data Import</a>; <a href="#data-analysis">Data Analysis</a></td>
 </tr>
 <tr class="even">
 <td>Check model evidence before interpretation</td>
 <td>Load manifests, selected-model outputs, diagnostics, metadata, and coverage summaries before assigning biological meaning</td>
-<td>Data Import; Data Exploration</td>
+<td><a href="#data-import">Data Import</a>; <a href="#data-exploration">Data Exploration</a></td>
 </tr>
 <tr class="odd">
 <td>Summarize temporal and identity structure</td>
 <td>Join pattern scores to subject, infection-day, and broad PBMC identity metadata, then compare temporal and identity/activity evidence</td>
-<td>Data Exploration; Data Wrangling; Data Visualization</td>
+<td><a href="#data-exploration">Data Exploration</a>; <a href="#data-wrangling">Data Wrangling</a>; <a href="#data-visualization">Data Visualization</a></td>
 </tr>
 <tr class="even">
 <td>Evaluate the interferon-response interpretation</td>
 <td>Combine timing, IFN association, top genes, directionality, diagnostics, and sensitivity evidence</td>
-<td>Data Visualization; Data Analysis</td>
+<td><a href="#data-visualization">Data Visualization</a>; <a href="#data-analysis">Data Analysis</a></td>
 </tr>
 <tr class="odd">
-<td>State limitations and provenance</td>
+<td>State limitations and evidence origins</td>
 <td>Explain what the precomputed evidence can support, where it came from, and which claims remain bounded</td>
-<td>Limitations; Data Analysis; Summary; Additional Information</td>
+<td><a href="#limitations">Limitations</a>; <a href="#data-analysis">Data Analysis</a>; <a href="#summary">Summary</a>; <a href="#full-reproduction-guide">Full Reproduction Guide</a></td>
 </tr>
 </tbody>
 </table>
+</div>
+</div>
+</div>
 <hr>
-</section>
 </section>
 <section id="context" class="level1">
 <h1><strong>Context</strong></h1>
@@ -802,11 +811,11 @@ State what supports the interferon-associated interpretation and what remains bo
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="img/pbmc_mixed_immune_cell_system_ai.png" class="img-fluid figure-img" alt="AI-generated educational illustration titled Blood-derived immune cells. The image shows labeled stylized examples of a T cell, B cell, natural killer cell, monocyte, neutrophil, plasmablast, and antigen-presenting dendritic cell, each with a short functional description." width="900"></p>
-<figcaption>Blood-derived immune-cell identities used to orient this case study, including T cells, B cells, natural killer cells, monocytes, neutrophils, plasmablasts, and antigen-presenting dendritic cells. These broad labels help you notice whether later CoGAPS patterns look identity-like, activity-like, or mixed. AI-generated educational illustration. Disclosure: generative-AI systems may be trained on human-made artwork and scientific images; no specific source artist is identifiable from this generated file, and any identifiable source artist or source image should be credited when known.</figcaption>
+<figcaption>Blood-derived immune-cell identities used to orient this case study, including T cells, B cells, natural killer cells, monocytes, neutrophils, plasmablasts, and antigen-presenting dendritic cells. These broad labels help you notice whether later CoGAPS patterns look identity-like, activity-like, or mixed. AI-generated educational illustration created with ChatGPT Images 2.0. Disclosure: generative-AI systems may be trained on human-made artwork and scientific images; no specific source artist is identifiable from this generated file, and any identifiable source artist or source image should be credited when known.</figcaption>
 </figure>
 </div>
 <p>A cell can carry more than one interpretable signal. A monocyte can remain identifiable as a monocyte while also activating <button class="glossary"><span class="def">Genes whose expression can increase when cells receive interferon signals during an antiviral response.</span>interferon-stimulated genes</button>. A T cell or natural killer cell can retain its lineage markers while also showing activation or cytotoxic activity. A B-cell population can shift toward plasmablast-like states as part of an antibody-related response.</p>
-<p>This is the biological reason the case study focuses on latent transcriptional programs rather than only on cell clusters. A useful model should help you ask whether a signal looks like stable immune-cell identity, dynamic infection activity, or a mixture of both.</p>
+<p>This is the biological reason the case study focuses on latent transcriptional programs rather than only on <button class="glossary"><span class="def">A group of cells with similar overall gene-expression profiles, often used to recognize broad cell neighborhoods or cell types in single-cell data.</span>cell clusters</button>. A useful model should help you ask whether a signal looks like stable immune-cell identity, dynamic infection activity, or a mixture of both.</p>
 <div class="think_question">
 <div class="think_question_header">
 <p>Prediction</p>
@@ -842,6 +851,12 @@ Show answer
 <li><strong>Host response rather than viral tropism:</strong> no cell-associated DENV-1 RNA was detected in PBMCs in either the experimental or natural infection samples. The case-study interpretation therefore concerns host immune programs, not direct identification of infected cells.</li>
 </ul>
 <p>These points keep the later modeling questions biologically grounded. The aligned days let you ask temporal questions. The PBMC annotations let you separate cell identity from activity. The monocyte, interferon, T-cell, and plasmablast-like findings give you biological expectations to check against the CoGAPS patterns without assuming the model must reproduce them exactly.</p>
+</section>
+<section id="marker-and-program-genes-as-biological-guideposts" class="level2">
+<h2 class="anchored" data-anchor-id="marker-and-program-genes-as-biological-guideposts">Marker and Program Genes as Biological Guideposts</h2>
+<p>The source-study findings above give you two kinds of biological clues. Some genes help recognize <strong>what kind of immune cell</strong> you may be looking at. These are <button class="glossary"><span class="def">A gene used as a guidepost for broad cell identity because its expression is associated with a particular immune-cell type or state.</span>marker genes</button>: genes whose expression is associated with broad PBMC identities such as T cells, monocytes, natural killer cells, B cells, plasmablasts, dendritic cells, or neutrophils.</p>
+<p>Other genes help recognize <strong>what a cell is doing</strong>. These are <button class="glossary"><span class="def">A gene used as a guidepost for a biological activity, such as interferon signaling, antibody-related activity, translation, or mitochondrial signal.</span>program genes</button>: genes chosen as guideposts for a biological activity or cell state, such as interferon signaling, antibody-related activity, translation, or mitochondrial signal. For example, the interferon-related genes highlighted above, including <code>IFITM1</code>, <code>IFI6</code>, <code>ISG15</code>, <code>MX1</code>, <code>TRIM22</code>, and <code>LY6E</code>, become useful guideposts for asking whether a CoGAPS pattern is connected to an antiviral response.</p>
+<p>Later, the preprocessing workflow turns these gene lists into <button class="glossary"><span class="def">A gene-set score based on known marker genes, used here as an annotation aid for broad immune-cell identity.</span>marker scores</button> and <button class="glossary"><span class="def">A gene-set score for a biological activity, such as an interferon-associated response, rather than a stable cell identity.</span>program scores</button>. A marker score asks whether a cell expresses genes associated with a broad immune-cell identity. A program score asks whether a cell expresses genes associated with a biological activity. These scores do not decide the interpretation by themselves. They give you evidence to compare with timing, top genes, directionality, and model diagnostics.</p>
 </section>
 <section id="from-cell-clusters-to-latent-programs" class="level2">
 <h2 class="anchored" data-anchor-id="from-cell-clusters-to-latent-programs">From Cell Clusters to Latent Programs</h2>
@@ -926,8 +941,17 @@ D_{g,c} \approx \sum_{k=1}^{K} A_{g,k} P_{k,c}
 </section>
 <section id="how-cogaps-extends-vanilla-nmf" class="level2">
 <h2 class="anchored" data-anchor-id="how-cogaps-extends-vanilla-nmf">How CoGAPS Extends Vanilla NMF</h2>
-<p><button class="glossary"><span class="def">A Bayesian non-negative matrix factorization method used to learn gene-expression patterns and cell-level pattern scores from genomic data.</span>CoGAPS</button> is the specific NMF-family method used in this case study. It keeps the additive, non-negative structure described above, but fits the model using a Bayesian, sampling-based framework designed for genomic data <span class="citation" data-cites="fertig2010cogaps johnson2023cogapsProtocol">(<a href="#ref-fertig2010cogaps" role="doc-biblioref">Fertig et al. 2010</a>; <a href="#ref-johnson2023cogapsProtocol" role="doc-biblioref">Johnson et al. 2023</a>)</span>.</p>
-<p>That difference matters because single-cell data are noisy, sparse, and high-dimensional. Rather than treating one fitted factorization as automatically meaningful, CoGAPS supports diagnostics and model-comparison evidence that help you decide whether a result is stable enough to interpret. In other words, the model output is a starting point for evidence-based interpretation, not a final answer by itself.</p>
+<p><button class="glossary"><span class="def">A Bayesian non-negative matrix factorization method used to learn gene-expression patterns and cell-level pattern scores from genomic data.</span>CoGAPS</button> is the NMF-family method used throughout this case study, and it is also software for applying that method to biological data. The official <a href="https://fertiglab.github.io/CoGAPSGuide/" target="_blank">CoGAPS User Guide</a> introduces CoGAPS workflows for both R and Python users. In this case study, the main lesson uses saved CoGAPS results, while the Full Reproduction Guide shows how the selected model can be rerun in the included Docker environment.</p>
+<div class="columns">
+<div class="column" style="width:22%;">
+<p><img src="img/cogaps_logo_small.png" class="img-fluid" alt="CoGAPS logo showing a stylized bird beside the letters A and P, the two CoGAPS output matrices." width="130"></p>
+</div><div class="column" style="width:78%;">
+<p><img src="img/cogaps_matrix_patterns_schematic.png" class="img-fluid" style="width:100.0%" alt="Schematic from the CoGAPS User Guide showing an input matrix represented by pattern matrices and corresponding pattern profiles."></p>
+</div>
+</div>
+<p><em>Image credit: CoGAPS logo and schematic from the <a href="https://fertiglab.github.io/CoGAPSGuide/" target="_blank">Fertig Lab CoGAPS User Guide</a>.</em></p>
+<p>The schematic above shows the same idea introduced in the NMF section: a large gene-expression matrix is represented by a smaller set of patterns. CoGAPS keeps the additive, non-negative structure of NMF, but fits the model using a Bayesian, sampling-based framework designed for genomic data <span class="citation" data-cites="fertig2010cogaps johnson2023cogapsProtocol">(<a href="#ref-fertig2010cogaps" role="doc-biblioref">Fertig et al. 2010</a>; <a href="#ref-johnson2023cogapsProtocol" role="doc-biblioref">Johnson et al. 2023</a>)</span>. In practical terms, CoGAPS does not give each cell only one cluster assignment. It estimates <button class="glossary"><span class="def">A value in the CoGAPS A matrix showing how strongly a gene contributes to a learned pattern.</span>gene loadings</button> and <button class="glossary"><span class="def">A value in the CoGAPS P matrix showing how strongly a cell uses a learned pattern.</span>cell scores</button>, so a cell can show evidence for more than one pattern.</p>
+<p>That difference matters for PBMC dengue data. A cell may carry a stable immune-cell identity signal and a changing antiviral-response signal at the same time. CoGAPS gives you pattern-level evidence that can be compared with timing, marker scores, program scores, top genes, directionality, and diagnostics. The model output is therefore not a final biological answer. It is the structured evidence you will inspect to decide whether a pattern looks identity-like, activity-like, or mixed.</p>
 <p>This case study builds on CoGAPS-style uses that are directly relevant here: temporal CoGAPS for interpreting time-course transcriptional patterns <span class="citation" data-cites="fertig2014temporalCogaps">(<a href="#ref-fertig2014temporalCogaps" role="doc-biblioref">Fertig et al. 2014</a>)</span> and single-cell CoGAPS for identifying latent programs across cells <span class="citation" data-cites="johnson2023cogapsProtocol">(<a href="#ref-johnson2023cogapsProtocol" role="doc-biblioref">Johnson et al. 2023</a>)</span>.</p>
 </section>
 <section id="what-choosing-k-means" class="level2">
@@ -979,7 +1003,7 @@ D_{g,c} \approx \sum_{k=1}^{K} A_{g,k} P_{k,c}
 </ul>
 </div>
 </div>
-<p>With these concepts in place, the next section describes the actual data objects used in the case study: where the source data came from, which cohort is used for discovery, and which precomputed artifacts carry the model evidence through the analysis.</p>
+<p>With these concepts in place, the next section describes the actual data objects used in the case study: where the source data came from, which cohort is used for discovery, and which precomputed files carry the model evidence through the analysis.</p>
 <hr>
 </section>
 </section>
@@ -1227,7 +1251,7 @@ D_{g,c} \approx \sum_{k=1}^{K} A_{g,k} P_{k,c}
 </section>
 <section id="where-the-large-files-fit" class="level2">
 <h2 class="anchored" data-anchor-id="where-the-large-files-fit">Where the Large Files Fit</h2>
-<p>Some files needed to rebuild the workflow are too large or time-consuming for the main lesson. These include the raw GEO archive, preprocessed objects, model objects, checkpoint files, and full sweep outputs. They are documented in <code>data/artifact_manifest.json</code> and in the reproduction scripts. In the main lesson, you will use the smaller included files to understand the analysis without rerunning every long step.</p>
+<p>Some files needed to rebuild the workflow are too large or time-consuming for the main lesson. These include the raw GEO archive, preprocessed objects, model objects, checkpoint files, and full sweep outputs. They are listed in <code>data/artifact_manifest.json</code> and explained in the Full Reproduction Guide. In the main lesson, you will use the smaller included files to understand the analysis without rerunning every long step.</p>
 <div class="think_question">
 <div class="think_question_header">
 <p>Checkpoint</p>
@@ -1272,7 +1296,7 @@ Show answer
 <hr>
 <p>This case study does not enroll new participants or collect new specimens. It reuses publicly available human single-cell RNA-seq data from GEO, originally generated by Waickman and colleagues <span class="citation" data-cites="waickman2021denv1Pbmc">(<a href="#ref-waickman2021denv1Pbmc" role="doc-biblioref">Waickman et al. 2021</a>)</span>. That distinction matters, but it does not make the ethical questions disappear. These are still human-subjects-derived data, and the topic is infectious disease, where scientific claims can quickly become connected to public trust, policy decisions, stigma, and access to care.</p>
 <p>The pandemic that began in 2019 made that connection especially visible. Uncertainty about infection severity, transmission, vaccination, and public-health policy shaped how many people understood scientific evidence and how governments acted on it. Dengue is a different disease, and this case study is not a policy model. The lesson is narrower but still important: analyses of infectious-disease data should be interpreted carefully because they can sound more clinically or socially decisive than the evidence allows.</p>
-<p>Walker and colleagues describe infectious-disease genetics research as an area where public-health goals and individual protections can come into tension <span class="citation" data-cites="walker2021infectiousDiseaseEthics">(<a href="#ref-walker2021infectiousDiseaseEthics" role="doc-biblioref">Walker et al. 2021</a>)</span>. Their review highlights issues such as privacy, reporting to authorities, return of individual research results, resource allocation, equity, and justice. Most of those issues are not directly acted on in this teaching case because you are working with public data whose identifying details have been removed, along with precomputed analysis artifacts. Still, they provide a useful lens for reading the results. A CoGAPS pattern is not a diagnosis, a treatment recommendation, or a policy rule. It is a statistical summary that can support a biological interpretation when several kinds of evidence point in the same direction.</p>
+<p>Walker and colleagues describe infectious-disease genetics research as an area where public-health goals and individual protections can come into tension <span class="citation" data-cites="walker2021infectiousDiseaseEthics">(<a href="#ref-walker2021infectiousDiseaseEthics" role="doc-biblioref">Walker et al. 2021</a>)</span>. Their review highlights issues such as privacy, reporting to authorities, return of individual research results, resource allocation, equity, and justice. Most of those issues are not directly acted on in this teaching case because you are working with public data whose identifying details have been removed, along with precomputed analysis files. Still, they provide a useful lens for reading the results. A CoGAPS pattern is not a diagnosis, a treatment recommendation, or a policy rule. It is a statistical summary that can support a biological interpretation when several kinds of evidence point in the same direction.</p>
 <p>As you work through the case study, keep these boundaries visible:</p>
 <ol type="1">
 <li>Do not use this analysis to make clinical decisions or public-health policy claims.</li>
@@ -1282,7 +1306,7 @@ Show answer
 <li>Keep subject-level variation visible wherever possible. A dataset with many cells is not the same as a dataset with many independent people.</li>
 <li>Cite the original study, the GEO accession, the analysis software, and the case-study repository or archive when reusing the data or teaching materials.</li>
 </ol>
-<p>Reproducibility is also part of responsible interpretation. The case study separates the Core learner path from the advanced reproduction materials so that you can inspect the evidence without rerunning every expensive step, while still seeing how the larger artifacts can be rebuilt or audited. The Fred Hutch Data Science Lab reproducibility guide frames reproducibility as a continuum: an analysis can become more transparent and easier to rerun over time, even if no workflow is perfectly reproducible in every future setting <span class="citation" data-cites="fredHutchReproducibilityContinuum">(<a href="#ref-fredHutchReproducibilityContinuum" role="doc-biblioref">Fred Hutch Data Science Lab, n.d.</a>)</span>. Just as important, reproducible does not automatically mean correct. It means the work is traceable enough for someone else to check the code, data, assumptions, and interpretation.</p>
+<p>Reproducibility is also part of responsible interpretation. The case study separates the Core learner path from the Full Reproduction Guide so that you can inspect the evidence without rerunning every expensive step, while still seeing how the larger files can be rebuilt or audited. The Fred Hutch Data Science Lab reproducibility guide frames reproducibility as a continuum: an analysis can become more transparent and easier to rerun over time, even if no workflow is perfectly reproducible in every future setting <span class="citation" data-cites="fredHutchReproducibilityContinuum">(<a href="#ref-fredHutchReproducibilityContinuum" role="doc-biblioref">Fred Hutch Data Science Lab, n.d.</a>)</span>. Just as important, reproducible does not automatically mean correct. It means the work is traceable enough for someone else to check the code, data, assumptions, and interpretation.</p>
 <p>For clinical care, use medical and public-health guidance rather than this teaching case study <span class="citation" data-cites="cdc2026dengueClinicalCare">(<a href="#ref-cdc2026dengueClinicalCare" role="doc-biblioref">Centers for Disease Control and Prevention 2026</a>)</span>.</p>
 <p>With those interpretive boundaries in place, the next section sets up the software environment you will use before importing evidence files.</p>
 <hr>
@@ -1290,7 +1314,7 @@ Show answer
 <section id="packages-and-setup" class="level1">
 <h1><strong>Packages and Setup</strong></h1>
 <p>This section gets your computer ready for the main lesson. You will use a Docker container so R, Python, and the required packages are already installed. The repository already includes the small evidence files used in <strong>Data Import</strong>, so you can begin the analysis without downloading raw GEO files or rerunning CoGAPS.</p>
-<p>If your goal is to rebuild large files, rerun selected models, or check how the included files were produced, see <a href="#advanced-reproduction-setup">Advanced Reproduction Setup</a> in <strong>Additional Information</strong>. You do not need those larger files to complete the main lesson.</p>
+<p>If your goal is to rebuild large files, rerun selected models, or check how the included files were produced, see <a href="#advanced-reproduction-setup">Advanced Reproduction Setup</a> in the Full Reproduction Guide. You do not need those larger files to complete the main lesson.</p>
 <section id="what-the-setup-provides" class="level2">
 <h2 class="anchored" data-anchor-id="what-the-setup-provides">What the Setup Provides</h2>
 <p>Think of setup as three pieces:</p>
@@ -1320,19 +1344,31 @@ Show answer
 </tr>
 <tr class="odd">
 <td>External reproduction archive</td>
-<td>Large source, preprocessed, model-object, checkpoint, selected-model, and sweep-summary files that are too large for GitHub.</td>
-<td>Use this only if you want to rebuild large workflow outputs.</td>
+<td>Large source, preprocessed, selected-model, directionality, and rank-sweep support files that are too large for GitHub.</td>
+<td>Use this if you want to rebuild larger files or inspect the files behind the rank comparison.</td>
 </tr>
 </tbody>
 </table>
-<p>The workflow map below shows why setup matters before the case study begins. The top band separates the three resources you are setting up: the Docker image for software, the GitHub repository for the main teaching files, and the external archive for advanced reproduction. Follow the left panel from source-file import to final figures, then use the numbered labels on the right to see which pieces of evidence will help you answer each question later.</p>
-<div id="fig-packages-setup-workflow-map" class="quarto-float quarto-figure quarto-figure-center anchored">
+<p>Setup has two roles in this case study. First, it gives you the software and files needed for the main lesson. Second, it keeps the larger evidence trail visible, so you can see where the included tables and figures came from without rebuilding every step yourself.</p>
+<p>The first figure keeps the setup resources separate. Docker supplies the software environment, the GitHub repository supplies the main lesson files, and the external archive holds larger rebuild files plus files that support the separate rank-sweep checks.</p>
+<div id="fig-packages-setup-resources" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-packages-setup-workflow-map-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="img/packages_setup_workflow_map.png" class="img-fluid figure-img" style="width:100.0%">
+<div aria-describedby="fig-packages-setup-resources-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/packages_setup_resources.png" class="img-fluid figure-img" style="width:100.0%">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-packages-setup-workflow-map-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Setup sources and evidence-building path for the CoGAPS case study. The top band distinguishes the Docker image, GitHub repository, and external archive. The left panel follows the work from source-file import through figures and tables, and the right panel uses numbered labels to show which evidence supports each case-study question or objective.
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-packages-setup-resources-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Setup resources for the case study. Docker supplies the software environment, the GitHub repository supplies the main lesson files, and the external archive holds larger rebuild files plus files that support the separate rank-sweep checks.
+</figcaption>
+</figure>
+</div>
+<p>Once those resources are in place, the next map separates three paths through the evidence. The brighter steps are the main lesson pieces you work with most directly in the case study. The quieter source-rebuild steps show where the included files came from. The directionality step is also muted because you inspect its included results in the main lesson, but generate that analysis only during full reproduction. The rank sweep is shown separately because it requires high-performance computing.</p>
+<div id="fig-packages-setup-evidence-path" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-packages-setup-evidence-path-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="img/packages_setup_workflow_map_core_path_colors.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-packages-setup-evidence-path-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Evidence-building path for the CoGAPS case study. The left panel follows the analysis from source-file import through figures and tables. Bright steps mark the evidence learners work with most directly in the main lesson. Muted steps mark source-rebuild work, the included directionality evidence inspected in the main lesson but generated during full reproduction, and the separate high-compute rank sweep. The right panel separates the main lesson path, the full reproduction path that skips the high-compute rank sweep and reruns the selected model, and the separate rank-sweep path for high-performance computing.
 </figcaption>
 </figure>
 </div>
@@ -1364,7 +1400,7 @@ Figure&nbsp;1: Setup sources and evidence-building path for the CoGAPS case stud
 <img src="assets/rstudio_server_labeled.svg" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rstudio-server-labeled-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: A labeled RStudio Server window showing where to paste R code, run selected lines, use the Terminal for Python or full scripts, and find output files.
+Figure&nbsp;3: A labeled RStudio Server window showing where to paste R code, run selected lines, use the Terminal for Python or full scripts, and find output files.
 </figcaption>
 </figure>
 </div>
@@ -1683,7 +1719,7 @@ Figure&nbsp;2: A labeled RStudio Server window showing where to paste R code, ru
 <p>In this section, you will read the first evidence files into R or Python. Import means reading files into analysis objects so you can inspect them, check them, and use them in later sections.</p>
 <p>A <code>CSV</code> file is a rectangular table: rows are observations or summaries, and columns are variables. A <code>JSON</code> file stores structured metadata, such as model settings or diagnostic values. In R, the imported files become data frames. In Python, they become tables managed by <code>pandas</code>.</p>
 <p>The first imported files answer a modeling question: which value of <button class="glossary"><span class="def">The number of latent patterns the model is asked to learn.</span>K</button>, the number of <button class="glossary"><span class="def">A Bayesian non-negative matrix factorization method used to learn gene-expression patterns and cell-level pattern scores from genomic data.</span>CoGAPS</button> patterns, should the case study inspect? You will read summarized <button class="glossary"><span class="def">Precomputed summaries comparing several candidate values of K before choosing the model used for interpretation.</span>rank-selection evidence</button> from the rank sweep, use that evidence to decide which selected model is worth loading, and then import the compact <button class="glossary"><span class="def">Compact exported files from the chosen model run that are small enough to import and inspect in the main lesson.</span>selected-model outputs</button> used in later sections.</p>
-<p>You do not need raw <button class="glossary"><span class="def">Raw single-cell sequencing output from the 10x Genomics platform, usually stored as linked matrix, barcode, and feature files.</span>10x Genomics files</button> or a new CoGAPS run to complete this section. Source-file import and rebuilding from the larger archive are documented in <strong>Additional Information</strong> for learners who want to audit or regenerate the workflow. The main lesson starts from the smaller included files so you can focus on the evidence chain.</p>
+<p>You do not need raw <button class="glossary"><span class="def">Raw single-cell sequencing output from the 10x Genomics platform, usually stored as linked matrix, barcode, and feature files.</span>10x Genomics files</button> or a new CoGAPS run to complete this section. Source-file import and rebuilding from the larger archive are documented in the <a href="#full-reproduction-guide">Full Reproduction Guide</a> for readers who want to audit or regenerate the workflow. The main lesson starts from the smaller included files so you can focus on the evidence chain.</p>
 <p>This section stops once the rank-selection evidence and selected-model files have been read into R or Python and checked for basic file integrity. The biological interpretation comes later in <strong>Data Analysis</strong>, where you will use these prepared files to evaluate model diagnostics, interpret <button class="glossary"><span class="def">A gene-expression program whose use changes across infection timepoints.</span>temporal programs</button>, examine <button class="glossary"><span class="def">Genes with the largest contributions to a model pattern, used to help interpret what biology the pattern may represent.</span>top genes</button>, check <button class="glossary"><span class="def">A summary that aggregates cell-level expression before comparing whether genes tend to increase or decrease relative to a reference condition.</span>directionality</button>, and compare sensitivity evidence.</p>
 <section id="checkpoint-decide-which-k-model-to-import" class="level2">
 <h2 class="anchored" data-anchor-id="checkpoint-decide-which-k-model-to-import">Checkpoint: Decide Which K Model to Import</h2>
@@ -3118,7 +3154,7 @@ Optional: remake the figure from the included table
 <span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>r_selected_dir</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "/home/data/processed/selected_model_k10/r"</code></pre>
+<pre><code>[1] "/home/rstudio/project/data/processed/selected_model_k10/r"</code></pre>
 </div>
 </div>
 </div>
@@ -5384,7 +5420,7 @@ Show answer
 <ul>
 <li><strong>Core path:</strong> read the preprocessing guide, then run the small table-wrangling chunks under <strong>Build Interpretation-Ready Summary Tables</strong>.</li>
 <li><strong>Reproducibility notes:</strong> use the visible thresholds, matrix-orientation notes, manifest descriptions, and runnable rebuild commands to understand where the included files came from.</li>
-<li><strong>Additional Information:</strong> use the advanced reproduction map and code explanations there if you want to rebuild or inspect the large preprocessing artifacts in more detail.</li>
+<li><strong>Full Reproduction Guide:</strong> use the reproduction map and code explanations there if you want to rebuild or inspect the large preprocessing files in more detail.</li>
 </ul>
 </div>
 </div>
@@ -5394,7 +5430,7 @@ Show answer
 </div>
 <div class="inner_block">
 <ul>
-<li><button class="glossary"><span class="def">The filtering, normalization, annotation, subsetting, and file-preparation steps that turn imported data into objects ready for modeling or interpretation.</span>Preprocessing</button> turns imported single-cell data into a model-ready object whose cells, genes, metadata, and file provenance can be interpreted together.</li>
+<li><button class="glossary"><span class="def">The filtering, normalization, annotation, subsetting, and file-preparation steps that turn imported data into objects ready for modeling or interpretation.</span>Preprocessing</button> turns imported single-cell data into a model-ready object whose cells, genes, metadata, and file origins can be interpreted together.</li>
 <li><button class="glossary"><span class="def">Filtering and diagnostic checks used to identify cells or genes that are unlikely to support reliable biological interpretation.</span>Quality control</button> asks which cells and genes are reliable enough to keep.</li>
 <li><button class="glossary"><span class="def">A scaling step that makes expression values more comparable by reducing differences caused by cells having different total sequencing counts.</span>Library-size normalization</button> and <button class="glossary"><span class="def">A transformation that compresses large expression values so comparisons are less dominated by the most abundant transcripts.</span>log transformation</button> put expression values on a more comparable scale.</li>
 <li><button class="glossary"><span class="def">Genes selected because their expression varies enough across cells or samples to help a model learn biological and technical structure.</span>Highly variable gene</button> selection and the <button class="glossary"><span class="def">A smaller modeling dataset constructed so each experimental sample contributes up to the same number of cells.</span>balanced discovery subset</button> define what CoGAPS learns from.</li>
@@ -5403,7 +5439,7 @@ Show answer
 </ul>
 </div>
 </div>
-<p>Together, these ideas explain why this section spends time on filtering, scaling, gene selection, metadata, and sample balance before showing any new figures. A temporal immune-program analysis only works if the model is learning biological structure rather than technical artifacts or sampling imbalance.</p>
+<p>Together, these ideas explain why this section spends time on filtering, scaling, gene selection, metadata, and sample balance before showing any new figures. A temporal immune-program analysis only works if the model is learning biological structure rather than technical noise or sampling imbalance.</p>
 <section id="preprocessing-decisions-as-interpretation-safeguards" class="level2">
 <h2 class="anchored" data-anchor-id="preprocessing-decisions-as-interpretation-safeguards">Preprocessing Decisions as Interpretation Safeguards</h2>
 <p>Preprocessing is where the case study decides what CoGAPS is allowed to learn from. These choices are not just software settings. They decide which cells are reliable, which genes enter the model, which samples represent the main time-course question, and how much influence each sample can have.</p>
@@ -5425,12 +5461,12 @@ Show answer
 </details>
 </div>
 </div>
-<p>For the full parameter-level reference, see the preprocessing decision reference in <strong>Additional Information</strong>. The shorter explanation here is the part you need to carry forward: these choices do not prove a biological program, but they define the evidence that can be interpreted later.</p>
+<p>For the full parameter-level reference, see <a href="#advanced-audit-full-preprocessing-decision-reference">Advanced Audit: Full Preprocessing Decision Reference</a> in the Full Reproduction Guide. The shorter explanation here is the part you need to carry forward: these choices do not prove a biological program, but they define the evidence that can be interpreted later.</p>
 </section>
 <section id="from-source-files-to-cogaps-ready-discovery-input" class="level2">
 <h2 class="anchored" data-anchor-id="from-source-files-to-cogaps-ready-discovery-input">From Source Files to CoGAPS-Ready Discovery Input</h2>
 <p>The safeguards above become the workflow below. The first part of the workflow is source-file import: raw 10x files from GEO are read together with sample names so expression counts can be connected to cells, genes, subjects, cohorts, and infection days. That import step creates a labeled <button class="glossary"><span class="def">A labeled data container that keeps expression values aligned with cell and gene annotations.</span>single-cell object</button>, which then becomes the starting point for quality control, normalization, gene selection, annotation, discovery-set construction, and CoGAPS input saving.</p>
-<p>This map is provenance for the included files. You do not need to download the raw GEO archive or rebuild the large single-cell objects for the core path. The purpose here is to see how the small tables used later can be traced back to source files, preprocessing decisions, and a saved manifest.</p>
+<p>This map shows where the included files came from. You do not need to download the raw GEO archive or rebuild the large single-cell objects for the core path. The purpose here is to see how the small tables used later can be traced back to source files, preprocessing decisions, and a saved manifest.</p>
 <p>Read the diagram from top to bottom as a connected evidence chain. At each step, ask what biological comparison would be affected if that step were missing or mislabeled.</p>
 <div class="cell" data-layout-align="default">
 <div class="cell-output-display">
@@ -5527,13 +5563,13 @@ Show the files represented by the final graph boxes
 </section>
 <section id="preprocessing-guide-how-the-discovery-input-is-created" class="level2">
 <h2 class="anchored" data-anchor-id="preprocessing-guide-how-the-discovery-input-is-created">Preprocessing Guide: How the Discovery Input Is Created</h2>
-<p>This guide summarizes how the included CoGAPS-ready artifacts were prepared. You do not need to run these preparation steps for the core path. They are here so the small tables you use later have a visible origin: each file came from a labeled single-cell object, a documented set of preprocessing decisions, and a saved manifest.</p>
+<p>This guide summarizes how the included CoGAPS-ready files were prepared. You do not need to run these preparation steps for the core path. They are here so the small tables you use later have a visible origin: each file came from a labeled single-cell object, a documented set of preprocessing decisions, and a saved manifest.</p>
 <div class="reproducibility_box">
 <div class="reproducibility_box_header">
 <p>Reproducibility note</p>
 </div>
 <div class="inner_block">
-<p>The complete preparation scripts live in the repository and are listed in <strong>Additional Information -&gt; Advanced Reproduction Script Map</strong>. Use that map if you want to rebuild the large preprocessing artifacts from source files. Additional Information also includes code explanations for the preprocessing steps, so the main lesson can stay focused on what the prepared inputs mean.</p>
+<p>The complete preparation scripts live in the repository and are listed in <a href="#advanced-reproduction-script-map">Advanced Reproduction Script Map</a> in the Full Reproduction Guide. Use that map if you want to rebuild the large preprocessing files from source files. The guide also includes code explanations for the preprocessing steps, so the main lesson can stay focused on what the prepared inputs mean.</p>
 <p>These scripts download or reuse the GEO source archive, import the 10x files into a labeled single-cell object, apply the preprocessing decisions summarized below, construct the balanced experimental discovery set, and save orientation-specific matrices plus <code>preprocessing_manifest.json</code>. They prepare the inputs needed before a selected CoGAPS model can be run. They do not run CoGAPS itself, and they do not rerun the rank sweep assessed in Data Import.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb88"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> scripts/prepare_gse154386_subset_r.R <span class="dt">\</span></span>
@@ -5564,7 +5600,7 @@ Show the files represented by the final graph boxes
 </section>
 <section id="marker-and-program-scores-add-biological-guideposts" class="level3">
 <h3 class="anchored" data-anchor-id="marker-and-program-scores-add-biological-guideposts">Marker and Program Scores Add Biological Guideposts</h3>
-<p>CoGAPS learns patterns from the expression matrix, but numbered patterns do not explain themselves. Marker and program scores add biological guideposts before you interpret the model. A <button class="glossary"><span class="def">A gene-set score based on known marker genes, used here as an annotation aid for broad immune-cell identity.</span>marker score</button> asks whether each cell expresses genes associated with broad PBMC identities, such as T cells, monocytes, natural killer cells, B cells, plasmablasts, dendritic cells, or neutrophils. A <button class="glossary"><span class="def">A gene-set score for a biological activity, such as an interferon-associated response, rather than a stable cell identity.</span>program score</button> uses the same scoring idea for biological activity, such as interferon-associated response.</p>
+<p>CoGAPS learns patterns from the expression matrix, but numbered patterns do not explain themselves. The marker and program genes introduced in <a href="#marker-and-program-genes-as-biological-guideposts">Context</a> become scores here, giving you biological guideposts before you interpret the model. A <button class="glossary"><span class="def">A gene-set score based on known marker genes, used here as an annotation aid for broad immune-cell identity.</span>marker score</button> asks whether each cell expresses genes associated with broad PBMC identities, such as T cells, monocytes, natural killer cells, B cells, plasmablasts, dendritic cells, or neutrophils. A <button class="glossary"><span class="def">A gene-set score for a biological activity, such as an interferon-associated response, rather than a stable cell identity.</span>program score</button> uses the same scoring idea for biological activity, such as interferon-associated response.</p>
 <p>These scores are useful precisely because they are modest. A high <code>T_cell_score</code> or <code>Monocyte_score</code> can suggest a broad immune identity, but it is still an annotation aid rather than a definitive cell-type call. A high <code>ifn_program_score</code> can flag antiviral-response activity, but it does not prove that a CoGAPS pattern is caused by interferon signaling. Later sections use the scores as guideposts beside CoGAPS cell scores, top genes, subject trajectories, and model diagnostics.</p>
 </section>
 <section id="the-discovery-set-focuses-the-main-time-course" class="level3">
@@ -6405,26 +6441,26 @@ Show answer
 <span id="cb108-38"><a href="#cb108-38" aria-hidden="true" tabindex="-1"></a>    _ <span class="op">=</span> ax.set_ylim(<span class="dv">0</span>, <span class="fl">0.31</span>)</span>
 <span id="cb108-39"><a href="#cb108-39" aria-hidden="true" tabindex="-1"></a>    _ <span class="op">=</span> ax.grid(axis<span class="op">=</span><span class="st">"y"</span>, alpha<span class="op">=</span><span class="fl">0.25</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>&lt;matplotlib.patches.Polygon object at 0x7fe1d4ae7910&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7fe1d4ae7ee0&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7fe1d4ab70d0&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7fe1d4b30070&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7fe1d6d906d0&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7fe1d4b300a0&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7fe1d4ae78e0&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7fe1d4b30700&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7fe1d4ae6e90&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7fe1d4b30d00&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7fe1d4bba980&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7fe1d4b31330&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7fe1d4beb2e0&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7fe1d4b31960&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7fe1d4c1bb80&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7fe1d4b31f90&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7fe1d4c4bfd0&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7fe1d4b325c0&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7fe1d4a83a60&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7fe1d4b32bf0&gt;]</code></pre>
+<pre><code>&lt;matplotlib.patches.Polygon object at 0x7fffc92f3670&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc92b9030&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fffc97e6a10&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc92f35b0&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fffc958f400&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc92f2920&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fffc95bab90&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc92f2170&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fffc97e6920&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc92f18d0&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fffc93b8a00&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc92f20e0&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fffc93ed2d0&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc92f2dd0&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fffc92f3010&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc9334400&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fffc941db70&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc9334a30&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fffc928aaa0&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc9335060&gt;]</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb110"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax <span class="kw">in</span> axes:</span>
 <span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a>    _ <span class="op">=</span> ax.set_xticks(<span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(timepoint_order) <span class="op">+</span> <span class="dv">1</span>))</span>
@@ -6965,7 +7001,7 @@ Show answer
 <p>How the selected CoGAPS model was run</p>
 </div>
 <div class="inner_block">
-<p>You do not need to rerun CoGAPS to complete the main lesson. The included files already contain the <button class="glossary"><span class="def">Compact exported files from the chosen model run that are small enough to import and inspect in the main lesson.</span>selected model outputs</button>. The excerpts below show the core model call so you can see exactly how the prepared CoGAPS input became the selected <code>K = 10</code> model. Full Docker commands, sweep commands, and script bodies are in <strong>Additional Information -&gt; Advanced Reproduction: CoGAPS Model and Analysis Commands</strong>.</p>
+<p>You do not need to rerun CoGAPS to complete the main lesson. The included files already contain the <button class="glossary"><span class="def">Compact exported files from the chosen model run that are small enough to import and inspect in the main lesson.</span>selected model outputs</button>. The excerpts below show the core model call so you can see exactly how the prepared CoGAPS input became the selected <code>K = 10</code> model. Full Docker commands, sweep commands, and script bodies are in <a href="#advanced-reproduction-cogaps-model-and-analysis-commands">Advanced Reproduction: CoGAPS Model and Analysis Commands</a> in the Full Reproduction Guide.</p>
 <p><strong>R runner excerpt</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb120"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a>sce <span class="ot">&lt;-</span> zellkonverter<span class="sc">::</span><span class="fu">readH5AD</span>(discovery_h5ad, <span class="at">reader =</span> <span class="st">"R"</span>)</span>
@@ -7024,7 +7060,7 @@ Show answer
 <span id="cb121-28"><a href="#cb121-28" aria-hidden="true" tabindex="-1"></a>    snapshotPhase<span class="op">=</span><span class="st">"all"</span>,</span>
 <span id="cb121-29"><a href="#cb121-29" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The R script reads the cells-by-genes discovery object and passes its expression matrix to CoGAPS. The Python script reads the genes-by-cells CoGAPS input and sets <code>transposeData = False</code>, which keeps the <button class="glossary"><span class="def">The choice of what the matrix rows and columns represent, such as features by cells or cells by genes.</span>matrix orientation</button> explicit. Both runners write the same kinds of teaching artifacts: gene loadings, cell scores, top genes, pattern summaries, trace files, diagnostics, and metrics.</p>
+<p>Read these excerpts in two passes. The first few lines load the prepared discovery matrix and declare the selected model settings: ten patterns, <code>2,000</code> iterations, seed <code>2</code>, sparse optimization, and four threads. The later arguments control transparency during the run by writing messages, trace points, checkpoints, and snapshots. The R script reads the cells-by-genes discovery object and passes its expression matrix to CoGAPS. The Python script reads the genes-by-cells CoGAPS input and sets <code>transposeData = False</code>, which keeps the <button class="glossary"><span class="def">The choice of what the matrix rows and columns represent, such as features by cells or cells by genes.</span>matrix orientation</button> explicit. Both runners write the same kinds of teaching outputs: gene loadings, cell scores, top genes, pattern summaries, trace files, diagnostics, and metrics.</p>
 </div>
 </div>
 <section id="question-1-carry-forward-is-the-selected-model-appropriate-to-interpret" class="level2">
@@ -7160,6 +7196,7 @@ Show answer
 </div>
 </div>
 </div>
+<p>The tabset reads the saved metrics file and turns it into a checklist. Instead of asking you to scan a JSON file by hand, it pulls out the settings that matter for interpretation: implementation, rank, seed, iterations, thread count, diagnostic recording, checkpointing, snapshots, and runtime.</p>
 <p>These settings connect the selected run back to the rank decision from Data Import. The model has ten patterns, uses the representative seed and iteration count, records diagnostic traces every 100 iterations, and saves checkpoint and snapshot information. The run time is also instructive: even this selected model took about 24 minutes in the four-thread Docker setup used to create the included files. That is why the learner path reads the saved outputs instead of rerunning CoGAPS during the lesson.</p>
 <p>The trace gives a second check. <button class="glossary"><span class="def">A CoGAPS model-fit summary used here to check whether a run moved away from a poor initial fit and changed more slowly later. It is not a biological result.</span>Chi-square</button> is not a biological result; it is a model-fit diagnostic. A large early drop followed by small late movement is consistent with a run that moved away from a poor initial state and then changed more slowly.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
@@ -7216,6 +7253,7 @@ Show answer
 </div>
 </div>
 </div>
+<p>Here, the saved trace file becomes a plot. The code reads the recorded chi-square values, keeps their order using <code>trace_index</code>, and draws the trajectory so you can inspect the model-fit behavior rather than relying only on the final output tables.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-41-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-41-1" role="tab" aria-controls="tabset-41-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-41-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-41-2" role="tab" aria-controls="tabset-41-2" aria-selected="false">Python</a></li></ul>
 <div class="tab-content">
@@ -7322,6 +7360,7 @@ Show answer
 </div>
 </div>
 </div>
+<p>The summary table compresses the same trace into a few audit numbers. It records where the trace started, where it ended, how much it dropped, how much the final few trace points still move, and how many updates contributed to the run.</p>
 <p>The diagnostics support using the selected model for interpretation. Chi-square drops from about 149.3 million to about 124.0 million, and the last five recorded trace points vary by only about 0.005 percent of the final value. That does not prove a unique global optimum, and it does not assign meaning to <code>Pattern3</code>. It tells you that the selected run behaved sensibly enough for the biological checks that follow.</p>
 </section>
 <section id="from-cogaps-output-to-biological-evidence" class="level2">
@@ -7468,6 +7507,7 @@ Show answer
 </div>
 </div>
 </div>
+<p>The key programming move is the grouping step. The code starts from one row per discovery-set cell, groups those cells by subject and merged infection day, counts how many cells contribute to each group, and averages the <code>Pattern3</code> score within that group.</p>
 <p>Read this table as a change in evidence unit. Each row now represents one subject at one infection day, not one cell. The <code>n_cells</code> column shows how many discovery-set cells contributed to that subject-timepoint mean, and <code>mean_pattern3_score</code> summarizes how strongly those cells used <code>Pattern3</code>.</p>
 <p>That grouping matters because the temporal claim should not depend on treating thousands of cells as thousands of independent people. In this preview, each subject has a much higher <code>Pattern3</code> mean at <code>D10</code> and <code>D14/15</code> than at baseline or recovery. The next table asks whether that late acute rise makes <code>Pattern3</code> stand out when all selected-model patterns are ranked together.</p>
 </section>
@@ -7615,6 +7655,7 @@ Show answer
 </div>
 </div>
 </div>
+<p>This chunk narrows the interpretation table to the columns needed for the timing question. It keeps each pattern’s label, timepoint effect, peak timepoint, and subject-level means at key infection days, then sorts the patterns so the strongest temporal candidates appear first.</p>
 <p>The table makes the visual story sharper. <code>Pattern3</code> has the largest temporal effect by a wide margin (<code>eta_timepoint</code> about 0.454). Its subject-level mean is low at <code>D0</code>, rises strongly at <code>D10</code>, remains high at <code>D14/15</code>, and returns near baseline by <code>D28</code>. <code>Pattern9</code>, which looked like a weaker late-rising candidate in the figures, has a much smaller temporal effect and is still classified as identity-like in the interpretation table.</p>
 <p>At this point, the answer to Question 2 is cautious but clear: the selected <code>K = 10</code> model contains one dominant temporal program, <code>Pattern3</code>, plus smaller time-varying patterns that are more strongly tied to PBMC identity or composition.</p>
 </section>
@@ -7803,6 +7844,7 @@ Show answer
 </div>
 </div>
 </div>
+<p>The class labels are not accepted as a black box here. The code recomputes the identity-versus-activity rule from the two effect-size columns, calculates the time-to-cell-type ratio, and displays the recomputed class beside the stored class from the interpretation table.</p>
 <p>Most selected-model patterns are identity-like. That is a useful result, not a distraction: CoGAPS is recovering stable PBMC structure as well as temporal signal. <code>Pattern7</code> and <code>Pattern10</code>, for example, made sense to display on the UMAP because they act as <button class="glossary"><span class="def">A pattern or figure panel that clearly maps to a recognizable cell-type region, helping compare identity-driven structure with infection-response activity.</span>identity anchors</button> for T-cell and B-cell or plasmablast structure.</p>
 <p><code>Pattern3</code> is the exception that carries the main temporal claim. Its timepoint effect is about 2.76 times its broad-cell-type effect, so it is the clearest activity-like program in the selected model. The dominant broad-cell-type column still matters: <code>Pattern3</code> is not floating outside cell identity. It appears within a PBMC context, especially monocyte-rich regions, while changing strongly across infection days.</p>
 </section>
@@ -7966,6 +8008,7 @@ Show answer
 </div>
 </div>
 </div>
+<p>The table is built by filtering the top-gene file to <code>Pattern3</code>, keeping the highest-ranked genes, and marking which names appear in a small interferon-related reference list. The Boolean column is a quick guidepost: it tells you which top genes are already recognizable as interferon-linked examples before you read the pattern-level evidence.</p>
 <p>Several of the top <code>Pattern3</code> genes are useful interferon anchors, including <code>LY6E</code>, <code>ISG15</code>, <code>IFITM1</code>, <code>IFI6</code>, <code>MX1</code>, <code>IRF7</code>, and <code>IFI44L</code>. That supports an interferon-associated reading, but gene identity alone is not enough. The next view brings together the pattern-level evidence: temporal effect, broad-cell-type effect, IFN-score correlation, interferon top-gene overlap, peak timepoint, and directionality at the late acute days.</p>
 <p>In this table, <code>spearman_ifn_score_rho</code> is the <button class="glossary"><span class="def">A rank-based correlation that measures whether two quantities tend to increase together without assuming a straight-line relationship.</span>Spearman correlation</button> between the CoGAPS pattern score and an interferon-related program score. Positive values mean cells with higher pattern scores also tend to have higher interferon-related scores.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
@@ -8113,6 +8156,7 @@ Show answer
 </div>
 </div>
 </div>
+<p>This chunk brings two evidence tables into one view. It reshapes the directionality summary so <code>D10</code> and <code>D14/15</code> become side-by-side columns, then joins those directionality values to the candidate-pattern row from the annotation table.</p>
 <p>This row is the strongest support for the main biological interpretation. <code>Pattern3</code> is activity-like, has a strong positive IFN-score correlation, includes multiple <button class="glossary"><span class="def">Genes whose expression can increase when cells receive interferon signals during an antiviral response.</span>interferon-stimulated genes</button> among its top loadings, peaks at <code>D10</code>, and remains elevated at <code>D14/15</code>. Directionality adds the missing expression-change piece: the top <code>Pattern3</code> genes are mostly higher than baseline at the late acute timepoints.</p>
 <p>Because CoGAPS is nonnegative, directionality has to be rebuilt outside the model. A high gene loading says that a gene helps define a pattern; it does not say whether that gene increased or decreased after infection. The box below shows how the directionality tables used here were produced.</p>
 <div class="reproducibility_box">
@@ -8135,7 +8179,8 @@ Show answer
 <span id="cb138-9"><a href="#cb138-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">--min-cells</span> 10 <span class="dt">\</span></span>
 <span id="cb138-10"><a href="#cb138-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">--log2fc-threshold</span> 0.25</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The main outputs are <code>gene_directionality_by_subject.csv</code>, <code>gene_directionality_summary.csv</code>, and <code>pattern_directionality_summary.csv</code>. The full Docker command and expanded script body are in <strong>Additional Information -&gt; Advanced Reproduction: CoGAPS Model and Analysis Commands</strong>.</p>
+<p>Treat this command as the recipe behind the included directionality summaries. It names the selected run, the output folder, the number of top genes to test, the baseline timepoint, the experimental cohort, the count layer, the minimum cell-count rule, and the log2 fold-change threshold.</p>
+<p>The main outputs are <code>gene_directionality_by_subject.csv</code>, <code>gene_directionality_summary.csv</code>, and <code>pattern_directionality_summary.csv</code>. The full Docker command and expanded script body are in <a href="#advanced-reproduction-cogaps-model-and-analysis-commands">Advanced Reproduction: CoGAPS Model and Analysis Commands</a> in the Full Reproduction Guide.</p>
 </div>
 </div>
 <p>The next table reads the gene-level summary for the leading pattern at <code>D10</code>. <code>median_log2fc</code> summarizes the subject-level log2 fold-change contrasts for each top gene, and <code>frac_up</code> reports the fraction of subject contrasts where that gene is higher than its matched <code>D0</code> baseline. Read these columns together: a positive median with a high <code>frac_up</code> means the direction is not coming from one subject alone.</p>
@@ -8271,6 +8316,7 @@ Show answer
 </div>
 </div>
 </div>
+<p>This table returns from the pattern-level summary to the individual genes behind it. The code filters the directionality file to <code>Pattern3</code>, the <code>all_cells</code> summary, and <code>D10</code>, then orders the output by the original CoGAPS top-gene rank.</p>
 <p>The gene-level view shows that the directionality result is not being assigned from one marker. Multiple top <code>Pattern3</code> genes show positive median log2 fold-change at <code>D10</code>. The pattern-level summary above then condenses those gene-level rows: at <code>D10</code>, the median top-gene log2 fold-change is about 1.46 and 88 percent of the tested top genes are up; at <code>D14/15</code>, the median is about 1.56 and 96 percent are up.</p>
 <p>The answer to Question 4 is therefore evidence-bounded rather than absolute. <code>Pattern3</code> is consistent with an IFN-associated late acute response in the experimental discovery subset. The evidence supports that interpretation through timing, activity-like behavior, IFN-linked top genes, IFN-score correlation, and directionality. It does not prove mechanism, identify the cellular source of interferon signaling, or establish clinical causality.</p>
 </section>
@@ -8338,6 +8384,7 @@ Show answer
 </div>
 </div>
 </div>
+<p>The sensitivity chunk asks a deliberately narrow question: if the model is compressed to <code>K = 5</code>, which pattern has the largest temporal effect, how is it classified, and does it pass the same interferon-candidate rule? The output is a sentence rather than a large table because the purpose is to compare the compact model against the main <code>K = 10</code> interpretation.</p>
 <p>The compact model does not overturn the <code>K = 10</code> interpretation. Its strongest temporal effect is small, its strongest patterns are identity-like, and it does not contain an interferon-candidate pattern under the same rule used for the selected model. That comparison is the practical reason <code>K = 5</code> remains a comparator: it shows what a stable but compressed model loses.</p>
 </section>
 <section id="what-the-evidence-now-supports" class="level2">
@@ -8397,7 +8444,7 @@ Uncomment this section if you're suggesting an exercise that reiterates a large 
 </section>
 <section id="advanced" class="level3">
 <h3 class="anchored" data-anchor-id="advanced">Advanced</h3>
-<p>Use the advanced reproduction materials to rerun or audit one larger step. Focus on whether the regenerated output matches the expected shape, parameters, and interpretation boundary.</p>
+<p>Use the Full Reproduction Guide to rerun or audit one larger step. Focus on whether the regenerated output matches the expected shape, parameters, and interpretation boundary.</p>
 <p>These are individual exercises. Each can be completed by one learner without a group project.</p>
 </section>
 </section>
@@ -8455,52 +8502,20 @@ Optional extension
 </section>
 <section id="challenge-extension" class="level2">
 <h2 class="anchored" data-anchor-id="challenge-extension">Challenge Extension</h2>
-<p>Rerun the selected <code>K = 10</code> model locally in the Docker image using the external large H5AD artifacts. Then compare your newly generated metrics JSON with the precomputed metrics in this repository.</p>
+<p>Rerun the selected <code>K = 10</code> model locally in the Docker image using the external large H5AD files. Then compare your newly generated metrics JSON with the precomputed metrics in this repository.</p>
 <hr>
 </section>
 </section>
-<section id="additional-information" class="level1">
-<h1><strong>Additional Information</strong></h1>
+<section id="full-reproduction-guide" class="level1">
+<h1><strong>Full Reproduction Guide</strong></h1>
 <hr>
-<section id="helpful-links" class="level2">
-<h2 class="anchored" data-anchor-id="helpful-links">Helpful Links</h2>
-<ul>
-<li><a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE154386" target="_blank">GEO accession GSE154386</a></li>
-<li><a href="https://www.opencasestudies.org/OCS_Guide/" target="_blank">Open Case Studies Guide</a></li>
-<li><a href="https://bioconductor.org/packages/CoGAPS" target="_blank">CoGAPS Bioconductor package</a></li>
-<li><a href="https://github.com/FertigLab/pycogaps" target="_blank">PyCoGAPS GitHub repository</a></li>
-<li><a href="https://anndata.readthedocs.io/" target="_blank">AnnData documentation</a></li>
-<li><a href="https://scanpy.readthedocs.io/" target="_blank">Scanpy documentation</a></li>
-</ul>
-<p>The Open Case Studies teaching approach is described in the OCS model paper <span class="citation" data-cites="wright2023openCaseStudies">(<a href="#ref-wright2023openCaseStudies" role="doc-biblioref">Wright et al. 2023</a>)</span>. Scholarly, methodological, and public-health sources used in this case study are cited in the sections where they support a claim and are collected in the References section below.</p>
-</section>
-<section id="concepts-covered" class="level2">
-<h2 class="anchored" data-anchor-id="concepts-covered">Concepts Covered</h2>
-<ul>
-<li>longitudinal single-cell RNA-seq</li>
-<li>PBMC immune-cell composition</li>
-<li>non-negative matrix factorization</li>
-<li>Bayesian matrix factorization</li>
-<li>latent transcriptional programs</li>
-<li>identity-like and activity-like programs</li>
-<li>rank selection</li>
-<li>stability plateau</li>
-<li>interferon-stimulated genes</li>
-<li>pseudobulk directionality</li>
-<li>R and Python reproducibility</li>
-<li>included analysis files for the main lesson</li>
-</ul>
-</section>
-<section id="full-reproduction-companion-guide" class="level2">
-<h2 class="anchored" data-anchor-id="full-reproduction-companion-guide">Full Reproduction Companion Guide</h2>
-<p>The main lesson uses included evidence files so you can focus on interpretation. Use this part of <strong>Additional Information</strong> when you want to audit or rebuild the files behind that evidence. You can use it at three depths:</p>
+<p>The main lesson uses included evidence files so you can focus on interpretation. Use this guide when you want to audit or rebuild the files behind that evidence. You can use it at three depths:</p>
 <ol type="1">
-<li>read the route map to understand provenance;</li>
+<li>read the route map to see where the included files came from;</li>
 <li>rerun one stage to check a handoff file;</li>
 <li>attempt the full workflow from source files through the selected model and interpretation tables.</li>
 </ol>
-<p>The Core learner path does not require these steps. Full reproduction is a separate audit path for learners, instructors, or reviewers who want to look behind the included files.</p>
-</section>
+<p>The core learner path does not require these steps. Full reproduction is a separate audit path for learners, instructors, or reviewers who want to look behind the included files. In this guide, <strong>full reproduction</strong> means rebuilding the source/preprocessing files, rerunning the selected model at the rank chosen for the case study, and rebuilding the interpretation evidence. The rank sweep is listed as a separate high-performance-computing audit path because it explains the rank evidence, but it is not part of the local full reproduction route.</p>
 <section id="advanced-reproduction-setup" class="level2">
 <h2 class="anchored" data-anchor-id="advanced-reproduction-setup">Advanced Reproduction Setup</h2>
 <p>Full reproduction uses the same Docker image as the main lesson, but it adds larger files and longer-running scripts. The external reproduction archive will be published through Zenodo; the final DOI will be added here after the Zenodo record is public. The archive is used for large prepared inputs, selected-model files, and sweep summaries that are not stored in GitHub. Source preprocessing can also be rebuilt directly from the GEO archive; in that route, the preparation script downloads the raw GEO archive into a writable work folder.</p>
@@ -8508,7 +8523,7 @@ Optional extension
 <ul>
 <li><strong>Repository folder:</strong> the GitHub clone that contains the case-study pages, scripts, included tables, figures, and manifests.</li>
 <li><strong>Writable reproduction work folder:</strong> a local output area for downloaded GEO files, regenerated single-cell objects, model outputs, and logs. In the examples below, this is a <code>GSE154386/</code> folder inside the repository clone; that folder is ignored by Git.</li>
-<li><strong>External reproduction archive:</strong> the larger Zenodo archive. Mount it read-only when you want to rerun downstream model, directionality, or audit steps without rebuilding every source artifact.</li>
+<li><strong>External reproduction archive:</strong> the larger Zenodo archive. Mount it read-only when you want to rerun downstream model, directionality, or audit steps without rebuilding every source file.</li>
 </ul>
 <p>Use the following commands from your computer’s Terminal:</p>
 <div class="sourceCode" id="cb144"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb144-1"><a href="#cb144-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the case-study repository if you have not already cloned it.</span></span>
@@ -8519,7 +8534,7 @@ Optional extension
 <span id="cb144-6"><a href="#cb144-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">"</span><span class="va">$HOME</span><span class="st">/cs5_reproduction_archive"</span></span>
 <span id="cb144-7"><a href="#cb144-7" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">CS5_REPRODUCTION_ARCHIVE</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/cs5_reproduction_archive"</span></span>
 <span id="cb144-8"><a href="#cb144-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb144-9"><a href="#cb144-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a writable local output folder for regenerated artifacts.</span></span>
+<span id="cb144-9"><a href="#cb144-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a writable local output folder for regenerated files.</span></span>
 <span id="cb144-10"><a href="#cb144-10" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">"</span><span class="va">$PWD</span><span class="st">/GSE154386"</span></span>
 <span id="cb144-11"><a href="#cb144-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb144-12"><a href="#cb144-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Launch Docker with the repository writable and the archive read-only.</span></span>
@@ -8541,7 +8556,7 @@ Optional extension
 </section>
 <section id="full-reproduction-route-map" class="level2">
 <h2 class="anchored" data-anchor-id="full-reproduction-route-map">Full Reproduction Route Map</h2>
-<p>Read this map as a staged audit trail. The first stages explain how source files become prepared CoGAPS inputs. The later stages explain how the model outputs, interpretation tables, and optional display figures are rebuilt. A successful full reproduction should at minimum rebuild the selected-model outputs and interpretation tables; regenerating figures is useful for display checks but is not the main proof that the analysis was reproduced.</p>
+<p>Read this map as a staged handoff. The full reproduction route starts with source files, prepares CoGAPS inputs, reruns the selected model at the rank chosen for this case study, and rebuilds the interpretation tables. The rank sweep is shown as a separate HPC route because it supports the rank decision but is not expected in the local reproduction path. A successful local reproduction should at minimum rebuild the selected-model outputs and interpretation tables; regenerating figures is useful for display checks but is not the main proof that the analysis was reproduced.</p>
 <div class="table-responsive">
 <table class="caption-top table">
 <colgroup>
@@ -8572,9 +8587,9 @@ Optional extension
 <td><code>preprocessing_manifest.json</code> exists; cell and gene counts are recorded; discovery input orientation is documented; max <code>600</code> cells per sample and <code>seed = 42</code> are recorded.</td>
 </tr>
 <tr class="odd">
-<td>Rank sweep and K evidence</td>
-<td>Candidate ranks, seeds, and iteration counts are compared before interpreting a selected model.</td>
-<td>HPC/SLURM.</td>
+<td>Separate rank sweep and K evidence</td>
+<td>Candidate ranks, seeds, and iteration counts are compared before interpreting a selected model. This route explains where the included rank evidence came from, but it is not part of the local full reproduction path.</td>
+<td>Separate HPC/SLURM audit path.</td>
 <td><code>jobs.tsv</code> has <code>300</code> tasks; per-run outputs exist; aggregation writes the K-selection summary tables read in Data Import.</td>
 </tr>
 <tr class="even">
@@ -8665,7 +8680,7 @@ Optional extension
 </section>
 <section id="rebuild-source-import-preprocessing-and-discovery-inputs" class="level2">
 <h2 class="anchored" data-anchor-id="rebuild-source-import-preprocessing-and-discovery-inputs">Rebuild Source Import, Preprocessing, and Discovery Inputs</h2>
-<p>Use this stage when you want to rebuild the large source and preprocessing artifacts from GEO. The preparation script downloads <code>GSE154386_RAW.tar</code> into the writable <code>--workdir</code>, extracts the sample-level 10x files, parses sample labels, applies preprocessing decisions, constructs the experimental discovery set, and writes a preprocessing manifest.</p>
+<p>Use this stage when you want to rebuild the large source and preprocessing files from GEO. The preparation script downloads <code>GSE154386_RAW.tar</code> into the writable <code>--workdir</code>, extracts the sample-level 10x files, parses sample labels, applies preprocessing decisions, constructs the experimental discovery set, and writes a preprocessing manifest.</p>
 <p>Run these commands inside Docker from <code>/home/rstudio/project</code>. The R command is the primary route; the Python command is an alternate route that also writes the two H5AD orientations used by downstream Python tooling.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-49-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-49-1" role="tab" aria-controls="tabset-49-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-49-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-49-2" role="tab" aria-controls="tabset-49-2" aria-selected="false">Python</a></li></ul>
@@ -8695,7 +8710,7 @@ Optional extension
 </section>
 <section id="advanced-audit-full-preprocessing-decision-reference" class="level2">
 <h2 class="anchored" data-anchor-id="advanced-audit-full-preprocessing-decision-reference">Advanced Audit: Full Preprocessing Decision Reference</h2>
-<p>This table gives the parameter-level preprocessing reference behind the Core Path. You do not need to memorize it for the main lesson. Use it when you want to audit how preprocessing choices define the model input, what each choice affects, and which sensitivity issues would matter if the artifacts were regenerated.</p>
+<p>This table gives the parameter-level preprocessing reference behind the Core Path. You do not need to memorize it for the main lesson. Use it when you want to audit how preprocessing choices define the model input, what each choice affects, and which sensitivity issues would matter if the larger files were regenerated.</p>
 <div class="table-responsive">
 <table class="caption-top table">
 <colgroup>
@@ -8819,7 +8834,7 @@ Optional extension
 </section>
 <section id="advanced-reproduction-source-import-code-examples" class="level2">
 <h2 class="anchored" data-anchor-id="advanced-reproduction-source-import-code-examples">Advanced Reproduction: Source-Import Code Examples</h2>
-<p>The source/preprocessing commands above are the executable route for rebuilding the large prepared artifacts. This subsection is a conceptual primer for the first part of that route: how raw <button class="glossary"><span class="def">Raw single-cell sequencing output from the 10x Genomics platform, usually stored as linked matrix, barcode, and feature files.</span>10x Genomics files</button> become a labeled <button class="glossary"><span class="def">A labeled data container that keeps expression values aligned with cell and gene annotations.</span>single-cell object</button> before preprocessing begins.</p>
+<p>The source/preprocessing commands above are the executable route for rebuilding the large prepared files. This subsection is a conceptual primer for the first part of that route: how raw <button class="glossary"><span class="def">Raw single-cell sequencing output from the 10x Genomics platform, usually stored as linked matrix, barcode, and feature files.</span>10x Genomics files</button> become a labeled <button class="glossary"><span class="def">A labeled data container that keeps expression values aligned with cell and gene annotations.</span>single-cell object</button> before preprocessing begins.</p>
 <p>You do not need these steps for the main lesson. Use them if you want to audit or rebuild how raw source files become a labeled single-cell object before preprocessing begins.</p>
 <div class="disclaimer_box">
 <div class="disclaimer_box_header">
@@ -12729,6 +12744,41 @@ scripts/generate_opening_figure.py
 </div>
 <hr>
 </section>
+</section>
+<section id="additional-information" class="level1">
+<h1><strong>Additional Information</strong></h1>
+<hr>
+<section id="helpful-links" class="level2">
+<h2 class="anchored" data-anchor-id="helpful-links">Helpful Links</h2>
+<ul>
+<li><a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE154386" target="_blank">GEO accession GSE154386</a></li>
+<li><a href="https://www.opencasestudies.org/OCS_Guide/" target="_blank">Open Case Studies Guide</a></li>
+<li><a href="https://fertiglab.github.io/CoGAPSGuide/" target="_blank">CoGAPS User Guide</a></li>
+<li><a href="https://bioconductor.org/packages/CoGAPS" target="_blank">CoGAPS Bioconductor package</a></li>
+<li><a href="https://github.com/FertigLab/pycogaps" target="_blank">PyCoGAPS GitHub repository</a></li>
+<li><a href="https://anndata.readthedocs.io/" target="_blank">AnnData documentation</a></li>
+<li><a href="https://scanpy.readthedocs.io/" target="_blank">Scanpy documentation</a></li>
+</ul>
+<p>The Open Case Studies teaching approach is described in the OCS model paper <span class="citation" data-cites="wright2023openCaseStudies">(<a href="#ref-wright2023openCaseStudies" role="doc-biblioref">Wright et al. 2023</a>)</span>. Scholarly, methodological, and public-health sources used in this case study are cited in the sections where they support a claim and are collected in the References section below.</p>
+</section>
+<section id="concepts-covered" class="level2">
+<h2 class="anchored" data-anchor-id="concepts-covered">Concepts Covered</h2>
+<ul>
+<li>longitudinal single-cell RNA-seq</li>
+<li>PBMC immune-cell composition</li>
+<li>non-negative matrix factorization</li>
+<li>Bayesian matrix factorization</li>
+<li>latent transcriptional programs</li>
+<li>identity-like and activity-like programs</li>
+<li>rank selection</li>
+<li>stability plateau</li>
+<li>interferon-stimulated genes</li>
+<li>pseudobulk directionality</li>
+<li>R and Python reproducibility</li>
+<li>included analysis files for the main lesson</li>
+</ul>
+<p>Looking for rebuild commands, larger-file setup, software used for regeneration, or troubleshooting? Use the <a href="#full-reproduction-guide">Full Reproduction Guide</a>, which appears after Continued Learning. Additional Information keeps quick links and concept reminders in one place.</p>
+</section>
 <section id="glossary" class="level2">
 <h2 class="anchored" data-anchor-id="glossary">Glossary</h2>
 <hr>
@@ -12783,144 +12833,152 @@ scripts/generate_opening_figure.py
 <td>A sequence label used to identify one captured cell or droplet in a single-cell sequencing experiment.</td>
 </tr>
 <tr class="odd">
+<td>Cell cluster</td>
+<td>A group of cells with similar overall gene-expression profiles, often used to recognize broad cell neighborhoods or cell types in single-cell data.</td>
+</tr>
+<tr class="even">
 <td>Cell composition</td>
 <td>The mixture or proportion of broad immune-cell types in a sample, timepoint, or discovery subset.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Cell metadata</td>
 <td>Information attached to each cell, such as sample ID, subject, cohort, infection day, or cell type.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Cell score</td>
 <td>A value in the CoGAPS P matrix showing how strongly a cell uses a learned pattern.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Cell-by-gene matrix</td>
 <td>A matrix arranged with cells as rows and genes as columns, where each value records expression for one gene in one cell.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Chi-square diagnostic</td>
 <td>A CoGAPS model-fit summary used here to check whether a run moved away from a poor initial fit and changed more slowly later. It is not a biological result.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>CoGAPS</td>
 <td>A Bayesian non-negative matrix factorization method used to learn gene-expression patterns and cell-level pattern scores from genomic data.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Comparator model</td>
 <td>A second model used as a point of comparison, often to show what changes when a key modeling choice such as rank K is different.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Converging evidence</td>
 <td>Several different pieces of evidence that point toward the same interpretation, making the claim stronger than any one table, figure, or score alone.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Decision manifest</td>
 <td>A machine-readable file that records the selected model choice, the rule used to choose it, and the representative run to import.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>DENV-1</td>
 <td>Dengue virus serotype 1, the viral serotype studied in the source experimental and natural primary infection cohorts.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Detected gene</td>
 <td>A gene with a nonzero expression count in a cell. QC filters often count how many detected genes a cell has, or how many cells detect a given gene.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Diagnostic trace</td>
 <td>Saved values tracked during model fitting that can later be used to check whether the selected run behaved as expected.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Experimental infection cohort</td>
 <td>A study group sampled on a planned infection timeline, allowing responses from different participants to be compared at aligned timepoints.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Feature</td>
 <td>A measured item in a single-cell data matrix, such as a gene-expression feature or another assay feature.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>File manifest</td>
 <td>A structured inventory that records which files are included locally, which files are external, and where they belong in the workflow.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Gene loading</td>
 <td>A value in the CoGAPS A matrix showing how strongly a gene contributes to a learned pattern.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Gene metadata</td>
 <td>Information attached to each gene or feature, such as gene symbol, gene ID, or feature type.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>GEO accession</td>
 <td>A public identifier for a dataset record in the NCBI Gene Expression Omnibus, used here to identify the source study data.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Heatmap</td>
 <td>A grid where color represents a value, making patterns easier to compare across days, cell types, genes, or model components.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Highly variable genes</td>
 <td>Genes selected because their expression varies enough across cells or samples to help a model learn biological and technical structure.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Host immune response</td>
 <td>The immune reaction of a person or organism to infection, measured here through changes in blood immune-cell gene expression.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Identity anchor</td>
 <td>A pattern or figure panel that clearly maps to a recognizable cell-type region, helping compare identity-driven structure with infection-response activity.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Identity-like pattern</td>
 <td>A CoGAPS pattern whose scores are driven mainly by broad immune-cell identity or cell composition.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>IFN-score correlation</td>
 <td>A comparison between CoGAPS pattern scores and an interferon-related gene score.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Immune-cell identity</td>
 <td>The relatively stable cell type assigned to an immune cell, such as T cell, B cell, natural killer cell, or monocyte.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Interferon</td>
 <td>An immune signaling protein that helps coordinate antiviral responses and can induce interferon-stimulated genes.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Interferon-associated response</td>
 <td>An immune response consistent with activation of interferon signaling during antiviral defense.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Interferon-stimulated genes</td>
 <td>Genes whose expression can increase when cells receive interferon signals during an antiviral response.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Late acute window</td>
 <td>A later post-infection sampling window in which the experimental cohort shows strong immune-response activity.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Latent transcriptional program</td>
 <td>An inferred gene-expression pattern shared across many cells, rather than a variable measured directly in the original data table.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Library-size normalization</td>
 <td>A scaling step that makes expression values more comparable by reducing differences caused by cells having different total sequencing counts.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Log transformation</td>
 <td>A transformation that compresses large expression values so comparisons are less dominated by the most abundant transcripts.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Log2 fold-change</td>
 <td>A comparison showing how much expression changes relative to a reference condition on a log base-2 scale. Positive values mean higher expression than the reference.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Long format</td>
 <td>A table layout where each row stores one measurement for one observation, group, or variable combination.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Manifest</td>
 <td>A small metadata file that records where outputs came from, which parameters were used, and how files relate to one another.</td>
+</tr>
+<tr class="odd">
+<td>Marker gene</td>
+<td>A gene used as a guidepost for broad cell identity because its expression is associated with a particular immune-cell type or state.</td>
 </tr>
 <tr class="even">
 <td>Marker score</td>
@@ -12971,68 +13029,76 @@ scripts/generate_opening_figure.py
 <td>A first dengue infection in the study framing, interpreted without the same prior dengue immune history expected in secondary infection.</td>
 </tr>
 <tr class="even">
+<td>Program gene</td>
+<td>A gene used as a guidepost for a biological activity, such as interferon signaling, antibody-related activity, translation, or mitochondrial signal.</td>
+</tr>
+<tr class="odd">
 <td>Program score</td>
 <td>A gene-set score for a biological activity, such as an interferon-associated response, rather than a stable cell identity.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Projection</td>
 <td>A transfer-learning step that scores a new dataset using patterns learned from a discovery dataset.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Provenance</td>
 <td>Information that records where a file or result came from, how it was produced, and which settings were used.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Pseudobulk directionality</td>
 <td>A summary that aggregates cell-level expression before comparing whether genes tend to increase or decrease relative to a reference condition.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Quality control</td>
 <td>Filtering and diagnostic checks used to identify cells or genes that are unlikely to support reliable biological interpretation.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Random seed</td>
 <td>A fixed value used to make a random operation reproducible, such as selecting the same balanced subset of cells each time the workflow is rerun.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Rank K</td>
 <td>The number of latent patterns the model is asked to learn.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Rank-sweep evidence</td>
 <td>Precomputed summaries comparing several candidate values of K before choosing the model used for interpretation.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Redundancy</td>
 <td>Overlap between model patterns that may indicate two patterns are capturing similar biological signal.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Run metrics</td>
 <td>Saved settings and summary values from a model run, such as rank, seed, iteration count, runtime, and software settings.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Sample-level 10x files</td>
 <td>Raw 10x Genomics files organized one biological sample at a time, with linked matrix, barcode, and feature files for each sample.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Sample-specific outlier</td>
 <td>A cell with unusually high counts or detected genes compared with other cells from the same sample. These cells can reflect multiplets or technical extremes.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Selected-model outputs</td>
 <td>Compact exported files from the chosen model run that are small enough to import and inspect in the main lesson.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Sensitivity check</td>
 <td>A comparison used to see whether the main interpretation still holds when a key modeling choice or assumption changes.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Serotype</td>
 <td>A subtype of a virus distinguished by how the immune system recognizes it; dengue virus has four major serotypes.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Single-cell object</td>
 <td>A labeled data container that keeps expression values aligned with cell and gene annotations.</td>
+</tr>
+<tr class="odd">
+<td>Single-cell RNA-seq</td>
+<td>A sequencing method that measures gene expression in many individual cells, making it possible to study cell-to-cell differences instead of only an average signal from a mixed sample.</td>
 </tr>
 <tr class="even">
 <td>SingleCellExperiment</td>
@@ -13079,30 +13145,34 @@ scripts/generate_opening_figure.py
 <td>A gene-expression program whose use changes across infection timepoints.</td>
 </tr>
 <tr class="odd">
+<td>Time-course analysis</td>
+<td>An analysis that compares measurements collected at ordered timepoints so you can ask how a signal rises, peaks, persists, or fades over time.</td>
+</tr>
+<tr class="even">
 <td>Top genes</td>
 <td>Genes with the largest contributions to a model pattern, used to help interpret what biology the pattern may represent.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Total counts</td>
 <td>The total number of expression counts observed for one cell before normalization. Low total counts can indicate low RNA recovery or poor-quality cells.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Transpose</td>
 <td>A matrix operation that flips rows and columns, for example changing a features-by-cells matrix into a cells-by-genes matrix.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>UMAP</td>
 <td>A two-dimensional transcriptome embedding that places cells with similar gene-expression profiles near one another. It helps show cell neighborhoods, but its axes are not direct biological measurements.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Under-resolved model</td>
 <td>A model that is too compact to separate signals that matter for the question, such as compressing infection-response activity into broad identity patterns.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Visual candidate</td>
 <td>A pattern that looks promising in a figure but still needs additional evidence before being interpreted biologically.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Wide table</td>
 <td>A table layout where related values are spread across columns, often to make comparisons across subjects, timepoints, or groups easier to scan.</td>
 </tr>
@@ -13183,7 +13253,7 @@ Wright, Carrie, Qing Meng, Michael R. Breshock, Laura Atta, Margaret A. Taub, Le
  collate  en_US.UTF-8
  ctype    en_US.UTF-8
  tz       Etc/UTC
- date     2026-06-22
+ date     2026-06-24
  pandoc   3.1.1 @ /usr/local/bin/ (via rmarkdown)
 
 ─ Packages ───────────────────────────────────────────────────────────────────
@@ -13712,7 +13782,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"descPosition":"bottom","openEffect":"zoom","selector":".lightbox","closeEffect":"zoom","loop":false});
+<script>var lightboxQuarto = GLightbox({"descPosition":"bottom","closeEffect":"zoom","loop":false,"selector":".lightbox","openEffect":"zoom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {

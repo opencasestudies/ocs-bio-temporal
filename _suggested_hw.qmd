@@ -31,7 +31,7 @@ Modify one analysis choice, such as a visualization scale or an identity-versus-
 
 ### Advanced
 
-Use the advanced reproduction materials to rerun or audit one larger step. Focus on whether the regenerated output matches the expected shape, parameters, and interpretation boundary.
+Use the Full Reproduction Guide to rerun or audit one larger step. Focus on whether the regenerated output matches the expected shape, parameters, and interpretation boundary.
 
 These are individual exercises. Each can be completed by one learner without a group project.
 
@@ -77,6 +77,6 @@ These are individual exercises. Each can be completed by one learner without a g
 
 ## Challenge Extension
 
-Rerun the selected `K = 10` model locally in the Docker image using the external large H5AD artifacts. Then compare your newly generated metrics JSON with the precomputed metrics in this repository.
+Rerun the selected `K = 10` model locally in the Docker image using the external large H5AD files. Then compare your newly generated metrics JSON with the precomputed metrics in this repository.
 
 ***
