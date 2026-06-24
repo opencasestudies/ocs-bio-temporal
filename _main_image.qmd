@@ -9,8 +9,10 @@
 Key terms
 ::::
 ::::{.inner_block}
-- **PBMCs:** Peripheral blood mononuclear cells, a mixed population of immune cells isolated from blood. PBMCs include lymphocytes such as T cells, B cells, and natural killer cells, as well as monocytes and related antigen-presenting cells.
-- **PBMC identity:** The relatively stable immune-cell identity of a cell, such as T cell, B cell, natural killer cell, or monocyte. A T cell remains a T cell across the infection time course, even though its gene-expression activity can change.
-- **IFN:** Interferon, an antiviral signaling system that helps coordinate host responses to viral infection.
+- **PBMCs:** Peripheral blood mononuclear cells, a mixed immune-cell sample from blood. In this case study, PBMCs provide both infection-day timing and immune-cell identity context.
+- **CoGAPS pattern:** A gene-expression pattern learned from the single-cell data. Each pattern has genes that help define it and cell scores that show where the pattern is strongest.
+- **Model resolution (`K`):** The number of patterns CoGAPS is asked to learn. Choosing `K` shapes how much detail the model can separate before any pattern is named biologically.
+- **Temporal program:** A pattern whose cell scores change across infection days, such as rising, peaking, or fading after infection.
+- **Identity-like vs. activity-like signal:** An identity-like signal mostly follows broad PBMC cell types, while an activity-like signal changes with infection timing within or across those cell types.
 ::::
 :::

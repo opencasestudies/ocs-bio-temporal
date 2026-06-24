@@ -17,7 +17,7 @@ The analysis still teaches CoGAPS, not just the biology. You will inspect how a 
 How the selected CoGAPS model was run
 ::::
 ::::{.inner_block}
-You do not need to rerun CoGAPS to complete the main lesson. The included files already contain the {{< glossary "Selected-model outputs" display="selected model outputs" >}}. The excerpts below show the core model call so you can see exactly how the prepared CoGAPS input became the selected `K = 10` model. Full Docker commands, sweep commands, and script bodies are in **Additional Information -> Advanced Reproduction: CoGAPS Model and Analysis Commands**.
+You do not need to rerun CoGAPS to complete the main lesson. The included files already contain the {{< glossary "Selected-model outputs" display="selected model outputs" >}}. The excerpts below show the core model call so you can see exactly how the prepared CoGAPS input became the selected `K = 10` model. Full Docker commands, sweep commands, and script bodies are in [Advanced Reproduction: CoGAPS Model and Analysis Commands](#advanced-reproduction-cogaps-model-and-analysis-commands) in the Full Reproduction Guide.
 
 **R runner excerpt**
 
@@ -85,7 +85,7 @@ result = CoGAPS(
 )
 ```
 
-The R script reads the cells-by-genes discovery object and passes its expression matrix to CoGAPS. The Python script reads the genes-by-cells CoGAPS input and sets `transposeData = False`, which keeps the {{< glossary "Matrix orientation" display="matrix orientation" >}} explicit. Both runners write the same kinds of teaching artifacts: gene loadings, cell scores, top genes, pattern summaries, trace files, diagnostics, and metrics.
+Read these excerpts in two passes. The first few lines load the prepared discovery matrix and declare the selected model settings: ten patterns, `2,000` iterations, seed `2`, sparse optimization, and four threads. The later arguments control transparency during the run by writing messages, trace points, checkpoints, and snapshots. The R script reads the cells-by-genes discovery object and passes its expression matrix to CoGAPS. The Python script reads the genes-by-cells CoGAPS input and sets `transposeData = False`, which keeps the {{< glossary "Matrix orientation" display="matrix orientation" >}} explicit. Both runners write the same kinds of teaching outputs: gene loadings, cell scores, top genes, pattern summaries, trace files, diagnostics, and metrics.
 ::::
 :::
 
@@ -175,6 +175,8 @@ pd.DataFrame({
 
 :::
 
+The tabset reads the saved metrics file and turns it into a checklist. Instead of asking you to scan a JSON file by hand, it pulls out the settings that matter for interpretation: implementation, rank, seed, iterations, thread count, diagnostic recording, checkpointing, snapshots, and runtime.
+
 These settings connect the selected run back to the rank decision from Data Import. The model has ten patterns, uses the representative seed and iteration count, records diagnostic traces every 100 iterations, and saves checkpoint and snapshot information. The run time is also instructive: even this selected model took about 24 minutes in the four-thread Docker setup used to create the included files. That is why the learner path reads the saved outputs instead of rerunning CoGAPS during the lesson.
 
 The trace gives a second check. {{< glossary "Chi-square diagnostic" display="Chi-square" >}} is not a biological result; it is a model-fit diagnostic. A large early drop followed by small late movement is consistent with a run that moved away from a poor initial state and then changed more slowly.
@@ -221,6 +223,8 @@ plt.show()
 ```
 
 :::
+
+Here, the saved trace file becomes a plot. The code reads the recorded chi-square values, keeps their order using `trace_index`, and draws the trajectory so you can inspect the model-fit behavior rather than relying only on the final output tables.
 
 ::: {.panel-tabset}
 
@@ -295,6 +299,8 @@ pd.DataFrame({
 
 :::
 
+The summary table compresses the same trace into a few audit numbers. It records where the trace started, where it ended, how much it dropped, how much the final few trace points still move, and how many updates contributed to the run.
+
 The diagnostics support using the selected model for interpretation. Chi-square drops from about 149.3 million to about 124.0 million, and the last five recorded trace points vary by only about 0.005 percent of the final value. That does not prove a unique global optimum, and it does not assign meaning to `Pattern3`. It tells you that the selected run behaved sensibly enough for the biological checks that follow.
 
 ## From CoGAPS Output to Biological Evidence
@@ -362,6 +368,8 @@ subject_time_pattern3_py.loc[
 
 :::
 
+The key programming move is the grouping step. The code starts from one row per discovery-set cell, groups those cells by subject and merged infection day, counts how many cells contribute to each group, and averages the `Pattern3` score within that group.
+
 Read this table as a change in evidence unit. Each row now represents one subject at one infection day, not one cell. The `n_cells` column shows how many discovery-set cells contributed to that subject-timepoint mean, and `mean_pattern3_score` summarizes how strongly those cells used `Pattern3`.
 
 That grouping matters because the temporal claim should not depend on treating thousands of cells as thousands of independent people. In this preview, each subject has a much higher `Pattern3` mean at `D10` and `D14/15` than at baseline or recovery. The next table asks whether that late acute rise makes `Pattern3` stand out when all selected-model patterns are ranked together.
@@ -418,6 +426,8 @@ temporal_view_py
 ```
 
 :::
+
+This chunk narrows the interpretation table to the columns needed for the timing question. It keeps each pattern's label, timepoint effect, peak timepoint, and subject-level means at key infection days, then sorts the patterns so the strongest temporal candidates appear first.
 
 The table makes the visual story sharper. `Pattern3` has the largest temporal effect by a wide margin (`eta_timepoint` about 0.454). Its subject-level mean is low at `D0`, rises strongly at `D10`, remains high at `D14/15`, and returns near baseline by `D28`. `Pattern9`, which looked like a weaker late-rising candidate in the figures, has a much smaller temporal effect and is still classified as identity-like in the interpretation table.
 
@@ -486,6 +496,8 @@ identity_activity_view_py.loc[:, [
 
 :::
 
+The class labels are not accepted as a black box here. The code recomputes the identity-versus-activity rule from the two effect-size columns, calculates the time-to-cell-type ratio, and displays the recomputed class beside the stored class from the interpretation table.
+
 Most selected-model patterns are identity-like. That is a useful result, not a distraction: CoGAPS is recovering stable PBMC structure as well as temporal signal. `Pattern7` and `Pattern10`, for example, made sense to display on the UMAP because they act as {{< glossary "Identity anchor" display="identity anchors" >}} for T-cell and B-cell or plasmablast structure.
 
 `Pattern3` is the exception that carries the main temporal claim. Its timepoint effect is about 2.76 times its broad-cell-type effect, so it is the clearest activity-like program in the selected model. The dominant broad-cell-type column still matters: `Pattern3` is not floating outside cell identity. It appears within a PBMC context, especially monocyte-rich regions, while changing strongly across infection days.
@@ -550,6 +562,8 @@ ifn_reference_genes = [
 ```
 
 :::
+
+The table is built by filtering the top-gene file to `Pattern3`, keeping the highest-ranked genes, and marking which names appear in a small interferon-related reference list. The Boolean column is a quick guidepost: it tells you which top genes are already recognizable as interferon-linked examples before you read the pattern-level evidence.
 
 Several of the top `Pattern3` genes are useful interferon anchors, including `LY6E`, `ISG15`, `IFITM1`, `IFI6`, `MX1`, `IRF7`, and `IFI44L`. That supports an interferon-associated reading, but gene identity alone is not enough. The next view brings together the pattern-level evidence: temporal effect, broad-cell-type effect, IFN-score correlation, interferon top-gene overlap, peak timepoint, and directionality at the late acute days.
 
@@ -650,6 +664,8 @@ candidate_ifn_mask_py = (
 
 :::
 
+This chunk brings two evidence tables into one view. It reshapes the directionality summary so `D10` and `D14/15` become side-by-side columns, then joins those directionality values to the candidate-pattern row from the annotation table.
+
 This row is the strongest support for the main biological interpretation. `Pattern3` is activity-like, has a strong positive IFN-score correlation, includes multiple {{< glossary "Interferon-stimulated genes" display="interferon-stimulated genes" >}} among its top loadings, peaks at `D10`, and remains elevated at `D14/15`. Directionality adds the missing expression-change piece: the top `Pattern3` genes are mostly higher than baseline at the late acute timepoints.
 
 Because CoGAPS is nonnegative, directionality has to be rebuilt outside the model. A high gene loading says that a gene helps define a pattern; it does not say whether that gene increased or decreased after infection. The box below shows how the directionality tables used here were produced.
@@ -681,7 +697,9 @@ python scripts/reproduction/gse154386_pattern_directionality.py \
   --log2fc-threshold 0.25
 ```
 
-The main outputs are `gene_directionality_by_subject.csv`, `gene_directionality_summary.csv`, and `pattern_directionality_summary.csv`. The full Docker command and expanded script body are in **Additional Information -> Advanced Reproduction: CoGAPS Model and Analysis Commands**.
+Treat this command as the recipe behind the included directionality summaries. It names the selected run, the output folder, the number of top genes to test, the baseline timepoint, the experimental cohort, the count layer, the minimum cell-count rule, and the log2 fold-change threshold.
+
+The main outputs are `gene_directionality_by_subject.csv`, `gene_directionality_summary.csv`, and `pattern_directionality_summary.csv`. The full Docker command and expanded script body are in [Advanced Reproduction: CoGAPS Model and Analysis Commands](#advanced-reproduction-cogaps-model-and-analysis-commands) in the Full Reproduction Guide.
 
 ::::
 :::
@@ -737,6 +755,8 @@ gene_directionality_py = pd.read_csv(
 ```
 
 :::
+
+This table returns from the pattern-level summary to the individual genes behind it. The code filters the directionality file to `Pattern3`, the `all_cells` summary, and `D10`, then orders the output by the original CoGAPS top-gene rank.
 
 The gene-level view shows that the directionality result is not being assigned from one marker. Multiple top `Pattern3` genes show positive median log2 fold-change at `D10`. The pattern-level summary above then condenses those gene-level rows: at `D10`, the median top-gene log2 fold-change is about 1.46 and 88 percent of the tested top genes are up; at `D14/15`, the median is about 1.56 and 96 percent are up.
 
@@ -807,6 +827,8 @@ print(
 ```
 
 :::
+
+The sensitivity chunk asks a deliberately narrow question: if the model is compressed to `K = 5`, which pattern has the largest temporal effect, how is it classified, and does it pass the same interferon-candidate rule? The output is a sentence rather than a large table because the purpose is to compare the compact model against the main `K = 10` interpretation.
 
 The compact model does not overturn the `K = 10` interpretation. Its strongest temporal effect is small, its strongest patterns are identity-like, and it does not contain an interferon-candidate pattern under the same rule used for the selected model. That comparison is the practical reason `K = 5` remains a comparator: it shows what a stable but compressed model loses.
 

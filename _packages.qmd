@@ -2,7 +2,7 @@
 
 This section gets your computer ready for the main lesson. You will use a Docker container so R, Python, and the required packages are already installed. The repository already includes the small evidence files used in **Data Import**, so you can begin the analysis without downloading raw GEO files or rerunning CoGAPS.
 
-If your goal is to rebuild large files, rerun selected models, or check how the included files were produced, see [Advanced Reproduction Setup](#advanced-reproduction-setup) in **Additional Information**. You do not need those larger files to complete the main lesson.
+If your goal is to rebuild large files, rerun selected models, or check how the included files were produced, see [Advanced Reproduction Setup](#advanced-reproduction-setup) in the Full Reproduction Guide. You do not need those larger files to complete the main lesson.
 
 ## What the Setup Provides
 
@@ -12,11 +12,17 @@ Think of setup as three pieces:
 |---|---|---|
 | Docker image | R, Python, CoGAPS, PyCoGAPS, and the other software used by the case study. | Use this for the main lesson. |
 | GitHub repository | The case-study pages, scripts, included analysis files, figures, and manifests. | Use this for the main lesson. |
-| External reproduction archive | Large source, preprocessed, model-object, checkpoint, selected-model, and sweep-summary files that are too large for GitHub. | Use this only if you want to rebuild large workflow outputs. |
+| External reproduction archive | Large source, preprocessed, selected-model, directionality, and rank-sweep support files that are too large for GitHub. | Use this if you want to rebuild larger files or inspect the files behind the rank comparison. |
 
-The workflow map below shows why setup matters before the case study begins. The top band separates the three resources you are setting up: the Docker image for software, the GitHub repository for the main teaching files, and the external archive for advanced reproduction. Follow the left panel from source-file import to final figures, then use the numbered labels on the right to see which pieces of evidence will help you answer each question later.
+Setup has two roles in this case study. First, it gives you the software and files needed for the main lesson. Second, it keeps the larger evidence trail visible, so you can see where the included tables and figures came from without rebuilding every step yourself.
 
-![Setup sources and evidence-building path for the CoGAPS case study. The top band distinguishes the Docker image, GitHub repository, and external archive. The left panel follows the work from source-file import through figures and tables, and the right panel uses numbered labels to show which evidence supports each case-study question or objective.](img/packages_setup_workflow_map.png){#fig-packages-setup-workflow-map width="100%"}
+The first figure keeps the setup resources separate. Docker supplies the software environment, the GitHub repository supplies the main lesson files, and the external archive holds larger rebuild files plus files that support the separate rank-sweep checks.
+
+![Setup resources for the case study. Docker supplies the software environment, the GitHub repository supplies the main lesson files, and the external archive holds larger rebuild files plus files that support the separate rank-sweep checks.](img/packages_setup_resources.png){#fig-packages-setup-resources width="100%"}
+
+Once those resources are in place, the next map separates three paths through the evidence. The brighter steps are the main lesson pieces you work with most directly in the case study. The quieter source-rebuild steps show where the included files came from. The directionality step is also muted because you inspect its included results in the main lesson, but generate that analysis only during full reproduction. The rank sweep is shown separately because it requires high-performance computing.
+
+![Evidence-building path for the CoGAPS case study. The left panel follows the analysis from source-file import through figures and tables. Bright steps mark the evidence learners work with most directly in the main lesson. Muted steps mark source-rebuild work, the included directionality evidence inspected in the main lesson but generated during full reproduction, and the separate high-compute rank sweep. The right panel separates the main lesson path, the full reproduction path that skips the high-compute rank sweep and reruns the selected model, and the separate rank-sweep path for high-performance computing.](img/packages_setup_workflow_map_core_path_colors.png){#fig-packages-setup-evidence-path width="100%"}
 
 The Docker image supplies software, not project data. Docker sees your local project files only when you mount the repository into the container. In the command below, your local repository is mounted at `/home/rstudio/project`.
 

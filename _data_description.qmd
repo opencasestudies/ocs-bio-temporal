@@ -93,7 +93,7 @@ Later sections introduce additional columns such as `eta_timepoint`, `eta_broad_
 
 ## Where the Large Files Fit
 
-Some files needed to rebuild the workflow are too large or time-consuming for the main lesson. These include the raw GEO archive, preprocessed objects, model objects, checkpoint files, and full sweep outputs. They are documented in `data/artifact_manifest.json` and in the reproduction scripts. In the main lesson, you will use the smaller included files to understand the analysis without rerunning every long step.
+Some files needed to rebuild the workflow are too large or time-consuming for the main lesson. These include the raw GEO archive, preprocessed objects, model objects, checkpoint files, and full sweep outputs. They are listed in `data/artifact_manifest.json` and explained in the Full Reproduction Guide. In the main lesson, you will use the smaller included files to understand the analysis without rerunning every long step.
 
 :::{.think_question}
 ::::{.think_question_header}

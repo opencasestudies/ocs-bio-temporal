@@ -1,0 +1,1101 @@
+# **Full Reproduction Guide**
+***
+
+The main lesson uses included evidence files so you can focus on interpretation. Use this guide when you want to audit or rebuild the files behind that evidence. You can use it at three depths:
+
+1. read the route map to see where the included files came from;
+1. rerun one stage to check a handoff file;
+1. attempt the full workflow from source files through the selected model and interpretation tables.
+
+The core learner path does not require these steps. Full reproduction is a separate audit path for learners, instructors, or reviewers who want to look behind the included files. In this guide, **full reproduction** means rebuilding the source/preprocessing files, rerunning the selected model at the rank chosen for the case study, and rebuilding the interpretation evidence. The rank sweep is listed as a separate high-performance-computing audit path because it explains the rank evidence, but it is not part of the local full reproduction route.
+
+## Advanced Reproduction Setup
+
+Full reproduction uses the same Docker image as the main lesson, but it adds larger files and longer-running scripts. The external reproduction archive will be published through Zenodo; the final DOI will be added here after the Zenodo record is public. The archive is used for large prepared inputs, selected-model files, and sweep summaries that are not stored in GitHub. Source preprocessing can also be rebuilt directly from the GEO archive; in that route, the preparation script downloads the raw GEO archive into a writable work folder.
+
+Before running commands, keep three local folder roles separate:
+
+- **Repository folder:** the GitHub clone that contains the case-study pages, scripts, included tables, figures, and manifests.
+- **Writable reproduction work folder:** a local output area for downloaded GEO files, regenerated single-cell objects, model outputs, and logs. In the examples below, this is a `GSE154386/` folder inside the repository clone; that folder is ignored by Git.
+- **External reproduction archive:** the larger Zenodo archive. Mount it read-only when you want to rerun downstream model, directionality, or audit steps without rebuilding every source file.
+
+Use the following commands from your computer's Terminal:
+
+```bash
+# Get the case-study repository if you have not already cloned it.
+git clone https://github.com/opencasestudies/ocs-bio-temporal.git
+cd ocs-bio-temporal
+
+# Point to the downloaded Zenodo reproduction archive.
+mkdir -p "$HOME/cs5_reproduction_archive"
+export CS5_REPRODUCTION_ARCHIVE="$HOME/cs5_reproduction_archive"
+
+# Create a writable local output folder for regenerated files.
+mkdir -p "$PWD/GSE154386"
+
+# Launch Docker with the repository writable and the archive read-only.
+docker run --platform linux/amd64 --rm -it \
+  -p 8787:8787 \
+  -e PASSWORD="Password12" \
+  -v "$PWD":/home/rstudio/project:rw \
+  -v "$CS5_REPRODUCTION_ARCHIVE":/home/rstudio/project/data/external/reproduction_archive:ro \
+  othomas2/cs5-cogaps-runtime:0.1.0
+```
+
+Inside Docker, the repository appears at `/home/rstudio/project`. The Zenodo archive appears at `/home/rstudio/project/data/external/reproduction_archive`. The archive mount is read-only (`ro`) so the downloaded files are not modified. Regenerated outputs should go to a writable folder such as `/home/rstudio/project/GSE154386`.
+
+## Optional Runtime Launcher
+
+The direct Docker command above is the clearest way to see which folders are being mounted. The repository also includes `scripts/run_cs5_runtime.sh`, a launcher script that wraps the same idea.
+
+Use the launcher only after you understand where the repository and external archive live on your computer:
+
+```bash
+export CS5_REPRODUCTION_ARCHIVE="$HOME/cs5_reproduction_archive"
+bash scripts/run_cs5_runtime.sh
+```
+
+The launcher creates expected output folders, mounts the repository, and mounts the external archive when `CS5_REPRODUCTION_ARCHIVE` points to an existing folder.
+
+## Full Reproduction Route Map
+
+Read this map as a staged handoff. The full reproduction route starts with source files, prepares CoGAPS inputs, reruns the selected model at the rank chosen for this case study, and rebuilds the interpretation tables. The rank sweep is shown as a separate HPC route because it supports the rank decision but is not expected in the local reproduction path. A successful local reproduction should at minimum rebuild the selected-model outputs and interpretation tables; regenerating figures is useful for display checks but is not the main proof that the analysis was reproduced.
+
+::: {.table-responsive}
+Stage | What you are rebuilding or auditing | Run surface | Handoff checks
+--- | --- | --- | ---
+Source import and metadata | Raw GEO/10x files become labeled single-cell objects with counts tied to cells, genes, samples, subjects, cohorts, and infection days. | Docker; local workstation may be enough, but storage matters. | Sample parsing works, matrix/barcode/feature dimensions match, cell names are unique, and the GEO archive path is recorded.
+Preprocessing and discovery-set construction | QC filters, normalization, HVG selection, PBMC context, the experimental discovery cohort, the `D14/15` merge, and balanced sampling create CoGAPS-ready inputs. | Docker; writes large local objects. | `preprocessing_manifest.json` exists; cell and gene counts are recorded; discovery input orientation is documented; max `600` cells per sample and `seed = 42` are recorded.
+Separate rank sweep and K evidence | Candidate ranks, seeds, and iteration counts are compared before interpreting a selected model. This route explains where the included rank evidence came from, but it is not part of the local full reproduction path. | Separate HPC/SLURM audit path. | `jobs.tsv` has `300` tasks; per-run outputs exist; aggregation writes the K-selection summary tables read in Data Import.
+Selected-model rerun | The prepared input is fit with the selected rank, seed, iteration count, checkpointing, snapshots, and sparse optimization. | Docker; moderate local compute. | Cell scores, gene loadings, top genes, diagnostics, trace, metrics, and selected-model summaries are written.
+Interpretation-layer tables | Model outputs are summarized by subject, infection day, and broad PBMC identity so the case study can ask biological questions. | Docker; lightweight table rebuild. | Subject-timepoint summaries, cell-type summaries, top-gene summaries, and evidence tables are written.
+Directionality evidence | Top pattern genes are compared against each subject's `D0` baseline to ask whether genes tend to increase or decrease after infection. | Docker; uses the preprocessed expression object and selected top genes. | Group expression, gene-level directionality, pattern-level directionality, and stratified heatmaps are written.
+Display figures | Included figures and figure source tables are regenerated from processed evidence files. | Docker; lightweight figure scripts. | Figure PNG/SVG outputs update, but CoGAPS is not rerun by figure scripts.
+:::
+
+## Advanced Reproduction Script Map
+
+The scripts below are included so you can rebuild or inspect how the included files were produced. You do not need to run them to complete the main lesson. R is the primary reproduction route where an R route is available; Python is included as an alternate route and for steps that are implemented only in Python.
+
+::: {.table-responsive}
+Stage | Scripts to inspect or run | What they are for
+--- | --- | ---
+Source import and preprocessing | `scripts/prepare_gse154386_subset_r.R`<br>`scripts/prepare_gse154386_subset_python.py` | Download the GEO archive into a writable work folder, import 10x files, apply preprocessing decisions, and save prepared discovery-set files.
+Rank sweep and K evidence | `scripts/reproduction/gse154386_make_cogaps_jobs_tsv.py`<br>`scripts/reproduction/gse154386_cogaps_sweep_array_singleprocess_rhino_light.sbatch`<br>`scripts/reproduction/gse154386_aggregate_results.py`<br>`scripts/reproduction/cs5_generate_revised_k_selection_report.py` | Document the sweep setup, summarize candidate ranks, and create rank-selection summaries.
+Selected-model rerun | `scripts/reproduction/cs5_run_selected_model_r.R`<br>`scripts/reproduction/cs5_run_selected_model_python.py` | Refit the selected CoGAPS model with the archived prepared input files.
+Interpretation tables | `scripts/reproduction/cs5_build_k10_interpretation_layer.py` | Recreate the subject-timepoint, cell-type, top-gene, and evidence tables used later in the case study.
+Directionality evidence | `scripts/reproduction/gse154386_pattern_directionality.py` | Estimate whether selected pattern genes are higher or lower relative to baseline.
+Display figures | `scripts/generate_k_selection_figure.R`<br>`scripts/generate_pattern_time_small_multiples.R`<br>`scripts/generate_pattern_embedding_figure.py`<br>`scripts/generate_opening_figure.py` | Regenerate figures from included or regenerated source tables.
+Development-history audit | `scripts/reproduction/gse154386_sparse_distributed_cogaps.py`<br>`scripts/reproduction/gse154386_cogaps_prep_cache.py`<br>`scripts/reproduction/gse154386_run_one_singleprocess.py` | Inspect older or shared workflow code. Use these as audit references unless you intentionally confirm their parameters match the current case-study route.
+:::
+
+Some script names preserve development history. In particular, `gse154386_sparse_distributed_cogaps.py` contains non-distributed Case Study 5 workflow code even though its filename includes `distributed`.
+
+## Rebuild Source Import, Preprocessing, and Discovery Inputs
+
+Use this stage when you want to rebuild the large source and preprocessing files from GEO. The preparation script downloads `GSE154386_RAW.tar` into the writable `--workdir`, extracts the sample-level 10x files, parses sample labels, applies preprocessing decisions, constructs the experimental discovery set, and writes a preprocessing manifest.
+
+Run these commands inside Docker from `/home/rstudio/project`. The R command is the primary route; the Python command is an alternate route that also writes the two H5AD orientations used by downstream Python tooling.
+
+::: {.panel-tabset}
+
+### R
+
+```{bash}
+#| eval: false
+Rscript scripts/prepare_gse154386_subset_r.R \
+  --workdir /home/rstudio/project/GSE154386/source_preprocessing_r \
+  --max-cells-per-sample 600 \
+  --n-hvgs 5000 \
+  --seed 42
+```
+
+### Python
+
+```{bash}
+#| eval: false
+python scripts/prepare_gse154386_subset_python.py \
+  --workdir /home/rstudio/project/GSE154386/source_preprocessing_python \
+  --max-cells-per-sample 600 \
+  --n-hvgs 5000 \
+  --seed 42
+```
+
+:::
+
+After the preparation stage, check the generated `results/preprocessing_manifest.json` in the work folder you chose. That manifest should record the source accession, number of samples, retained cell and gene counts, discovery-set shape, `max_cells_per_sample`, `seed`, and output paths. Also check the prepared single-cell objects before moving on: one should preserve a cell-by-gene view for biological metadata and summaries, and one should preserve the genes-by-cells orientation used by PyCoGAPS with `transposeData = False`.
+
+The selected-model commands later in this guide read the archived prepared inputs from the Zenodo reproduction archive. That keeps the model rerun tied to the same handoff files used by the case study. If you rebuild preprocessing yourself, compare your regenerated manifest and object shapes with the archived handoff files before replacing downstream inputs.
+
+## Advanced Audit: Full Preprocessing Decision Reference
+
+This table gives the parameter-level preprocessing reference behind the Core Path. You do not need to memorize it for the main lesson. Use it when you want to audit how preprocessing choices define the model input, what each choice affects, and which sensitivity issues would matter if the larger files were regenerated.
+
+::: {.table-responsive}
+Decision | Value used | Biological or analytical reason | What it affects | Limitation or sensitivity
+--- | --- | --- | --- | ---
+Imported single-cell object | Labeled `SingleCellExperiment` or `AnnData` object with counts and sample metadata | Keeps expression values aligned with subject, cohort, infection day, cell, and gene labels. | Starting point for QC, normalization, annotation, and discovery-set construction. | Incorrect metadata or matrix orientation would compromise downstream biological interpretation.
+Minimum genes per cell | `MIN_GENES = 200` | Cells with very few detected genes provide too little transcriptome information for learning coordinated gene-expression programs. | Which cells enter normalization and CoGAPS input preparation. | More or less stringent cutoffs could change rare-cell retention.
+Minimum counts per cell | `MIN_COUNTS = 500` | Low-count cells are more likely to reflect poor RNA recovery than interpretable immune activity. | Which cells remain after QC. | Count thresholds are practical filters, not biological boundaries.
+Mitochondrial fraction filter | `MAX_PCT_MT = 20` | High mitochondrial signal can indicate stressed or damaged cells, which can create technical stress-like programs. | QC cell retention. | High mitochondrial signal can be technical or biological, so this cutoff should be reported.
+Sample-specific upper outliers | 99.5th percentile for high gene count and high total count flags | Extreme count profiles can represent multiplets or sample-specific technical outliers. | Removes cells that may otherwise dominate summaries. | Outlier definitions depend on each sample's distribution.
+Minimum cells per gene | `MIN_CELLS_PER_GENE = 10` | Genes detected in very few cells are hard to interpret as stable temporal programs. | Gene set available for HVG selection and CoGAPS. | Very rare but biologically meaningful genes may be excluded.
+Normalization | Library-size normalization followed by log transform | Cells are sequenced to different depths; normalization puts expression values on a more comparable scale. | Expression values used for marker scoring, HVG selection, and downstream summaries. | Normalization reduces technical scale differences but does not remove all batch or subject effects.
+Highly variable genes | `N_HVGS = 5000` | CoGAPS should focus on genes carrying useful cell-to-cell or time-course variation, not genes that are nearly constant. | CoGAPS input gene space. | Different HVG strategies can change the patterns; the Python and R reproduction scripts use related but not identical implementations.
+Timepoint merge | Experimental `D14` and `D15` are merged to `D14/15` | Nearby late experimental days are combined to support a stable late-timepoint summary. | Timepoint labels used in figures and research-question tables. | The merge improves interpretability but removes a one-day distinction.
+Broad cell-type annotation | Marker-set scores for broad immune-cell identities | PBMC identity is a major source of expression variation; broad labels help separate identity-like patterns from activity-like programs. | Composition summaries and identity/activity pattern classification. | Broad labels are useful for interpretation but are not fine-grained cell-state annotations.
+Discovery cohort | Experimental cohort only | The experimental infection cohort has aligned days, making it the appropriate primary time course for temporal program discovery. | CoGAPS model input for the core analysis. | Natural infection samples are not used as the primary discovery model here.
+Discovery-set balancing | Up to `600` cells per sample | Balancing reduces the chance that one sample or timepoint dominates the learned patterns. | Number of discovery cells used for CoGAPS. | The cap and seed define which cells contribute to model fitting and should be reported.
+Random seed | `seed = 42` for subset construction | Makes the balanced discovery subset reproducible. | Which cells are selected when a sample has more than 600 cells. | A different seed could select a slightly different subset.
+Natural cohort | Reserved as an optional projection target | Keeps the primary lesson focused on the aligned experimental time course. | Optional extension, not required for the main case study. | Projection requires separate validation before being treated as a main result.
+:::
+
+## Advanced Reproduction: Source-Import Code Examples
+
+The source/preprocessing commands above are the executable route for rebuilding the large prepared files. This subsection is a conceptual primer for the first part of that route: how raw {{< glossary "10x Genomics files" display="10x Genomics files" >}} become a labeled {{< glossary "Single-cell object" display="single-cell object" >}} before preprocessing begins.
+
+You do not need these steps for the main lesson. Use them if you want to audit or rebuild how raw source files become a labeled single-cell object before preprocessing begins.
+
+:::{.disclaimer_box}
+::::{.disclaimer_box_header}
+Advanced reproduction note
+::::
+::::{.inner_block}
+The short toy chunks in this subsection are examples you can run to understand the import logic. They use small in-memory objects so you can see how source 10x files become a labeled single-cell object without downloading the full GEO archive.
+
+If you want to run the advanced reproduction workflow on the real source files, use the preparation scripts listed in the **Advanced Reproduction Script Map** above. Those scripts include both the import steps in this section and the preprocessing steps summarized in Data Wrangling. Keeping those steps in executable scripts makes the workflow easier to rerun because the downloaded files, imported objects, quality-control decisions, and saved outputs are handled in one continuous run. Helper chunks marked with `eval: false` below are script excerpts for transparency, not standalone workflow steps.
+::::
+:::
+
+The key idea is alignment: a raw 10x sample is not one tidy table, but a linked matrix, barcode list, and feature list. In the steps below, you will see how those linked files become a labeled {{< glossary "Single-cell object" display="single-cell object" >}}, with expression values connected to the correct cells, genes, samples, subjects, and infection days. Pay special attention to {{< glossary "Matrix orientation" display="matrix orientation" >}}, because raw 10x matrices are usually stored as features by cells before being converted into the {{< glossary "Cell-by-gene matrix" display="cell-by-gene" >}} view used later.
+
+### Identify Source Files and Sample Metadata
+
+Before expression values can be interpreted biologically, each cell has to be connected back to its sample. In this dataset, the sample name tells you which subject the cell came from, whether that subject was in the experimental or natural infection cohort, and which infection day the sample represents.
+
+The raw GEO archive contains sample-level 10x files. In this context, "sample-level" means that the raw sequencing output is organized one biological sample at a time, rather than as one combined study-wide table. For each sample, the 10x Genomics files are usually a small set of linked files: a sparse expression matrix, a list of cell barcodes, and a list of gene or feature names. These files have to be read together because the matrix alone only contains numbers; the barcode and feature files tell you which cells and genes those numbers refer to.
+
+The goal is to make implicit information explicit. A **variable** stores a value you want to reuse, such as a source URL or file path. A **function** is reusable code with inputs and outputs. Here, the function `parse_sample_key()` takes one sample name as input and returns metadata columns as output. Later, those metadata columns are copied onto every cell from that sample.
+
+### Step 1: Record Where the Raw Archive Comes From
+
+This first short chunk does not download anything. It gives a name to the GEO source URL and to the local file name that would store the source archive. Naming these values makes the advanced reproduction workflow easier to audit because the source location is written once and reused.
+
+::: {.panel-tabset}
+
+#### R
+
+```{r}
+#| label: source-archive-r
+RAW_TAR_URL <- "https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE154386&format=file"
+RAW_TAR <- file.path("data", "external", "GSE154386", "GSE154386_RAW.tar")
+
+data.frame(
+  item = c("GEO source archive", "local archive path"),
+  value = c(RAW_TAR_URL, RAW_TAR)
+) |>
+  knitr::kable()
+```
+
+#### Python
+
+```{python}
+#| label: source-archive-python
+from pathlib import Path
+import pandas as pd
+
+RAW_TAR_URL = "https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE154386&format=file"
+RAW_TAR = Path("data/external/GSE154386/GSE154386_RAW.tar")
+
+pd.DataFrame({
+    "item": ["GEO source archive", "local archive path"],
+    "value": [RAW_TAR_URL, str(RAW_TAR)],
+})
+```
+
+:::
+
+The archive is a source file, not an analysis table. It contains raw 10x files that still need to be connected to sample labels before quality control or modeling can happen.
+
+### Step 2: Inspect the Structure of One Sample Name
+
+The source filenames are not arbitrary. A name such as `GSM4670192_Subject2_D0` can be read as three pieces: a GEO sample identifier, a subject label, and a day label. The experimental samples use labels such as `Subject2`, while natural infection samples use labels such as `Natural1`.
+
+::: {.panel-tabset}
+
+#### R
+
+```{r}
+#| label: sample-key-examples-r
+sample_key_examples <- data.frame(
+  sample_key = c(
+    "GSM4670192_Subject2_D0",
+    "GSM4670216_Natural1_Dneg3"
+  ),
+  meaning = c(
+    "experimental subject 2 at day 0",
+    "natural infection sample 1 at day -3"
+  )
+)
+
+sample_key_examples |>
+  knitr::kable()
+```
+
+#### Python
+
+```{python}
+#| label: sample-key-examples-python
+sample_key_examples = pd.DataFrame({
+    "sample_key": [
+        "GSM4670192_Subject2_D0",
+        "GSM4670216_Natural1_Dneg3",
+    ],
+    "meaning": [
+        "experimental subject 2 at day 0",
+        "natural infection sample 1 at day -3",
+    ],
+})
+
+sample_key_examples
+```
+
+:::
+
+The label `D0` means day 0. A label such as `Dneg3` means day -3. The numeric form of the day will matter later because it lets you sort timepoints and summarize pattern scores along the infection time course.
+
+### Step 3: Write a Function That Parses a Sample Name
+
+The next snippet defines `parse_sample_key()`. In programming, a function is useful when the same operation needs to be repeated many times. The input is one sample name. The output is a small set of metadata fields that can be attached to cells from that sample.
+
+The main programming tools are a regular expression and an `if` statement. A regular expression is a pattern used to find pieces of text. Here, it captures the GEO identifier, the subject label, and the day label. The `if` statement then translates the subject label into a cohort label and translates the day label into a number.
+
+::: {.panel-tabset}
+
+#### R
+
+```{r}
+#| label: parse-sample-key-r
+parse_sample_key <- function(sample_key) {
+  match <- regexec(
+    "^(GSM[0-9]+)_([^_]+)_(D(?:neg)?[0-9]+)$",
+    sample_key,
+    perl = TRUE
+  )
+  parts <- regmatches(sample_key, match)[[1]]
+  if (length(parts) == 0) {
+    stop("Could not parse sample key: ", sample_key)
+  }
+
+  gsm_id <- parts[[2]]
+  subject <- parts[[3]]
+  tp <- parts[[4]]
+
+  cohort <- if (startsWith(subject, "Subject")) {
+    "experimental"
+  } else if (startsWith(subject, "Natural")) {
+    "natural"
+  } else {
+    "unknown"
+  }
+
+  day <- if (startsWith(tp, "Dneg")) {
+    -as.integer(sub("Dneg", "", tp))
+  } else {
+    as.integer(sub("D", "", tp))
+  }
+
+  data.frame(
+    gsm_id = gsm_id,
+    sample_id = gsm_id,
+    subject = subject,
+    cohort = cohort,
+    timepoint_raw = tp,
+    timepoint_display = paste0("D", day),
+    day_numeric = day,
+    stringsAsFactors = FALSE
+  )
+}
+```
+
+#### Python
+
+```{python}
+#| label: parse-sample-key-python
+import re
+
+def parse_sample_key(sample_key: str) -> dict:
+    match = re.match(r"^(GSM\d+)_([^_]+)_(D(?:neg)?\d+)$", sample_key)
+    if not match:
+        raise ValueError(f"Could not parse sample key: {sample_key}")
+
+    gsm_id, subject, tp = match.groups()
+
+    if subject.startswith("Subject"):
+        cohort = "experimental"
+    elif subject.startswith("Natural"):
+        cohort = "natural"
+    else:
+        cohort = "unknown"
+
+    day = -int(tp.replace("Dneg", "")) if tp.startswith("Dneg") else int(tp.replace("D", ""))
+
+    return {
+        "gsm_id": gsm_id,
+        "sample_id": gsm_id,
+        "subject": subject,
+        "cohort": cohort,
+        "timepoint_raw": tp,
+        "timepoint_display": f"D{day}",
+        "day_numeric": day,
+    }
+```
+
+:::
+
+In R, the parsed metadata becomes a data frame. In Python, it becomes a dictionary, which can then be placed into a `pandas` table. In both languages, the goal is the same: every cell must carry the biological labels needed for subject-level and timepoint-level summaries.
+
+### Step 4: Test the Function on Two Sample Names
+
+When you write a function, test it on a small example before using it on every file in a dataset. This is a coding habit, but it is also a biological check. If the day or cohort is parsed incorrectly here, every later time-course summary will be mislabeled.
+
+::: {.panel-tabset}
+
+#### R
+
+```{r}
+#| label: parse-sample-key-demo-r
+parsed_examples <- do.call(
+  rbind,
+  lapply(sample_key_examples$sample_key, parse_sample_key)
+)
+
+parsed_examples |>
+  knitr::kable()
+```
+
+#### Python
+
+```{python}
+#| label: parse-sample-key-demo-python
+parsed_examples = pd.DataFrame([
+    parse_sample_key(sample_key)
+    for sample_key in sample_key_examples["sample_key"]
+])
+
+parsed_examples
+```
+
+:::
+
+Read the output from left to right. The `gsm_id` and `sample_id` identify the GEO sample. The `subject` and `cohort` columns tell you which biological group the sample belongs to. The `timepoint_display` column is a readable label for plotting, while `day_numeric` is the numeric version used for sorting and summarizing days.
+
+:::{.think_question}
+::::{.think_question_header}
+Checkpoint
+::::
+::::{.inner_block}
+If the sample name is `GSM4670198_Subject2_D15`, what should the cohort and numeric day be?
+
+<details>
+<summary>Show answer</summary>
+
+The cohort should be `experimental` because the subject label begins with `Subject`. The numeric day should be `15` because the timepoint label is `D15`.
+
+</details>
+::::
+:::
+
+<details>
+<summary>Optional helper: download the GEO archive safely</summary>
+
+The complete preparation scripts include a small download helper. This helper is kept separate from the parsing lesson because downloading is not the main biological idea here. It is still useful for advanced reproduction because it skips an existing archive and avoids treating the tar file as a text table.
+
+::: {.panel-tabset}
+
+#### R
+
+```{r}
+#| eval: false
+download_if_needed <- function(url, dest) {
+  if (file.exists(dest) && file.info(dest)$size > 0) {
+    message("[skip] ", dest, " already exists")
+    return(invisible(dest))
+  }
+
+  download.file(url, destfile = dest, mode = "wb", quiet = FALSE)
+  invisible(dest)
+}
+```
+
+#### Python
+
+```{python}
+#| eval: false
+import requests
+
+def download(url: str, dest: Path, chunk_mb: int = 16) -> None:
+    if dest.exists() and dest.stat().st_size > 0:
+        print(f"[skip] {dest} already exists")
+        return
+
+    tmp = dest.with_suffix(dest.suffix + ".part")
+    with requests.get(url, stream=True, timeout=180) as response:
+        response.raise_for_status()
+        with open(tmp, "wb") as handle:
+            for chunk in response.iter_content(chunk_size=chunk_mb * 1024 * 1024):
+                if chunk:
+                    handle.write(chunk)
+    tmp.rename(dest)
+```
+
+:::
+
+</details>
+
+After this step, the workflow has not changed any expression values yet. The important result is that each future cell-level observation can carry subject, cohort, and day labels. Without those labels, the later CoGAPS pattern scores could not be summarized by timepoint or subject.
+
+### Build the Cell-by-Gene Data Object
+
+In the previous step, you learned how a sample name becomes metadata. Now you will see how the raw expression files become a labeled {{< glossary "Cell-by-gene matrix" display="cell-by-gene" >}} object. The goal is not just to read files; the goal is to preserve the relationship between counts, cells, genes, and sample metadata.
+
+Single-cell RNA-seq data do not begin as a tidy table. For each 10x Genomics sample, the data are split into three linked files. None of these files is biologically interpretable on its own.
+
+| 10x file | What it contains | Why it matters |
+|---|---|---|
+| `matrix.mtx` | The expression count matrix. In raw 10x output, rows are usually features and columns are cells. | Stores the measured RNA counts, but not the cell or gene names. |
+| `barcodes.tsv` | Cell barcode labels. | Tells you which captured cell or droplet each matrix column represents. |
+| `features.tsv` or `genes.tsv` | Gene IDs, gene symbols, and sometimes feature types. | Tells you which gene or measured feature each matrix row represents. |
+
+This alignment is biologically important. If genes and cells are mislabeled or transposed, marker scoring and CoGAPS interpretation can point to the wrong biological signal. The code below uses a small toy example so you can see the alignment logic without downloading the full GEO archive.
+
+The R and Python workflows use different object classes for the same basic purpose. They are different containers, but they solve the same problem: they keep the count matrix connected to cell and gene annotations.
+
+| Concept | R `SingleCellExperiment` | Python `AnnData` |
+|---|---|---|
+| Expression matrix | `assays(sce)$counts` | `adata.X` |
+| {{< glossary "Cell metadata" display="Cell metadata" >}} | `colData(sce)` | `adata.obs` |
+| {{< glossary "Gene metadata" display="Gene metadata" >}} | `rowData(sce)` | `adata.var` |
+| Cell names | `colnames(sce)` | `adata.obs_names` |
+| Gene names | `rownames(sce)` | `adata.var_names` |
+
+### Step 1: Represent the Three Linked 10x Pieces
+
+In the advanced reproduction script, this step reads `matrix.mtx`, `barcodes.tsv`, and `features.tsv` from disk. Here, the same idea is shown with a small in-memory example. The matrix, barcode table, and feature table are separate objects at first.
+
+::: {.panel-tabset}
+
+#### R
+
+```{r}
+#| label: toy-10x-pieces-r
+toy_counts_10x <- matrix(
+  c(1, 0,
+    3, 2,
+    0, 4,
+    7, 1),
+  nrow = 4,
+  byrow = TRUE
+)
+
+toy_barcodes <- c("AAAC-1", "TTGG-1")
+
+toy_features <- data.frame(
+  gene_id = c("ENSG1", "ENSG2", "ENSG3", "AB1"),
+  gene_symbol = c("ISG15", "MX1", "CD3D", "TotalSeq_B"),
+  feature_type = c(
+    "Gene Expression",
+    "Gene Expression",
+    "Gene Expression",
+    "Antibody Capture"
+  )
+)
+
+data.frame(
+  object = c("toy_counts_10x", "toy_barcodes", "toy_features"),
+  rows = c(nrow(toy_counts_10x), length(toy_barcodes), nrow(toy_features)),
+  columns = c(ncol(toy_counts_10x), NA, ncol(toy_features))
+) |>
+  knitr::kable()
+```
+
+#### Python
+
+```{python}
+#| label: toy-10x-pieces-python
+import numpy as np
+
+toy_counts_10x = np.array([
+    [1, 0],
+    [3, 2],
+    [0, 4],
+    [7, 1],
+])
+
+toy_barcodes = ["AAAC-1", "TTGG-1"]
+
+toy_features = pd.DataFrame({
+    "gene_id": ["ENSG1", "ENSG2", "ENSG3", "AB1"],
+    "gene_symbol": ["ISG15", "MX1", "CD3D", "TotalSeq_B"],
+    "feature_type": [
+        "Gene Expression",
+        "Gene Expression",
+        "Gene Expression",
+        "Antibody Capture",
+    ],
+})
+
+pd.DataFrame({
+    "object": ["toy_counts_10x", "toy_barcodes", "toy_features"],
+    "rows": [toy_counts_10x.shape[0], len(toy_barcodes), len(toy_features)],
+    "columns": [toy_counts_10x.shape[1], None, toy_features.shape[1]],
+})
+```
+
+:::
+
+In this toy example, the count matrix has four feature rows and two cell columns. The feature table also has four rows, and the barcode list has two labels. Those matching dimensions are the first sign that the pieces can be aligned.
+
+### Step 2: Check Orientation and Dimensions
+
+Raw 10x matrices are usually stored as features by cells. That {{< glossary "Matrix orientation" display="matrix orientation" >}} means rows match the feature table and columns match the barcode table. Many downstream analyses are described as cell-by-gene analyses, so the workflow needs to know when a {{< glossary "Transpose" display="transpose" >}} is required. A transpose flips a matrix so rows become columns and columns become rows.
+
+::: {.panel-tabset}
+
+#### R
+
+```{r}
+#| label: toy-10x-dim-check-r
+data.frame(
+  check = c("feature rows match matrix rows", "barcode labels match matrix columns"),
+  expected = c(nrow(toy_features), length(toy_barcodes)),
+  observed = c(nrow(toy_counts_10x), ncol(toy_counts_10x)),
+  passes = c(
+    nrow(toy_features) == nrow(toy_counts_10x),
+    length(toy_barcodes) == ncol(toy_counts_10x)
+  )
+) |>
+  knitr::kable()
+```
+
+#### Python
+
+```{python}
+#| label: toy-10x-dim-check-python
+pd.DataFrame({
+    "check": [
+        "feature rows match matrix rows",
+        "barcode labels match matrix columns",
+    ],
+    "expected": [len(toy_features), len(toy_barcodes)],
+    "observed": [toy_counts_10x.shape[0], toy_counts_10x.shape[1]],
+    "passes": [
+        len(toy_features) == toy_counts_10x.shape[0],
+        len(toy_barcodes) == toy_counts_10x.shape[1],
+    ],
+})
+```
+
+:::
+
+These checks look simple, but they protect the biological interpretation. If the feature count does not match the matrix rows, gene labels could be attached to the wrong counts. If the barcode count does not match the matrix columns, cell metadata could be attached to the wrong cells.
+
+### Step 3: Keep the Gene-Expression Rows
+
+Some 10x files include feature types that are not RNA gene-expression measurements. This case study models transcript abundance, so the import workflow keeps `Gene Expression` rows and drops other feature types before CoGAPS input preparation.
+
+::: {.panel-tabset}
+
+#### R
+
+```{r}
+#| label: toy-gene-expression-filter-r
+keep_gene_expression <- toy_features$feature_type == "Gene Expression"
+
+toy_counts_gene_expression <- toy_counts_10x[keep_gene_expression, , drop = FALSE]
+toy_features_gene_expression <- toy_features[keep_gene_expression, , drop = FALSE]
+
+data.frame(
+  retained_gene_symbols = toy_features_gene_expression$gene_symbol,
+  retained_feature_type = toy_features_gene_expression$feature_type
+) |>
+  knitr::kable()
+```
+
+#### Python
+
+```{python}
+#| label: toy-gene-expression-filter-python
+keep_gene_expression = toy_features["feature_type"].eq("Gene Expression")
+
+toy_counts_gene_expression = toy_counts_10x[keep_gene_expression.to_numpy(), :]
+toy_features_gene_expression = toy_features.loc[keep_gene_expression, :].copy()
+
+toy_features_gene_expression.loc[
+    :, ["gene_symbol", "feature_type"]
+].rename(columns={
+    "gene_symbol": "retained_gene_symbols",
+    "feature_type": "retained_feature_type",
+})
+```
+
+:::
+
+The dropped toy feature, `TotalSeq_B`, represents the kind of non-RNA feature that should not be mixed into this RNA expression model. In the real dataset, this filtering step keeps the biological question focused on gene-expression programs.
+
+### Step 4: Name Cells and Genes Before Constructing the Object
+
+Cell barcodes are only guaranteed to be unique within a sample. The same barcode sequence can appear in different samples, so the workflow prefixes each barcode with the sample ID. Gene symbols are easier for humans to interpret than gene IDs, but duplicated gene symbols can occur, so the workflow makes gene names unique.
+
+::: {.panel-tabset}
+
+#### R
+
+```{r}
+#| label: toy-name-cells-genes-r
+toy_meta <- parse_sample_key("GSM4670192_Subject2_D0")
+
+toy_gene_names <- make.unique(
+  toy_features_gene_expression$gene_symbol,
+  sep = "_"
+)
+toy_cell_names <- paste0(toy_meta$sample_id, ":", toy_barcodes)
+
+data.frame(
+  cell_name = toy_cell_names,
+  sample_id = toy_meta$sample_id,
+  subject = toy_meta$subject,
+  timepoint = toy_meta$timepoint_display
+) |>
+  knitr::kable()
+```
+
+#### Python
+
+```{python}
+#| label: toy-name-cells-genes-python
+toy_meta = parse_sample_key("GSM4670192_Subject2_D0")
+
+toy_gene_names = pd.Index(
+    toy_features_gene_expression["gene_symbol"]
+).astype(str).tolist()
+toy_cell_names = [
+    f"{toy_meta['sample_id']}:{barcode}"
+    for barcode in toy_barcodes
+]
+
+pd.DataFrame({
+    "cell_name": toy_cell_names,
+    "sample_id": toy_meta["sample_id"],
+    "subject": toy_meta["subject"],
+    "timepoint": toy_meta["timepoint_display"],
+})
+```
+
+:::
+
+This is where the metadata from the previous subsection starts to matter. The count matrix has measurements, but the cell names and metadata make those measurements traceable to a subject and infection day.
+
+### Step 5: Build a Labeled Cell-by-Gene Representation
+
+The raw 10x matrix is features by cells. For a {{< glossary "Cell-by-gene matrix" display="cell-by-gene" >}} view, transpose the retained matrix so cells are rows and genes are columns. The small table below shows what the aligned expression data look like after naming cells and genes.
+
+::: {.panel-tabset}
+
+#### R
+
+```{r}
+#| label: toy-cell-by-gene-r
+toy_cell_by_gene <- t(toy_counts_gene_expression)
+rownames(toy_cell_by_gene) <- toy_cell_names
+colnames(toy_cell_by_gene) <- toy_gene_names
+
+toy_cell_by_gene_display <- data.frame(
+  cell_name = rownames(toy_cell_by_gene),
+  as.data.frame(toy_cell_by_gene),
+  check.names = FALSE
+)
+
+toy_cell_by_gene_display |>
+  knitr::kable()
+```
+
+#### Python
+
+```{python}
+#| label: toy-cell-by-gene-python
+toy_cell_by_gene = pd.DataFrame(
+    toy_counts_gene_expression.T,
+    index=toy_cell_names,
+    columns=toy_gene_names,
+)
+
+toy_cell_by_gene.reset_index().rename(columns={"index": "cell_name"})
+```
+
+:::
+
+In the advanced workflow, this aligned matrix is stored in a {{< glossary "Single-cell object" display="single-cell container" >}} rather than as a plain table. In R, the container is {{< glossary "SingleCellExperiment" display="SingleCellExperiment" >}}; in Python, it is {{< glossary "AnnData" display="AnnData" >}}. The container keeps the expression matrix, cell metadata, and gene metadata together when later steps filter cells, select genes, score markers, or save outputs.
+
+<details>
+<summary>Optional: construct the full single-cell container</summary>
+
+The code below shows the final construction step used in the complete preparation scripts. It is shown for transparency, but the key concept is the same one you saw in the toy table: counts, cell labels, gene labels, and metadata must stay aligned.
+
+::: {.panel-tabset}
+
+#### R
+
+```{r}
+#| eval: false
+SingleCellExperiment::SingleCellExperiment(
+  assays = list(counts = mat),
+  rowData = S4Vectors::DataFrame(gene_id = gene_ids[keep]),
+  colData = S4Vectors::DataFrame(meta[rep(1L, ncol(mat)), , drop = FALSE])
+)
+```
+
+#### Python
+
+```{python}
+#| eval: false
+from anndata import AnnData
+
+adata = AnnData(X=matrix.T.tocsr())
+adata.obs_names = [
+    f"{meta['sample_id']}:{barcode}"
+    for barcode in barcodes
+]
+adata.var_names = pd.Index([
+    gene
+    for gene, keep_gene in zip(gene_symbols, keep)
+    if keep_gene
+])
+adata.var_names_make_unique()
+```
+
+:::
+
+</details>
+
+:::{.think_question}
+::::{.think_question_header}
+Checkpoint
+::::
+::::{.inner_block}
+If a raw 10x matrix has 20,000 feature rows and 800 cell columns, how many barcode labels should there be?
+
+<details>
+<summary>Show answer</summary>
+
+There should be 800 barcode labels because barcodes label cells, and cells are columns in the raw 10x matrix before it is transposed into a cell-by-gene view.
+
+</details>
+::::
+:::
+
+After this step, the source-file import note has produced a labeled single-cell object. Biologically, that means every expression measurement can be traced back to a cell, a gene, and a sample. In code, later filtering and summarizing can use the same object instead of passing separate matrices and metadata tables around by hand.
+
+<details>
+<summary>Optional: file-reading helper functions used above</summary>
+
+The complete preparation scripts use small helper functions to read compressed 10x matrix and table files. These helpers are file-reading utilities, not biological decisions. They are shown here for transparency, but the important concept is that the matrix, barcode table, and feature table are read together and checked before they are aligned into one labeled single-cell object.
+
+The `parse_sample_key()` function is defined in the previous subsection. The helpers below handle the remaining file-reading steps.
+
+**R**
+
+```{r}
+#| eval: false
+open_text_file <- function(path) {
+  # 10x files are often gzip-compressed. This helper opens either a
+  # compressed or uncompressed text file.
+  if (grepl("\\.gz$", path)) {
+    gzfile(path, open = "rt")
+  } else {
+    file(path, open = "rt")
+  }
+}
+
+open_binary_file <- function(path) {
+  # Matrix Market files are read as binary connections.
+  if (grepl("\\.gz$", path)) {
+    gzfile(path, open = "rb")
+  } else {
+    file(path, open = "rb")
+  }
+}
+
+read_table_gz <- function(path) {
+  # Read a barcode or feature table with no header row.
+  con <- open_text_file(path)
+  on.exit(close(con), add = TRUE)
+
+  readr::read_tsv(
+    con,
+    col_names = FALSE,
+    show_col_types = FALSE
+  )
+}
+
+read_mtx_gz <- function(path) {
+  # Read a sparse Matrix Market expression matrix.
+  con <- open_binary_file(path)
+  on.exit(close(con), add = TRUE)
+
+  Matrix::readMM(con)
+}
+```
+
+**Python**
+
+```{python}
+#| eval: false
+import gzip
+import pandas as pd
+from scipy import sparse
+from scipy.io import mmread
+
+def read_text_table(path):
+    # Read a barcode or feature table with no header row.
+    opener = gzip.open if path.suffix == ".gz" else open
+    with opener(path, "rt") as handle:
+        return pd.read_csv(handle, sep="\t", header=None)
+
+def read_mtx(path):
+    # Read a sparse Matrix Market expression matrix.
+    opener = gzip.open if path.suffix == ".gz" else open
+    with opener(path, "rb") as handle:
+        matrix = mmread(handle)
+    return sparse.csr_matrix(matrix)
+```
+
+</details>
+
+The Data Wrangling section connects this source-import step to preprocessing decisions, CoGAPS-ready model inputs, and the small interpretation tables used in the core path. The complete executable preparation scripts are listed in the **Advanced Reproduction Script Map** above.
+
+## Advanced Reproduction: CoGAPS Model and Analysis Commands
+
+The source/preprocessing stage creates the files that CoGAPS can read. The commands below pick up from those prepared inputs and rebuild the selected-model outputs, interpretation tables, directionality evidence, and optional display figures.
+
+You do not need to run these commands for the main lesson. If you are doing a full reproduction audit, treat the selected-model outputs and interpretation tables as the minimum target. Figures are useful display checks, but they are not the main evidence that the analysis itself was reproduced.
+
+### Review or Rerun the Rank Sweep
+
+The rank sweep asks a setup question before any biological interpretation begins: how many patterns should be inspected for this case-study goal? The sweep is the most compute-heavy part of the workflow. It was designed for a SLURM high-performance-computing environment, not for a typical laptop or the local Docker session.
+
+Most readers should inspect the included sweep evidence rather than rerun the full sweep. If you have access to a compatible SLURM cluster, the workflow starts by writing the task list, runs one task per array job, and then aggregates the completed runs.
+
+```bash
+python scripts/reproduction/gse154386_make_cogaps_jobs_tsv.py \
+  --k-grid 5,6,7,8,9,10,11,12,16,20,24,28,32,36,40 \
+  --seeds 1,2,3,4,5 \
+  --iters 2000,4000,6000,8000 \
+  --out GSE154386/cogaps_sweep_singleprocess_hpc/jobs.tsv
+```
+
+```bash
+sbatch --array=1-300%15 \
+  scripts/reproduction/gse154386_cogaps_sweep_array_singleprocess_rhino_light.sbatch
+```
+
+```bash
+python scripts/reproduction/gse154386_aggregate_results.py \
+  --outdir GSE154386/cogaps_sweep_singleprocess_hpc \
+  --k-grid 5,6,7,8,9,10,11,12,16,20,24,28,32,36,40 \
+  --seeds 1,2,3,4,5 \
+  --iters 2000,4000,6000,8000
+```
+
+The key handoff is the aggregated rank evidence, not the existence of hundreds of individual run folders. The case study uses the included rank summaries so the main lesson can move directly from model choice evidence to biological interpretation.
+
+### Rerun the Selected Model
+
+Once the rank has been chosen, the selected-model rerun produces the files that later sections read: cell scores, gene loadings, top genes, diagnostics, traces, and model summaries. The R command is the primary reproduction route. The Python command is an alternate route and a useful orientation check because it reads the genes-by-cells CoGAPS input while preserving the cell metadata from the cells-by-genes object.
+
+Run these commands inside Docker from `/home/rstudio/project`.
+
+::: {.panel-tabset}
+
+#### R
+
+```{bash}
+#| eval: false
+Rscript scripts/reproduction/cs5_run_selected_model_r.R \
+  --discovery-h5ad /home/rstudio/project/data/external/reproduction_archive/cache/gse154386_experimental_discovery_cells_x_genes.h5ad \
+  --outdir /home/rstudio/project/GSE154386/cogaps_r_revised_model_K10_seed2_iter2000 \
+  --k 10 \
+  --seed 2 \
+  --n-iter 2000 \
+  --top-genes 50 \
+  --cogaps-threads 4 \
+  --blas-threads 1
+```
+
+#### Python
+
+```{bash}
+#| eval: false
+python scripts/reproduction/cs5_run_selected_model_python.py \
+  --cogaps-input-h5ad /home/rstudio/project/data/external/reproduction_archive/cache/gse154386_experimental_discovery_genes_x_cells.h5ad \
+  --discovery-h5ad /home/rstudio/project/data/external/reproduction_archive/cache/gse154386_experimental_discovery_cells_x_genes.h5ad \
+  --outdir /home/rstudio/project/GSE154386/cogaps_python_revised_model_K10_seed2_iter2000 \
+  --k 10 \
+  --seed 2 \
+  --n-iter 2000 \
+  --top-genes 50 \
+  --cogaps-threads 4 \
+  --blas-threads 1
+```
+
+:::
+
+After either run, check that the output folder contains the run stem `cogaps_K10_seed2_iter2000` in the exported filenames. The most important files for downstream interpretation are `*.cell_scores.csv`, `*.gene_loadings.csv`, `*.top_genes.csv`, `*.pattern_summary.csv`, `*.diagnostics.json`, and `*.metrics.json`.
+
+### Rebuild Interpretation Tables
+
+The selected model is still a model output, not yet a teaching table. The interpretation-layer builder turns cell scores, pattern summaries, rank evidence, language-comparison summaries, and directionality evidence into the subject-timepoint and research-question tables used in the learner-facing analysis.
+
+This command rebuilds those interpretation tables from the selected R model outputs and the included evidence files:
+
+```{bash}
+#| eval: false
+python scripts/reproduction/cs5_build_k10_interpretation_layer.py \
+  --model-outdir /home/rstudio/project/GSE154386/cogaps_r_revised_model_K10_seed2_iter2000 \
+  --comparison-outdir /home/rstudio/project/data/processed/r_python_comparison \
+  --k-selection-outdir /home/rstudio/project/data/processed/k_selection \
+  --directionality-dir /home/rstudio/project/data/processed/directionality \
+  --outdir /home/rstudio/project/GSE154386/interpretation_rebuilt \
+  --run-stem cogaps_K10_seed2_iter2000
+```
+
+If you also rebuild directionality evidence, rerun this table builder afterward with `--directionality-dir` pointing to your regenerated directionality folder. That keeps the interpretation tables synchronized with the evidence you actually audited.
+
+### Rebuild Directionality Evidence
+
+CoGAPS connects genes to patterns, but the model scores do not by themselves say whether a gene is higher or lower after infection. The directionality script makes that comparison separately by grouping cells by subject, timepoint, and broad PBMC identity, then comparing post-baseline expression with the same subject's `D0` baseline when enough cells are available.
+
+```{bash}
+#| eval: false
+python scripts/reproduction/gse154386_pattern_directionality.py \
+  --sweep-outdir /home/rstudio/project/data/external/reproduction_archive \
+  --run-stem cogaps_K10_seed2_iter2000 \
+  --expression-h5ad /home/rstudio/project/data/external/reproduction_archive/cache/gse154386_preprocessed_hvg.h5ad \
+  --top-genes-csv /home/rstudio/project/GSE154386/cogaps_r_revised_model_K10_seed2_iter2000/cogaps_K10_seed2_iter2000.top_genes.csv \
+  --pattern-summary-csv /home/rstudio/project/GSE154386/cogaps_r_revised_model_K10_seed2_iter2000/cogaps_K10_seed2_iter2000.pattern_summary.csv \
+  --outdir /home/rstudio/project/GSE154386/pattern_directionality_revised_model_K10_seed2_iter2000 \
+  --top-n 25 \
+  --baseline-timepoint D0 \
+  --cohort experimental \
+  --layer counts \
+  --min-cells 10 \
+  --log2fc-threshold 0.25
+```
+
+The useful audit checks are the directionality manifest, `tables/pattern_directionality_summary.csv`, `tables/gene_directionality_summary.csv`, and `tables/group_expression_log2cpm.csv`. Together they show which genes were tested, which subject-timepoint groups contributed enough cells, and whether each pattern's top genes were mostly higher, lower, or mixed after infection.
+
+### Optional: Regenerate Display Figures
+
+Figure scripts use included or regenerated evidence tables. They do not rerun CoGAPS.
+
+```bash
+Rscript scripts/generate_k_selection_figure.R
+Rscript scripts/generate_pattern_time_small_multiples.R
+python scripts/generate_pattern_embedding_figure.py
+python scripts/generate_opening_figure.py
+```
+
+Use figure regeneration as a final display check: the plots should update from the same tables you inspected, and the captions in the main lesson should still match the evidence shown.
+
+### Inspect Full Analysis Reproduction Scripts
+
+The table above names the scripts by stage. The expandable list below prints selected script excerpts inside the rendered page so you can inspect the available command-line options and file paths without leaving the case study.
+
+```{r}
+#| label: full-reproduction-analysis-scripts
+#| echo: false
+#| results: asis
+script_paths <- c(
+  "scripts/prepare_gse154386_subset_r.R",
+  "scripts/prepare_gse154386_subset_python.py",
+  "scripts/reproduction/gse154386_make_cogaps_jobs_tsv.py",
+  "scripts/reproduction/gse154386_cogaps_sweep_array_singleprocess_rhino_light.sbatch",
+  "scripts/reproduction/gse154386_aggregate_results.py",
+  "scripts/reproduction/cs5_generate_revised_k_selection_report.py",
+  "scripts/reproduction/cs5_run_selected_model_r.R",
+  "scripts/reproduction/cs5_run_selected_model_python.py",
+  "scripts/reproduction/cs5_build_k10_interpretation_layer.py",
+  "scripts/reproduction/gse154386_pattern_directionality.py",
+  "scripts/generate_k_selection_figure.R",
+  "scripts/generate_pattern_time_small_multiples.R",
+  "scripts/generate_pattern_embedding_figure.py",
+  "scripts/generate_opening_figure.py"
+)
+
+emit_script_detail <- function(path) {
+  if (!file.exists(path)) {
+    cat("<details><summary>", path, " (missing)</summary>\n\n")
+    cat("This script is not present in the current checkout.\n\n</details>\n\n")
+    return(invisible(NULL))
+  }
+  ext <- tools::file_ext(path)
+  lang <- switch(ext, R = "r", r = "r", py = "python", sh = "bash", sbatch = "bash", "text")
+  lines <- readLines(path, warn = FALSE)
+  max_lines <- min(length(lines), 220)
+  cat("<details><summary>", path, "</summary>\n\n")
+  cat("```", lang, "\n", sep = "")
+  cat(lines[seq_len(max_lines)], sep = "\n")
+  if (length(lines) > max_lines) {
+    cat("\n# ... truncated in rendered guide; see the repository file for the complete script.\n")
+  }
+  cat("\n```\n\n</details>\n\n")
+}
+
+invisible(lapply(script_paths, emit_script_detail))
+```
+
+## Advanced Software Reference
+
+The main setup section lists the packages used for the small included files. The table below adds software used when rebuilding larger workflow outputs.
+
+::: {.table-responsive}
+Package or tool | Language | Main lesson or rebuild use
+--- | --- | ---
+[`here`](https://here.r-lib.org/){target="_blank"} | R | Build project-relative paths.
+[`readr`](https://readr.tidyverse.org/){target="_blank"} | R | Read CSV tables.
+[`dplyr`](https://dplyr.tidyverse.org/){target="_blank"} | R | Select, filter, summarize, and arrange tables.
+[`tidyr`](https://tidyr.tidyverse.org/){target="_blank"} | R | Reshape data between long and wide forms.
+[`ggplot2`](https://ggplot2.tidyverse.org/){target="_blank"} | R | Build visualizations.
+[`knitr`](https://yihui.org/knitr/){target="_blank"} | R | Render tables in the case-study page.
+[`jsonlite`](https://jeroen.r-universe.dev/jsonlite){target="_blank"} | R | Read JSON manifests and diagnostics.
+[`reticulate`](https://rstudio.github.io/reticulate/){target="_blank"} | R | Connect R to the Python environment inside Docker when needed.
+[`pandas`](https://pandas.pydata.org/){target="_blank"} | Python | Read, filter, and summarize CSV tables.
+[`matplotlib`](https://matplotlib.org/){target="_blank"} | Python | Build Python visualizations.
+[`CoGAPS`](https://bioconductor.org/packages/CoGAPS){target="_blank"} | R | Rerun CoGAPS models during advanced reproduction.
+[`PyCoGAPS`](https://github.com/FertigLab/pycogaps){target="_blank"} | Python | Rerun CoGAPS models during advanced reproduction.
+[`scanpy`](https://scanpy.readthedocs.io/){target="_blank"} | Python | Preprocess and inspect single-cell objects.
+[`anndata`](https://anndata.readthedocs.io/){target="_blank"} | Python | Read and write H5AD single-cell objects.
+Docker | command line | Run the same software environment across computers.
+:::
+
+## Setup Troubleshooting
+
+If setup does not work the first time, use the checks below to locate the issue.
+
+::: {.table-responsive}
+Problem | What to check | What to try
+--- | --- | ---
+Docker command is not found | Docker is not installed or Docker Desktop is not running. | Install or open Docker Desktop, then rerun the command from your Terminal.
+`http://localhost:8787` does not open | The container may not be running, or another process may already be using port `8787`. | Check the Terminal where Docker is running. If the port is busy, change the left side of the port mapping, such as `-p 8790:8787`, and open `http://localhost:8790`.
+RStudio Server opens but project files are missing | The repository may not have been mounted from the repository root. | Stop Docker, `cd` into the cloned `ocs-bio-temporal` folder, and relaunch Docker.
+The readiness check cannot find `data/processed` | The repository may be incomplete or you may be in the wrong folder. | Confirm that `/home/rstudio/project` contains `index.qmd`, `data/`, and `scripts/`.
+The external archive is not visible | This matters only for advanced reproduction. The archive folder may not be mounted. | Set `CS5_REPRODUCTION_ARCHIVE` to the extracted archive folder and relaunch Docker with the two-mount command.
+A source-preprocessing script tries to write into a read-only folder | The Zenodo archive mount is read-only by design. Source preprocessing needs a writable work folder. | Use a workdir such as `/home/rstudio/project/GSE154386/source_preprocessing_r`, not `/home/rstudio/project/data/external/reproduction_archive`.
+`sbatch` is not found | The rank sweep requires a SLURM cluster. A local Docker session does not provide the scheduler. | Inspect the included sweep evidence in the main lesson, or rerun the sweep only on a compatible high-performance-computing system.
+Selected-model rerun cannot find prepared H5AD inputs | The selected-model scripts read prepared input files from the Zenodo archive unless you pass regenerated file paths. | Mount the Zenodo archive, or point `--discovery-h5ad` and `--cogaps-input-h5ad` to regenerated files after checking matrix orientation.
+Directionality output is empty or missing groups | The directionality step requires a baseline group, enough cells in each comparison group, and selected top-gene inputs. | Check the `D0` baseline labels, `--cohort`, `--min-cells`, and the selected model's `*.top_genes.csv`.
+Figure regeneration fails | Figure scripts expect the processed evidence tables to exist first. | Rebuild or restore the required `data/processed` tables, then rerun the figure script. Figures do not rerun CoGAPS.
+A package is missing outside Docker | The case study is designed to use the Docker image. | Run the code inside Docker rather than trying to install all packages locally.
+:::
+
+***

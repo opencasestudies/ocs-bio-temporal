@@ -20,6 +20,8 @@ Boolean mask: |
   A vector of TRUE/FALSE values in R or True/False values in Python used to keep or remove cells, genes, rows, or columns.
 Cell barcode: |
   A sequence label used to identify one captured cell or droplet in a single-cell sequencing experiment.
+Cell cluster: |
+  A group of cells with similar overall gene-expression profiles, often used to recognize broad cell neighborhoods or cell types in single-cell data.
 Cell composition: |
   The mixture or proportion of broad immune-cell types in a sample, timepoint, or discovery subset.
 Cell-by-gene matrix: |
@@ -90,6 +92,8 @@ Long format: |
   A table layout where each row stores one measurement for one observation, group, or variable combination.
 Manifest: |
   A small metadata file that records where outputs came from, which parameters were used, and how files relate to one another.
+Marker gene: |
+  A gene used as a guidepost for broad cell identity because its expression is associated with a particular immune-cell type or state.
 Marker score: |
   A gene-set score based on known marker genes, used here as an annotation aid for broad immune-cell identity.
 Matrix orientation: |
@@ -114,6 +118,8 @@ Preprocessing: |
   The filtering, normalization, annotation, subsetting, and file-preparation steps that turn imported data into objects ready for modeling or interpretation.
 Primary infection: |
   A first dengue infection in the study framing, interpreted without the same prior dengue immune history expected in secondary infection.
+Program gene: |
+  A gene used as a guidepost for a biological activity, such as interferon signaling, antibody-related activity, translation, or mitochondrial signal.
 Program score: |
   A gene-set score for a biological activity, such as an interferon-associated response, rather than a stable cell identity.
 Projection: |
@@ -144,6 +150,8 @@ Serotype: |
   A subtype of a virus distinguished by how the immune system recognizes it; dengue virus has four major serotypes.
 Sensitivity check: |
   A comparison used to see whether the main interpretation still holds when a key modeling choice or assumption changes.
+Single-cell RNA-seq: |
+  A sequencing method that measures gene expression in many individual cells, making it possible to study cell-to-cell differences instead of only an average signal from a mixed sample.
 Single-cell object: |
   A labeled data container that keeps expression values aligned with cell and gene annotations.
 SingleCellExperiment: |
@@ -168,6 +176,8 @@ Temporal effect size: |
   A summary of how much a pattern score varies across infection days or study timepoints.
 Temporal immune program: |
   A gene-expression program whose use changes across infection timepoints.
+Time-course analysis: |
+  An analysis that compares measurements collected at ordered timepoints so you can ask how a signal rises, peaks, persists, or fades over time.
 Top genes: |
   Genes with the largest contributions to a model pattern, used to help interpret what biology the pattern may represent.
 Total counts: |
