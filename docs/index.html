@@ -1015,7 +1015,7 @@ D_{g,c} \approx \sum_{k=1}^{K} A_{g,k} P_{k,c}
 <p>That mixed-cell design is useful for studying host response, but it also creates the central modeling challenge. Stable <button class="glossary"><span class="def">The relatively stable cell type assigned to an immune cell, such as T cell, B cell, natural killer cell, or monocyte.</span>immune-cell identity</button> and dynamic <button class="glossary"><span class="def">A coordinated gene-expression pattern that reflects what cells are doing, such as antiviral signaling, inflammation, cytotoxic activity, or antibody-related responses.</span>infection-response activity</button> are mixed in the same expression matrices. Before you start importing tables, it helps to know which files describe the original study, which files describe the model input, and which files summarize model results.</p>
 <section id="data-files-you-will-encounter" class="level2">
 <h2 class="anchored" data-anchor-id="data-files-you-will-encounter">Data Files You Will Encounter</h2>
-<p>Use this table as a map for the rest of the case study. The first column names the file group, the second column explains why you will see it, and the third column warns against a common over-interpretation.</p>
+<p>The files in this case study are not all the same kind of evidence. Some tell you where the data came from. Some define the matrix that CoGAPS learned from. Others record model-choice evidence or translate model output into biological summaries you can inspect. Keep those roles separate, and the later sections become much easier to read.</p>
 <div class="table-responsive">
 <table class="caption-top table">
 <colgroup>
@@ -1025,72 +1025,48 @@ D_{g,c} \approx \sum_{k=1}^{K} A_{g,k} P_{k,c}
 </colgroup>
 <thead>
 <tr class="header">
-<th>File group</th>
-<th>What you will use it for</th>
-<th>What not to conclude from it</th>
+<th>File family</th>
+<th>What it means here</th>
+<th>Main caution</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Public source data: GEO <code>GSE154386</code> raw 10x files</td>
-<td>Shows where the original single-cell data came from. You will not work directly with these raw files in the main lesson.</td>
-<td>Do not interpret raw 10x files before sample labels, quality control, and gene/cell annotations have been added.</td>
+<td>Public source files</td>
+<td>Raw GEO <code>GSE154386</code> and 10x Genomics files from the Waickman study.</td>
+<td>These files are not ready to interpret until sample labels, quality-control decisions, and gene/cell annotations have been added.</td>
 </tr>
 <tr class="even">
-<td><p><button class="glossary"><span class="def">A study group sampled on a planned infection timeline, allowing responses from different participants to be compared at aligned timepoints.</span>Experimental DENV-1 challenge cohort</button></p></td>
-<td>Gives the aligned infection days used for the main time-course question: <code>D0</code>, <code>D2</code>, <code>D4</code>, <code>D6</code>, <code>D8</code>, <code>D10</code>, <code>D14/15</code>, and <code>D28</code>.</td>
-<td>Do not treat these three experimental participants as representing all dengue infections or all illness timelines.</td>
+<td>Prepared discovery data</td>
+<td>The aligned experimental infection cohort after preprocessing, balancing, and gene selection. This is the cell-by-gene evidence that was sent into CoGAPS.</td>
+<td>Use this set for modeling and interpretation, not for estimating the original abundance of PBMC populations in the full source study.</td>
 </tr>
 <tr class="odd">
-<td><p><button class="glossary"><span class="def">A smaller modeling dataset constructed so each experimental sample contributes up to the same number of cells.</span>Balanced discovery set</button></p></td>
-<td>Defines the cells and genes sent into CoGAPS for the main model: 4,800 cells and 5,000 highly variable genes.</td>
-<td>Do not use this balanced set to estimate the true abundance of PBMC populations in the full source study.</td>
+<td><p><button class="glossary"><span class="def">Precomputed summaries comparing several candidate values of K before choosing the model used for interpretation.</span>Model-choice evidence</button></p></td>
+<td>Summaries from candidate CoGAPS ranks that help decide which model resolution is worth inspecting.</td>
+<td>These files help choose a model; they do not name the biology of any pattern by themselves.</td>
 </tr>
 <tr class="even">
-<td><p><button class="glossary"><span class="def">Precomputed summaries comparing several candidate values of K before choosing the model used for interpretation.</span>Rank-sweep summaries</button></p></td>
-<td>Helps you decide how many patterns CoGAPS should learn before you inspect the selected model outputs.</td>
-<td>Do not use the rank summaries alone to decide what any one pattern means biologically.</td>
+<td><p><button class="glossary"><span class="def">Compact exported files from the chosen model run that are small enough to import and inspect in the main lesson.</span>Selected-model evidence</button></p></td>
+<td>Pattern scores, gene loadings, top genes, diagnostics, and model summaries from the selected CoGAPS run.</td>
+<td>Pattern scores and gene loadings are not the same as up- or down-regulated expression.</td>
 </tr>
 <tr class="odd">
-<td><p><button class="glossary"><span class="def">Compact exported files from the chosen model run that are small enough to import and inspect in the main lesson.</span>Selected-model outputs</button></p></td>
-<td>Provides the model summaries you will import after the rank decision: pattern scores, gene loadings, top genes, diagnostics, and compact summary tables.</td>
-<td>Do not read these files as proof of up/down regulation, causal mechanism, or viral tropism by themselves.</td>
-</tr>
-<tr class="even">
-<td><p><button class="glossary"><span class="def">A summary for one participant at one sampled timepoint, used here as the evidence unit for temporal comparisons.</span>Subject-timepoint summaries</button></p></td>
-<td>Organizes pattern scores by participant and infection day so you can follow temporal trajectories.</td>
-<td>Do not treat these summaries as a substitute for a larger cohort or independent validation.</td>
-</tr>
-<tr class="odd">
-<td>Compact-rank comparison files</td>
-<td>Lets you compare the selected model with a smaller stable model as a sensitivity check.</td>
-<td>Do not treat the compact comparison as the main model for the case-study interpretation.</td>
-</tr>
-<tr class="even">
-<td><p><button class="glossary"><span class="def">A summary that aggregates cell-level expression before comparing whether genes tend to increase or decrease relative to a reference condition.</span>Directionality tables</button></p></td>
-<td>Helps you ask whether selected top genes are higher or lower relative to baseline after a pattern has been identified.</td>
-<td>Do not use these tables to claim that PBMCs are directly infected by virus.</td>
-</tr>
-<tr class="odd">
-<td><p><button class="glossary"><span class="def">A study group infected outside a planned experimental challenge setting, often with samples collected at less precisely aligned illness stages.</span>Natural infection files</button></p></td>
-<td>Gives biological context and possible material for an extension beyond the main time-course lesson.</td>
-<td>Do not use these files for the main aligned day-by-day discovery question.</td>
-</tr>
-<tr class="even">
-<td>Large files for rebuilding the workflow</td>
-<td>Stores raw archives, preprocessed objects, model objects, checkpoints, and sweep outputs for people who want to rebuild the analysis.</td>
-<td>You do not need these large files to complete the main case-study lesson.</td>
+<td>Interpretation tables</td>
+<td>Subject-timepoint summaries, cell-context summaries, sensitivity checks, and directionality tables derived from the selected-model evidence.</td>
+<td>These tables support interpretation, but they do not replace biological validation in an independent dataset.</td>
 </tr>
 </tbody>
 </table>
 </div>
+<p>You will also see references to <button class="glossary"><span class="def">A study group infected outside a planned experimental challenge setting, often with samples collected at less precisely aligned illness stages.</span>natural infection files</button> and larger reproduction files. Natural infection data are optional extension material, not the main aligned experimental time course. The larger rebuild files are for the <a href="#full-reproduction-guide">Full Reproduction Guide</a>; you do not need them to complete the main lesson.</p>
 <p>The timeline labels use <code>D</code> for experimental study day. For example, <code>D0</code> is day 0, <code>D10</code> is day 10, and <code>D14/15</code> combines samples collected around days 14 and 15.</p>
 </section>
 <section id="how-the-files-fit-together" class="level2">
 <h2 class="anchored" data-anchor-id="how-the-files-fit-together">How the Files Fit Together</h2>
-<p>The case study starts with public single-cell data, but you will mostly work with smaller files derived from it. Those smaller files are included so you can focus on understanding the analysis rather than rerunning every long step.</p>
-<p>First, cells and genes were filtered, labeled, and organized into the balanced discovery set. Then CoGAPS was run on that prepared dataset. The files you import later are mostly summaries of those runs: rank-selection summaries, pattern scores, gene weights, subject-timepoint summaries, and directionality tables.</p>
-<p>The larger raw files, model objects, and checkpoints are kept separately so the workflow can be rebuilt or checked later. You do not need to regenerate them before analyzing the included tables.</p>
+<p>The main lesson begins after the longest preparation steps have already been done. You will mostly work with smaller files derived from the public single-cell data, so you can focus on what the evidence means rather than spending the lesson rebuilding every intermediate file.</p>
+<p>Behind those included files is a straightforward sequence. Cells and genes were filtered, labeled, and organized into the balanced discovery set. CoGAPS was run on that prepared dataset. The files you import later are the pieces needed to inspect that run: rank-selection summaries, pattern scores, gene weights, subject-timepoint summaries, and directionality tables.</p>
+<p>The larger raw files, model objects, and checkpoints are kept separately so the workflow can be rebuilt or checked later. They remain visible in the reproduction guide, but they stay out of the core path.</p>
 </section>
 <section id="what-one-row-means" class="level2">
 <h2 class="anchored" data-anchor-id="what-one-row-means">What One Row Means</h2>
@@ -1850,7 +1826,8 @@ Figure&nbsp;3: A labeled RStudio Server window showing where to paste R code, ru
 </div>
 </div>
 </div>
-<p>Read this first table as an availability audit. The main lesson starts from the included small files. Advanced reproduction adds the large source, model-object, and checkpoint files from the external archive.</p>
+<p>Read this first table as an availability audit. A JSON file behaves like a named, nested list rather than a flat CSV table. The code pulls out two named parts of the manifest, <code>copied</code> and <code>skipped</code>, then counts how many files are in each group and adds their sizes.</p>
+<p>This is a file availability check, not a biological analysis. You are asking, “Which files are included for the main lesson, and which larger files were deliberately left out of GitHub?”</p>
 <p>Next, read the <button class="glossary"><span class="def">A machine-readable file that records the selected model choice, the rule used to choose it, and the representative run to import.</span>decision manifest</button> that records the selected model and representative run.</p>
 </section>
 <section id="step-3-read-the-k-selection-decision-manifest" class="level3">
@@ -1992,7 +1969,8 @@ Figure&nbsp;3: A labeled RStudio Server window showing where to paste R code, ru
 </div>
 </div>
 </div>
-<p>The manifest gives you the selected rank, and the next steps show the evidence behind that choice. <code>K = 5</code> is the compact stable comparator from a stability-focused rule. <code>K = 10</code> is the selected main rank because it adds enough <button class="glossary"><span class="def">The ability of a model to separate biologically meaningful signals, such as immune-cell identity and infection-response activity.</span>biological resolution</button> to support the case-study questions.</p>
+<p>Here the JSON file acts as a record of the modeling decision. The code stores values from the manifest in clearly named objects: the compact comparator rank, the selected main rank, the selected seed, and the number of iterations. Those assignments matter because later chunks reuse these names instead of typing the values into each later chunk.</p>
+<p>The table at the end is a readable summary of the decision file, not a new calculation. It tells you that <code>K = 5</code> is the compact stable comparator from a stability-focused rule, while <code>K = 10</code> is the selected main rank because it adds enough <button class="glossary"><span class="def">The ability of a model to separate biologically meaningful signals, such as immune-cell identity and infection-response activity.</span>biological resolution</button> to support the case-study questions.</p>
 </section>
 <section id="step-4-check-the-supporting-k-selection-evidence-files" class="level3">
 <h3 class="anchored" data-anchor-id="step-4-check-the-supporting-k-selection-evidence-files">Step 4: Check the Supporting K-Selection Evidence Files</h3>
@@ -2193,7 +2171,8 @@ Figure&nbsp;3: A labeled RStudio Server window showing where to paste R code, ru
 </div>
 </div>
 </div>
-<p>Every <code>file_exists</code> value should be <code>TRUE</code> in R or <code>True</code> in Python. If one is false, stop and resolve the file-path problem before using the <button class="glossary"><span class="def">Compact exported files from the chosen model run that are small enough to import and inspect in the main lesson.</span>selected-model outputs</button>.</p>
+<p>This checklist is built before any selected-model file is interpreted. The code first names each evidence role, then gives the relative file path, then explains what that file will be used for. The final <code>file_exists</code> column asks the computer to check the file system.</p>
+<p>Every <code>file_exists</code> value should be <code>TRUE</code> in R or <code>True</code> in Python. If one is false, stop here. The problem is usually a path, file name, or missing-file issue, and it is better to catch that before using the <button class="glossary"><span class="def">Compact exported files from the chosen model run that are small enough to import and inspect in the main lesson.</span>selected-model outputs</button>.</p>
 </section>
 <section id="step-5-apply-the-stability-gate" class="level3">
 <h3 class="anchored" data-anchor-id="step-5-apply-the-stability-gate">Step 5: Apply the Stability Gate</h3>
@@ -2419,7 +2398,8 @@ Figure&nbsp;3: A labeled RStudio Server window showing where to paste R code, ru
 </div>
 </div>
 </div>
-<p>This table explains why <code>K = 5</code> is a reasonable compact stable comparator. It is on the stability plateau and has strong agreement across seed runs. If the only goal were to choose the smallest reproducible model, <code>K = 5</code> would be attractive. The next step asks whether that compact model also has enough biological resolution for the dengue time-course question.</p>
+<p>This code reads the stability-plateau table and narrows it to the columns needed for the first rank decision. In R, <code>transmute()</code> keeps only selected columns and creates renamed or rounded versions. In Python, <code>.assign()</code>, <code>.rename()</code>, and <code>.loc[]</code> do the same work in a sequence.</p>
+<p>Read the output as a compact view of reproducibility evidence. It explains why <code>K = 5</code> is a reasonable compact stable comparator: it is on the stability plateau and has strong agreement across seed runs. If the only goal were to choose the smallest reproducible model, <code>K = 5</code> would be attractive. The next step asks whether that compact model also has enough biological resolution for the dengue time-course question.</p>
 </section>
 <section id="step-6-ask-why-stability-alone-is-not-enough" class="level3">
 <h3 class="anchored" data-anchor-id="step-6-ask-why-stability-alone-is-not-enough">Step 6: Ask Why Stability Alone Is Not Enough</h3>
@@ -2648,7 +2628,8 @@ Audit detail: thresholds used in the sweep summaries
 </div>
 </div>
 </div>
-<p>Read this table as a model-rank decision, not as the final biological interpretation of a numbered pattern. <code>K = 5</code> is stable, but it has little <button class="glossary"><span class="def">A summary of how much a pattern score varies across infection days or study timepoints.</span>temporal effect</button> and no IFN-candidate activity-like pattern. <code>K = 8</code> and <code>K = 9</code> begin to show <button class="glossary"><span class="def">An immune response consistent with activation of interferon signaling during antiviral defense.</span>IFN-candidate</button> signal, but they do not resolve an activity-like candidate by this rule. <code>K = 10</code> remains on the stability plateau and is the first plateau rank that passes the biological-resolution gate, so it becomes the model imported for the rest of the case study.</p>
+<p>This table reuses the same rank-summary data, but now asks a different question. Instead of showing only stability, the code selects columns that describe temporal signal, interferon-candidate evidence, activity-like evidence, and the combined goal score. The <code>decision</code> column is created inside the chunk so the selected rank is visible in the output.</p>
+<p>Read the output as a model-rank decision, not as the final biological interpretation of a numbered pattern. <code>K = 5</code> is stable, but it has little <button class="glossary"><span class="def">A summary of how much a pattern score varies across infection days or study timepoints.</span>temporal effect</button> and no IFN-candidate activity-like pattern. <code>K = 8</code> and <code>K = 9</code> begin to show <button class="glossary"><span class="def">An immune response consistent with activation of interferon signaling during antiviral defense.</span>IFN-candidate</button> signal, but they do not resolve an activity-like candidate by this rule. <code>K = 10</code> remains on the stability plateau and is the first plateau rank that passes the biological-resolution gate, so it becomes the model imported for the rest of the case study.</p>
 <div class="definition_box">
 <div class="definition_box_header">
 <p>Pattern labels are not biological names</p>
@@ -2989,15 +2970,17 @@ Audit detail: thresholds used in the sweep summaries
 </div>
 </div>
 </div>
-<p>This preview should match what you saw above: <code>K = 5</code> is stable and compact, while <code>K = 10</code> is the selected rank with stronger temporal evidence.</p>
+<p>This code reads the table used to draw the K-selection figure. That is a useful reproducibility habit: before trusting a plot, inspect the table behind it. The chunk keeps only the values that appear visually in the figure, including stability, temporal effect, goal score, plateau status, and selected-model status.</p>
+<p>This preview should match what you saw above: <code>K = 5</code> is stable and compact, while <code>K = 10</code> is the selected rank with stronger temporal evidence. If the figure-source table did not match the earlier decision tables, the figure and the evidence chain would be out of sync.</p>
 <details>
 <summary>
 Optional: remake the figure from the included table
 </summary>
-<p>The source table has already been prepared, so the snippets below focus only on how the figure is drawn. They come from <code>scripts/generate_k_selection_figure.R</code> and omit the setup code that finds file paths and reads the table. Running the script redraws the figure from the included table; it does not rerun CoGAPS or repeat the rank sweep.</p>
+<p>The source table has already been prepared, so the snippets below focus only on how the figure is drawn. They come from <code>scripts/generate_k_selection_figure.R</code> and omit the setup code that finds file paths and reads the table.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> scripts/generate_k_selection_figure.R</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>This command runs a complete figure-building script from the command line. It is optional because the figure is already included with the lesson. Running it redraws the figure from the included source table; it does not rerun CoGAPS or repeat the rank sweep.</p>
 <p>The first plotting step creates a two-panel figure and assigns colors to the candidate ranks. Gray marks ranks that were tested, blue marks compact stable candidates, and red marks the rank selected for this case study.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">layout</span>(<span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">nrow =</span> <span class="dv">2</span>), <span class="at">heights =</span> <span class="fu">c</span>(<span class="fl">1.15</span>, <span class="fl">1.0</span>))</span>
@@ -3009,6 +2992,7 @@ Optional: remake the figure from the included table
 <span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>] <span class="ot">&lt;-</span> <span class="st">"#4c72b0"</span></span>
 <span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>point_colors[k_summary<span class="sc">$</span>selected_for_case_study] <span class="ot">&lt;-</span> <span class="st">"#c44e52"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>These lines prepare the visual grammar of the figure. <code>layout()</code> creates a two-panel plotting area. The <code>point_colors</code> object starts by assigning every rank a neutral gray, then replaces some colors when a rank belongs to the stability plateau or is selected for the case study. This is a common plotting strategy: create a default appearance first, then overwrite special cases.</p>
 <p>The top panel plots each candidate <code>K</code> by stability and temporal effect. The dashed vertical line marks the stability plateau cutoff, and the labels make the candidate ranks visible.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
@@ -3032,6 +3016,7 @@ Optional: remake the figure from the included table
 <span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">labels =</span> <span class="fu">paste0</span>(<span class="st">"K="</span>, k_summary<span class="sc">$</span>K)</span>
 <span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>This plotting chunk places each candidate rank on two axes: stability on the x-axis and temporal effect on the y-axis. The dashed line marks the stability cutoff, and the text labels attach each point to a value of <code>K</code>. The point of the plot is not to pick a rank from one axis alone; it helps you see whether a rank is both stable enough and temporally informative enough to inspect further.</p>
 <p>The bottom panel compares the goal-aligned score for each candidate rank. This panel highlights the selected rank while keeping the other scores visible for comparison.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>bar_colors <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(</span>
@@ -3056,7 +3041,8 @@ Optional: remake the figure from the included table
 <span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">labels =</span> <span class="st">"selected"</span></span>
 <span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The final lines save the same drawn figure as a <code>PNG</code> for the case-study page and as an <code>SVG</code> for editable or high-resolution use.</p>
+<p>This panel switches from a two-axis comparison to a single summary score. The code colors the selected rank differently, draws the bars, finds the selected bar with <code>which()</code>, and labels it. The label is added by code rather than typed onto an image, so the figure can be regenerated if the source table changes.</p>
+<p>The final plotting lines save the same drawn figure in two formats.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>grDevices<span class="sc">::</span><span class="fu">png</span>(out_png, <span class="at">width =</span> <span class="dv">1600</span>, <span class="at">height =</span> <span class="dv">1900</span>, <span class="at">res =</span> <span class="dv">190</span>)</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_figure</span>()</span>
@@ -3066,6 +3052,7 @@ Optional: remake the figure from the included table
 <span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_figure</span>()</span>
 <span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>grDevices<span class="sc">::</span><span class="fu">dev.off</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>The <code>PNG</code> file is convenient when you want a standard image that is easy to view or share. The <code>SVG</code> file preserves editable vector shapes, which is useful when a figure needs to stay sharp at different sizes. Both files come from the same <code>draw_figure()</code> function, so they represent the same plot.</p>
 </details>
 <p><a href="data/processed/figures/figure_01_k_selection.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="data/processed/figures/figure_01_k_selection.png" class="img-fluid" alt="K-selection evidence figure comparing candidate model ranks by stability, temporal resolution, and a goal-aligned score, with K equals 10 selected for the main analysis." width="850"></a></p>
 <p>In the top panel, look for ranks that remain stable while gaining temporal resolution. In the bottom panel, compare the goal-aligned ranking. The figure should tell the same story as the tables: <code>K = 5</code> is compact and stable, while <code>K = 10</code> is the selected model because it adds temporal biological resolution.</p>
@@ -3154,7 +3141,7 @@ Optional: remake the figure from the included table
 <span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>r_selected_dir</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "/home/data/processed/selected_model_k10/r"</code></pre>
+<pre><code>[1] "/home/rstudio/project/data/processed/selected_model_k10/r"</code></pre>
 </div>
 </div>
 </div>
@@ -3174,7 +3161,7 @@ Optional: remake the figure from the included table
 </div>
 </div>
 </div>
-<p>The output is the folder path that the next chunks will use. You do not need to type the full path again each time; you can reuse the named object. In R, that object is called <code>r_selected_dir</code>. In Python, it is called <code>py_selected_dir</code>.</p>
+<p>The output is the folder path that the next chunks will use. You do not need to type the full path again each time; later code can combine this folder object with individual file names. In R, the reusable path object is called <code>r_selected_dir</code>. In Python, it is called <code>py_selected_dir</code>, and <code>Path</code> objects can be joined to file names with <code>/</code>.</p>
 </section>
 <section id="step-2-make-a-selected-output-import-checklist" class="level3">
 <h3 class="anchored" data-anchor-id="step-2-make-a-selected-output-import-checklist">Step 2: Make a Selected-Output Import Checklist</h3>
@@ -3309,6 +3296,7 @@ Optional: remake the figure from the included table
 </div>
 </div>
 </div>
+<p>This checklist is built before any selected-model file is read. The code first creates a small table of expected files and their roles. Then it adds a <code>relative_path</code> column by combining the selected-model folder with each file name. Finally, it adds <code>file_exists</code>, which checks the file system.</p>
 <p>The <code>file_exists</code> column should be <code>TRUE</code> in R or <code>True</code> in Python for every expected selected-output file. If one value is false, the problem is usually a path, file name, or missing-data issue. That is useful to know before you spend time debugging analysis code.</p>
 </section>
 <section id="step-3-read-the-files-into-memory" class="level3">
@@ -3357,7 +3345,8 @@ Optional: remake the figure from the included table
 </div>
 </div>
 </div>
-<p>This chunk does not print a table because its main job is to create objects for later use. In R, assignment uses <code>&lt;-</code>. In Python, assignment uses <code>=</code>. In both languages, the name on the left is the object you will reuse later.</p>
+<p>This is the first chunk that actually loads the selected-model outputs. CSV files become data frame-style tables, while the JSON metrics file becomes a named list in R or a dictionary in Python. The object names tell you what kind of evidence each file contains: pattern-level summaries, top genes, model metrics, and diagnostic trace values.</p>
+<p>The chunk does not print a table because its main job is to create objects for later use. In R, assignment uses <code>&lt;-</code>. In Python, assignment uses <code>=</code>. In both languages, the name on the left is the object you will reuse later.</p>
 </section>
 <section id="step-4-inspect-the-imported-objects" class="level3">
 <h3 class="anchored" data-anchor-id="step-4-inspect-the-imported-objects">Step 4: Inspect the Imported Objects</h3>
@@ -3446,6 +3435,7 @@ Optional: remake the figure from the included table
 </div>
 </div>
 </div>
+<p>This chunk turns a quick inspection into a small audit table. For each imported table, it reports the row count, column count, and the first few column names. In R, <code>nrow()</code>, <code>ncol()</code>, and <code>names()</code> provide those checks. In Python, <code>len()</code>, <code>.shape</code>, and <code>.columns</code> play the same roles.</p>
 <p>Read this output as a basic import audit. The row counts tell you how much information was loaded. The <code>first_columns</code> field tells you whether the table looks like the file you intended to read. For example, the pattern summary should begin with pattern-level columns, while the trace file should begin with diagnostic trace columns.</p>
 </section>
 <section id="step-5-run-sanity-checks-on-the-selected-model" class="level3">
@@ -3555,6 +3545,7 @@ Optional: remake the figure from the included table
 </div>
 </div>
 </div>
+<p>This chunk compares the imported files against the model decision made earlier. Some values come from the metrics JSON, such as <code>K</code>, seed, iteration count, and thread count. Other values are counted directly from the imported tables, such as the number of pattern rows and the number of patterns represented in the top-gene table.</p>
 <p>The sanity-check output should confirm that the imported files match the selected model. The number of pattern rows should be <code>10</code>, and the top-gene table should contain entries for all ten patterns. If those values do not match, stop here and resolve the import problem before continuing.</p>
 </section>
 <section id="step-6-preview-the-pattern-summary" class="level3">
@@ -3632,6 +3623,7 @@ Optional: remake the figure from the included table
 </div>
 </div>
 </div>
+<p>This preview selects only a few columns rather than printing the whole pattern summary. That makes the output readable while showing the structure you will use later: the pattern label, the timepoint effect, the broad cell-type effect, and the peak timepoint. In R, <code>select()</code> chooses columns and <code>head(5)</code> keeps the first five rows. In Python, <code>.loc[:, [...]]</code> chooses columns and <code>.head(5)</code> keeps the first five rows.</p>
 <p>You have now imported the rank-selection evidence and the selected CoGAPS output files. Before leaving Data Import, pause to name what has been checked.</p>
 <table class="caption-top table">
 <colgroup>
@@ -6441,26 +6433,26 @@ Show answer
 <span id="cb108-38"><a href="#cb108-38" aria-hidden="true" tabindex="-1"></a>    _ <span class="op">=</span> ax.set_ylim(<span class="dv">0</span>, <span class="fl">0.31</span>)</span>
 <span id="cb108-39"><a href="#cb108-39" aria-hidden="true" tabindex="-1"></a>    _ <span class="op">=</span> ax.grid(axis<span class="op">=</span><span class="st">"y"</span>, alpha<span class="op">=</span><span class="fl">0.25</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>&lt;matplotlib.patches.Polygon object at 0x7f16eb0b7910&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7f16eb0b7ee0&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7f16eb0870d0&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7f16eb100070&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7f16ec2a46d0&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7f16eb1000a0&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7f16eb0b78e0&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7f16eb100700&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7f16eb0b6e90&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7f16eb100d00&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7f16eb186980&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7f16eb101330&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7f16eb1b72e0&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7f16eb101960&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7f16eb1e7b80&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7f16eb101f90&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7f16eb217fd0&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7f16eb1025c0&gt;]
-&lt;matplotlib.patches.Polygon object at 0x7f16eb053a60&gt;
-[&lt;matplotlib.lines.Line2D object at 0x7f16eb102bf0&gt;]</code></pre>
+<pre><code>&lt;matplotlib.patches.Polygon object at 0x7fffc92f3640&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc92b9000&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fffc97de800&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc92f3580&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fffc958b460&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc92f28f0&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fffc95bebf0&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc92f2140&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fffc97de680&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc92f18a0&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fffc93b89d0&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc92f21d0&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fffc93ed2a0&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc92f2d70&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fffc92f2fb0&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc93383d0&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fffc92f2170&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc9338a00&gt;]
+&lt;matplotlib.patches.Polygon object at 0x7fffc928aa70&gt;
+[&lt;matplotlib.lines.Line2D object at 0x7fffc9339030&gt;]</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb110"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax <span class="kw">in</span> axes:</span>
 <span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a>    _ <span class="op">=</span> ax.set_xticks(<span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(timepoint_order) <span class="op">+</span> <span class="dv">1</span>))</span>
@@ -13253,7 +13245,7 @@ Wright, Carrie, Qing Meng, Michael R. Breshock, Laura Atta, Margaret A. Taub, Le
  collate  en_US.UTF-8
  ctype    en_US.UTF-8
  tz       Etc/UTC
- date     2026-06-24
+ date     2026-06-26
  pandoc   3.1.1 @ /usr/local/bin/ (via rmarkdown)
 
 ─ Packages ───────────────────────────────────────────────────────────────────
@@ -13782,7 +13774,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","openEffect":"zoom","selector":".lightbox","loop":false});
+<script>var lightboxQuarto = GLightbox({"selector":".lightbox","openEffect":"zoom","loop":false,"descPosition":"bottom","closeEffect":"zoom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {
