@@ -90,7 +90,9 @@ pd.DataFrame({
 
 :::
 
-Read this first table as an availability audit. The main lesson starts from the included small files. Advanced reproduction adds the large source, model-object, and checkpoint files from the external archive.
+Read this first table as an availability audit. A JSON file behaves like a named, nested list rather than a flat CSV table. The code pulls out two named parts of the manifest, `copied` and `skipped`, then counts how many files are in each group and adds their sizes.
+
+This is a file availability check, not a biological analysis. You are asking, "Which files are included for the main lesson, and which larger files were deliberately left out of GitHub?"
 
 Next, read the {{< glossary "Decision manifest" display="decision manifest" >}} that records the selected model and representative run.
 
@@ -170,7 +172,9 @@ print(k_manifest_table_py.to_markdown(index=False))
 
 :::
 
-The manifest gives you the selected rank, and the next steps show the evidence behind that choice. `K = 5` is the compact stable comparator from a stability-focused rule. `K = 10` is the selected main rank because it adds enough {{< glossary "Biological resolution" display="biological resolution" >}} to support the case-study questions.
+Here the JSON file acts as a record of the modeling decision. The code stores values from the manifest in clearly named objects: the compact comparator rank, the selected main rank, the selected seed, and the number of iterations. Those assignments matter because later chunks reuse these names instead of typing the values into each later chunk.
+
+The table at the end is a readable summary of the decision file, not a new calculation. It tells you that `K = 5` is the compact stable comparator from a stability-focused rule, while `K = 10` is the selected main rank because it adds enough {{< glossary "Biological resolution" display="biological resolution" >}} to support the case-study questions.
 
 ### Step 4: Check the Supporting K-Selection Evidence Files
 
@@ -268,7 +272,9 @@ print(k_evidence_files_py.to_markdown(index=False))
 
 :::
 
-Every `file_exists` value should be `TRUE` in R or `True` in Python. If one is false, stop and resolve the file-path problem before using the {{< glossary "Selected-model outputs" display="selected-model outputs" >}}.
+This checklist is built before any selected-model file is interpreted. The code first names each evidence role, then gives the relative file path, then explains what that file will be used for. The final `file_exists` column asks the computer to check the file system.
+
+Every `file_exists` value should be `TRUE` in R or `True` in Python. If one is false, stop here. The problem is usually a path, file name, or missing-file issue, and it is better to catch that before using the {{< glossary "Selected-model outputs" display="selected-model outputs" >}}.
 
 ### Step 5: Apply the Stability Gate
 
@@ -343,7 +349,9 @@ print(k_plateau_display_py.to_markdown(index=False))
 
 :::
 
-This table explains why `K = 5` is a reasonable compact stable comparator. It is on the stability plateau and has strong agreement across seed runs. If the only goal were to choose the smallest reproducible model, `K = 5` would be attractive. The next step asks whether that compact model also has enough biological resolution for the dengue time-course question.
+This code reads the stability-plateau table and narrows it to the columns needed for the first rank decision. In R, `transmute()` keeps only selected columns and creates renamed or rounded versions. In Python, `.assign()`, `.rename()`, and `.loc[]` do the same work in a sequence.
+
+Read the output as a compact view of reproducibility evidence. It explains why `K = 5` is a reasonable compact stable comparator: it is on the stability plateau and has strong agreement across seed runs. If the only goal were to choose the smallest reproducible model, `K = 5` would be attractive. The next step asks whether that compact model also has enough biological resolution for the dengue time-course question.
 
 ### Step 6: Ask Why Stability Alone Is Not Enough
 
@@ -423,7 +431,9 @@ print(k_resolution_display_py.to_markdown(index=False))
 
 :::
 
-Read this table as a model-rank decision, not as the final biological interpretation of a numbered pattern. `K = 5` is stable, but it has little {{< glossary "Temporal effect size" display="temporal effect" >}} and no IFN-candidate activity-like pattern. `K = 8` and `K = 9` begin to show {{< glossary "Interferon-associated response" display="IFN-candidate" >}} signal, but they do not resolve an activity-like candidate by this rule. `K = 10` remains on the stability plateau and is the first plateau rank that passes the biological-resolution gate, so it becomes the model imported for the rest of the case study.
+This table reuses the same rank-summary data, but now asks a different question. Instead of showing only stability, the code selects columns that describe temporal signal, interferon-candidate evidence, activity-like evidence, and the combined goal score. The `decision` column is created inside the chunk so the selected rank is visible in the output.
+
+Read the output as a model-rank decision, not as the final biological interpretation of a numbered pattern. `K = 5` is stable, but it has little {{< glossary "Temporal effect size" display="temporal effect" >}} and no IFN-candidate activity-like pattern. `K = 8` and `K = 9` begin to show {{< glossary "Interferon-associated response" display="IFN-candidate" >}} signal, but they do not resolve an activity-like candidate by this rule. `K = 10` remains on the stability plateau and is the first plateau rank that passes the biological-resolution gate, so it becomes the model imported for the rest of the case study.
 
 :::{.definition_box}
 ::::{.definition_box_header}
@@ -495,17 +505,21 @@ print(k_selection_figure_display_py.to_markdown(index=False))
 
 :::
 
-This preview should match what you saw above: `K = 5` is stable and compact, while `K = 10` is the selected rank with stronger temporal evidence.
+This code reads the table used to draw the K-selection figure. That is a useful reproducibility habit: before trusting a plot, inspect the table behind it. The chunk keeps only the values that appear visually in the figure, including stability, temporal effect, goal score, plateau status, and selected-model status.
+
+This preview should match what you saw above: `K = 5` is stable and compact, while `K = 10` is the selected rank with stronger temporal evidence. If the figure-source table did not match the earlier decision tables, the figure and the evidence chain would be out of sync.
 
 <details>
 <summary>Optional: remake the figure from the included table</summary>
 
-The source table has already been prepared, so the snippets below focus only on how the figure is drawn. They come from `scripts/generate_k_selection_figure.R` and omit the setup code that finds file paths and reads the table. Running the script redraws the figure from the included table; it does not rerun CoGAPS or repeat the rank sweep.
+The source table has already been prepared, so the snippets below focus only on how the figure is drawn. They come from `scripts/generate_k_selection_figure.R` and omit the setup code that finds file paths and reads the table.
 
 ```{bash}
 #| eval: false
 Rscript scripts/generate_k_selection_figure.R
 ```
+
+This command runs a complete figure-building script from the command line. It is optional because the figure is already included with the lesson. Running it redraws the figure from the included source table; it does not rerun CoGAPS or repeat the rank sweep.
 
 The first plotting step creates a two-panel figure and assigns colors to the candidate ranks. Gray marks ranks that were tested, blue marks compact stable candidates, and red marks the rank selected for this case study.
 
@@ -520,6 +534,8 @@ point_colors[
 ] <- "#4c72b0"
 point_colors[k_summary$selected_for_case_study] <- "#c44e52"
 ```
+
+These lines prepare the visual grammar of the figure. `layout()` creates a two-panel plotting area. The `point_colors` object starts by assigning every rank a neutral gray, then replaces some colors when a rank belongs to the stability plateau or is selected for the case study. This is a common plotting strategy: create a default appearance first, then overwrite special cases.
 
 The top panel plots each candidate `K` by stability and temporal effect. The dashed vertical line marks the stability plateau cutoff, and the labels make the candidate ranks visible.
 
@@ -546,6 +562,8 @@ text(
   labels = paste0("K=", k_summary$K)
 )
 ```
+
+This plotting chunk places each candidate rank on two axes: stability on the x-axis and temporal effect on the y-axis. The dashed line marks the stability cutoff, and the text labels attach each point to a value of `K`. The point of the plot is not to pick a rank from one axis alone; it helps you see whether a rank is both stable enough and temporally informative enough to inspect further.
 
 The bottom panel compares the goal-aligned score for each candidate rank. This panel highlights the selected rank while keeping the other scores visible for comparison.
 
@@ -574,7 +592,9 @@ text(
 )
 ```
 
-The final lines save the same drawn figure as a `PNG` for the case-study page and as an `SVG` for editable or high-resolution use.
+This panel switches from a two-axis comparison to a single summary score. The code colors the selected rank differently, draws the bars, finds the selected bar with `which()`, and labels it. The label is added by code rather than typed onto an image, so the figure can be regenerated if the source table changes.
+
+The final plotting lines save the same drawn figure in two formats.
 
 ```{r}
 #| eval: false
@@ -586,6 +606,8 @@ grDevices::svg(out_svg, width = 8.5, height = 10.2)
 draw_figure()
 grDevices::dev.off()
 ```
+
+The `PNG` file is convenient when you want a standard image that is easy to view or share. The `SVG` file preserves editable vector shapes, which is useful when a figure needs to stay sharp at different sizes. Both files come from the same `draw_figure()` function, so they represent the same plot.
 
 </details>
 
@@ -670,7 +692,7 @@ py_selected_dir
 
 :::
 
-The output is the folder path that the next chunks will use. You do not need to type the full path again each time; you can reuse the named object. In R, that object is called `r_selected_dir`. In Python, it is called `py_selected_dir`.
+The output is the folder path that the next chunks will use. You do not need to type the full path again each time; later code can combine this folder object with individual file names. In R, the reusable path object is called `r_selected_dir`. In Python, it is called `py_selected_dir`, and `Path` objects can be joined to file names with `/`.
 
 ### Step 2: Make a Selected-Output Import Checklist
 
@@ -756,6 +778,8 @@ py_import_plan.loc[:, [
 
 :::
 
+This checklist is built before any selected-model file is read. The code first creates a small table of expected files and their roles. Then it adds a `relative_path` column by combining the selected-model folder with each file name. Finally, it adds `file_exists`, which checks the file system.
+
 The `file_exists` column should be `TRUE` in R or `True` in Python for every expected selected-output file. If one value is false, the problem is usually a path, file name, or missing-data issue. That is useful to know before you spend time debugging analysis code.
 
 ### Step 3: Read the Files into Memory
@@ -809,7 +833,9 @@ py_trace = pd.read_csv(py_selected_dir / "cogaps_K10_seed2_iter2000.trace.csv")
 
 :::
 
-This chunk does not print a table because its main job is to create objects for later use. In R, assignment uses `<-`. In Python, assignment uses `=`. In both languages, the name on the left is the object you will reuse later.
+This is the first chunk that actually loads the selected-model outputs. CSV files become data frame-style tables, while the JSON metrics file becomes a named list in R or a dictionary in Python. The object names tell you what kind of evidence each file contains: pattern-level summaries, top genes, model metrics, and diagnostic trace values.
+
+The chunk does not print a table because its main job is to create objects for later use. In R, assignment uses `<-`. In Python, assignment uses `=`. In both languages, the name on the left is the object you will reuse later.
 
 ### Step 4: Inspect the Imported Objects
 
@@ -855,6 +881,8 @@ pd.DataFrame({
 ```
 
 :::
+
+This chunk turns a quick inspection into a small audit table. For each imported table, it reports the row count, column count, and the first few column names. In R, `nrow()`, `ncol()`, and `names()` provide those checks. In Python, `len()`, `.shape`, and `.columns` play the same roles.
 
 Read this output as a basic import audit. The row counts tell you how much information was loaded. The `first_columns` field tells you whether the table looks like the file you intended to read. For example, the pattern summary should begin with pattern-level columns, while the trace file should begin with diagnostic trace columns.
 
@@ -919,6 +947,8 @@ pd.DataFrame({
 
 :::
 
+This chunk compares the imported files against the model decision made earlier. Some values come from the metrics JSON, such as `K`, seed, iteration count, and thread count. Other values are counted directly from the imported tables, such as the number of pattern rows and the number of patterns represented in the top-gene table.
+
 The sanity-check output should confirm that the imported files match the selected model. The number of pattern rows should be `10`, and the top-gene table should contain entries for all ten patterns. If those values do not match, stop here and resolve the import problem before continuing.
 
 ### Step 6: Preview the Pattern Summary
@@ -947,6 +977,8 @@ py_pattern_summary.loc[
 ```
 
 :::
+
+This preview selects only a few columns rather than printing the whole pattern summary. That makes the output readable while showing the structure you will use later: the pattern label, the timepoint effect, the broad cell-type effect, and the peak timepoint. In R, `select()` chooses columns and `head(5)` keeps the first five rows. In Python, `.loc[:, [...]]` chooses columns and `.head(5)` keeps the first five rows.
 
 You have now imported the rank-selection evidence and the selected CoGAPS output files. Before leaving Data Import, pause to name what has been checked.
 

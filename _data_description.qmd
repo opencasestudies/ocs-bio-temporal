@@ -9,32 +9,29 @@ That mixed-cell design is useful for studying host response, but it also creates
 
 ## Data Files You Will Encounter
 
-Use this table as a map for the rest of the case study. The first column names the file group, the second column explains why you will see it, and the third column warns against a common over-interpretation.
+The files in this case study are not all the same kind of evidence. Some tell you where the data came from. Some define the matrix that CoGAPS learned from. Others record model-choice evidence or translate model output into biological summaries you can inspect. Keep those roles separate, and the later sections become much easier to read.
 
 ::: {.table-responsive}
-| File group | What you will use it for | What not to conclude from it |
+| File family | What it means here | Main caution |
 |---|---|---|
-| Public source data: GEO `GSE154386` raw 10x files | Shows where the original single-cell data came from. You will not work directly with these raw files in the main lesson. | Do not interpret raw 10x files before sample labels, quality control, and gene/cell annotations have been added. |
-| {{< glossary "Experimental infection cohort" display="Experimental DENV-1 challenge cohort" >}} | Gives the aligned infection days used for the main time-course question: `D0`, `D2`, `D4`, `D6`, `D8`, `D10`, `D14/15`, and `D28`. | Do not treat these three experimental participants as representing all dengue infections or all illness timelines. |
-| {{< glossary "Balanced discovery set" display="Balanced discovery set" >}} | Defines the cells and genes sent into CoGAPS for the main model: 4,800 cells and 5,000 highly variable genes. | Do not use this balanced set to estimate the true abundance of PBMC populations in the full source study. |
-| {{< glossary "Rank-sweep evidence" display="Rank-sweep summaries" >}} | Helps you decide how many patterns CoGAPS should learn before you inspect the selected model outputs. | Do not use the rank summaries alone to decide what any one pattern means biologically. |
-| {{< glossary "Selected-model outputs" display="Selected-model outputs" >}} | Provides the model summaries you will import after the rank decision: pattern scores, gene loadings, top genes, diagnostics, and compact summary tables. | Do not read these files as proof of up/down regulation, causal mechanism, or viral tropism by themselves. |
-| {{< glossary "Subject-timepoint summary" display="Subject-timepoint summaries" >}} | Organizes pattern scores by participant and infection day so you can follow temporal trajectories. | Do not treat these summaries as a substitute for a larger cohort or independent validation. |
-| Compact-rank comparison files | Lets you compare the selected model with a smaller stable model as a sensitivity check. | Do not treat the compact comparison as the main model for the case-study interpretation. |
-| {{< glossary "Pseudobulk directionality" display="Directionality tables" >}} | Helps you ask whether selected top genes are higher or lower relative to baseline after a pattern has been identified. | Do not use these tables to claim that PBMCs are directly infected by virus. |
-| {{< glossary "Natural infection cohort" display="Natural infection files" >}} | Gives biological context and possible material for an extension beyond the main time-course lesson. | Do not use these files for the main aligned day-by-day discovery question. |
-| Large files for rebuilding the workflow | Stores raw archives, preprocessed objects, model objects, checkpoints, and sweep outputs for people who want to rebuild the analysis. | You do not need these large files to complete the main case-study lesson. |
+| Public source files | Raw GEO `GSE154386` and 10x Genomics files from the Waickman study. | These files are not ready to interpret until sample labels, quality-control decisions, and gene/cell annotations have been added. |
+| Prepared discovery data | The aligned experimental infection cohort after preprocessing, balancing, and gene selection. This is the cell-by-gene evidence that was sent into CoGAPS. | Use this set for modeling and interpretation, not for estimating the original abundance of PBMC populations in the full source study. |
+| {{< glossary "Rank-sweep evidence" display="Model-choice evidence" >}} | Summaries from candidate CoGAPS ranks that help decide which model resolution is worth inspecting. | These files help choose a model; they do not name the biology of any pattern by themselves. |
+| {{< glossary "Selected-model outputs" display="Selected-model evidence" >}} | Pattern scores, gene loadings, top genes, diagnostics, and model summaries from the selected CoGAPS run. | Pattern scores and gene loadings are not the same as up- or down-regulated expression. |
+| Interpretation tables | Subject-timepoint summaries, cell-context summaries, sensitivity checks, and directionality tables derived from the selected-model evidence. | These tables support interpretation, but they do not replace biological validation in an independent dataset. |
 :::
+
+You will also see references to {{< glossary "Natural infection cohort" display="natural infection files" >}} and larger reproduction files. Natural infection data are optional extension material, not the main aligned experimental time course. The larger rebuild files are for the [Full Reproduction Guide](#full-reproduction-guide); you do not need them to complete the main lesson.
 
 The timeline labels use `D` for experimental study day. For example, `D0` is day 0, `D10` is day 10, and `D14/15` combines samples collected around days 14 and 15.
 
 ## How the Files Fit Together
 
-The case study starts with public single-cell data, but you will mostly work with smaller files derived from it. Those smaller files are included so you can focus on understanding the analysis rather than rerunning every long step.
+The main lesson begins after the longest preparation steps have already been done. You will mostly work with smaller files derived from the public single-cell data, so you can focus on what the evidence means rather than spending the lesson rebuilding every intermediate file.
 
-First, cells and genes were filtered, labeled, and organized into the balanced discovery set. Then CoGAPS was run on that prepared dataset. The files you import later are mostly summaries of those runs: rank-selection summaries, pattern scores, gene weights, subject-timepoint summaries, and directionality tables.
+Behind those included files is a straightforward sequence. Cells and genes were filtered, labeled, and organized into the balanced discovery set. CoGAPS was run on that prepared dataset. The files you import later are the pieces needed to inspect that run: rank-selection summaries, pattern scores, gene weights, subject-timepoint summaries, and directionality tables.
 
-The larger raw files, model objects, and checkpoints are kept separately so the workflow can be rebuilt or checked later. You do not need to regenerate them before analyzing the included tables.
+The larger raw files, model objects, and checkpoints are kept separately so the workflow can be rebuilt or checked later. They remain visible in the reproduction guide, but they stay out of the core path.
 
 ## What One Row Means
 
