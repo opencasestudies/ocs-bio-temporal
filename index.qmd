@@ -1,27 +1,43 @@
 ---
-title: "**Biomedical Open Case Studies: Discovering Temporal Immune Programs with CoGAPS in Single-Cell Dengue Infection Data**"
+title: "**Biomedical Open Case Studies: {Fill In Title}**"
 bibliography: resources/references.bib
 include-sections:
-  stat-los: true
+  stat-los: false
+  lo-map: true
   data-import: true
-  data-exploration: true
+  data-exploration: false
   data-wrangling: true
   data-viz: true
   data-analysis: true
-execute:
-  warning: false
+  main-q-table: true
 ---
+
+<!--
+  Update above to exclude optional or new sections by changing from true to false.
+  Update the various qmd documents below with each component of a Bio-OCS case study.
+  Besides filling in the title in the header of this document, no other changes should be necessary within this file.
+  Use the `include-sections` within the header to toggle section inclusion/exclusion as needed.
+  For documentation on quarto syntax possibilities, use https://quarto.org/docs/authoring/markdown-basics.html.
+  Examples in the documentation range from including images and videos to including margin notes, annotating code, and linking within a document.
+-->
 
 {{< include _main_image.qmd >}}
 
 {{< include _ocs_frontmatter.qmd >}}
-
 
 {{< include _motivation.qmd >}}
 
 {{< include _main_question.qmd >}}
 
 {{< include _los.qmd >}}
+
+::: {.content-hidden unless-meta="include-sections.lo-map"}
+
+{{< include _lo_map.qmd >}}
+
+:::
+
+{{< include _packages.qmd >}}
 
 {{< include _context.qmd >}}
 
@@ -30,8 +46,6 @@ execute:
 {{< include _limitations.qmd >}}
 
 {{< include _bioethics.qmd >}}
-
-{{< include _packages.qmd >}}
 
 ::: {.content-hidden unless-meta="include-sections.data-import"}
 
@@ -65,9 +79,13 @@ execute:
 
 {{< include _summary.qmd >}}
 
-{{< include _suggested_hw.qmd >}}
+::: {.content-hidden unless-meta="include-sections.main-q-table"}
 
-{{< include _full_reproduction.qmd >}}
+{{< include _main_qs_answers_table.qmd >}}
+
+:::
+
+{{< include _suggested_hw.qmd >}}
 
 {{< include _additional_info.qmd >}}
 
@@ -79,11 +97,7 @@ execute:
 ***
 
 ```{r}
-if (requireNamespace("sessioninfo", quietly = TRUE)) {
-  sessioninfo::session_info()
-} else {
-  sessionInfo()
-}
+devtools::session_info()
 ```
 
 {{< include _acknowledgements.qmd >}}
