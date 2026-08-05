@@ -13,19 +13,4 @@ The objectives are organized into data science/bioinformatics, statistical/model
 
 {{< include _biological_los.qmd >}}
 
-:::{.callout-note collapse="true" title="Objectives Map: where each skill is used"}
-
-This map shows how the learning objectives come together across the case study. The detailed objectives above name the skills; the map below shows where those skills are introduced, practiced, and used for interpretation.
-
-| Learning goal | What this helps you do | Where it appears |
-|---|---|---|
-| Understand the biological setting | Explain why an experimental DENV-1 PBMC time course can be used to study host immune response over time | [Motivation](#motivation); [Context](#context); [What are the data?](#what-are-the-data) |
-| Trace the core evidence files | Use included model outputs while recognizing how the Full Reproduction Guide shows where those files came from | [Prerequisites](#prerequisites); [What are the data?](#what-are-the-data); [Packages and Setup](#packages-and-setup); [Data Import](#data-import) |
-| Evaluate the CoGAPS rank decision | Use precomputed rank-selection evidence to explain which selected model the core analysis inspects | [Main Question](#main-question); [Data Import](#data-import); [Data Analysis](#data-analysis) |
-| Check model evidence before interpretation | Load manifests, selected-model outputs, diagnostics, metadata, and coverage summaries before assigning biological meaning | [Data Import](#data-import); [Data Exploration](#data-exploration) |
-| Summarize temporal and identity structure | Join pattern scores to subject, infection-day, and broad PBMC identity metadata, then compare temporal and identity/activity evidence | [Data Exploration](#data-exploration); [Data Wrangling](#data-wrangling); [Data Visualization](#data-visualization) |
-| Evaluate the interferon-response interpretation | Combine timing, IFN association, top genes, directionality, diagnostics, and sensitivity evidence | [Data Visualization](#data-visualization); [Data Analysis](#data-analysis) |
-| State limitations and evidence origins | Explain what the precomputed evidence can support, where it came from, and which claims remain bounded | [Limitations](#limitations); [Data Analysis](#data-analysis); [Summary](#summary); [Full Reproduction Guide](#full-reproduction-guide) |
-:::
-
 ***
