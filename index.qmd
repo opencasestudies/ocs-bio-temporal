@@ -87,3 +87,5 @@ if (requireNamespace("sessioninfo", quietly = TRUE)) {
 ```
 
 {{< include _acknowledgements.qmd >}}
+
+Make sure to follow along with case study by creating your own repository using this link: [https://username.github.io/repository_name/](https://username.github.io/repository_name/)
